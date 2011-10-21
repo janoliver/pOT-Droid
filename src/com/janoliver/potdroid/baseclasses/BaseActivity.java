@@ -16,6 +16,7 @@ package com.janoliver.potdroid.baseclasses;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.janoliver.potdroid.helpers.CustomExceptionHandler;
 import com.janoliver.potdroid.helpers.PotUtils;
 import com.janoliver.potdroid.helpers.WebsiteInteraction;
 
@@ -29,6 +30,10 @@ public abstract class BaseActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(
+                PotUtils.SDCARD_ERRLOG_LOCATION, null));
+
 
         mWebsiteInteraction = PotUtils.getWebsiteInteractionInstance(this);
     }

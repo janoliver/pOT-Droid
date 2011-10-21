@@ -84,6 +84,7 @@ public class TopicActivity extends BaseActivity {
 
             if (extras.containsKey("PID")) {
                 mThread.setPid(extras.getInt("PID"));
+                PotUtils.log(""+extras.getInt("PID"));
             }
 
             if (extras.containsKey("page")) {
@@ -392,7 +393,6 @@ public class TopicActivity extends BaseActivity {
 
         // next page
         Button next = (Button) row.findViewById(R.id.buttonNext);
-        PotUtils.log(mThread.getPage() + "---" + mThread.getLastPage());
         if (mThread.getPage() == mThread.getLastPage()) {
             next.setEnabled(false);
         } else {

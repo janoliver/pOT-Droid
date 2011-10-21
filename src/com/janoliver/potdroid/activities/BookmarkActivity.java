@@ -104,10 +104,9 @@ public class BookmarkActivity extends BaseListActivity {
     public void openThread(Bookmark bm, Boolean lastPage, Boolean scroll) {
         Intent intent = new Intent(BookmarkActivity.this, TopicActivity.class);
         intent.putExtra("TID", bm.getThread().getId());
-        intent.putExtra("PID", bm.getLastPost());
-
+        
         if (scroll) {
-            intent.putExtra("scroll", true);
+            intent.putExtra("PID", bm.getLastPost());
         }
 
         if (lastPage) {
@@ -125,7 +124,7 @@ public class BookmarkActivity extends BaseListActivity {
             inflater.inflate(R.menu.context_bookmark, menu);
         } else {
             inflater.inflate(R.menu.context_bookmark, menu);
-        }
+        } 
     }
 
     @Override

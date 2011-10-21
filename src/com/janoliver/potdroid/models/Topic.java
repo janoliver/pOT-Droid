@@ -96,7 +96,7 @@ public class Topic extends ModelBase {
 
     @Override
     public String getUrl() {
-        if ((mPid > 0) && (mPage == 0)) {
+        if (mPid > 0) {
             return PotUtils.THREAD_URL_BASE + mId + "&PID=" + mPid;
         } else {
             return PotUtils.THREAD_URL_BASE + mId + "&page=" + mPage;

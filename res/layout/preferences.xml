@@ -38,6 +38,12 @@
             android:defaultValue="false"
             android:summary="Volume buttons zum Blättern nutzen."
             android:title="Volume Buttons blättern!" />
+        
+        <CheckBoxPreference
+            android:key="gravityInThreads"
+            android:defaultValue="false"
+            android:summary="Auto-scroll nach links in Threads."
+            android:title="Experimentell!!! Scrollt automatisch wieder nach links in der Thread Ansicht." />
             
         <Preference
               android:title="About"

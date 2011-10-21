@@ -513,6 +513,12 @@ public class TopicActivity extends BaseActivity {
         public void showToast(String msg) {
             Toast.makeText(TopicActivity.this, msg, Toast.LENGTH_SHORT).show();
         }
+        
+        public boolean gravityOn() {
+            return PreferenceManager.
+                    getDefaultSharedPreferences(TopicActivity.this).
+                    getBoolean("gravityInThreads", false);
+        }
 
     }
 

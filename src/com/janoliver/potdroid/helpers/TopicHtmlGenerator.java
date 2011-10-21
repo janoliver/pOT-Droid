@@ -152,7 +152,7 @@ public class TopicHtmlGenerator {
         while (i.hasNext()) {
             Map.Entry<String, String> me = i.next();
             code = code.replace(me.getKey(),
-                    "<img src=\"file:///android_asset/mSmileys/" + me.getValue() + "\" />");
+                    "<img src=\"file:///android_asset/smileys/" + me.getValue() + "\" />");
         }
         return code;
     }

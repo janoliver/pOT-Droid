@@ -47,8 +47,21 @@
     	window.JSInterface.showPostContextMenu(id);
     }
     
-    
-    
+    // your mama sits on the left of the window, which is why a strong
+    // gravitational force pushes the screen to the left side.
+    var scrollTimer = null;
+    function watchScroll() {
+        scrollTimer = window.setTimeout(watchScroll, 1500);
+        var win = $(document);
+        if(win.scrollLeft() > 0) {
+        	$("body").animate({
+                scrollLeft: 0
+            },1000);
+        }
+    }
+    // your mama only exists if the setting is switched on.
+    if(window.JSInterface.gravityOn())
+    	watchScroll();
     
  });
  

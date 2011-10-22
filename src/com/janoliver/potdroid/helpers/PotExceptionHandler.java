@@ -75,7 +75,6 @@ public class PotExceptionHandler implements UncaughtExceptionHandler {
     }
 
     private void writeToFile(String stacktrace, String filename) {
-        PotUtils.log(filename);
         try {
             File logDirectory = new File(PotUtils.SDCARD_ERRLOG_LOCATION);
             logDirectory.mkdirs();

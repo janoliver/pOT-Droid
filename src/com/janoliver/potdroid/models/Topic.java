@@ -85,6 +85,7 @@ public class Topic extends ModelBase {
             newPost.setText(el.getChild("message").getChildText("content"));
             newPost.setTitle(el.getChild("message").getChildText("title"));
             newPost.setBookmarktoken(el.getChild("token-setbookmark").getAttributeValue("value"));
+            newPost.setThread(this);
             if (el.getChild("token-editreply") != null) {
                 newPost.setEdittoken(el.getChild("token-editreply").getAttributeValue("value"));
             }

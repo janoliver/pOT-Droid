@@ -55,7 +55,6 @@ public class TopicActivity extends BaseActivity {
 
     private WebView mWebView;
     private ViewGroup mLinearLayout;
-    private Post[] mPosts;
     private Topic mThread;
     private Integer mContextMenuInfo;
 
@@ -205,7 +204,7 @@ public class TopicActivity extends BaseActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        Post post = mPosts[mContextMenuInfo];
+        Post post = mThread.getPostList()[mContextMenuInfo];
 
         switch (item.getItemId()) {
         case R.id.edit:
@@ -220,7 +219,7 @@ public class TopicActivity extends BaseActivity {
             return true;
         case R.id.cite:
             // reply dialog with quote
-            String text = "[quote=" + post.getThread().getId() + "," + post.getId() + ",\""
+            String text = "[quote=" + mThread.getId() + "," + post.getId() + ",\""
                     + post.getAuthor().getNick() + "\"][b]\n" + post.getText() + "\n[/b][/quote]";
             replyDialog(text);
             return true;

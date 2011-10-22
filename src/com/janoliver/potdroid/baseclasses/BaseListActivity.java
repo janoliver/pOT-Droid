@@ -16,6 +16,7 @@ package com.janoliver.potdroid.baseclasses;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,6 +26,7 @@ import com.janoliver.potdroid.R;
 import com.janoliver.potdroid.activities.BookmarkActivity;
 import com.janoliver.potdroid.activities.ForumActivity;
 import com.janoliver.potdroid.activities.PreferenceActivityPot;
+import com.janoliver.potdroid.helpers.PotExceptionHandler;
 import com.janoliver.potdroid.helpers.PotUtils;
 import com.janoliver.potdroid.helpers.WebsiteInteraction;
 
@@ -36,10 +38,27 @@ public abstract class BaseListActivity extends ListActivity {
 
     protected ListView mListView;
     protected WebsiteInteraction mWebsiteInteraction;
-
+    
+    private final int THEME_LIGHT = 0;
+    private final int THEME_DARK  = 1;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        // set our own exception handler
+        Thread.setDefaultUncaughtExceptionHandler(new PotExceptionHandler(
+                PotUtils.SDCARD_ERRLOG_LOCATION, null));
+        
+        // set the theme
+        int theme = new Integer(PreferenceManager.getDefaultSharedPreferences(this).getString(
+                "theme", "0"));
+        if(theme == THEME_LIGHT)
+            this.setTheme(R.style.PotLight);
+        if(theme == THEME_DARK)
+            this.setTheme(R.style.PotDark);
+        
+        // this has to be called _after_ setting the theme. God knows, why.
         super.onCreate(savedInstanceState);
+        
         mListView = getListView();
         mListView.setFastScrollEnabled(true);
         mWebsiteInteraction = PotUtils.getWebsiteInteractionInstance(this);

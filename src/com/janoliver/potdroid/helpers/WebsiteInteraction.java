@@ -100,7 +100,7 @@ public class WebsiteInteraction {
      */
     public Document getDocument(String url) {
 
-        // cache is not implemented yet...
+        // cache works only for the board structure.
         Document document = mCache.get(url);
 
         // nothing to fetch from cache...

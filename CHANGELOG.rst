@@ -5,31 +5,31 @@
 Changelog Alpha 15 (pOT Droid 0.15)
 ===================================
 
-  - Experimentelle "Gravitation" nach links in Threads. In den Settings einstellbar. Issue #14
-  - Themes (dark, light) für die Forenübersichten usw. 
-  - die gesamte Codebase aufgeräumt und einen einheitlicheren Stil verwendet
-  - Uncaught exceptions werden jetzt unter "/sdcard/Android/data/com.janoliver.potdroid/files" in Log Dateien geschrieben. Bitte bei Bug Reports anhängen!
+- Experimentelle "Gravitation" nach links in Threads. In den Settings einstellbar. Issue #14
+- Themes (dark, light) für die Forenübersichten usw. 
+- die gesamte Codebase aufgeräumt und einen einheitlicheren Stil verwendet
+- Uncaught exceptions werden jetzt unter "/sdcard/Android/data/com.janoliver.potdroid/files" in Log Dateien geschrieben. Bitte bei Bug Reports anhängen!
 
 Changelog Alpha 14 (pOT Droid 0.14)
 ===================================
 
-  - login bug gefixt.
-  - posten/editieren jetzt schneller
-  - Bookmarks hinzufügen/entfernen
-  - about Dialog in den Preferences
-  - Einstellung, ob ungelesene Posts markiert werden sollen
-  - leichte Änderungen in der Threadansicht (links)
-  - Menü in der Threadansicht verändert: vor/zurück Buttons raus, Einstellungen Button rein.
+- login bug gefixt.
+- posten/editieren jetzt schneller
+- Bookmarks hinzufügen/entfernen
+- about Dialog in den Preferences
+- Einstellung, ob ungelesene Posts markiert werden sollen
+- leichte Änderungen in der Threadansicht (links)
+- Menü in der Threadansicht verändert: vor/zurück Buttons raus, Einstellungen Button rein.
 
 Ihr müsst euch einmal neu einloggen!
 
 Changelog Alpha 13 (pOT Droid 0.13)
 ===================================
 
-  - user agent jetzt unique nach Login
-  - Buttons im Thread größer
-  - Thread layout überarbeitet
-  - Bilder laden im WLAN / nie / immer
+- user agent jetzt unique nach Login
+- Buttons im Thread größer
+- Thread layout überarbeitet
+- Bilder laden im WLAN / nie / immer
 - Ladedialog beim editieren/posten. Kann abgebrochen werden.
 - Eigene Posts werden gehighlighted.
 
@@ -82,10 +82,10 @@ Changelog Alpha 7 (pOT Droid 0.7)
 - Update check jetzt überall, einmalig bei Programmstart.
 - volume buttons können in den Settings zum Blättern eingestellt werden.
 - neue, experimentelle Thread-Ansicht. (Unter der Haube...) 
-  - Bilder per click nachladbar!
-  - schneller im Laden und scrollen!
-  - intern sehr viel einfacher handzuhaben.
-  - an/ausstellbar in den Settings.
+- Bilder per click nachladbar!
+- schneller im Laden und scrollen!
+- intern sehr viel einfacher handzuhaben.
+- an/ausstellbar in den Settings.
 
 Changelog Alpha 6 (pOT Droid 0.6)
 =================================

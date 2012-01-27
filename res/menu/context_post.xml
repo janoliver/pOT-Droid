@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/edit"
-          android:title="editieren"/>
+          android:title="editieren" android:showAsAction="ifRoom"/>
     <item android:id="@+id/cite"
-          android:title="zitieren" />
+          android:title="zitieren" android:showAsAction="ifRoom"/>
     <item android:id="@+id/bookmark"
-          android:title="Lesezeichen" />
+          android:title="Lesezeichen" android:showAsAction="ifRoom"/>
 </menu>

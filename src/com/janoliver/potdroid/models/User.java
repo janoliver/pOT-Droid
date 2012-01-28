@@ -19,7 +19,7 @@ package com.janoliver.potdroid.models;
 public class User {
 
     Integer id;
-    String nick;
+    String nick; 
 
     User(Integer id, String nick) {
         this.id = id;

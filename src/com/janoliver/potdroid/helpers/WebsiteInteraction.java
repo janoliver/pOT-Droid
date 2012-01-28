@@ -14,6 +14,7 @@
 package com.janoliver.potdroid.helpers;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.math.BigInteger;
@@ -24,7 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.GZIPInputStream;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -107,7 +110,7 @@ public class WebsiteInteraction {
         if (document == null) {
 
             // no internet connection...
-            if (!isConnected()) {
+            if (getConnectionType(mActivity) == 0) {
                 return null;
             }
 
@@ -118,6 +121,7 @@ public class WebsiteInteraction {
                 // get the input stream from fetchContent().
                 // return null if the fetching of the document failed
                 HttpGet request = new HttpGet(url);
+                request.addHeader("Accept-Encoding", "gzip");
 
                 HttpResponse response = mHttpClient.execute(request);
                 HttpEntity entity = response.getEntity();
@@ -125,9 +129,16 @@ public class WebsiteInteraction {
                 if ((entity == null) || !entity.isStreaming()) {
                     return null;
                 }
+                
+                // get the content input stream and take care of gzip encoding
+                InputStream instream = entity.getContent();
+                Header contentEncoding = response.getFirstHeader("Content-Encoding");
+                if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
+                    instream = new GZIPInputStream(instream);
+                }
 
                 // build the xml document object
-                document = parser.build(entity.getContent());
+                document = parser.build(instream);
 
                 // check for the login
                 Attribute currUser = document.getRootElement().getAttribute("current-user-id");
@@ -226,15 +237,6 @@ public class WebsiteInteraction {
     // is user logged in?
     public Boolean loggedIn() {
         return getLoginState();
-    }
-
-    // is any internet connection available?
-    public Boolean isConnected() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) mActivity
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null;
-
     }
 
     // 0 -> not connected

@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     
     <item android:id="@+id/reply"
-          android:title="Antwort schreiben" android:showAsAction="ifRoom"/>
+          android:title="Antwort schreiben" android:showAsAction="ifRoom" android:icon="@drawable/ic_menu_compose"/>
     <item android:id="@+id/refresh"
-          android:title="Aktualisieren" android:showAsAction="ifRoom"/>
+          android:title="Aktualisieren" android:showAsAction="ifRoom" android:icon="@drawable/ic_menu_refresh"/>
     <item android:id="@+id/forumact"
-          android:title="Forenübersicht" android:showAsAction="ifRoom"/>
+          android:title="Forenübersicht" android:showAsAction="ifRoom" android:icon="@drawable/ic_menu_home"/>
     <item android:id="@+id/bookmarks"
-          android:title="Bookmarks" android:showAsAction="ifRoom"/>
+          android:title="Bookmarks" android:showAsAction="ifRoom"  android:icon="@drawable/ic_menu_star"/>
     <item android:id="@+id/preferences"
-          android:title="Einstellungen" />
+          android:title="Einstellungen"  android:icon="@drawable/ic_menu_account_list" />
 </menu>

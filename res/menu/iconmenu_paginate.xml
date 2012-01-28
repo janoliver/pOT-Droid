@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/preferences"
-          android:title="Einstellungen"/>
+          android:title="Einstellungen"  android:icon="@drawable/ic_menu_account_list"/>
     <item android:id="@+id/forumact"
-          android:title="Forenübersicht" android:showAsAction="ifRoom"/>
+          android:title="Forenübersicht" android:showAsAction="ifRoom" android:icon="@drawable/ic_menu_home"/>
     <item android:id="@+id/bookmarks"
-          android:title="Bookmarks" android:showAsAction="ifRoom"/>
+          android:title="Bookmarks" android:showAsAction="ifRoom" android:icon="@drawable/ic_menu_star"/>
     <item android:id="@+id/previous"
-          android:title="vorherige Seite" android:showAsAction="ifRoom"/>
+          android:title="vorherige Seite" android:showAsAction="ifRoom" android:icon="@drawable/ic_menu_back"/>
     <item android:id="@+id/refresh"
-          android:title="Aktualisieren" android:showAsAction="ifRoom"/>
+          android:title="Aktualisieren" android:showAsAction="ifRoom" android:icon="@drawable/ic_menu_refresh"/>
     <item android:id="@+id/next"
-          android:title="nächste Seite" android:showAsAction="ifRoom"/>
+          android:title="nächste Seite" android:showAsAction="ifRoom" android:icon="@drawable/ic_menu_forward"/>
 </menu>

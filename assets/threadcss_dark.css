@@ -46,6 +46,17 @@ body {
     color:#eee;
 }
 
+.spoiler {
+    background:#fff;
+    color: #ccc;
+}
+
+.mod {
+    color:#FACC2E;
+    font-size:14px;
+    font-weight:bold;
+}
+
 
 blockquote {
     color:#fff;

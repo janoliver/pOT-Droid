@@ -50,6 +50,17 @@ body {
 	text-decoration:none;
 }
 
+.spoiler {
+    background:#000;
+    color: #333;
+}
+
+.mod {
+    color:#FACC2E;
+    font-size:14px;
+    font-weight:bold;
+}
+
 blockquote {
     color:#333;
     margin:5px 3px 5px 3px;

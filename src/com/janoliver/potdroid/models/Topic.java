@@ -68,7 +68,12 @@ public class Topic extends ModelBase {
         mIsGlobal = flags.getChild("is-global").getAttributeValue("value").equals("1");
         mPage = new Integer(root.getChild("posts").getAttributeValue("page")).intValue();
         mLastPage = (int) Math.ceil((double) mNumberOfPosts / mPostsPerPage);
-        mNewreplytoken = root.getChild("token-newreply").getAttributeValue("value");
+        
+        // check if thread is closed. If not, find out the reply token
+        if (root.getChild("token-newreply") != null) {
+            mNewreplytoken = root.getChild("token-newreply").getAttributeValue("value");
+        }
+        
 
         mBoard = new Board(new Integer(root.getChild("in-board").getAttributeValue("id")));
 

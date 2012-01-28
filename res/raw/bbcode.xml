@@ -7,11 +7,11 @@
 
         <code name="bold" priority="10">
             <pattern>[b]<var inherit="true"/>[/b]</pattern>
-            <template>&lt;em&gt;<var/>&lt;/em&gt;</template>
+            <template>&lt;strong&gt;<var/>&lt;/strong&gt;</template>
         </code> 
         <code name="italic" priority="10">
             <pattern>[i]<var inherit="true"/>[/i]</pattern>
-            <template>&lt;strong&gt;<var/>&lt;/strong&gt;</template>
+            <template>&lt;em&gt;<var/>&lt;/em&gt;</template>
         </code> 
         <code name="underlined" priority="10">
             <pattern>[u]<var inherit="true"/>[/u]</pattern>
@@ -23,11 +23,11 @@
         </code> 
         <code name="spoiler" priority="9">
             <pattern>[spoiler]<var inherit="true"/>[/spoiler]</pattern>
-            <template>&lt;spoiler&gt;<var/>&lt;/spoiler&gt;</template>
+            <template>&lt;span class="spoiler"&gt;<var/>&lt;/span&gt;</template>
         </code> 
         <code name="mod" priority="9">
             <pattern>[mod]<var inherit="true"/>[/mod]</pattern>
-            <template>&lt;mod&gt;<var/>&lt;/mod&gt;</template>
+            <template>&lt;span class="mod"&gt;<var/>&lt;/span&gt;</template>
         </code> 
         <code name="list1">
             <pattern>[list]<var inherit="true"/>[/list]</pattern>

@@ -174,7 +174,12 @@ public class TopicActivity extends BaseActivity {
         // Handle item selection
         switch (item.getItemId()) {
         case R.id.reply:
-            replyDialog("");
+            if (mThread.getNewreplytoken() == null) {
+                Toast.makeText(TopicActivity.this, "Thread geschlossen.",
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                replyDialog("");
+            }
             return true;
         case R.id.preferences:
             Intent intent = new Intent(this, PreferenceActivityPot.class);

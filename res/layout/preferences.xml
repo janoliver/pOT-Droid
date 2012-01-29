@@ -41,6 +41,13 @@
              android:entries="@array/themes"
              android:entryValues="@array/themesValues" />
         
+        <ListPreference 
+             android:title="Ziel mata Button"
+             android:key="mataloc" 
+             android:summary="Wohin führt der Mata button ab Android 3.0" 
+             android:entries="@array/mataLoc"
+             android:entryValues="@array/mataLocValues" />
+        
         <CheckBoxPreference
             android:key="volumeControl"
             android:defaultValue="false"

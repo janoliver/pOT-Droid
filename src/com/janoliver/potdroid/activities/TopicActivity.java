@@ -178,6 +178,25 @@ public class TopicActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+        case android.R.id.home:
+            // app icon in action bar clicked
+            int loc = new Integer(mSettings.getString("mataloc", "0"));
+            switch (loc) {
+            case 0:
+                goToBookmarkActivity();
+                return true;
+            case 2:
+                Intent intent = new Intent(this, BoardActivity.class);
+                intent.putExtra("BID", 14);
+                intent.putExtra("page", 1);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+            case 1:
+            default:
+                goToForumActivity();
+                return true;
+            }
         case R.id.reply:
             if (mThread.isClosed()) {
                 Toast.makeText(TopicActivity.this, "Thread geschlossen.",

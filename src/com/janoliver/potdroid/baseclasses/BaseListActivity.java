@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.janoliver.potdroid.R;
+import com.janoliver.potdroid.activities.BoardActivity;
 import com.janoliver.potdroid.activities.BookmarkActivity;
 import com.janoliver.potdroid.activities.ForumActivity;
 import com.janoliver.potdroid.activities.PreferenceActivityPot;
@@ -83,6 +84,25 @@ public abstract class BaseListActivity extends ListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+        case android.R.id.home:
+            // app icon in action bar clicked
+            int loc = new Integer(mSettings.getString("mataloc", "0"));
+            switch (loc) {
+            case 0:
+                goToBookmarkActivity();
+                return true;
+            case 2:
+                Intent intent = new Intent(this, BoardActivity.class);
+                intent.putExtra("BID", 14);
+                intent.putExtra("page", 1);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+            case 1:
+            default:
+                goToForumActivity();
+                return true;
+            }
         case R.id.forumact:
             goToForumActivity();
             return true;

@@ -48,4 +48,14 @@
         <item>halbstündlich</item>
         <item>stündlich</item>
     </string-array>
+    <string-array name="mataLoc">
+        <item>Lesezeichen</item>
+        <item>Forenübersicht</item>
+        <item>pOT</item>
+    </string-array>
+    <string-array name="mataLocValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
 </resources>

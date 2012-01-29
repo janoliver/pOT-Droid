@@ -51,8 +51,7 @@ public abstract class BaseActivity extends Activity {
         mExtras             = getIntent().getExtras();
         
         // set the theme
-        int theme = new Integer(PreferenceManager.getDefaultSharedPreferences(this).getString(
-                "theme", "0"));
+        int theme = new Integer(mSettings.getString("theme", "0"));
         if(theme == THEME_LIGHT)
             this.setTheme(R.style.PotLight);
         if(theme == THEME_DARK)

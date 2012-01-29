@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.janoliver.potdroid.R;
 import com.janoliver.potdroid.baseclasses.BaseListActivity;
+import com.janoliver.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.janoliver.potdroid.helpers.PotNotification;
 import com.janoliver.potdroid.models.Category;
 import com.janoliver.potdroid.models.Forum;
@@ -134,38 +135,39 @@ public class ForumActivity extends BaseListActivity {
     }
 
     /**
-     * @author oli
-     * 
-     *         This class starts an async task (opening another system thread)
-     *         to preload the view. It shows and handles the progressbar and the
-     *         messages to the user. The magic happens in the doInBackground()
-     *         method.
+     * This async task shows a loader and updates the forum object.
+     * When it is finished, the loader is hidden.
      */
     class PrepareAdapter extends AsyncTask<Void, Void, Void> {
-        ProgressDialog dialog;
+        ProgressDialog mDialog;
 
         @Override
         protected void onPreExecute() {
-            dialog = new PotNotification(ForumActivity.this, this, true);
-            dialog.setMessage("Lade...");
-            dialog.show();
+            mDialog = new PotNotification(ForumActivity.this, this, true);
+            mDialog.setMessage("Lade...");
+            mDialog.show();
         }
 
         @Override
         protected Void doInBackground(Void... params) {
-            Forum forum = mObjectManager.getForum(false);
-            mCats       = forum.getCategories();
+            Forum forum;
+            try {
+                forum = mObjectManager.getForum(false);
+                mCats = forum.getCategories();
+            } catch (ParseErrorException e) {
+                Toast.makeText(ForumActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
+                this.cancel(true);
+                mDialog.dismiss();
+                e.printStackTrace();
+            }
+            
             return null;
         }
 
         @Override
         protected void onPostExecute(Void unused) {
-            if (mCats == null) {
-                Toast.makeText(ForumActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
-            } else {
-                fillView();
-            }
-            dialog.dismiss();
+            fillView();
+            mDialog.dismiss();
         }
     }
 

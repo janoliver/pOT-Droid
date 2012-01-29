@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.janoliver.potdroid.R;
 import com.janoliver.potdroid.baseclasses.BaseListActivity;
+import com.janoliver.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.janoliver.potdroid.helpers.PotNotification;
 import com.janoliver.potdroid.models.Board;
 import com.janoliver.potdroid.models.Topic;
@@ -79,7 +80,7 @@ public class BoardActivity extends BaseListActivity {
                 }
             }
         });
-    }
+    } 
 
     @Override
     public Object onRetainNonConfigurationInstance() {
@@ -190,29 +191,50 @@ public class BoardActivity extends BaseListActivity {
 
     public void showNextPage() {
         if ((mPage * mBoard.getThreadsPerPage()) < mBoard.getNumberOfThreads()) {
-            mPage++;
-            mBoard = mObjectManager.getBoardByPage(mBoard.getId(), mPage);
-            refresh();
+            
+            try {
+                mBoard = mObjectManager.getBoardByPage(mBoard.getId(), mPage+1);
+                mPage++;
+                refresh();
+            } catch (ParseErrorException e) {
+                e.printStackTrace();
+            }
+            
         } else if (mPage > 1) {
-            mPage  = 1;
-            mBoard = mObjectManager.getBoardByPage(mBoard.getId(), mPage);
-            refresh();
+            try {
+                mBoard = mObjectManager.getBoardByPage(mBoard.getId(), 1);
+                mPage  = 1;
+                refresh();
+            } catch (ParseErrorException e) {
+                e.printStackTrace();
+            }
+            
         } else {
             Toast.makeText(this, "Keine weiteren Seiten vorhanden", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void showPreviousPage() {
-        Integer lastPage = (int) java.lang.Math.ceil(mBoard.getNumberOfThreads()
-                / (double) mBoard.getThreadsPerPage());
+        Integer lastPage = mBoard.getNumberOfPages();
         if (mPage > 1) {
-            mPage--;
-            mBoard = mObjectManager.getBoardByPage(mBoard.getId(), mPage);
-            refresh();
+            
+            try {
+                mBoard = mObjectManager.getBoardByPage(mBoard.getId(), mPage-1);
+                mPage--;
+                refresh();
+            } catch (ParseErrorException e) {
+                e.printStackTrace();
+            }
+            
         } else if (lastPage > 1) {
-            mPage  = mBoard.getNumberOfPages();
-            mBoard = mObjectManager.getBoardByPage(mBoard.getId(), mPage);
-            refresh();
+            try {
+                mBoard = mObjectManager.getBoardByPage(mBoard.getId(), lastPage);
+                mPage = lastPage;
+                refresh();
+            } catch (ParseErrorException e) {
+                e.printStackTrace();
+            }
+            
         } else {
             Toast.makeText(this, "Keine weiteren Seiten vorhanden", Toast.LENGTH_SHORT).show();
         }
@@ -256,30 +278,34 @@ public class BoardActivity extends BaseListActivity {
      * to the user. The magic happens in the doInBackground() method.
      */
     class PrepareAdapter extends AsyncTask<Void, Void, Void> {
-        ProgressDialog dialog;
+        ProgressDialog mDialog;
 
         @Override
         protected void onPreExecute() {
-            dialog = new PotNotification(BoardActivity.this, this, true);
-            dialog.setMessage("Lade...");
-            dialog.show();
+            mDialog = new PotNotification(BoardActivity.this, this, true);
+            mDialog.setMessage("Lade...");
+            mDialog.show();
         }
 
         @Override
         protected Void doInBackground(Void... params) {
-            mObjectManager.getBoardByPage(mBoard.getId(), mPage);
-            mThreads = mBoard.getTopics().get(mPage);
+            try {
+                mObjectManager.getBoardByPage(mBoard.getId(), mPage);
+                mThreads = mBoard.getTopics().get(mPage);
+            } catch (ParseErrorException e) {
+                Toast.makeText(BoardActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
+                this.cancel(true);
+                mDialog.dismiss();
+                e.printStackTrace();
+            }
+            
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
-            if (mThreads == null) {
-                Toast.makeText(BoardActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
-            } else {
-                fillView();
-            }
-            dialog.dismiss();
+            fillView();
+            mDialog.dismiss();
         }
     }
 }

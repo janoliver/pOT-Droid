@@ -41,6 +41,7 @@ import android.widget.Toast;
 import com.janoliver.potdroid.R;
 import com.janoliver.potdroid.baseclasses.BaseActivity;
 import com.janoliver.potdroid.helpers.DialogWrapper;
+import com.janoliver.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.janoliver.potdroid.helpers.PotNotification;
 import com.janoliver.potdroid.helpers.PotUtils;
 import com.janoliver.potdroid.helpers.TopicHtmlGenerator;
@@ -457,8 +458,11 @@ public class TopicActivity extends BaseActivity {
         startActivity(intent);
     }
 
+    /**
+     * This async task shows a loader and updates the topic object.
+     * When it is finished, the loader is hidden.
+     */
     class ThreadLoader extends AsyncTask<Integer, Object, Void> {
-
         private ProgressDialog mDialog;
 
         @Override
@@ -474,17 +478,21 @@ public class TopicActivity extends BaseActivity {
             Integer page = args[1];
             Integer pid  = args[0];
             
-            if(pid > 0) {
-                mThread = mObjectManager.getTopicByPid(mThread.getId(), pid);
-                mPage   = mThread.getLastPage();
-            } else {
-                mThread = mObjectManager.getTopicByPage(mThread.getId(), page, true);
-            }
-            if (mThread == null) {
+            // decide whether to use the page or pid for fetching of the xml
+            try {
+                if(pid > 0) {
+                    mThread = mObjectManager.getTopicByPid(mThread.getId(), pid);
+                    mPage   = mThread.getLastPage();
+                } else {
+                    mThread = mObjectManager.getTopicByPage(mThread.getId(), page, true);
+                }
+            } catch (ParseErrorException e) {
                 Toast.makeText(TopicActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
                 this.cancel(true);
                 mDialog.dismiss();
+                e.printStackTrace();
             }
+            
             return null;
         }
 
@@ -494,15 +502,18 @@ public class TopicActivity extends BaseActivity {
             mDialog.dismiss();
         }
     }
-
+    
+    /**
+     * This class resembles the interface to the javascript in the 
+     * WebView where the topic is displayed in.
+     */
     public class JSInterface {
 
-        // private WebView mAppView;
-
-        public JSInterface(WebView appView) {
-            // this.mAppView = appView;
-        }
-
+        public JSInterface(WebView appView) {}
+        
+        /**
+         * Shows a context menu after long-touch on a post.
+         */
         public void showPostContextMenu(String id) {
             id = id.substring(4);
             mContextMenuInfo = new Integer(id).intValue();
@@ -510,11 +521,17 @@ public class TopicActivity extends BaseActivity {
             openContextMenu(mWebView);
             unregisterForContextMenu(mWebView);
         }
-
+        
+        /**
+         * Shows a toast issued from within the webviews javascript.
+         */
         public void showToast(String msg) {
             Toast.makeText(TopicActivity.this, msg, Toast.LENGTH_SHORT).show();
         }
         
+        /**
+         * Returns true or false if or not if the gravity feature is switched on.
+         */
         public boolean gravityOn() {
             return PreferenceManager.
                     getDefaultSharedPreferences(TopicActivity.this).

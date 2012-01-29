@@ -112,7 +112,7 @@ public class ObjectManager {
         return mCategories.get(id);
     }
     
-    public Forum getForum(Boolean refresh) {
+    public Forum getForum(Boolean refresh) throws ParseErrorException {
         if(mForum == null) {
             mForum = new Forum();
             _parseForum();
@@ -182,14 +182,15 @@ public class ObjectManager {
     /**
      * This function gets the xml document from the api and
      * parses it. 
+     * @throws ParseErrorException 
      */
-    private Boolean _parseForum() {
+    private Boolean _parseForum() throws ParseErrorException {
         
         // fetch the xml file and return false if there was an error.
         String url   = PotUtils.FORUM_URL;
         Document doc = mWebsiteInteraction.getDocument(url);
         if (doc == null) {
-            return false;
+            throw new ParseErrorException();
         }
         
         // predefine some elements
@@ -251,8 +252,9 @@ public class ObjectManager {
     /**
      * Get the board by specifying the page and the id.
      * It always refreshes the board before it is returned.
+     * @throws ParseErrorException 
      */
-    public Board getBoardByPage(int id, int page) {
+    public Board getBoardByPage(int id, int page) throws ParseErrorException {
         _parseBoard(id, page);
         return getBoard(id);
     }
@@ -260,14 +262,15 @@ public class ObjectManager {
     /**
      * This function gets the xml document from the api and
      * parses it. 
+     * @throws ParseErrorException 
      */
-    private Boolean _parseBoard(int id, int page) {
+    private Boolean _parseBoard(int id, int page) throws ParseErrorException {
         
         // fetch the xml file and return false if there was an error.
         String url   = PotUtils.BOARD_URL_BASE + id + "&page=" + page;
         Document doc = mWebsiteInteraction.getDocument(url);
         if (doc == null || doc.getRootElement().getName().equals("invalid-board")) {
-            return false;
+            throw new ParseErrorException();
         }
         
         // predefine some elements
@@ -327,12 +330,12 @@ public class ObjectManager {
     /**
      * Returns some topic with the posts on page "page". When refresh is
      * true, the topic is always fetched from the internet first.
+     * @throws ParseErrorException 
      */
-    public Topic getTopicByPage(int id, int page, Boolean refresh) {
+    public Topic getTopicByPage(int id, int page, Boolean refresh) throws ParseErrorException {
         Topic t = mTopics.get(id);
         if(t == null || !t.getPosts().containsKey(page) || refresh) {
-            if(!_parseTopic(id, page, 0))
-                return null;
+            _parseTopic(id, page, 0);
         }
         
         return getTopic(id);
@@ -342,8 +345,9 @@ public class ObjectManager {
      * Get the topic by specifying the pid and the id.
      * Since this is used only by the bookmarklist atm., it
      * always refreshes the topic before it is returned.
+     * @throws ParseErrorException 
      */
-    public Topic getTopicByPid(int id, int pid) {
+    public Topic getTopicByPid(int id, int pid) throws ParseErrorException {
         if(!_parseTopic(id, 0, pid))
             return null;
         return getTopic(id);
@@ -352,14 +356,15 @@ public class ObjectManager {
     /**
      * This function gets the xml document from the api and
      * parses it. 
+     * @throws ParseErrorException 
      */
-    private Boolean _parseTopic(int id, int page, int pid) {
+    private Boolean _parseTopic(int id, int page, int pid) throws ParseErrorException {
         
         // fetch the xml file and return false if there was an error.
         String url   = PotUtils.THREAD_URL_BASE + id + ((pid > 0) ? "&PID=" + pid : "&page=" + page);
         Document doc = mWebsiteInteraction.getDocument(url);
         if (doc == null || doc.getRootElement().getName().equals("invalid-thread")) {
-            return false;
+            throw new ParseErrorException();
         }
         
         // predefine some elements
@@ -464,5 +469,17 @@ public class ObjectManager {
             return altValue;
         String tmp = ch.getAttributeValue(attr);
         return tmp;
+    }
+    
+    /**
+     * This is the exception that is thrown when parsing of some xml
+     * file failed, e.g. the url was wrong or access was denied.
+     */
+    public class ParseErrorException extends Exception {
+        private static final long serialVersionUID = 1L;
+
+        public ParseErrorException() {
+            super("Error fetching the xml of the request.");
+        }
     }
 }

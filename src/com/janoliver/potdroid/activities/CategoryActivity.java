@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.janoliver.potdroid.R;
 import com.janoliver.potdroid.baseclasses.BaseListActivity;
+import com.janoliver.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.janoliver.potdroid.helpers.PotNotification;
 import com.janoliver.potdroid.models.Board;
 import com.janoliver.potdroid.models.Category;
@@ -129,33 +130,35 @@ public class CategoryActivity extends BaseListActivity {
      *         method.
      */
     class PrepareAdapter extends AsyncTask<Void, Void, Void> {
-        ProgressDialog dialog;
+        ProgressDialog mDialog;
 
         @Override
         protected void onPreExecute() {
-            dialog = new PotNotification(CategoryActivity.this, this, true);
-            dialog.setMessage("Lade...");
-            dialog.show();
+            mDialog = new PotNotification(CategoryActivity.this, this, true);
+            mDialog.setMessage("Lade...");
+            mDialog.show();
         }
 
         @Override
         protected Void doInBackground(Void... params) {
             if(mCategory.getName() == "")
-                mObjectManager.getForum(true);
-            mBoards = mCategory.getBoards();
+                try {
+                    mObjectManager.getForum(true);
+                    mBoards = mCategory.getBoards();
+                } catch (ParseErrorException e) {
+                    Toast.makeText(CategoryActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
+                    this.cancel(true);
+                    mDialog.dismiss();
+                    e.printStackTrace();
+                }
             
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
-            if (mBoards == null) {
-                Toast.makeText(CategoryActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG)
-                        .show();
-            } else {
-                fillView();
-            }
-            dialog.dismiss();
+            fillView();
+            mDialog.dismiss();
         }
     }
 }

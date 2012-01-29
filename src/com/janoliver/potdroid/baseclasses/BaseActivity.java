@@ -18,6 +18,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
+import com.janoliver.potdroid.R;
 import com.janoliver.potdroid.helpers.ObjectManager;
 import com.janoliver.potdroid.helpers.PotExceptionHandler;
 import com.janoliver.potdroid.helpers.PotUtils;
@@ -33,6 +34,9 @@ public abstract class BaseActivity extends Activity {
     protected SharedPreferences  mSettings;
     protected Bundle             mExtras;
 
+    private final int THEME_LIGHT = 0;
+    private final int THEME_DARK  = 1;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // set our own exception handler
@@ -45,5 +49,13 @@ public abstract class BaseActivity extends Activity {
         mObjectManager      = PotUtils.getObjectManagerInstance(this);
         mSettings           = PreferenceManager.getDefaultSharedPreferences(this);
         mExtras             = getIntent().getExtras();
+        
+        // set the theme
+        int theme = new Integer(PreferenceManager.getDefaultSharedPreferences(this).getString(
+                "theme", "0"));
+        if(theme == THEME_LIGHT)
+            this.setTheme(R.style.PotLight);
+        if(theme == THEME_DARK)
+            this.setTheme(R.style.PotDark);
     }
 }

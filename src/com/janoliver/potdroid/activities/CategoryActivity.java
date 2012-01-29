@@ -31,6 +31,7 @@ import com.janoliver.potdroid.R;
 import com.janoliver.potdroid.baseclasses.BaseListActivity;
 import com.janoliver.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.janoliver.potdroid.helpers.PotNotification;
+import com.janoliver.potdroid.helpers.PotUtils;
 import com.janoliver.potdroid.models.Board;
 import com.janoliver.potdroid.models.Category;
 
@@ -144,10 +145,13 @@ public class CategoryActivity extends BaseListActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
+
+            PotUtils.log("da!" + mCategory.getBoards().length);
             if(mCategory.getName() == "")
                 try {
                     mObjectManager.getForum(true);
-                    mBoards = mCategory.getBoards();
+                    mCategory = mObjectManager.getCategory(mCategory.getId());
+                    
                 } catch (ParseErrorException e) {
                     Toast.makeText(CategoryActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
                     this.cancel(true);
@@ -155,6 +159,7 @@ public class CategoryActivity extends BaseListActivity {
                     e.printStackTrace();
                 }
             
+            mBoards = mCategory.getBoards();
             return null;
         }
 

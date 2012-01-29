@@ -15,6 +15,7 @@ package com.janoliver.potdroid.baseclasses;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -40,6 +41,8 @@ public abstract class BaseListActivity extends ListActivity {
     protected ListView           mListView;
     protected WebsiteInteraction mWebsiteInteraction;
     protected ObjectManager      mObjectManager;
+    protected SharedPreferences  mSettings;
+    protected Bundle             mExtras;
     
     private final int THEME_LIGHT = 0;
     private final int THEME_DARK  = 1;
@@ -65,6 +68,8 @@ public abstract class BaseListActivity extends ListActivity {
         mListView.setFastScrollEnabled(true);
         mWebsiteInteraction = PotUtils.getWebsiteInteractionInstance(this);
         mObjectManager      = PotUtils.getObjectManagerInstance(this);
+        mSettings           = PreferenceManager.getDefaultSharedPreferences(this);
+        mExtras             = getIntent().getExtras();
     }
 
     @Override

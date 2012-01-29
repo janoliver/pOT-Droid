@@ -14,7 +14,9 @@
 package com.janoliver.potdroid.baseclasses;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import com.janoliver.potdroid.helpers.ObjectManager;
 import com.janoliver.potdroid.helpers.PotExceptionHandler;
@@ -28,6 +30,8 @@ public abstract class BaseActivity extends Activity {
 
     protected WebsiteInteraction mWebsiteInteraction;
     protected ObjectManager      mObjectManager;
+    protected SharedPreferences  mSettings;
+    protected Bundle             mExtras;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,5 +43,7 @@ public abstract class BaseActivity extends Activity {
 
         mWebsiteInteraction = PotUtils.getWebsiteInteractionInstance(this);
         mObjectManager      = PotUtils.getObjectManagerInstance(this);
+        mSettings           = PreferenceManager.getDefaultSharedPreferences(this);
+        mExtras             = getIntent().getExtras();
     }
 }

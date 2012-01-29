@@ -89,7 +89,7 @@ public class ObjectManager {
         return mPosts.get(id);
     }
     
-    public Map<Integer, Bookmark> getBookmarks() {
+    public Map<Integer, Bookmark> getBookmarks() throws ParseErrorException {
         _parseBookmarks();
         return mBookmarks;
     }
@@ -125,14 +125,15 @@ public class ObjectManager {
     /**
      * This function gets the xml document from the api and
      * parses it. 
+     * @throws ParseErrorException 
      */
-    private Boolean _parseBookmarks() {
+    private Boolean _parseBookmarks() throws ParseErrorException {
         
         // fetch the xml file and return false if there was an error.
         String url   = PotUtils.BOOKMARK_URL;
         Document doc = mWebsiteInteraction.getDocument(url);
         if (doc == null || doc.getRootElement().getName().equals("not-logged-in")) {
-            return false;
+            throw new ParseErrorException();
         }
         
         // predefine some elements

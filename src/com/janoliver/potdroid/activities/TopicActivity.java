@@ -50,7 +50,7 @@ import com.janoliver.potdroid.models.Topic;
 
 /**
  * Shows a thread. By far the most involving activity. And, of course, the most
- * important one.
+ * important one. Also, Ponies suck.
  */
 public class TopicActivity extends BaseActivity {
 
@@ -61,16 +61,19 @@ public class TopicActivity extends BaseActivity {
     private Integer   mPage            = 1;
     private Integer   mPid             = 0;
 
+    /**
+     * Starting point of the activity.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mWebsiteInteraction = PotUtils.getWebsiteInteractionInstance(this);
 
         // set view
         setContentView(R.layout.topic);
         mLinearLayout = (ViewGroup) findViewById(R.id.linlayout);
         mWebView = (WebView) findViewById(R.id.webview);
+        
+        // take care of the javascript and html. JSInterface is defined below.
         mWebView.getSettings().setJavaScriptEnabled(true);
         JSInterface myJsInterface = new JSInterface(mWebView);
         mWebView.addJavascriptInterface(myJsInterface, "JSInterface");
@@ -79,27 +82,30 @@ public class TopicActivity extends BaseActivity {
         // was only the orientation changed?
         final Topic threadSaved = (Topic) getLastNonConfigurationInstance();
         if (threadSaved == null) {
-            // scroll to post
-            Bundle extras = getIntent().getExtras();
-
-            mThread = mObjectManager.getTopic(extras.getInt("TID"));
-            mPid    = extras.getInt("PID",0);
-            mPage   = extras.getInt("page",1);
+            mThread = mObjectManager.getTopic(mExtras.getInt("TID"));
+            mPid    = mExtras.getInt("PID",0);
+            mPage   = mExtras.getInt("page",1);
             
             new ThreadLoader().execute(mPid, mPage);
         } else {
             mThread = threadSaved;
-            showThread();
+            fillView();
         }
     }
 
+    /**
+     * Needed for orientation change
+     */
     @Override
     public Object onRetainNonConfigurationInstance() {
         final Topic threadSaved = mThread;
         return threadSaved;
     }
 
-    private void showThread() {
+    /**
+     * After downloading, shows the thread in the current activity.
+     */
+    private void fillView() {
         TopicHtmlGenerator gen      = new TopicHtmlGenerator(mThread, mPage, TopicActivity.this);
         String             htmlCode = "";
         
@@ -150,6 +156,9 @@ public class TopicActivity extends BaseActivity {
         return super.dispatchKeyEvent(event);
     }
 
+    /**
+     * options menu creator
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -162,12 +171,15 @@ public class TopicActivity extends BaseActivity {
         }
     }
 
+    /**
+     * options menu selection handler
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
         case R.id.reply:
-            if (mThread.getNewreplytoken() == null) {
+            if (mThread.isClosed()) {
                 Toast.makeText(TopicActivity.this, "Thread geschlossen.",
                         Toast.LENGTH_SHORT).show();
             } else {
@@ -192,14 +204,20 @@ public class TopicActivity extends BaseActivity {
         }
     }
 
+    /**
+     * context menu creator
+     */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_post, menu);
     }
 
+    /**
+     * context menu selection handler
+     * adding bookmark could show a loading animation
+     */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         Post post = mThread.getPosts().get(mPage)[mContextMenuInfo];
@@ -248,8 +266,6 @@ public class TopicActivity extends BaseActivity {
     /**
      * Opens dialog to reply to thread. String text is a preset text for the
      * reply textfield.
-     * 
-     * @param text
      */
     public void replyDialog(String text) {
         int orientation = getResources().getConfiguration().orientation;
@@ -291,10 +307,7 @@ public class TopicActivity extends BaseActivity {
     /**
      * Nearly the same as replyDialog, but to edit the text. Expects the post to
      * edit as parameter.
-     * 
-     * @param post
      */
-
     public void editDialog(Post post) {
         int orientation = getResources().getConfiguration().orientation;
         setRequestedOrientation(orientation);
@@ -334,13 +347,10 @@ public class TopicActivity extends BaseActivity {
                         toEdit);
             }
         });
-
     }
 
     /**
      * returns the view that is set as header for the list
-     * 
-     * @return View header
      */
     public View getHeaderView() {
         LayoutInflater inflater = this.getLayoutInflater();
@@ -413,6 +423,9 @@ public class TopicActivity extends BaseActivity {
         startActivity(intent);
     }
 
+    /**
+     * refresh the current view
+     */
     public void refresh() {
         Intent intent = new Intent(TopicActivity.this, TopicActivity.class);
         intent.putExtra("TID", mThread.getId());
@@ -423,8 +436,11 @@ public class TopicActivity extends BaseActivity {
         finish();
     }
 
+    /**
+     * show the next page if there is one. (cycle otherwise)
+     */
     public void showNextPage() {
-        if ((mPage * mThread.getPostsPerPage()) < mThread.getNumberOfPosts()) {
+        if (mPage < mThread.getLastPage()) {
             mPage++;
             refresh();
         } else if (mPage > 1) {
@@ -435,6 +451,9 @@ public class TopicActivity extends BaseActivity {
         }
     }
 
+    /**
+     * show the previous page if there is one. (cycle otherwise)
+     */
     public void showPreviousPage() {
         if (mPage > 1) {
             mPage--;
@@ -447,12 +466,18 @@ public class TopicActivity extends BaseActivity {
         }
     }
 
+    /**
+     * go to the forum activity
+     */
     protected void goToForumActivity() {
         Intent intent = new Intent(this, ForumActivity.class);
         intent.putExtra("noredirect", true);
         startActivity(intent);
     }
 
+    /**
+     * go to the bookmark activity
+     */
     protected void goToBookmarkActivity() {
         Intent intent = new Intent(this, BookmarkActivity.class);
         startActivity(intent);
@@ -498,7 +523,7 @@ public class TopicActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(Void unused) {
-            showThread();
+            fillView();
             mDialog.dismiss();
         }
     }

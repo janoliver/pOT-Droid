@@ -39,16 +39,21 @@ import com.janoliver.potdroid.models.Category;
  */
 public class CategoryActivity extends BaseListActivity {
 
-    private Board[] mBoards;
+    /**
+     * mBoards is an array of all the boards within the category mCategory.
+     */
+    private Board[]  mBoards;
     private Category mCategory;
 
+    /**
+     * Starting point of the activity.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // create Board object
-        Bundle extras = getIntent().getExtras();
-        mCategory = mObjectManager.getCategory(extras.getInt("CID"));
+        mCategory = mObjectManager.getCategory(mExtras.getInt("CID"));
 
         // the view
         setListAdapter(null);
@@ -67,9 +72,11 @@ public class CategoryActivity extends BaseListActivity {
         });
 
     }
-
+    
+    /**
+     * After having downloaded the data, fill the view
+     */
     private void fillView() {
-
         CategoryViewAdapter adapter = new CategoryViewAdapter(CategoryActivity.this);
         mListView.addHeaderView(getHeaderView());
         mListView.setAdapter(adapter);
@@ -78,8 +85,6 @@ public class CategoryActivity extends BaseListActivity {
 
     /**
      * Returns the header view for the list.
-     * 
-     * @return View header
      */
     public View getHeaderView() {
         LayoutInflater inflater = this.getLayoutInflater();
@@ -93,7 +98,7 @@ public class CategoryActivity extends BaseListActivity {
     }
 
     /**
-     * @author oli Custom view adapter for the ListView items
+     * Custom view adapter for the ListView items
      */
     class CategoryViewAdapter extends ArrayAdapter<Board> {
         Activity context;
@@ -117,17 +122,15 @@ public class CategoryActivity extends BaseListActivity {
         }
     }
 
+    /**
+     * Shopuld be implemented someday.
+     */
     @Override
-    public void refresh() {
-    };
+    public void refresh() {};
 
     /**
-     * @author oli
-     * 
-     *         This class starts an async task (opening another system thread)
-     *         to preload the view. It shows and handles the progressbar and the
-     *         messages to the user. The magic happens in the doInBackground()
-     *         method.
+     * This async task shows a loader and updates the forum object.
+     * When it is finished, the loader is hidden.
      */
     class PrepareAdapter extends AsyncTask<Void, Void, Void> {
         ProgressDialog mDialog;

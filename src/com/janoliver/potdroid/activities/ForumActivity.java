@@ -18,7 +18,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,20 +38,22 @@ import com.janoliver.potdroid.models.Forum;
  * In this activity, the forum and the containing categories are shown.
  */
 public class ForumActivity extends BaseListActivity {
+    /**
+     * mCats is an array of the forum's categories. It is filled after
+     * PrepareAdapter was executed.
+     */
     private Category[] mCats;
 
+    /**
+     * Starting point of the activity.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // redirect to bookmarks?
-        Bundle extras      = getIntent().getExtras();
-        Boolean noredirect = false;
-        if ((extras != null) && extras.containsKey("noredirect") && extras.getBoolean("noredirect")) {
-            noredirect = true;
-        }
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("bookmarkStart", false)
-                && !noredirect) {
+        if (((mExtras == null) || !mExtras.getBoolean("noredirect", false))
+                && mSettings.getBoolean("bookmarkStart", false)) {
             finish();
             Intent intent = new Intent(ForumActivity.this, BookmarkActivity.class);
             startActivityForResult(intent, 1);
@@ -62,13 +63,12 @@ public class ForumActivity extends BaseListActivity {
         // the view
         setListAdapter(null);
 
-        // cache.
+        // load the data and display it
         new PrepareAdapter().execute((Void[]) null);
-
+        
+        // set the touch listener
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // cats[position].getId()
-
                 if (position > 0) {
                     Intent intent = new Intent(ForumActivity.this, CategoryActivity.class);
                     intent.putExtra("CID", mCats[position - 1].getId());
@@ -77,23 +77,25 @@ public class ForumActivity extends BaseListActivity {
 
             }
         });
-
     }
-
+    
+    /**
+     * After having downloaded the data, fill the view
+     */
     private void fillView() {
         ForumViewAdapter adapter = new ForumViewAdapter(ForumActivity.this);
         mListView.addHeaderView(getHeaderView());
         mListView.setAdapter(adapter);
     }
-
+    
+    /**
+     * Shopuld be implemented someday.
+     */
     @Override
-    public void refresh() {
-    };
+    public void refresh() {};
 
     /**
      * Returns the header view for the list.
-     * 
-     * @return View header
      */
     public View getHeaderView() {
         LayoutInflater inflater = this.getLayoutInflater();
@@ -110,7 +112,7 @@ public class ForumActivity extends BaseListActivity {
     }
 
     /**
-     * @author oli Custom view adapter for the ListView items
+     * Custom view adapter for the ListView items
      */
     class ForumViewAdapter extends ArrayAdapter<Category> {
         Activity context;

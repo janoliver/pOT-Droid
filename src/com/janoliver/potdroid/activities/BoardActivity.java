@@ -45,19 +45,25 @@ import com.janoliver.potdroid.models.Topic;
  * PaginateListActivity
  */
 public class BoardActivity extends BaseListActivity {
-
+    
+    /**
+     * mThreads is an array of all the threads currently visible on the page
+     * mPage in the board mBoard.
+     */
     private Topic[] mThreads;
     private Integer mPage;
     private Board   mBoard;
-
+    
+    /**
+     * Starting point of the activity.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // create Board object
-        Bundle extras = getIntent().getExtras();
-        mPage  = extras.getInt("page");
-        mBoard = mObjectManager.getBoard(extras.getInt("BID"));
+        mPage  = mExtras.getInt("page");
+        mBoard = mObjectManager.getBoard(mExtras.getInt("BID"));
 
         // update category information and get thread list
         // was only the orientation changed?
@@ -66,8 +72,8 @@ public class BoardActivity extends BaseListActivity {
         if (stateSaved == null) {
             new PrepareAdapter().execute((Void[]) null);
         } else {
-            mBoard = stateSaved;
-            mThreads = mBoard.getTopics().get(extras.getInt("page"));
+            mBoard   = stateSaved;
+            mThreads = mBoard.getTopics().get(mExtras.getInt("page"));
             fillView();
         }
 
@@ -82,14 +88,19 @@ public class BoardActivity extends BaseListActivity {
         });
     } 
 
+    /**
+     * Needed for orientation change
+     */
     @Override
     public Object onRetainNonConfigurationInstance() {
         final Board stateSaved = mBoard;
         return stateSaved;
     }
 
+    /**
+     * After having downloaded the data, fill the view
+     */
     private void fillView() {
-
         CategoryViewAdapter adapter = new CategoryViewAdapter(BoardActivity.this);
         mListView.addHeaderView(getHeaderView());
         mListView.setAdapter(adapter);
@@ -98,9 +109,6 @@ public class BoardActivity extends BaseListActivity {
 
     /**
      * Opens a thread when a listitem is being clicked.
-     * 
-     * @param thread
-     * @param lastPage
      */
     public void openThread(Topic thread, Boolean lastPage) {
         Intent intent = new Intent(BoardActivity.this, TopicActivity.class);
@@ -110,14 +118,20 @@ public class BoardActivity extends BaseListActivity {
         }
         startActivity(intent);
     }
-
+    
+    /**
+     * context menu creator
+     */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_thread, menu);
     }
-
+    
+    /**
+     * context menu item selected
+     */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
@@ -136,18 +150,13 @@ public class BoardActivity extends BaseListActivity {
 
     /**
      * Returns the header view for the list.
-     * 
-     * @return View header
      */
     public View getHeaderView() {
         LayoutInflater inflater = this.getLayoutInflater();
         View row = inflater.inflate(R.layout.header_general, null);
 
-        Integer lastPage = (int) java.lang.Math.ceil(mBoard.getNumberOfThreads()
-                / (double) mBoard.getThreadsPerPage());
-
         TextView descr = (TextView) row.findViewById(R.id.pagetext);
-        descr.setText("Seite " + mPage + "/" + lastPage);
+        descr.setText("Seite " + mPage + "/" + mBoard.getNumberOfPages());
 
         TextView loggedin = (TextView) row.findViewById(R.id.loggedin);
         loggedin.setText(mObjectManager.isLoggedIn() ? "Hallo "
@@ -155,14 +164,20 @@ public class BoardActivity extends BaseListActivity {
 
         return (row);
     }
-
+    
+    /**
+     * options menu creator
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.iconmenu_paginate, menu);
         return true;
     }
-
+    
+    /**
+     * options menu item selected
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -188,9 +203,12 @@ public class BoardActivity extends BaseListActivity {
         intent.putExtra("BID", mBoard.getId());
         startActivity(intent);
     }
-
+    
+    /**
+     * Shows the next page. This could maybe be changed into an intent...
+     */
     public void showNextPage() {
-        if ((mPage * mBoard.getThreadsPerPage()) < mBoard.getNumberOfThreads()) {
+        if (mPage < mBoard.getNumberOfPages()) {
             
             try {
                 mBoard = mObjectManager.getBoardByPage(mBoard.getId(), mPage+1);
@@ -213,9 +231,11 @@ public class BoardActivity extends BaseListActivity {
             Toast.makeText(this, "Keine weiteren Seiten vorhanden", Toast.LENGTH_SHORT).show();
         }
     }
-
+    
+    /**
+     * Shows the previous page. This could maybe be changed into an intent...
+     */
     public void showPreviousPage() {
-        Integer lastPage = mBoard.getNumberOfPages();
         if (mPage > 1) {
             
             try {
@@ -226,10 +246,10 @@ public class BoardActivity extends BaseListActivity {
                 e.printStackTrace();
             }
             
-        } else if (lastPage > 1) {
+        } else if (mBoard.getNumberOfPages() > 1) {
             try {
-                mBoard = mObjectManager.getBoardByPage(mBoard.getId(), lastPage);
-                mPage = lastPage;
+                mBoard = mObjectManager.getBoardByPage(mBoard.getId(), mBoard.getNumberOfPages());
+                mPage  = mBoard.getNumberOfPages();
                 refresh();
             } catch (ParseErrorException e) {
                 e.printStackTrace();
@@ -242,9 +262,7 @@ public class BoardActivity extends BaseListActivity {
     }
 
     /**
-     * @author oli
-     * 
-     *         Custom view adapter for the ListView items
+     * Custom view adapter for the ListView items
      */
     class CategoryViewAdapter extends ArrayAdapter<Topic> {
         Activity context;

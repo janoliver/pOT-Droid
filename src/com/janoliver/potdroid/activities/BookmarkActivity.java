@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.janoliver.potdroid.R;
 import com.janoliver.potdroid.baseclasses.BaseListActivity;
+import com.janoliver.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.janoliver.potdroid.helpers.PotNotification;
 import com.janoliver.potdroid.helpers.PotUtils;
 import com.janoliver.potdroid.models.Bookmark;
@@ -46,11 +47,20 @@ import com.janoliver.potdroid.models.Bookmark;
  */
 public class BookmarkActivity extends BaseListActivity {
 
+    /**
+     * mBookmarks is a Map with all the bookmarks stored as 
+     * <Id, BookmarkObject> values.
+     */
     private Map<Integer, Bookmark> mBookmarks;
 
+    /**
+     * Starting point of the activity.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // check the login status and redirect in case the user is not logged in.
         if (!mObjectManager.isLoggedIn()) {
             finish();
             Intent intent = new Intent(BookmarkActivity.this, ForumActivity.class);
@@ -69,6 +79,8 @@ public class BookmarkActivity extends BaseListActivity {
             mBookmarks = stateSaved;
             fillView();
         }
+        
+        // register context menu and the clicklistener
         registerForContextMenu(mListView);
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -79,6 +91,9 @@ public class BookmarkActivity extends BaseListActivity {
         });
     }
 
+    /**
+     * After having downloaded the data, fill the view
+     */
     private void fillView() {
         BookmarkViewAdapter adapter = new BookmarkViewAdapter(BookmarkActivity.this);
         mListView.addHeaderView(getHeaderView());
@@ -87,15 +102,13 @@ public class BookmarkActivity extends BaseListActivity {
         setTitle("Bookmarks (" + mObjectManager.getUnreadBookmarks() + " neue Posts)");
     }
 
+    /**
+     * Needed for orientation change
+     */
     @Override
     public Object onRetainNonConfigurationInstance() {
         final Map<Integer, Bookmark> stateSaved = mBookmarks;
         return stateSaved;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     /**
@@ -115,7 +128,10 @@ public class BookmarkActivity extends BaseListActivity {
 
         startActivity(intent);
     }
-
+    
+    /**
+     * context menu creator
+     */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -126,7 +142,11 @@ public class BookmarkActivity extends BaseListActivity {
             inflater.inflate(R.menu.context_bookmark, menu);
         } 
     }
-
+    
+    /**
+     * context menu item selected.
+     * removebookmark could show a loading animation.
+     */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
@@ -142,7 +162,6 @@ public class BookmarkActivity extends BaseListActivity {
             Bookmark bm = (Bookmark)mBookmarks.values().toArray()[(int) info.id];
             final String url = PotUtils.ASYNC_URL + "remove-bookmark.php?BMID=" + bm.getId()
                     + "&token=" + bm.getRemovetoken();
-            PotUtils.log(url);
             new Thread(new Runnable() {
                 public void run() {
                     mWebsiteInteraction.callPage(url);
@@ -183,13 +202,14 @@ public class BookmarkActivity extends BaseListActivity {
     }
 
     /**
-     * @author oli Custom view adapter for the ListView items
+     * Custom view adapter for the ListView items
      */
     class BookmarkViewAdapter extends ArrayAdapter<Bookmark> {
         Activity context;
 
         BookmarkViewAdapter(Activity context) {
-            super(context, R.layout.listitem_thread, R.id.name, mBookmarks.values().toArray(new Bookmark[0]));
+            super(context, R.layout.listitem_thread, R.id.name, 
+                    mBookmarks.values().toArray(new Bookmark[0]));
             this.context = context;
         }
 
@@ -205,6 +225,8 @@ public class BookmarkActivity extends BaseListActivity {
             TextView descr = (TextView) row.findViewById(R.id.description);
             descr.setText("Neue Posts: " + bm.getNumberOfNewPosts());
             TextView important = (TextView) row.findViewById(R.id.important);
+            
+            // red line when unread posts
             if (bm.getNumberOfNewPosts() > 0) {
                 important.setBackgroundResource(R.color.darkred);
             }
@@ -214,38 +236,36 @@ public class BookmarkActivity extends BaseListActivity {
     }
 
     /**
-     * @author oli
-     * 
-     *         This class starts an async task (opening another system thread)
-     *         to preload the view. It shows and handles the progressbar and the
-     *         messages to the user. The magic happens in the doInBackground()
-     *         method.
+     * This async task shows a loader and updates the bookmark object.
+     * When it is finished, the loader is hidden.
      */
     class PrepareAdapter extends AsyncTask<Void, Void, Void> {
-        ProgressDialog dialog;
+        ProgressDialog mDialog;
 
         @Override
         protected void onPreExecute() {
-            dialog = new PotNotification(BookmarkActivity.this, this, true);
-            dialog.setMessage("Lade...");
-            dialog.show();
+            mDialog = new PotNotification(BookmarkActivity.this, this, true);
+            mDialog.setMessage("Lade...");
+            mDialog.show();
         }
 
         @Override
         protected Void doInBackground(Void... params) {
-            mBookmarks = mObjectManager.getBookmarks();
+            try {
+                mBookmarks = mObjectManager.getBookmarks();
+            } catch (ParseErrorException e) {
+                Toast.makeText(BookmarkActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
+                this.cancel(true);
+                mDialog.dismiss();
+                e.printStackTrace();
+            }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void nix) {
-            if (mBookmarks != null) {
-                fillView();
-            } else {
-                Toast.makeText(BookmarkActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG)
-                        .show();
-            }
-            dialog.dismiss();
+            fillView();
+            mDialog.dismiss();
         }
     }
 }

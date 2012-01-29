@@ -80,7 +80,7 @@ public class TopicActivity extends BaseActivity {
         mWebView.loadData("<html><body></body></html>", "text/html", "utf-8");
 
         // was only the orientation changed?
-        final Topic threadSaved = (Topic) getLastNonConfigurationInstance();
+        final Orientation threadSaved = (Orientation) getLastNonConfigurationInstance();
         if (threadSaved == null) {
             mThread = mObjectManager.getTopic(mExtras.getInt("TID"));
             mPid    = mExtras.getInt("PID",0);
@@ -88,8 +88,22 @@ public class TopicActivity extends BaseActivity {
             
             new ThreadLoader().execute(mPid, mPage);
         } else {
-            mThread = threadSaved;
+            Orientation o = threadSaved;
+            mThread = o.mTopic;
+            mPage   = o.mPage;
             fillView();
+        }
+    }
+    
+    /**
+     * This is a small class to help storing objects in case of orientation change
+     */
+    public class Orientation {
+        public Topic mTopic;
+        public Integer mPage;
+        public Orientation(Topic t, Integer p) {
+            mTopic = t;
+            mPage = p;
         }
     }
 
@@ -98,8 +112,8 @@ public class TopicActivity extends BaseActivity {
      */
     @Override
     public Object onRetainNonConfigurationInstance() {
-        final Topic threadSaved = mThread;
-        return threadSaved;
+        final Orientation o = new Orientation(mThread, mPage);
+        return o;
     }
 
     /**

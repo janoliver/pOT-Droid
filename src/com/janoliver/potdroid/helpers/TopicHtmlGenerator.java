@@ -41,16 +41,18 @@ import com.janoliver.potdroid.models.Topic;
  * quickly adding new interaction features.
  */
 public class TopicHtmlGenerator {
-    private Topic mTopic;
+    private Topic     mTopic;
     private Resources mResources;
-    private Activity mActivity;
-
+    private Activity  mActivity;
+    private Integer   mPage;
+    
     private HashMap<String, String> mSmileys = new HashMap<String, String>();
 
-    public TopicHtmlGenerator(Topic topic, Activity callingActivity) {
-        mTopic = topic;
+    public TopicHtmlGenerator(Topic topic, Integer page, Activity callingActivity) {
+        mTopic     = topic;
         mResources = callingActivity.getResources();
-        mActivity = callingActivity;
+        mActivity  = callingActivity;
+        mPage      = page;
 
         // smileys
         mSmileys.put(":bang:", "banghead.gif");
@@ -80,7 +82,7 @@ public class TopicHtmlGenerator {
      */
     public String buildTopic() throws IOException {
 
-        Post[] posts = mTopic.getPostList();
+        Post[] posts = mTopic.getPosts().get(mPage);
 
         // Check for preferred style and set it accordingly
         String cssFile = PreferenceManager.getDefaultSharedPreferences(mActivity).getString(
@@ -112,8 +114,8 @@ public class TopicHtmlGenerator {
             postCpy = postCpy.replace("XTEXTX", postToHtml(posts[i]));
             postCpy = postCpy.replace("XPOSTTITLEX", posts[i].getTitle());
 
-            if (posts[i].getAuthor().getId() == PotUtils.getWebsiteInteractionInstance(mActivity)
-                    .getUserId()) {
+            if (posts[i].getAuthor().getId() == PotUtils.getObjectManagerInstance(mActivity)
+                    .getCurrentUser().getId()) {
                 postCpy = postCpy.replace("XCURRENTUSERX", "curruser");
             } else {
                 postCpy = postCpy.replace("XCURRENTUSERX", "");

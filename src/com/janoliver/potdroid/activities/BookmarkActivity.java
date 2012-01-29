@@ -13,6 +13,8 @@
 
 package com.janoliver.potdroid.activities;
 
+import java.util.Map;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -38,20 +40,18 @@ import com.janoliver.potdroid.baseclasses.BaseListActivity;
 import com.janoliver.potdroid.helpers.PotNotification;
 import com.janoliver.potdroid.helpers.PotUtils;
 import com.janoliver.potdroid.models.Bookmark;
-import com.janoliver.potdroid.models.Bookmarklist;
 
 /**
  * This Activity shows the bookmark list and handles all it's actions.
  */
 public class BookmarkActivity extends BaseListActivity {
 
-    private Bookmark[] mBookmarks;
-    private Bookmarklist mBookmarkList;
+    private Map<Integer, Bookmark> mBookmarks;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!mWebsiteInteraction.loggedIn()) {
+        if (!mObjectManager.isLoggedIn()) {
             finish();
             Intent intent = new Intent(BookmarkActivity.this, ForumActivity.class);
             intent.putExtra("noredirect", true);
@@ -60,20 +60,20 @@ public class BookmarkActivity extends BaseListActivity {
         }
 
         // set view
-        final Bookmarklist stateSaved = (Bookmarklist) getLastNonConfigurationInstance();
+        @SuppressWarnings("unchecked")
+        final Map<Integer, Bookmark> stateSaved = (Map<Integer, Bookmark>) getLastNonConfigurationInstance();
         if (stateSaved == null) {
             setListAdapter(null);
             new PrepareAdapter().execute((Void[]) null);
         } else {
-            mBookmarkList = stateSaved;
-            mBookmarks = mBookmarkList.getBookmarks();
+            mBookmarks = stateSaved;
             fillView();
         }
         registerForContextMenu(mListView);
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
-                    openThread(mBookmarks[position - 1], false, true);
+                    openThread((Bookmark)mBookmarks.values().toArray()[position -1], false, true);
                 }
             }
         });
@@ -84,12 +84,12 @@ public class BookmarkActivity extends BaseListActivity {
         mListView.addHeaderView(getHeaderView());
         mListView.setAdapter(adapter);
 
-        setTitle("Bookmarks (" + mBookmarkList.getUnread() + " neue Posts)");
+        setTitle("Bookmarks (" + mObjectManager.getUnreadBookmarks() + " neue Posts)");
     }
 
     @Override
     public Object onRetainNonConfigurationInstance() {
-        final Bookmarklist stateSaved = mBookmarkList;
+        final Map<Integer, Bookmark> stateSaved = mBookmarks;
         return stateSaved;
     }
 
@@ -106,7 +106,7 @@ public class BookmarkActivity extends BaseListActivity {
         intent.putExtra("TID", bm.getThread().getId());
         
         if (scroll) {
-            intent.putExtra("PID", bm.getLastPost());
+            intent.putExtra("PID", bm.getLastPost().getId());
         }
 
         if (lastPage) {
@@ -132,22 +132,21 @@ public class BookmarkActivity extends BaseListActivity {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
         case R.id.first_page:
-            openThread(mBookmarks[(int) info.id], false, false);
+            openThread((Bookmark)mBookmarks.values().toArray()[(int) info.id], false, false);
             return true;
         case R.id.last_page:
-            openThread(mBookmarks[(int) info.id], true, false);
+            openThread((Bookmark)mBookmarks.values().toArray()[(int) info.id], true, false);
             return true;
         case R.id.removebookmark:
             // bookmark
-            Bookmark bm = mBookmarks[(int) info.id];
+            Bookmark bm = (Bookmark)mBookmarks.values().toArray()[(int) info.id];
             final String url = PotUtils.ASYNC_URL + "remove-bookmark.php?BMID=" + bm.getId()
                     + "&token=" + bm.getRemovetoken();
+            PotUtils.log(url);
             new Thread(new Runnable() {
                 public void run() {
                     mWebsiteInteraction.callPage(url);
-
                     BookmarkActivity.this.refresh();
-
                 }
             }).start();
             return true;
@@ -158,19 +157,17 @@ public class BookmarkActivity extends BaseListActivity {
 
     /**
      * Returns the header view for the list.
-     * 
-     * @return View header
      */
     public View getHeaderView() {
         LayoutInflater inflater = this.getLayoutInflater();
         View row = inflater.inflate(R.layout.header_general, null);
 
         TextView descr = (TextView) row.findViewById(R.id.pagetext);
-        descr.setText("Bookmarks: " + mBookmarkList.getNumberOfThreads());
+        descr.setText("Bookmarks: " + mBookmarks.size());
 
         TextView loggedin = (TextView) row.findViewById(R.id.loggedin);
-        loggedin.setText(mWebsiteInteraction.loggedIn() ? "Hallo "
-                + mWebsiteInteraction.getUserName() : "nicht eingeloggt");
+        loggedin.setText(mObjectManager.isLoggedIn() ? "Hallo "
+                + mObjectManager.getCurrentUser().getNick() : "nicht eingeloggt");
 
         return (row);
     }
@@ -192,7 +189,7 @@ public class BookmarkActivity extends BaseListActivity {
         Activity context;
 
         BookmarkViewAdapter(Activity context) {
-            super(context, R.layout.listitem_thread, R.id.name, mBookmarks);
+            super(context, R.layout.listitem_thread, R.id.name, mBookmarks.values().toArray(new Bookmark[0]));
             this.context = context;
         }
 
@@ -201,13 +198,14 @@ public class BookmarkActivity extends BaseListActivity {
             LayoutInflater inflater = context.getLayoutInflater();
 
             View row = inflater.inflate(R.layout.listitem_bookmark, null);
+            Bookmark bm = (Bookmark)mBookmarks.values().toArray()[position];
 
             TextView name = (TextView) row.findViewById(R.id.name);
-            name.setText(mBookmarks[position].getThread().getTitle());
+            name.setText(bm.getThread().getTitle());
             TextView descr = (TextView) row.findViewById(R.id.description);
-            descr.setText("Neue Posts: " + mBookmarks[position].getNumberOfNewPosts());
+            descr.setText("Neue Posts: " + bm.getNumberOfNewPosts());
             TextView important = (TextView) row.findViewById(R.id.important);
-            if (mBookmarks[position].getNumberOfNewPosts() > 0) {
+            if (bm.getNumberOfNewPosts() > 0) {
                 important.setBackgroundResource(R.color.darkred);
             }
 
@@ -235,10 +233,7 @@ public class BookmarkActivity extends BaseListActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            mBookmarkList = new Bookmarklist();
-            if (mBookmarkList.update(BookmarkActivity.this)) {
-                mBookmarks = mBookmarkList.getBookmarks();
-            }
+            mBookmarks = mObjectManager.getBookmarks();
             return null;
         }
 

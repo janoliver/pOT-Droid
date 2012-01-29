@@ -16,6 +16,7 @@ package com.janoliver.potdroid.baseclasses;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.janoliver.potdroid.helpers.ObjectManager;
 import com.janoliver.potdroid.helpers.PotExceptionHandler;
 import com.janoliver.potdroid.helpers.PotUtils;
 import com.janoliver.potdroid.helpers.WebsiteInteraction;
@@ -26,6 +27,7 @@ import com.janoliver.potdroid.helpers.WebsiteInteraction;
 public abstract class BaseActivity extends Activity {
 
     protected WebsiteInteraction mWebsiteInteraction;
+    protected ObjectManager      mObjectManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,5 +38,6 @@ public abstract class BaseActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         mWebsiteInteraction = PotUtils.getWebsiteInteractionInstance(this);
+        mObjectManager      = PotUtils.getObjectManagerInstance(this);
     }
 }

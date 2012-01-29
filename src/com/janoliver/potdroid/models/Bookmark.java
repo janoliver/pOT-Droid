@@ -19,53 +19,76 @@ package com.janoliver.potdroid.models;
 public class Bookmark {
 
     private Integer mId;
-    private Integer mNumberOfNewPosts;
-    private Integer mLastPost;
-    private Topic mThread;
-    private String mRemovetoken;
+    private Integer mNumberOfNewPosts = 0;
+    private Post    mLastPost         = null;
+    private Topic   mThread           = null;
+    private String  mRemovetoken      = "";
 
     public Bookmark(Integer id) {
         mId = id;
     }
 
-    public void setId(Integer id) {
-        mId = id;
+    /**
+     * @return the numberOfNewPosts
+     */
+    public Integer getNumberOfNewPosts() {
+        return mNumberOfNewPosts;
     }
 
+    /**
+     * @param numberOfNewPosts the numberOfNewPosts to set
+     */
     public void setNumberOfNewPosts(Integer numberOfNewPosts) {
         mNumberOfNewPosts = numberOfNewPosts;
     }
 
-    public void setLastPost(Integer lastPost) {
-        mLastPost = lastPost;
-    }
-
-    public void setThread(Topic thread) {
-        mThread = thread;
-    }
-
-    public void setRemovetoken(String removetoken) {
-        mRemovetoken = removetoken;
-    }
-
-    public Integer getLastPost() {
+    /**
+     * @return the lastPost
+     */
+    public Post getLastPost() {
         return mLastPost;
     }
 
+    /**
+     * @param lastPost the lastPost to set
+     */
+    public void setLastPost(Post lastPost) {
+        mLastPost = lastPost;
+    }
+
+    /**
+     * @return the thread
+     */
     public Topic getThread() {
         return mThread;
     }
 
+    /**
+     * @param thread the thread to set
+     */
+    public void setThread(Topic thread) {
+        mThread = thread;
+    }
+
+    /**
+     * @return the removetoken
+     */
     public String getRemovetoken() {
         return mRemovetoken;
     }
 
-    public Integer getId() {
-        return mId;
+    /**
+     * @param removetoken the removetoken to set
+     */
+    public void setRemovetoken(String removetoken) {
+        mRemovetoken = removetoken;
     }
 
-    public Integer getNumberOfNewPosts() {
-        return mNumberOfNewPosts;
+    /**
+     * @return the id
+     */
+    public Integer getId() {
+        return mId;
     }
 
 }

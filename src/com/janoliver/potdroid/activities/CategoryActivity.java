@@ -47,7 +47,7 @@ public class CategoryActivity extends BaseListActivity {
 
         // create Board object
         Bundle extras = getIntent().getExtras();
-        mCategory = new Category(extras.getInt("CID"));
+        mCategory = mObjectManager.getCategory(extras.getInt("CID"));
 
         // the view
         setListAdapter(null);
@@ -85,8 +85,8 @@ public class CategoryActivity extends BaseListActivity {
         View row = inflater.inflate(R.layout.header_general, null);
 
         TextView loggedin = (TextView) row.findViewById(R.id.loggedin);
-        loggedin.setText(mWebsiteInteraction.loggedIn() ? "Hallo "
-                + mWebsiteInteraction.getUserName() : "nicht eingeloggt");
+        loggedin.setText(mObjectManager.isLoggedIn() ? "Hallo "
+                + mObjectManager.getCurrentUser().getNick() : "nicht eingeloggt");
 
         return (row);
     }
@@ -140,9 +140,10 @@ public class CategoryActivity extends BaseListActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            if (mCategory.update(CategoryActivity.this)) {
-                mBoards = mCategory.getBoardList();
-            }
+            if(mCategory.getName() == "")
+                mObjectManager.getForum(true);
+            mBoards = mCategory.getBoards();
+            
             return null;
         }
 

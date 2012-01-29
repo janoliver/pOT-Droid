@@ -13,186 +13,266 @@
 
 package com.janoliver.potdroid.models;
 
-import java.util.List;
-
-import org.jdom.Document;
-import org.jdom.Element;
-
-import com.janoliver.potdroid.baseclasses.ModelBase;
-import com.janoliver.potdroid.helpers.PotUtils;
+import java.util.HashMap;
 
 /**
  * Thread model.
  */
-public class Topic extends ModelBase {
+public class Topic {
 
     private Integer mId;
-    private Integer mPage;
-    private Integer mNumberOfPosts;
-    private Integer mPid;
-    private Integer mLastPage;
-    private Integer mPostsPerPage = 30;
-    private String mTitle;
-    private String mSubTitle;
-    private Post[] mPostList;
-    private Board mBoard;
-    public Boolean mIsImportant = false;
-    public Boolean mIsClosed = false;
-    public Boolean mIsAnnouncement = false;
-    public Boolean mIsGlobal = false;
-    public String mNewreplytoken = "";
+    private Integer mNumberOfPosts   = 0;
+    private Integer mNumberOfHits    = 0;
+    private Integer mPid             = 0;
+    private Integer mLastPage        = 1;
+    private Integer mPostsPerPage    = 30;
+    private String  mTitle           = "";
+    private String  mSubTitle        = "";
+    private Board   mBoard           = null;
+    private User    mAuthor          = null;
+    private Boolean mIsImportant     = false;
+    private Boolean mIsClosed        = false;
+    private Boolean mIsAnnouncement  = false;
+    private Boolean mIsGlobal        = false;
+    private Boolean mIsSticky        = false;
+    private String  mNewreplytoken   = "";
+    private HashMap<Integer, Post[]> mPosts = new HashMap<Integer, Post[]>();
 
     // constructor for TopicActivity
     public Topic(Integer id) {
         mId = id;
-        mPid = 0;
-        mPage = 1;
     }
 
-    @Override
-    public Boolean parse(Document doc) {
-        Element root = doc.getRootElement();
-        Element flags = root.getChild("flags");
-        String numberOfPostsString = root.getChild("number-of-replies").getAttributeValue("value");
-        @SuppressWarnings("unchecked")
-        List<Element> threadElements = root.getChild("posts").getChildren();
-        Post[] posts = new Post[threadElements.size()];
-
-        // some static information of the thread
-        mTitle = root.getChildText("title");
-        mSubTitle = root.getChildText("subtitle");
-        mNumberOfPosts = new Integer(numberOfPostsString).intValue() + 1;
-        mIsClosed = flags.getChild("is-closed").getAttributeValue("value").equals("1");
-        mIsImportant = flags.getChild("is-important").getAttributeValue("value").equals("1");
-        mIsAnnouncement = flags.getChild("is-announcement").getAttributeValue("value").equals("1");
-        mIsGlobal = flags.getChild("is-global").getAttributeValue("value").equals("1");
-        mPage = new Integer(root.getChild("posts").getAttributeValue("page")).intValue();
-        mLastPage = (int) Math.ceil((double) mNumberOfPosts / mPostsPerPage);
-        
-        // check if thread is closed. If not, find out the reply token
-        if (root.getChild("token-newreply") != null) {
-            mNewreplytoken = root.getChild("token-newreply").getAttributeValue("value");
-        }
-        
-
-        mBoard = new Board(new Integer(root.getChild("in-board").getAttributeValue("id")));
-
-        int elementId, i = 0;
-        for (Element el : threadElements) {
-            elementId = new Integer(el.getAttributeValue("id"));
-            Post newPost = new Post(elementId);
-            User author = new User(new Integer(el.getChild("user").getAttributeValue("id")),
-                    el.getChildText("user"));
-
-            newPost.setId(elementId);
-            newPost.setAuthor(author);
-            newPost.setDate(el.getChildText("date"));
-            newPost.setText(el.getChild("message").getChildText("content"));
-            newPost.setTitle(el.getChild("message").getChildText("title"));
-            
-            if (el.getChild("token-setbookmark") != null) {
-                newPost.setBookmarktoken(el.getChild("token-setbookmark").getAttributeValue("value"));
-            }
-            newPost.setThread(this);
-            if (el.getChild("token-editreply") != null) {
-                newPost.setEdittoken(el.getChild("token-editreply").getAttributeValue("value"));
-            }
-            posts[i++] = newPost;
-        }
-        mPostList = posts;
-        return true;
+    /**
+     * @return the numberOfPosts
+     */
+    public Integer getNumberOfPosts() {
+        return mNumberOfPosts;
     }
 
-    @Override
-    public String getUrl() {
-        if (mPid > 0) {
-            return PotUtils.THREAD_URL_BASE + mId + "&PID=" + mPid;
-        } else {
-            return PotUtils.THREAD_URL_BASE + mId + "&page=" + mPage;
-        }
+    /**
+     * @param numberOfPosts the numberOfPosts to set
+     */
+    public void setNumberOfPosts(Integer numberOfPosts) {
+        mNumberOfPosts = numberOfPosts;
     }
 
-    public void setPage(Integer page) {
-        mPage = page;
+    /**
+     * @return the numberOfHits
+     */
+    public Integer getNumberOfHits() {
+        return mNumberOfHits;
     }
 
-    public void setTitle(String title) {
-        mTitle = title;
+    /**
+     * @param numberOfHits the numberOfHits to set
+     */
+    public void setNumberOfHits(Integer numberOfHits) {
+        mNumberOfHits = numberOfHits;
     }
 
-    public void setSubTitle(String subTitle) {
-        mSubTitle = subTitle;
-    }
-
-    public void setBoard(Board board) {
-        mBoard = board;
-    }
-
-    public void setIsImportant(Boolean isImportant) {
-        mIsImportant = isImportant;
-    }
-
-    public void setIsClosed(Boolean isClosed) {
-        mIsClosed = isClosed;
-    }
-
-    public void setIsAnnouncement(Boolean isAnnouncement) {
-        mIsAnnouncement = isAnnouncement;
-    }
-
-    public void setIsGlobal(Boolean isGlobal) {
-        mIsGlobal = isGlobal;
-    }
-
-    public void setPid(Integer pid) {
-        mPid = pid;
-    }
-
-    public void setLastPage(Integer lastPage) {
-        mLastPage = lastPage;
-    }
-
-    public Integer getId() {
-        return mId;
-    }
-
-    public String getNewreplytoken() {
-        return mNewreplytoken;
-    }
-
+    /**
+     * @return the pid
+     */
     public Integer getPid() {
         return mPid;
     }
 
-    public Post[] getPostList() {
-        return mPostList;
+    /**
+     * @param pid the pid to set
+     */
+    public void setPid(Integer pid) {
+        mPid = pid;
     }
 
+    /**
+     * @return the lastPage
+     */
     public Integer getLastPage() {
         return mLastPage;
     }
 
-    public String getTitle() {
-        return mTitle;
+    /**
+     * @param lastPage the lastPage to set
+     */
+    public void setLastPage(Integer lastPage) {
+        mLastPage = lastPage;
     }
 
-    public String getSubTitle() {
-        return mSubTitle;
-    }
-
-    public Boolean isImportant() {
-        return mIsImportant;
-    }
-
-    public Integer getPage() {
-        return mPage;
-    }
-
+    /**
+     * @return the postsPerPage
+     */
     public Integer getPostsPerPage() {
         return mPostsPerPage;
     }
 
-    public Integer getNumberOfPosts() {
-        return mNumberOfPosts;
+    /**
+     * @param postsPerPage the postsPerPage to set
+     */
+    public void setPostsPerPage(Integer postsPerPage) {
+        mPostsPerPage = postsPerPage;
     }
+
+    /**
+     * @return the title
+     */
+    public String getTitle() {
+        return mTitle;
+    }
+
+    /**
+     * @param title the title to set
+     */
+    public void setTitle(String title) {
+        mTitle = title;
+    }
+
+    /**
+     * @return the subTitle
+     */
+    public String getSubTitle() {
+        return mSubTitle;
+    }
+
+    /**
+     * @param subTitle the subTitle to set
+     */
+    public void setSubTitle(String subTitle) {
+        mSubTitle = subTitle;
+    }
+
+    /**
+     * @return the board
+     */
+    public Board getBoard() {
+        return mBoard;
+    }
+
+    /**
+     * @param board the board to set
+     */
+    public void setBoard(Board board) {
+        mBoard = board;
+    }
+    
+    /**
+     * @return the author
+     */
+    public User getAuthor() {
+        return mAuthor;
+    }
+
+    /**
+     * @param author the author to set
+     */
+    public void setAuthor(User author) {
+        mAuthor = author;
+    }
+
+    /**
+     * @return the isImportant
+     */
+    public Boolean isImportant() {
+        return mIsImportant;
+    }
+
+    /**
+     * @param isImportant the isImportant to set
+     */
+    public void setIsImportant(Boolean isImportant) {
+        mIsImportant = isImportant;
+    }
+
+    /**
+     * @return the isClosed
+     */
+    public Boolean isClosed() {
+        return mIsClosed;
+    }
+
+    /**
+     * @param isClosed the isClosed to set
+     */
+    public void setIsClosed(Boolean isClosed) {
+        mIsClosed = isClosed;
+    }
+
+    /**
+     * @return the isAnnouncement
+     */
+    public Boolean isAnnouncement() {
+        return mIsAnnouncement;
+    }
+
+    /**
+     * @param isAnnouncement the isAnnouncement to set
+     */
+    public void setIsAnnouncement(Boolean isAnnouncement) {
+        mIsAnnouncement = isAnnouncement;
+    }
+
+    /**
+     * @return the isGlobal
+     */
+    public Boolean isGlobal() {
+        return mIsGlobal;
+    }
+
+    /**
+     * @param isGlobal the isGlobal to set
+     */
+    public void setIsGlobal(Boolean isGlobal) {
+        mIsGlobal = isGlobal;
+    }
+    
+    /**
+     * @return the isSticky
+     */
+    public Boolean isSticky() {
+        return mIsSticky;
+    }
+
+    /**
+     * @param isGlobal the isSticky to set
+     */
+    public void setIsSticky(Boolean isSticky) {
+        mIsSticky = isSticky;
+    }
+
+    /**
+     * @return the newreplytoken
+     */
+    public String getNewreplytoken() {
+        return mNewreplytoken;
+    }
+
+    /**
+     * @param newreplytoken the newreplytoken to set
+     */
+    public void setNewreplytoken(String newreplytoken) {
+        mNewreplytoken = newreplytoken;
+    }
+
+    /**
+     * @return the posts
+     */
+    public HashMap<Integer, Post[]> getPosts() {
+        return mPosts;
+    }
+
+    /**
+     * @param posts the posts to set
+     */
+    public void setPosts(Integer page, Post[] posts) {
+        mPosts.put(page, posts);
+    }
+
+    /**
+     * @return the id
+     */
+    public Integer getId() {
+        return mId;
+    }
+
+    
 }

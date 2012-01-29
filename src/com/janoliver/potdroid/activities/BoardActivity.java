@@ -37,7 +37,6 @@ import com.janoliver.potdroid.R;
 import com.janoliver.potdroid.baseclasses.BaseListActivity;
 import com.janoliver.potdroid.helpers.PotNotification;
 import com.janoliver.potdroid.models.Board;
-import com.janoliver.potdroid.models.Category;
 import com.janoliver.potdroid.models.Topic;
 
 /**
@@ -47,7 +46,8 @@ import com.janoliver.potdroid.models.Topic;
 public class BoardActivity extends BaseListActivity {
 
     private Topic[] mThreads;
-    private Board mBoard;
+    private Integer mPage;
+    private Board   mBoard;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,10 +55,8 @@ public class BoardActivity extends BaseListActivity {
 
         // create Board object
         Bundle extras = getIntent().getExtras();
-        Category mBoardCat = new Category(extras.getInt("CID"));
-        mBoard = new Board(extras.getInt("BID"));
-        mBoard.setCategory(mBoardCat);
-        mBoard.setPage(extras.getInt("page"));
+        mPage  = extras.getInt("page");
+        mBoard = mObjectManager.getBoard(extras.getInt("BID"));
 
         // update category information and get thread list
         // was only the orientation changed?
@@ -68,7 +66,7 @@ public class BoardActivity extends BaseListActivity {
             new PrepareAdapter().execute((Void[]) null);
         } else {
             mBoard = stateSaved;
-            mThreads = mBoard.getThreadList();
+            mThreads = mBoard.getTopics().get(extras.getInt("page"));
             fillView();
         }
 
@@ -148,11 +146,11 @@ public class BoardActivity extends BaseListActivity {
                 / (double) mBoard.getThreadsPerPage());
 
         TextView descr = (TextView) row.findViewById(R.id.pagetext);
-        descr.setText("Seite " + mBoard.getPage() + "/" + lastPage);
+        descr.setText("Seite " + mPage + "/" + lastPage);
 
         TextView loggedin = (TextView) row.findViewById(R.id.loggedin);
-        loggedin.setText(mWebsiteInteraction.loggedIn() ? "Hallo "
-                + mWebsiteInteraction.getUserName() : "nicht eingeloggt");
+        loggedin.setText(mObjectManager.isLoggedIn() ? "Hallo "
+                + mObjectManager.getCurrentUser().getNick() : "nicht eingeloggt");
 
         return (row);
     }
@@ -185,17 +183,19 @@ public class BoardActivity extends BaseListActivity {
     public void refresh() {
         Intent intent = new Intent(BoardActivity.this, BoardActivity.class);
         intent.putExtra("CID", mBoard.getCategory().getId());
-        intent.putExtra("page", mBoard.getPage());
+        intent.putExtra("page", mPage);
         intent.putExtra("BID", mBoard.getId());
         startActivity(intent);
     }
 
     public void showNextPage() {
-        if ((mBoard.getPage() * mBoard.getThreadsPerPage()) < mBoard.getNumberOfThreads()) {
-            mBoard.setPage(mBoard.getPage() + 1);
+        if ((mPage * mBoard.getThreadsPerPage()) < mBoard.getNumberOfThreads()) {
+            mPage++;
+            mBoard = mObjectManager.getBoardByPage(mBoard.getId(), mPage);
             refresh();
-        } else if (mBoard.getPage() > 1) {
-            mBoard.setPage(1);
+        } else if (mPage > 1) {
+            mPage  = 1;
+            mBoard = mObjectManager.getBoardByPage(mBoard.getId(), mPage);
             refresh();
         } else {
             Toast.makeText(this, "Keine weiteren Seiten vorhanden", Toast.LENGTH_SHORT).show();
@@ -205,11 +205,13 @@ public class BoardActivity extends BaseListActivity {
     public void showPreviousPage() {
         Integer lastPage = (int) java.lang.Math.ceil(mBoard.getNumberOfThreads()
                 / (double) mBoard.getThreadsPerPage());
-        if (mBoard.getPage() > 1) {
-            mBoard.setPage(mBoard.getPage() - 1);
+        if (mPage > 1) {
+            mPage--;
+            mBoard = mObjectManager.getBoardByPage(mBoard.getId(), mPage);
             refresh();
         } else if (lastPage > 1) {
-            mBoard.setPage(lastPage);
+            mPage  = mBoard.getNumberOfPages();
+            mBoard = mObjectManager.getBoardByPage(mBoard.getId(), mPage);
             refresh();
         } else {
             Toast.makeText(this, "Keine weiteren Seiten vorhanden", Toast.LENGTH_SHORT).show();
@@ -265,11 +267,8 @@ public class BoardActivity extends BaseListActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-
-            if (mBoard.update(BoardActivity.this)) {
-                mThreads = mBoard.getThreadList();
-            }
-
+            mObjectManager.getBoardByPage(mBoard.getId(), mPage);
+            mThreads = mBoard.getTopics().get(mPage);
             return null;
         }
 

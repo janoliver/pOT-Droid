@@ -13,130 +13,136 @@
 
 package com.janoliver.potdroid.models;
 
-import java.util.List;
-
-import org.jdom.Document;
-import org.jdom.Element;
-
-import com.janoliver.potdroid.baseclasses.ModelBase;
-import com.janoliver.potdroid.helpers.PotUtils;
+import java.util.HashMap;
 
 /**
  * The Board model.
  */
-public class Board extends ModelBase {
+public class Board {
 
     private Integer mId;
-    private Integer mPage;
-    private Integer mNumberOfThreads;
-    private Integer mThreadsPerPage = 30;
-    private String mName;
-    private String mDescription;
-    private Topic[] mThreadList;
-    private Category mCategory;
+    private Integer mNumberOfThreads = 0;
+    private Integer mNumberOfReplies = 0;
+    private Integer mThreadsPerPage  = 30;
+    private String  mName            = "";
+    private String  mDescription     = "";
+    private HashMap<Integer, Topic[]> mTopics = new HashMap<Integer, Topic[]>();
+    private Category mCategory       = null;
 
     public Board(Integer id) {
         mId = id;
     }
 
-    @Override
-    public Boolean parse(Document doc) {
-        Element root = doc.getRootElement();
-
-        // some static information on the board
-        mName = root.getChildText("name");
-        mDescription = root.getChildText("description");
-
-        String numberOfThreadsString = root.getChild("number-of-threads")
-                .getAttributeValue("value");
-        mNumberOfThreads = new Integer(numberOfThreadsString).intValue();
-
-        // check if category is already set, if not, set it
-        if (mCategory == null) {
-            Integer catId = new Integer(root.getAttributeValue("in-category")).intValue();
-            mCategory = new Category(catId);
-        }
-
-        @SuppressWarnings("unchecked")
-        List<Element> threadElements = root.getChild("threads").getChildren();
-
-        Topic[] threads = new Topic[threadElements.size()];
-        int i = 0;
-        for (Element el : threadElements) {
-            Topic newThread = new Topic(new Integer(el.getAttributeValue("id")));
-            newThread.setTitle(el.getChildText("title"));
-            newThread.setSubTitle(el.getChildText("subtitle"));
-            newThread.setBoard(this);
-            newThread.setLastPage(new Integer(el.getChild("number-of-pages").getAttributeValue(
-                    "value")));
-
-            Element flags = el.getChild("flags");
-            newThread.setIsClosed(flags.getChild("is-closed").getAttributeValue("value")
-                    .equals("1"));
-            newThread.setIsImportant(flags.getChild("is-important").getAttributeValue("value")
-                    .equals("1"));
-            newThread.setIsAnnouncement(flags.getChild("is-announcement")
-                    .getAttributeValue("value").equals("1"));
-            newThread.setIsGlobal(flags.getChild("is-global").getAttributeValue("value")
-                    .equals("1"));
-
-            threads[i++] = newThread;
-        }
-        mThreadList = threads;
-        return true;
-    }
-
-    public void setName(String name) {
-        mName = name;
-    }
-
-    public void setDescription(String description) {
-        mDescription = description;
-    }
-
-    public void setCategory(Category category) {
-        mCategory = category;
-    }
-
-    @Override
-    public String getUrl() {
-        return PotUtils.BOARD_URL_BASE + mId + "&page=" + mPage;
-    }
-
-    public void setPage(Integer page) {
-        mPage = page;
-    }
-
-    public String getName() {
-        return mName;
-    }
-
-    public Topic[] getThreadList() {
-        return mThreadList;
-    }
-
+    /**
+     * @return the numberOfThreads
+     */
     public Integer getNumberOfThreads() {
         return mNumberOfThreads;
     }
+    
+    /**
+     * @return the numberOfPages
+     */
+    public Integer getNumberOfPages() {
+        return  mNumberOfThreads / mThreadsPerPage + 1;
+    }
 
+    /**
+     * @param numberOfThreads the numberOfThreads to set
+     */
+    public void setNumberOfThreads(Integer numberOfThreads) {
+        mNumberOfThreads = numberOfThreads;
+    }
+
+    /**
+     * @return the numberOfReplies
+     */
+    public Integer getNumberOfReplies() {
+        return mNumberOfReplies;
+    }
+
+    /**
+     * @param numberOfReplies the numberOfReplies to set
+     */
+    public void setNumberOfReplies(Integer numberOfReplies) {
+        mNumberOfReplies = numberOfReplies;
+    }
+
+    /**
+     * @return the threadsPerPage
+     */
     public Integer getThreadsPerPage() {
         return mThreadsPerPage;
     }
 
-    public Integer getPage() {
-        return mPage;
+    /**
+     * @param threadsPerPage the threadsPerPage to set
+     */
+    public void setThreadsPerPage(Integer threadsPerPage) {
+        mThreadsPerPage = threadsPerPage;
     }
 
-    public Integer getId() {
-        return mId;
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return mName;
     }
 
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        mName = name;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return mDescription;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        mDescription = description;
+    }
+
+    /**
+     * @return the topics
+     */
+    public HashMap<Integer, Topic[]> getTopics() {
+        return mTopics;
+    }
+
+    /**
+     * @param topics the topics to set
+     */
+    public void setTopics(Integer page, Topic[] topics) {
+        mTopics.put(page, topics);
+    }
+
+    /**
+     * @return the category
+     */
     public Category getCategory() {
         return mCategory;
     }
 
-    public String getDescription() {
-        return mDescription;
+    /**
+     * @param category the category to set
+     */
+    public void setCategory(Category category) {
+        mCategory = category;
+    }
+
+    /**
+     * @return the id
+     */
+    public Integer getId() {
+        return mId;
     }
 
 }

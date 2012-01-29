@@ -45,7 +45,7 @@ public class ForumActivity extends BaseListActivity {
         super.onCreate(savedInstanceState);
 
         // redirect to bookmarks?
-        Bundle extras = getIntent().getExtras();
+        Bundle extras      = getIntent().getExtras();
         Boolean noredirect = false;
         if ((extras != null) && extras.containsKey("noredirect") && extras.getBoolean("noredirect")) {
             noredirect = true;
@@ -102,8 +102,8 @@ public class ForumActivity extends BaseListActivity {
         descr.setText("Übersicht");
 
         TextView loggedin = (TextView) row.findViewById(R.id.loggedin);
-        loggedin.setText(mWebsiteInteraction.loggedIn() ? "Hallo "
-                + mWebsiteInteraction.getUserName() : "nicht eingeloggt");
+        loggedin.setText(mObjectManager.isLoggedIn() ? "Hallo "
+                + mObjectManager.getCurrentUser().getNick() : "nicht eingeloggt");
 
         return (row);
     }
@@ -153,10 +153,8 @@ public class ForumActivity extends BaseListActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            Forum forum = new Forum();
-            if (forum.update(ForumActivity.this)) {
-                mCats = forum.getCatList();
-            }
+            Forum forum = mObjectManager.getForum(false);
+            mCats       = forum.getCategories();
             return null;
         }
 

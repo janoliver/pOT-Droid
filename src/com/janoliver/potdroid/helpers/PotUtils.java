@@ -28,8 +28,8 @@ import android.util.Log;
 public class PotUtils {
 
     protected static WebsiteInteraction sWebsiteInteraction = null;
-    protected static Activity sActivity = null;
-
+    protected static ObjectManager      sObjectManager      = null;
+    
     public static final String LOGIN_URL = "http://login.mods.de/";
     public static final String ASYNC_URL = "http://forum.mods.de/bb/async/";
     public static final String FORUM_URL = "http://forum.mods.de/bb/xml/boards.php";
@@ -48,13 +48,23 @@ public class PotUtils {
     public static final int WAIT_CONNECTION_TIME = 500;
 
     /**
-     * Returns an instance of the WebsiteInteractionClass.
+     * Returns an instance of the WebsiteInteraction class.
      */
     public static WebsiteInteraction getWebsiteInteractionInstance(Activity act) {
         if (sWebsiteInteraction == null) {
             sWebsiteInteraction = new WebsiteInteraction(act);
         }
         return sWebsiteInteraction;
+    }
+    
+    /**
+     * Returns an instance of the ObjectManager class.
+     */
+    public static ObjectManager getObjectManagerInstance(Activity act) {
+        if (sObjectManager == null) {
+            sObjectManager = new ObjectManager(act);
+        }
+        return sObjectManager;
     }
 
     public static String inputStreamToString(InputStream in) throws IOException {

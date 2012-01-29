@@ -53,10 +53,12 @@ import com.janoliver.potdroid.models.Topic;
  */
 public class TopicActivity extends BaseActivity {
 
-    private WebView mWebView;
+    private WebView   mWebView;
     private ViewGroup mLinearLayout;
-    private Topic mThread;
-    private Integer mContextMenuInfo;
+    private Topic     mThread;
+    private Integer   mContextMenuInfo;
+    private Integer   mPage            = 1;
+    private Integer   mPid             = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,25 +81,15 @@ public class TopicActivity extends BaseActivity {
             // scroll to post
             Bundle extras = getIntent().getExtras();
 
-            mThread = new Topic(extras.getInt("TID"));
-
-            if (extras.containsKey("PID")) {
-                mThread.setPid(extras.getInt("PID"));
-                PotUtils.log(""+extras.getInt("PID"));
-            }
-
-            if (extras.containsKey("page")) {
-                mThread.setPage(extras.getInt("page"));
-            }
-
-            new ThreadLoader().execute((Void[]) null);
-
+            mThread = mObjectManager.getTopic(extras.getInt("TID"));
+            mPid    = extras.getInt("PID",0);
+            mPage   = extras.getInt("page",1);
+            
+            new ThreadLoader().execute(mPid, mPage);
         } else {
             mThread = threadSaved;
-
             showThread();
         }
-
     }
 
     @Override
@@ -107,8 +99,9 @@ public class TopicActivity extends BaseActivity {
     }
 
     private void showThread() {
-        TopicHtmlGenerator gen = new TopicHtmlGenerator(mThread, TopicActivity.this);
-        String htmlCode = "";
+        TopicHtmlGenerator gen      = new TopicHtmlGenerator(mThread, mPage, TopicActivity.this);
+        String             htmlCode = "";
+        
         try {
             htmlCode = gen.buildTopic();
         } catch (IOException e1) {
@@ -117,12 +110,11 @@ public class TopicActivity extends BaseActivity {
         }
 
         mWebView.loadDataWithBaseURL("file:///android_asset/", htmlCode, "text/html", "UTF-8", null);
-
         setTitle(mThread.getTitle());
         mLinearLayout.addView(getHeaderView(), 0);
 
         try {
-            Thread.sleep(400);
+            Thread.sleep(200);
             mWebView.loadUrl("javascript:scrollToElement('" + mThread.getPid() + "')");
         } catch (InterruptedException e) {
             Toast.makeText(TopicActivity.this, "Zum richtigen Post scrollen schiefgelaufen.",
@@ -160,7 +152,7 @@ public class TopicActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        if (mWebsiteInteraction.loggedIn()) {
+        if (mObjectManager.isLoggedIn()) {
             inflater.inflate(R.menu.iconmenu_thread, menu);
             return true;
         } else {
@@ -209,12 +201,12 @@ public class TopicActivity extends BaseActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        Post post = mThread.getPostList()[mContextMenuInfo];
+        Post post = mThread.getPosts().get(mPage)[mContextMenuInfo];
 
         switch (item.getItemId()) {
         case R.id.edit:
             // edit post dialog (check if user is allowed first)
-            if (post.getAuthor().getId() != mWebsiteInteraction.getUserId()) {
+            if (post.getAuthor().getId() != mObjectManager.getCurrentUser().getId()) {
                 Toast.makeText(TopicActivity.this, "Du darfst diesen Post nicht editieren.",
                         Toast.LENGTH_SHORT).show();
             } else {
@@ -353,19 +345,16 @@ public class TopicActivity extends BaseActivity {
         LayoutInflater inflater = this.getLayoutInflater();
         View row = inflater.inflate(R.layout.header_thread, null);
 
-        final Integer lastPage = (int) java.lang.Math.ceil(mThread.getNumberOfPosts()
-                / (double) mThread.getPostsPerPage());
-
         // choose page number dialog
         Button descr = (Button) row.findViewById(R.id.buttonList);
-        descr.setText(mThread.getPage() + "/" + lastPage);
+        descr.setText(mPage + "/" + mThread.getLastPage());
         descr.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                final CharSequence[] pages = new String[lastPage];
+                final CharSequence[] pages = new String[mThread.getLastPage()];
                 // list pages
                 for (int i = 0; i < pages.length; i++) {
                     pages[i] = "Seite " + (i + 1);
-                    if (mThread.getPage() == (i + 1)) {
+                    if (mPage == (i + 1)) {
                         pages[i] = pages[i] + " (aktuell)";
                     }
                 }
@@ -385,7 +374,7 @@ public class TopicActivity extends BaseActivity {
 
         // prev page
         Button prev = (Button) row.findViewById(R.id.buttonPrev);
-        if (mThread.getPage() == 1) {
+        if (mPage == 1) {
             prev.setEnabled(false);
         } else {
             prev.setOnClickListener(new OnClickListener() {
@@ -397,7 +386,7 @@ public class TopicActivity extends BaseActivity {
 
         // next page
         Button next = (Button) row.findViewById(R.id.buttonNext);
-        if (mThread.getPage() == mThread.getLastPage()) {
+        if (mPage == mThread.getLastPage()) {
             next.setEnabled(false);
         } else {
             next.setOnClickListener(new OnClickListener() {
@@ -426,7 +415,7 @@ public class TopicActivity extends BaseActivity {
     public void refresh() {
         Intent intent = new Intent(TopicActivity.this, TopicActivity.class);
         intent.putExtra("TID", mThread.getId());
-        intent.putExtra("page", mThread.getPage());
+        intent.putExtra("page", mPage);
         intent.putExtra("lastPage", false);
         intent.putExtra("unreadCount", 0);
         startActivity(intent);
@@ -434,11 +423,11 @@ public class TopicActivity extends BaseActivity {
     }
 
     public void showNextPage() {
-        if ((mThread.getPage() * mThread.getPostsPerPage()) < mThread.getNumberOfPosts()) {
-            mThread.setPage(mThread.getPage() + 1);
+        if ((mPage * mThread.getPostsPerPage()) < mThread.getNumberOfPosts()) {
+            mPage++;
             refresh();
-        } else if (mThread.getPage() > 1) {
-            mThread.setPage(1);
+        } else if (mPage > 1) {
+            mPage = 1;
             refresh();
         } else {
             Toast.makeText(this, "Keine weiteren Seiten vorhanden", Toast.LENGTH_SHORT).show();
@@ -446,13 +435,11 @@ public class TopicActivity extends BaseActivity {
     }
 
     public void showPreviousPage() {
-        Integer lastPage = (int) java.lang.Math.ceil(mThread.getNumberOfPosts()
-                / (double) mThread.getPostsPerPage());
-        if (mThread.getPage() > 1) {
-            mThread.setPage(mThread.getPage() - 1);
+        if (mPage > 1) {
+            mPage--;
             refresh();
-        } else if (lastPage > 1) {
-            mThread.setPage(lastPage);
+        } else if (mThread.getLastPage() > 1) {
+            mPage = mThread.getLastPage();
             refresh();
         } else {
             Toast.makeText(this, "Keine weiteren Seiten vorhanden", Toast.LENGTH_SHORT).show();
@@ -470,7 +457,7 @@ public class TopicActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    class ThreadLoader extends AsyncTask<Void, Object, Void> {
+    class ThreadLoader extends AsyncTask<Integer, Object, Void> {
 
         private ProgressDialog mDialog;
 
@@ -482,8 +469,18 @@ public class TopicActivity extends BaseActivity {
         }
 
         @Override
-        protected Void doInBackground(Void... args) {
-            if (!mThread.update(TopicActivity.this)) {
+        protected Void doInBackground(Integer ... args) {
+            // first argument is 0 or pid, second argument is 0 or page
+            Integer page = args[1];
+            Integer pid  = args[0];
+            
+            if(pid > 0) {
+                mThread = mObjectManager.getTopicByPid(mThread.getId(), pid);
+                mPage   = mThread.getLastPage();
+            } else {
+                mThread = mObjectManager.getTopicByPage(mThread.getId(), page, true);
+            }
+            if (mThread == null) {
                 Toast.makeText(TopicActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
                 this.cancel(true);
                 mDialog.dismiss();

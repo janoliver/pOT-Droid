@@ -16,13 +16,10 @@ package com.janoliver.potdroid.helpers;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Constructor;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
@@ -39,7 +36,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreProtocolPNames;
-import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.input.SAXBuilder;
 
@@ -51,8 +47,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.janoliver.potdroid.activities.TopicActivity;
@@ -72,11 +66,8 @@ import com.janoliver.potdroid.models.Topic;
 public class WebsiteInteraction {
 
     private DefaultHttpClient mHttpClient;
-    private Activity mActivity;
-    private Map<String, Document> mCache = new HashMap<String, Document>();
+    private Activity          mActivity;
     private SharedPreferences mSettings;
-    private Boolean mLoginState = false;
-    private int mCurrentUserId = 0;
 
     public WebsiteInteraction(Activity act) {
         mActivity = act;
@@ -93,8 +84,6 @@ public class WebsiteInteraction {
             cookie.setPath(mSettings.getString("cookie_path", null));
             cookie.setDomain(mSettings.getString("cookie_url", null));
             mHttpClient.getCookieStore().addCookie(cookie);
-
-            mLoginState = true;
         }
     }
 
@@ -102,61 +91,40 @@ public class WebsiteInteraction {
      * Get a xml document from the mods.de api
      */
     public Document getDocument(String url) {
+        Document document;
+        
+        // no internet connection...
+        if (getConnectionType(mActivity) == 0) {
+            return null;
+        }
 
-        // cache works only for the board structure.
-        Document document = mCache.get(url);
+        // our xml parser
+        SAXBuilder parser = new SAXBuilder();
 
-        // nothing to fetch from cache...
-        if (document == null) {
+        try {
+            // get the input stream from fetchContent().
+            // return null if the fetching of the document failed
+            HttpGet request = new HttpGet(url);
+            request.addHeader("Accept-Encoding", "gzip");
 
-            // no internet connection...
-            if (getConnectionType(mActivity) == 0) {
+            HttpResponse response = mHttpClient.execute(request);
+            HttpEntity entity = response.getEntity();
+
+            if ((entity == null) || !entity.isStreaming()) {
                 return null;
             }
-
-            // our xml parser
-            SAXBuilder parser = new SAXBuilder();
-
-            try {
-                // get the input stream from fetchContent().
-                // return null if the fetching of the document failed
-                HttpGet request = new HttpGet(url);
-                request.addHeader("Accept-Encoding", "gzip");
-
-                HttpResponse response = mHttpClient.execute(request);
-                HttpEntity entity = response.getEntity();
-
-                if ((entity == null) || !entity.isStreaming()) {
-                    return null;
-                }
-                
-                // get the content input stream and take care of gzip encoding
-                InputStream instream = entity.getContent();
-                Header contentEncoding = response.getFirstHeader("Content-Encoding");
-                if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
-                    instream = new GZIPInputStream(instream);
-                }
-
-                // build the xml document object
-                document = parser.build(instream);
-
-                // check for the login
-                Attribute currUser = document.getRootElement().getAttribute("current-user-id");
-
-                if (currUser != null) {
-                    mCurrentUserId = currUser.getIntValue();
-                }
-
-                mLoginState = (mCurrentUserId != 0);
-
-                // take care of the cache
-                if (url.equals(PotUtils.FORUM_URL)) {
-                    mCache.put(url, document);
-                }
-
-            } catch (Exception e) {
-                return null;
+            
+            // get the content input stream and take care of gzip encoding
+            InputStream instream = entity.getContent();
+            Header contentEncoding = response.getFirstHeader("Content-Encoding");
+            if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
+                instream = new GZIPInputStream(instream);
             }
+
+            // build the xml document object
+            document = parser.build(instream);
+        } catch (Exception e) {
+            return null;
         }
         return document;
     }
@@ -204,13 +172,17 @@ public class WebsiteInteraction {
         String input = sb.toString();
 
         // check if the login worked, e.g. one was redirected to SSO.php..
-        Pattern pattern = Pattern.compile("http://forum.mods.de/SSO[^']*");
+        Pattern pattern = Pattern.compile("http://forum.mods.de/SSO.php\\?UID=([0-9]+)[^']*");
         Matcher m = pattern.matcher(input);
-
+        
         if (m.find()) {
+            // set user id
+            editor.putInt("user_id", new Integer(m.group(1)));
+            editor.commit();
+            
             // url for the setcookie found, send a request
-            HttpGet cookieUrl = new HttpGet(m.group());
-
+            HttpGet cookieUrl = new HttpGet(m.group(0));
+            
             mHttpClient.execute(cookieUrl);
 
             // store cookie data
@@ -224,19 +196,10 @@ public class WebsiteInteraction {
                     editor.commit();
                 }
             }
-
-            mCache.clear();
-
-            mLoginState = true;
             return true;
         }
 
         return false;
-    }
-
-    // is user logged in?
-    public Boolean loggedIn() {
-        return getLoginState();
     }
 
     // 0 -> not connected
@@ -255,6 +218,22 @@ public class WebsiteInteraction {
         }
 
         return 2;
+    }
+    
+    /**
+     * Sends a Post request to the website.
+     */
+    public Boolean sendPost(String url, List<NameValuePair> params) {
+        HttpPost httppost = new HttpPost(url);
+        try {
+            httppost.setEntity(new UrlEncodedFormEntity(params, PotUtils.DEFAULT_ENCODING));
+            mHttpClient.execute(httppost);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        
     }
 
     public class PostWriter extends AsyncTask<Object, Object, Boolean> {
@@ -276,31 +255,21 @@ public class WebsiteInteraction {
 
         @Override
         protected Boolean doInBackground(Object... params) {
-            Topic thread = (Topic) params[0];
+            Topic thread          = (Topic) params[0];
             DialogWrapper content = (DialogWrapper) params[1];
+            String token          = null;
 
-            HttpPost httppost = new HttpPost(PotUtils.BOARD_URL_POST);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair("SID", ""));
+            nameValuePairs.add(new BasicNameValuePair("PID", ""));
+            token = thread.getNewreplytoken();
+            nameValuePairs.add(new BasicNameValuePair("token", token));
+            nameValuePairs.add(new BasicNameValuePair("TID", "" + thread.getId()));
+            nameValuePairs.add(new BasicNameValuePair("post_title", content.getTitle()));
+            nameValuePairs.add(new BasicNameValuePair("message", content.getText()));
+            nameValuePairs.add(new BasicNameValuePair("submit", "Eintragen"));
 
-            String token = null;
-            try {
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-                nameValuePairs.add(new BasicNameValuePair("SID", ""));
-                nameValuePairs.add(new BasicNameValuePair("PID", ""));
-                token = thread.getNewreplytoken();
-                nameValuePairs.add(new BasicNameValuePair("token", token));
-                nameValuePairs.add(new BasicNameValuePair("TID", "" + thread.getId()));
-                nameValuePairs.add(new BasicNameValuePair("post_title", content.getTitle()));
-                nameValuePairs.add(new BasicNameValuePair("message", content.getText()));
-                nameValuePairs.add(new BasicNameValuePair("submit", "Eintragen"));
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
-                        PotUtils.DEFAULT_ENCODING));
-
-                // Execute HTTP Post Request
-                mHttpClient.execute(httppost);
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
+            return sendPost(PotUtils.BOARD_URL_POST, nameValuePairs);
         }
 
         @Override
@@ -341,29 +310,19 @@ public class WebsiteInteraction {
             Topic thread = (Topic) params[0];
             DialogWrapper content = (DialogWrapper) params[1];
             Post post = (Post) params[2];
-
-            HttpPost httppost = new HttpPost(PotUtils.BOARD_URL_EDITPOST);
-
             String token = null;
-            try {
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-                // nameValuePairs.add(new BasicNameValuePair("SID", ""));
-                nameValuePairs.add(new BasicNameValuePair("PID", "" + post.getId()));
-                token = post.getEdittoken();
-                nameValuePairs.add(new BasicNameValuePair("token", token));
-                nameValuePairs.add(new BasicNameValuePair("TID", "" + thread.getId()));
-                nameValuePairs.add(new BasicNameValuePair("edit_title", content.getTitle()));
-                nameValuePairs.add(new BasicNameValuePair("message", content.getText()));
-                nameValuePairs.add(new BasicNameValuePair("submit", "Eintragen"));
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
-                        PotUtils.DEFAULT_ENCODING));
-
-                // Execute HTTP Post Request
-                mHttpClient.execute(httppost);
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
+            
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            // nameValuePairs.add(new BasicNameValuePair("SID", ""));
+            nameValuePairs.add(new BasicNameValuePair("PID", "" + post.getId()));
+            token = post.getEdittoken();
+            nameValuePairs.add(new BasicNameValuePair("token", token));
+            nameValuePairs.add(new BasicNameValuePair("TID", "" + thread.getId()));
+            nameValuePairs.add(new BasicNameValuePair("edit_title", content.getTitle()));
+            nameValuePairs.add(new BasicNameValuePair("message", content.getText()));
+            nameValuePairs.add(new BasicNameValuePair("submit", "Eintragen"));
+            
+            return sendPost(PotUtils.BOARD_URL_EDITPOST, nameValuePairs);
         }
 
         @Override
@@ -381,59 +340,37 @@ public class WebsiteInteraction {
             mDialog.dismiss();
         }
     }
-
+    
+    /**
+     * This function just makes a normal get request and returns the html
+     * result as a string
+     */
     public String callPage(String url) {
         HttpGet req = new HttpGet(url);
+        req.addHeader("Accept-Encoding", "gzip");
+        
         HttpResponse response;
         try {
             response = mHttpClient.execute(req);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity()
-                    .getContent(), PotUtils.DEFAULT_ENCODING));
+            
+            // get the content input stream and take care of gzip encoding
+            InputStream instream   = response.getEntity().getContent();
+            Header contentEncoding = response.getFirstHeader("Content-Encoding");
+            if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
+                instream = new GZIPInputStream(instream);
+            }
+            
+            BufferedReader reader = new BufferedReader(new InputStreamReader(instream, PotUtils.DEFAULT_ENCODING));
             String line;
             StringBuilder sb = new StringBuilder();
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append("\n");
             }
             String input = sb.toString();
-
             return input;
         } catch (Exception e) {
             return "";
         }
-    }
-
-    public String getUserName() {
-        return mSettings.getString("user_name", null);
-    }
-
-    public String getUserAgentString(Context context) {
-        try {
-            Constructor<WebSettings> constructor = WebSettings.class.getDeclaredConstructor(
-                    Context.class, WebView.class);
-            constructor.setAccessible(true);
-            try {
-                WebSettings settings = constructor.newInstance(context, null);
-                return settings.getUserAgentString();
-            } finally {
-                constructor.setAccessible(false);
-            }
-        } catch (Exception e) {
-            return new WebView(context).getSettings().getUserAgentString();
-        }
-    }
-
-    /**
-     * Gets the current login state
-     */
-    public Boolean getLoginState() {
-        return mLoginState;
-    }
-
-    /**
-     * Returns the current User Id (which is 0, if not logged in)
-     */
-    public int getUserId() {
-        return mCurrentUserId;
     }
 
 }

@@ -21,14 +21,14 @@ import java.io.UnsupportedEncodingException;
 public class Post {
 
     private Integer mId;
-    private Topic mThread;
-    private String mText;
-    private String mDate;
-    private String mTitle;
-    private User mAuthor;
-
+    private Topic   mTopic = null;
+    private String  mText   = "";
+    private String  mDate   = "";
+    private String  mTitle  = "";
+    private User    mAuthor = null;
+    private Integer mEdited = 0;
     public String mBookmarktoken = "";
-    public String mEdittoken = "";
+    public String mEdittoken     = "";
 
     public Post(Integer id) {
         mId = id;
@@ -48,8 +48,8 @@ public class Post {
         mId = id;
     }
 
-    public void setThread(Topic thread) {
-        mThread = thread;
+    public void setTopic(Topic topic) {
+        mTopic = topic;
     }
 
     public void setAuthor(User author) {
@@ -100,8 +100,16 @@ public class Post {
         return mText;
     }
 
-    public Topic getThread() {
-        return mThread;
+    public Topic getTopic() {
+        return mTopic;
+    }
+    
+    public void setEdited(Integer ed) {
+        mEdited = ed;
+    }
+    
+    public Integer getEdited() {
+        return mEdited;
     }
 
 }

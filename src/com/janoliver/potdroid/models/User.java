@@ -18,27 +18,62 @@ package com.janoliver.potdroid.models;
  */
 public class User {
 
-    Integer id;
-    String nick; 
+    private Integer mId;
+    private String  mNick   = ""; 
+    private String  mAvatar = "";
+    private Integer mGroup  = 0;
 
-    User(Integer id, String nick) {
-        this.id = id;
-        this.nick = nick;
+    public User(Integer id) {
+        mId = id; 
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
+    /**
+     * @return the nick
+     */
     public String getNick() {
-        return nick;
+        return mNick;
     }
 
+    /**
+     * @param nick the nick to set
+     */
     public void setNick(String nick) {
-        this.nick = nick;
+        mNick = nick;
     }
+
+    /**
+     * @return the avatar
+     */
+    public String getAvatar() {
+        return mAvatar;
+    }
+
+    /**
+     * @param avatar the avatar to set
+     */
+    public void setAvatar(String avatar) {
+        mAvatar = avatar;
+    }
+
+    /**
+     * @return the group
+     */
+    public Integer getGroup() {
+        return mGroup;
+    }
+
+    /**
+     * @param group the group to set
+     */
+    public void setGroup(Integer group) {
+        mGroup = group;
+    }
+
+    /**
+     * @return the id
+     */
+    public Integer getId() {
+        return mId;
+    }
+
 }

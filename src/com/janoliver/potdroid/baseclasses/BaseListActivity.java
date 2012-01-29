@@ -26,6 +26,7 @@ import com.janoliver.potdroid.R;
 import com.janoliver.potdroid.activities.BookmarkActivity;
 import com.janoliver.potdroid.activities.ForumActivity;
 import com.janoliver.potdroid.activities.PreferenceActivityPot;
+import com.janoliver.potdroid.helpers.ObjectManager;
 import com.janoliver.potdroid.helpers.PotExceptionHandler;
 import com.janoliver.potdroid.helpers.PotUtils;
 import com.janoliver.potdroid.helpers.WebsiteInteraction;
@@ -36,8 +37,9 @@ import com.janoliver.potdroid.helpers.WebsiteInteraction;
  */
 public abstract class BaseListActivity extends ListActivity {
 
-    protected ListView mListView;
+    protected ListView           mListView;
     protected WebsiteInteraction mWebsiteInteraction;
+    protected ObjectManager      mObjectManager;
     
     private final int THEME_LIGHT = 0;
     private final int THEME_DARK  = 1;
@@ -62,6 +64,7 @@ public abstract class BaseListActivity extends ListActivity {
         mListView = getListView();
         mListView.setFastScrollEnabled(true);
         mWebsiteInteraction = PotUtils.getWebsiteInteractionInstance(this);
+        mObjectManager      = PotUtils.getObjectManagerInstance(this);
     }
 
     @Override

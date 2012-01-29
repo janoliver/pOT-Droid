@@ -46,6 +46,14 @@ public class TopicHtmlGenerator {
     private Activity  mActivity;
     private Integer   mPage;
     
+    // precompiled patterns
+    private Pattern   mPatternList1 = Pattern.compile("<ul>(.*?)\\[\\*\\]", Pattern.DOTALL);
+    private Pattern   mPatternList2 = Pattern.compile("\\[\\*\\]");
+    private Pattern   mPatternList3 = Pattern.compile("</ul>");
+    private Pattern   mPatternImage = Pattern.compile("<img src=\"([^#]*?)\" />");
+    private Pattern   mPatternQuote = Pattern.compile("HEAD(.*?)CONTENT");
+    private Pattern   mPatternCase  = Pattern.compile("\\[[/]?[A-Z]+(.*?)\\]");
+    
     private HashMap<String, String> mSmileys = new HashMap<String, String>();
 
     public TopicHtmlGenerator(Topic topic, Integer page, Activity callingActivity) {
@@ -163,10 +171,10 @@ public class TopicHtmlGenerator {
      * Returns parsed lists.
      */
     private String parseLists(String code) {
-        code = Pattern.compile("<ul>(.*?)\\[\\*\\]", Pattern.DOTALL).matcher(code)
-                .replaceAll("<ul><li>");
-        code = Pattern.compile("\\[\\*\\]").matcher(code).replaceAll("</li><li>");
-        code = Pattern.compile("</ul>").matcher(code).replaceAll("</li></ul>");
+        code = mPatternList1.matcher(code).replaceAll("<ul><li>");
+        code = mPatternList2.matcher(code).replaceAll("</li><li>");
+        code = mPatternList3.matcher(code).replaceAll("</li></ul>");
+        
         return code;
     }
 
@@ -179,8 +187,8 @@ public class TopicHtmlGenerator {
 
         if ((loadImages == 0)
                 || ((WebsiteInteraction.getConnectionType(mActivity) == 2) && (loadImages == 1))) {
-            Pattern pattern = Pattern.compile("<img src=\"([^#]*?)\" />");
-            final Matcher matcher = pattern.matcher(code);
+            
+            final Matcher matcher = mPatternImage.matcher(code);
             while (matcher.find()) {
                 final MatchResult matchResult = matcher.toMatchResult();
                 final String replacement = "<input type=\"button\" value=\"Bild anzeigen.\" "
@@ -197,8 +205,7 @@ public class TopicHtmlGenerator {
      * Parses quotes.
      */
     private String parseQuotes(String code) {
-        Pattern pattern = Pattern.compile("HEAD(.*?)CONTENT");
-        final Matcher matcher = pattern.matcher(code);
+        final Matcher matcher = mPatternQuote.matcher(code);
         while (matcher.find()) {
             final MatchResult matchResult = matcher.toMatchResult();
             final String replacement = parseQuoteHead(matchResult.group(1));
@@ -228,20 +235,15 @@ public class TopicHtmlGenerator {
      */
     private String postToHtml(Post post) {
         String text = post.getText();
-        String[] tags = new String[] { "URL", "IMG", "QUOTE", "CODE", "B", "U", "I", "S", "LIST",
-                "SPOILER" };
-
-        // convert all tags to lowercase
-        for (String tag : tags) {
-            Pattern pattern = Pattern.compile("\\[[/]?" + tag + "(.+?)\\]");
-            final Matcher matcher = pattern.matcher(text);
-            while (matcher.find()) {
-                final MatchResult matchResult = matcher.toMatchResult();
-                final String replacement = matchResult.group(0).toLowerCase();
-                text = text.substring(0, matchResult.start()) + replacement
-                        + text.substring(matchResult.end());
-                matcher.reset(text);
-            }
+        
+        // convert tags to lower case
+        final Matcher matcher = mPatternCase.matcher(text);
+        while (matcher.find()) {
+            final MatchResult matchResult = matcher.toMatchResult();
+            final String replacement = matchResult.group(0).toLowerCase();
+            text = text.substring(0, matchResult.start()) + replacement
+                    + text.substring(matchResult.end());
+            matcher.reset(text);
         }
 
         InputSource bbcodeConf = new InputSource(mResources.openRawResource(R.raw.bbcode));

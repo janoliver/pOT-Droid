@@ -3,7 +3,6 @@
 	android:id="@+id/linlayout"
     android:orientation="vertical"
     android:layout_height="wrap_content"
-    android:background="#ffffff"
     android:layout_width="fill_parent"
     android:padding="0pt">
     

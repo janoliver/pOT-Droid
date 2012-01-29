@@ -31,6 +31,7 @@ import com.janoliver.potdroid.R;
 import com.janoliver.potdroid.baseclasses.BaseListActivity;
 import com.janoliver.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.janoliver.potdroid.helpers.PotNotification;
+import com.janoliver.potdroid.helpers.PotUtils;
 import com.janoliver.potdroid.models.Category;
 import com.janoliver.potdroid.models.Forum;
 
@@ -52,7 +53,7 @@ public class ForumActivity extends BaseListActivity {
         super.onCreate(savedInstanceState);
 
         // redirect to bookmarks?
-        if (((mExtras == null) || !mExtras.getBoolean("noredirect", false))
+        if ((mExtras == null || !mExtras.getBoolean("noredirect", false))
                 && mSettings.getBoolean("bookmarkStart", false)) {
             finish();
             Intent intent = new Intent(ForumActivity.this, BookmarkActivity.class);
@@ -74,7 +75,6 @@ public class ForumActivity extends BaseListActivity {
                     intent.putExtra("CID", mCats[position - 1].getId());
                     startActivity(intent);
                 }
-
             }
         });
     }

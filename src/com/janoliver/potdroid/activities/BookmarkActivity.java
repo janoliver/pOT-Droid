@@ -61,6 +61,7 @@ public class BookmarkActivity extends BaseListActivity {
         super.onCreate(savedInstanceState);
         
         // check the login status and redirect in case the user is not logged in.
+        PotUtils.log("luklz");
         if (!mObjectManager.isLoggedIn()) {
             finish();
             Intent intent = new Intent(BookmarkActivity.this, ForumActivity.class);

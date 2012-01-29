@@ -255,15 +255,13 @@ public class WebsiteInteraction {
 
         @Override
         protected Boolean doInBackground(Object... params) {
-            Topic thread          = (Topic) params[0];
+            Topic thread          = (Topic)         params[0];
             DialogWrapper content = (DialogWrapper) params[1];
-            String token          = null;
-
+            
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
             nameValuePairs.add(new BasicNameValuePair("SID", ""));
             nameValuePairs.add(new BasicNameValuePair("PID", ""));
-            token = thread.getNewreplytoken();
-            nameValuePairs.add(new BasicNameValuePair("token", token));
+            nameValuePairs.add(new BasicNameValuePair("token", thread.getNewreplytoken()));
             nameValuePairs.add(new BasicNameValuePair("TID", "" + thread.getId()));
             nameValuePairs.add(new BasicNameValuePair("post_title", content.getTitle()));
             nameValuePairs.add(new BasicNameValuePair("message", content.getText()));

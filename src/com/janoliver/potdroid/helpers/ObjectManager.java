@@ -392,7 +392,7 @@ public class ObjectManager {
         t.setIsAnnouncement(_flagAttr(flags, "is-announcement", "value", "1"));
         t.setIsGlobal(_flagAttr(flags, "is-global", "value", "1"));
         t.setLastPage((int) Math.ceil((double) t.getNumberOfPosts() / t.getPostsPerPage()));
-        t.setNewreplytoken(_strVal(root, "token-newreply", ""));
+        t.setNewreplytoken(_strAttr(root, "token-newreply", "value", ""));
         t.setBoard(new Board(_intAttr(root, "in-board", "id", 0)));
         
         // set the pid to be able to scroll to the correct post

@@ -60,6 +60,7 @@ public class TopicActivity extends BaseActivity {
     private Integer   mContextMenuInfo;
     private Integer   mPage            = 1;
     private Integer   mPid             = 0;
+    private String    mHtmlCode        = "";
 
     /**
      * Starting point of the activity.
@@ -120,17 +121,8 @@ public class TopicActivity extends BaseActivity {
      * After downloading, shows the thread in the current activity.
      */
     private void fillView() {
-        TopicHtmlGenerator gen      = new TopicHtmlGenerator(mThread, mPage, TopicActivity.this);
-        String             htmlCode = "";
         
-        try {
-            htmlCode = gen.buildTopic();
-        } catch (IOException e1) {
-            Toast.makeText(TopicActivity.this, "HTML Generierung schiefgelaufen.",
-                    Toast.LENGTH_SHORT).show();
-        }
-
-        mWebView.loadDataWithBaseURL("file:///android_asset/", htmlCode, "text/html", "UTF-8", null);
+        mWebView.loadDataWithBaseURL("file:///android_asset/", mHtmlCode, "text/html", "UTF-8", null);
         setTitle(mThread.getTitle());
         mLinearLayout.addView(getHeaderView(), 0);
 
@@ -520,13 +512,13 @@ public class TopicActivity extends BaseActivity {
      * This async task shows a loader and updates the topic object.
      * When it is finished, the loader is hidden.
      */
-    class ThreadLoader extends AsyncTask<Integer, Object, Void> {
+    class ThreadLoader extends AsyncTask<Integer, String, Void> {
         private ProgressDialog mDialog;
 
         @Override
         protected void onPreExecute() {
             mDialog = new PotNotification(TopicActivity.this, this, true);
-            mDialog.setMessage("Lade Thread...");
+            mDialog.setMessage("...");
             mDialog.show();
         }
 
@@ -537,6 +529,7 @@ public class TopicActivity extends BaseActivity {
             Integer pid  = args[0];
             
             // decide whether to use the page or pid for fetching of the xml
+            publishProgress("Lade Thread...");
             try {
                 if(pid > 0) {
                     mThread = mObjectManager.getTopicByPid(mThread.getId(), pid);
@@ -551,7 +544,27 @@ public class TopicActivity extends BaseActivity {
                 e.printStackTrace();
             }
             
+            // generate html code. This can take a while depending on the amount of bbcode involved...
+            publishProgress("Parse Thread...");
+            TopicHtmlGenerator gen = new TopicHtmlGenerator(mThread, mPage, TopicActivity.this);
+            
+            try {
+                mHtmlCode = gen.buildTopic();
+            } catch (IOException e) {
+                Toast.makeText(TopicActivity.this, "HTML Generierung schiefgelaufen.",
+                        Toast.LENGTH_SHORT).show();
+                this.cancel(true);
+                mDialog.dismiss();
+                e.printStackTrace();
+            }
+
+            
             return null;
+        }
+        
+        @Override
+        protected void onProgressUpdate(String ... args) {
+            mDialog.setMessage(args[0]);
         }
 
         @Override

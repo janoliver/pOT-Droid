@@ -27,8 +27,11 @@ import org.xml.sax.InputSource;
 import ru.perm.kefir.bbcode.BBProcessorFactory;
 import ru.perm.kefir.bbcode.TextProcessor;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import biz.source_code.miniTemplator.MiniTemplator;
+import biz.source_code.miniTemplator.MiniTemplator.TemplateSpecification;
 
 import com.janoliver.potdroid.R;
 import com.janoliver.potdroid.models.Post;
@@ -45,6 +48,7 @@ public class TopicHtmlGenerator {
     private Resources mResources;
     private Activity  mActivity;
     private Integer   mPage;
+    private SharedPreferences mSettings;
     
     // precompiled patterns
     private Pattern   mPatternList1 = Pattern.compile("<ul>(.*?)\\[\\*\\]", Pattern.DOTALL);
@@ -57,10 +61,12 @@ public class TopicHtmlGenerator {
     private HashMap<String, String> mSmileys = new HashMap<String, String>();
 
     public TopicHtmlGenerator(Topic topic, Integer page, Activity callingActivity) {
+        
         mTopic     = topic;
         mResources = callingActivity.getResources();
         mActivity  = callingActivity;
         mPage      = page;
+        mSettings  = PreferenceManager.getDefaultSharedPreferences(mActivity);
 
         // smileys
         mSmileys.put(":bang:", "banghead.gif");
@@ -93,64 +99,50 @@ public class TopicHtmlGenerator {
         Post[] posts = mTopic.getPosts().get(mPage);
 
         // Check for preferred style and set it accordingly
-        String cssFile = PreferenceManager.getDefaultSharedPreferences(mActivity).getString(
-                "style", "threadcss_bbstyle");
+        String cssFile = mSettings.getString("style", "threadcss_bbstyle");
 
         // compatibility hack
         if (cssFile.equals("1") || cssFile.equals("2") || cssFile.equals("3")) {
             cssFile = "threadcss_bbcode";
         }
-
-        // get surrounding html template
-        InputStream template = mResources.getAssets().open("thread.html");
-        String html = PotUtils.inputStreamToString(template);
+        
+        // generate template specs
+        TemplateSpecification tplSpecs = new TemplateSpecification();
 
         // get post html template
-        template = mResources.getAssets().open("post.html");
-        String post = PotUtils.inputStreamToString(template);
-
-        // building the posts
-        String htmlCode = "";
-        Boolean marknewposts = PreferenceManager.getDefaultSharedPreferences(mActivity).getBoolean(
-                "marknewposts", false);
+        InputStream template     = mResources.getAssets().open("thread.html");
+        tplSpecs.templateText    = PotUtils.inputStreamToString(template);
+        MiniTemplator t          = new MiniTemplator(tplSpecs);
+        
+        // build the topic
+        t.setVariable("css", cssFile);
+        
         for (int i = 0; i < posts.length; i++) {
-            String postCpy = post;
-            postCpy = postCpy.replace("XNUMBERX", "" + i);
-            postCpy = postCpy.replace("XPOSTIDX", "" + posts[i].getId());
-            postCpy = postCpy.replace("XAUTHORX", posts[i].getAuthor().getNick());
-            postCpy = postCpy.replace("XDATEX", posts[i].getDate());
-            postCpy = postCpy.replace("XTEXTX", postToHtml(posts[i]));
-            postCpy = postCpy.replace("XPOSTTITLEX", posts[i].getTitle());
-
+            t.setVariable("number", i);
+            t.setVariable("postId", posts[i].getId());
+            t.setVariable("author", posts[i].getAuthor().getNick());
+            t.setVariable("date", posts[i].getDate());
+            t.setVariable("postText", postToHtml(posts[i]));
+            t.setVariable("postTitle", posts[i].getTitle());
+            
             if (posts[i].getAuthor().getId() == PotUtils.getObjectManagerInstance(mActivity)
-                    .getCurrentUser().getId()) {
-                postCpy = postCpy.replace("XCURRENTUSERX", "curruser");
-            } else {
-                postCpy = postCpy.replace("XCURRENTUSERX", "");
-            }
-
-            if ((posts[i].getId() > mTopic.getPid()) && marknewposts) {
-                postCpy = postCpy.replace("XNEWPOSTX", "newpost");
-            } else {
-                postCpy = postCpy.replace("XNEWPOSTX", "");
-            }
-
-            htmlCode += postCpy;
+                    .getCurrentUser().getId())
+                t.setVariableOpt("currentUser", "curruser");
+            
+            if ((posts[i].getId() > mTopic.getPid()) && mSettings.getBoolean("marknewposts", false))
+                t.setVariableOpt("newPost", "newpost");
+            
+            t.addBlock("post");
         }
-
-        // parsing
+        
+        String htmlCode = t.generateOutput();
+        
         htmlCode = parseQuotes(htmlCode);
         htmlCode = parseImages(htmlCode);
         htmlCode = parseLists(htmlCode);
         htmlCode = parseSmileys(htmlCode);
-
-        // put the posts into the template
-        html = html.replace("XCONTENTX", htmlCode);
-
-        // get correct css file
-        html = html.replace("XCSSX", cssFile);
-
-        return html;
+        
+        return htmlCode;
     }
 
     /**

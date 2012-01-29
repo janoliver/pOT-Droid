@@ -66,6 +66,14 @@ public class PotUtils {
         }
         return sObjectManager;
     }
+    
+    /**
+     * clear stuff
+     */
+    public static void clear() {
+        sWebsiteInteraction = null;
+        sObjectManager = null;
+    }
 
     public static String inputStreamToString(InputStream in) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));

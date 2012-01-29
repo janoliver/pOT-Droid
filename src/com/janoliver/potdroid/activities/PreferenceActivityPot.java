@@ -85,6 +85,7 @@ public class PreferenceActivityPot extends PreferenceActivity {
                                 Toast.makeText(PreferenceActivityPot.this,
                                         "Erfolgreich eingeloggt", Toast.LENGTH_LONG).show();
                                 dialog.dismiss();
+                                PotUtils.clear();
                             } else {
                                 // set pref values back
                                 editor.putString("user_name", oldUser);

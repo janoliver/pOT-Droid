@@ -2,63 +2,78 @@
  Changelog
 ===========
 
+Changelog Alpha 16 (pOT Droid 0.16)
+===================================
+
+Einmal neu Einloggen ist wie immer nÃ¶tig!
+
+- Angepasst ans ICS Holo theme (danke Noch-ein-Kamel!) und dessen Actionbar
+- Der gesamte Code fÃ¼r die Models und deren Handling (also Parsing der xml api files usw.) ist neu geschrieben. Alle Activtys wurden kommentiert und aufgerÃ¤umt.
+- Jegliche Kommunikation mit dem INternet lÃ¤uft jetzt per gzip ab. (Danke enos!)
+- Icons in den MenÃ¼s
+- Crashbug bei geschlossenen Threads und ausgeloggten Usern behoben
+- Mata BUtton in der Actionbar hat ein in den Settings einstellbares Ziel.
+- Migration zu github fÃ¼r bessere Zusammenarbeit. Mal gucken. :D
+- neue bbcode tags mod/spoiler, sowie b/k gefixt.
+
+
 Changelog Alpha 15 (pOT Droid 0.15)
 ===================================
 
 - Experimentelle "Gravitation" nach links in Threads. In den Settings einstellbar. Issue #14
-- Themes (dark, light) für die Forenübersichten usw. 
-- die gesamte Codebase aufgeräumt und einen einheitlicheren Stil verwendet
-- Uncaught exceptions werden jetzt unter "/sdcard/Android/data/com.janoliver.potdroid/files" in Log Dateien geschrieben. Bitte bei Bug Reports anhängen!
+- Themes (dark, light) fÃ¼r die ForenÃ¼bersichten usw. 
+- die gesamte Codebase aufgerÃ¤umt und einen einheitlicheren Stil verwendet
+- Uncaught exceptions werden jetzt unter "/sdcard/Android/data/com.janoliver.potdroid/files" in Log Dateien geschrieben. Bitte bei Bug Reports anhÃ¤ngen!
 
 Changelog Alpha 14 (pOT Droid 0.14)
 ===================================
 
 - login bug gefixt.
 - posten/editieren jetzt schneller
-- Bookmarks hinzufügen/entfernen
+- Bookmarks hinzufÃ¼gen/entfernen
 - about Dialog in den Preferences
 - Einstellung, ob ungelesene Posts markiert werden sollen
-- leichte Änderungen in der Threadansicht (links)
-- Menü in der Threadansicht verändert: vor/zurück Buttons raus, Einstellungen Button rein.
+- leichte Ã„nderungen in der Threadansicht (links)
+- MenÃ¼ in der Threadansicht verÃ¤ndert: vor/zurÃ¼ck Buttons raus, Einstellungen Button rein.
 
-Ihr müsst euch einmal neu einloggen!
+Ihr mÃ¼sst euch einmal neu einloggen!
 
 Changelog Alpha 13 (pOT Droid 0.13)
 ===================================
 
 - user agent jetzt unique nach Login
-- Buttons im Thread größer
-- Thread layout überarbeitet
+- Buttons im Thread grÃ¶ÃŸer
+- Thread layout Ã¼berarbeitet
 - Bilder laden im WLAN / nie / immer
 - Ladedialog beim editieren/posten. Kann abgebrochen werden.
 - Eigene Posts werden gehighlighted.
 
-Ihr müsst euch einmal neu einloggen!
+Ihr mÃ¼sst euch einmal neu einloggen!
 
 Changelog Alpha 12 (pOT Droid 0.12)
 ===================================
 
 - Bug mit den Seitenzahlen behoben
-- Buttons zum Navigieren im Thread hinzugefügt
-- Login System überarbeitet: Cookie wird jetzt Sessionübergreifend gespeichert (-> schnellerer Start der App)
-- Cache System der Foren- und Kategorieübersicht überarbeitet -> schnelleres Browsen
+- Buttons zum Navigieren im Thread hinzugefÃ¼gt
+- Login System Ã¼berarbeitet: Cookie wird jetzt SessionÃ¼bergreifend gespeichert (-> schnellerer Start der App)
+- Cache System der Foren- und KategorieÃ¼bersicht Ã¼berarbeitet -> schnelleres Browsen
 - Einige Crashbugs behoben (hoffentlich....)
-- Ein bisschen den Code verschönert
-- Kleinere, kosmetische Änderungen.
+- Ein bisschen den Code verschÃ¶nert
+- Kleinere, kosmetische Ã„nderungen.
 
 Changelog Alpha 11 (pOT Droid 0.11)
 ===================================
 
 - Kompatibel zu 2.1
-- Forenübersichten werden jetzt bei jedem Appaufruf nur einmal geladen.
-- Orientierung kann jetzt überall geändert werden außer beim Laden und Post schreiben. Es wird beim Drehen nicht mehr neu geladen.
+- ForenÃ¼bersichten werden jetzt bei jedem Appaufruf nur einmal geladen.
+- Orientierung kann jetzt Ã¼berall geÃ¤ndert werden auÃŸer beim Laden und Post schreiben. Es wird beim Drehen nicht mehr neu geladen.
 - Updatebenachrichtigung entfernt.
 
 Changelog Alpha 10 (pOT Droid 0.10)
 ===================================
 
 - Login gefixt
-- Bilder können durch langes Drücken versteckt werden
+- Bilder kÃ¶nnen durch langes DrÃ¼cken versteckt werden
 - Ladezeiten drastisch verringert (danke enos!!)
 - Post-Titel werden angezeigt.
 
@@ -66,7 +81,7 @@ Changelog Alpha 9 (pOT Droid 0.9)
 =================================
 
 - Login gefixt
-- Text "Blättern durch wischen" rausgenommen
+- Text "BlÃ¤ttern durch wischen" rausgenommen
 
 Changelog Alpha 8 (pOT Droid 0.8)
 =================================
@@ -79,8 +94,8 @@ Changelog Alpha 8 (pOT Droid 0.8)
 Changelog Alpha 7 (pOT Droid 0.7)
 =================================
 
-- Update check jetzt überall, einmalig bei Programmstart.
-- volume buttons können in den Settings zum Blättern eingestellt werden.
+- Update check jetzt Ã¼berall, einmalig bei Programmstart.
+- volume buttons kÃ¶nnen in den Settings zum BlÃ¤ttern eingestellt werden.
 - neue, experimentelle Thread-Ansicht. (Unter der Haube...) 
 - Bilder per click nachladbar!
 - schneller im Laden und scrollen!
@@ -92,8 +107,8 @@ Changelog Alpha 6 (pOT Droid 0.6)
 
 - Bug mit der Auswahl der Threadseite gefixt (bei nur einem Post auf der neuen Seite)
 - Viele Serverrequests rausgenommen = schneller
-- Lade-Vorgänge können abgebrochen werden.
-- sicherlich noch weitere Änderungen, die ich aber vergessen habe. :(
+- Lade-VorgÃ¤nge kÃ¶nnen abgebrochen werden.
+- sicherlich noch weitere Ã„nderungen, die ich aber vergessen habe. :(
 
 Changelog Alpha 5 (pOT Droid 0.5)
 =================================
@@ -102,16 +117,16 @@ Changelog Alpha 5 (pOT Droid 0.5)
 - Bookmarks werden als Gelesen markiert
 - Antworten (+zitieren) und Editieren von Posts moeglich (nur Titel+Text) (Es werden derzeit keine geschlossenen Threads beachtet)
 - Bug gefixt dass man nicht eingeloggt ist, wenn das Handy offline war
-- Information bei neuer Version (in den Settings ausstellbar). Diese wird im Moment nur in der Forenübersicht geprüft. Ich muss mir da noch eine bessere Lösung überlegen, damit es nicht zu nervig ist, aber aktuell.
-- Versionsnummern eingeführt: Aktuell: 0.5
+- Information bei neuer Version (in den Settings ausstellbar). Diese wird im Moment nur in der ForenÃ¼bersicht geprÃ¼ft. Ich muss mir da noch eine bessere LÃ¶sung Ã¼berlegen, damit es nicht zu nervig ist, aber aktuell.
+- Versionsnummern eingefÃ¼hrt: Aktuell: 0.5
 
 Changelog Alpha 4
 =================
 
-- Login Bug gefixt, Sonderzeichen jetzt möglich
-- Ladevorgänge überarbeitet
+- Login Bug gefixt, Sonderzeichen jetzt mï¿½glich
+- Ladevorgï¿½nge ï¿½berarbeitet
 - Kein crash mehr bei fehlender Internetverbindung, sondern entsprechende Anzeige
-- Buttons zum Blättern in Threads und Foren ins Menü eingebaut, da der Wisch-Bug im Thread noch nicht behoben werden konnte.
+- Buttons zum Blï¿½ttern in Threads und Foren ins Menï¿½ eingebaut, da der Wisch-Bug im Thread noch nicht behoben werden konnte.
 - Repository bereinigt und Pfade relativiert
 
 Changelog Alpha 3
@@ -120,7 +135,7 @@ Changelog Alpha 3
 - Neuer Login Dialog
 - Langes klicken auf Threads erlaubt springen zur letzten/ersten Seite
 - Bookmarks werden ab dem 1. ungelesenen Post angezeigt
-- Indikator für ungelesen bei Bookmarks etwas breiter
+- Indikator fï¿½r ungelesen bei Bookmarks etwas breiter
 - Lade-Dialog bei Threadaufruf. 
-- Möglichkeit, Posts vorzuladen. ->Scrollen wird smoother, dauert aber länger
+- Mï¿½glichkeit, Posts vorzuladen. ->Scrollen wird smoother, dauert aber lï¿½nger
 - Setting, Bilder nicht anzuzeigen. Sollte noch durch ein Anzeigen-bei-click oder einen Link auf das Bild erweitert werden

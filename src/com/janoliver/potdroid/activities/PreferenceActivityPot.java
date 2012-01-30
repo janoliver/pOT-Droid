@@ -18,10 +18,12 @@ import java.io.InputStream;
 import java.util.Random;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
@@ -33,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.janoliver.potdroid.R;
+import com.janoliver.potdroid.helpers.NotificationService;
 import com.janoliver.potdroid.helpers.PotUtils;
 
 /**
@@ -158,20 +161,20 @@ public class PreferenceActivityPot extends PreferenceActivity {
         });
 
         // callbacks for notification service
-        /*
-         * Preference notificationOnOff = (Preference)
-         * findPreference("notifications");
-         * notificationOnOff.setOnPreferenceChangeListener(new
-         * OnPreferenceChangeListener() {
-         * 
-         * public boolean onPreferenceChange(Preference arg0, Object newValue) {
-         * Intent notificationServiceIntent = new
-         * Intent(PreferenceActivityPot.this, NotificationService.class);
-         * if((Boolean) newValue) { startService(notificationServiceIntent); }
-         * else { stopService(notificationServiceIntent); } return false; }
-         * 
-         * });
-         */
+        Preference notificationOnOff = (Preference) findPreference("notifications");
+        notificationOnOff.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+
+            public boolean onPreferenceChange(Preference arg0, Object newValue) {
+                Intent notificationServiceIntent = new Intent(PreferenceActivityPot.this,
+                        NotificationService.class);
+                if ((Boolean) newValue) {
+                    startService(notificationServiceIntent);
+                } else {
+                    stopService(notificationServiceIntent);
+                }
+                return true;
+            }
+        });
 
     }
 

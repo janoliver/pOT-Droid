@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 
 /**
@@ -50,9 +50,9 @@ public class PotUtils {
     /**
      * Returns an instance of the WebsiteInteraction class.
      */
-    public static WebsiteInteraction getWebsiteInteractionInstance(Activity act) {
+    public static WebsiteInteraction getWebsiteInteractionInstance(Context cx) {
         if (sWebsiteInteraction == null) {
-            sWebsiteInteraction = new WebsiteInteraction(act);
+            sWebsiteInteraction = new WebsiteInteraction(cx);
         }
         return sWebsiteInteraction;
     }
@@ -60,9 +60,9 @@ public class PotUtils {
     /**
      * Returns an instance of the ObjectManager class.
      */
-    public static ObjectManager getObjectManagerInstance(Activity act) {
+    public static ObjectManager getObjectManagerInstance(Context cx) {
         if (sObjectManager == null) {
-            sObjectManager = new ObjectManager(act);
+            sObjectManager = new ObjectManager(cx);
         }
         return sObjectManager;
     }

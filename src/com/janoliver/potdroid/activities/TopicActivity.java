@@ -42,6 +42,7 @@ import com.janoliver.potdroid.R;
 import com.janoliver.potdroid.baseclasses.BaseActivity;
 import com.janoliver.potdroid.helpers.DialogWrapper;
 import com.janoliver.potdroid.helpers.ObjectManager.ParseErrorException;
+import com.janoliver.potdroid.helpers.PostDialogs;
 import com.janoliver.potdroid.helpers.PotNotification;
 import com.janoliver.potdroid.helpers.PotUtils;
 import com.janoliver.potdroid.helpers.TopicHtmlGenerator;
@@ -324,7 +325,7 @@ public class TopicActivity extends BaseActivity {
         Button theButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
         theButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mWebsiteInteraction.new PostWriter(TopicActivity.this).execute(mThread, wrapper);
+                new PostDialogs.PostWriter(TopicActivity.this).execute(mThread, wrapper);
             }
         });
     }
@@ -368,8 +369,7 @@ public class TopicActivity extends BaseActivity {
         Button theButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
         theButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mWebsiteInteraction.new PostEditer(TopicActivity.this).execute(mThread, wrapper,
-                        toEdit);
+                new PostDialogs.PostEditer(TopicActivity.this).execute(mThread, wrapper, toEdit);
             }
         });
     }

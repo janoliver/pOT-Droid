@@ -39,19 +39,11 @@ import org.apache.http.params.CoreProtocolPNames;
 import org.jdom.Document;
 import org.jdom.input.SAXBuilder;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.widget.Toast;
-
-import com.janoliver.potdroid.activities.TopicActivity;
-import com.janoliver.potdroid.models.Post;
-import com.janoliver.potdroid.models.Topic;
 
 /**
  * All the interaction with the website (login, login check, xml document
@@ -66,12 +58,12 @@ import com.janoliver.potdroid.models.Topic;
 public class WebsiteInteraction {
 
     private DefaultHttpClient mHttpClient;
-    private Activity          mActivity;
+    private Context           mContext;
     private SharedPreferences mSettings;
 
-    public WebsiteInteraction(Activity act) {
-        mActivity = act;
-        mSettings = PreferenceManager.getDefaultSharedPreferences(mActivity);
+    public WebsiteInteraction(Context context) {
+        mContext    = context;
+        mSettings   = PreferenceManager.getDefaultSharedPreferences(mContext);
         mHttpClient = new DefaultHttpClient();
         mHttpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT,
                 "Apache-HttpClient/potdroid " + mSettings.getString("unique_uagent", "potdroid"));
@@ -94,7 +86,7 @@ public class WebsiteInteraction {
         Document document;
         
         // no internet connection...
-        if (getConnectionType(mActivity) == 0) {
+        if (getConnectionType(mContext) == 0) {
             return null;
         }
 
@@ -205,8 +197,8 @@ public class WebsiteInteraction {
     // 0 -> not connected
     // 1 -> wifi
     // 2 -> else
-    public static int getConnectionType(Activity act) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) act
+    public static int getConnectionType(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         if (activeNetworkInfo == null) {
@@ -234,109 +226,6 @@ public class WebsiteInteraction {
             return false;
         }
         
-    }
-
-    public class PostWriter extends AsyncTask<Object, Object, Boolean> {
-
-        private ProgressDialog mDialog;
-        private TopicActivity mActivity;
-
-        public PostWriter(TopicActivity act) {
-            super();
-            mActivity = act;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            mDialog = new PotNotification(mActivity, this, false);
-            mDialog.setMessage("Sende Post...");
-            mDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(Object... params) {
-            Topic thread          = (Topic)         params[0];
-            DialogWrapper content = (DialogWrapper) params[1];
-            
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-            nameValuePairs.add(new BasicNameValuePair("SID", ""));
-            nameValuePairs.add(new BasicNameValuePair("PID", ""));
-            nameValuePairs.add(new BasicNameValuePair("token", thread.getNewreplytoken()));
-            nameValuePairs.add(new BasicNameValuePair("TID", "" + thread.getId()));
-            nameValuePairs.add(new BasicNameValuePair("post_title", content.getTitle()));
-            nameValuePairs.add(new BasicNameValuePair("message", content.getText()));
-            nameValuePairs.add(new BasicNameValuePair("submit", "Eintragen"));
-
-            return sendPost(PotUtils.BOARD_URL_POST, nameValuePairs);
-        }
-
-        @Override
-        protected void onCancelled() {
-            mDialog.dismiss();
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            if (!success) {
-                Toast.makeText(mActivity, "Fehlgeschlagen.", Toast.LENGTH_SHORT).show();
-            } else {
-                mActivity.refresh();
-            }
-            mDialog.dismiss();
-        }
-    }
-
-    public class PostEditer extends AsyncTask<Object, Object, Boolean> {
-
-        private ProgressDialog mDialog;
-        private TopicActivity mActivity;
-
-        public PostEditer(TopicActivity act) {
-            super();
-            mActivity = act;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            mDialog = new PotNotification(mActivity, this, false);
-            mDialog.setMessage("Sende Post...");
-            mDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(Object... params) {
-            Topic thread = (Topic) params[0];
-            DialogWrapper content = (DialogWrapper) params[1];
-            Post post = (Post) params[2];
-            String token = null;
-            
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-            // nameValuePairs.add(new BasicNameValuePair("SID", ""));
-            nameValuePairs.add(new BasicNameValuePair("PID", "" + post.getId()));
-            token = post.getEdittoken();
-            nameValuePairs.add(new BasicNameValuePair("token", token));
-            nameValuePairs.add(new BasicNameValuePair("TID", "" + thread.getId()));
-            nameValuePairs.add(new BasicNameValuePair("edit_title", content.getTitle()));
-            nameValuePairs.add(new BasicNameValuePair("message", content.getText()));
-            nameValuePairs.add(new BasicNameValuePair("submit", "Eintragen"));
-            
-            return sendPost(PotUtils.BOARD_URL_EDITPOST, nameValuePairs);
-        }
-
-        @Override
-        protected void onCancelled() {
-            mDialog.dismiss();
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            if (!success) {
-                Toast.makeText(mActivity, "Fehlgeschlagen.", Toast.LENGTH_SHORT).show();
-            } else {
-                mActivity.refresh();
-            }
-            mDialog.dismiss();
-        }
     }
     
     /**

@@ -66,7 +66,7 @@
               android:key="aboutPref" />
     </PreferenceCategory>
     
-    <!-- <PreferenceCategory
+    <PreferenceCategory
             android:title="Benachrichtigungen">
             <CheckBoxPreference
                 android:key="notifications"
@@ -78,6 +78,6 @@
                 android:summary="Wie häufig nach neuen Posts geschaut wird." 
                 android:entries="@array/notificationRefreshTime"
                 android:entryValues="@array/notificationRefreshTimeValues" />
-    </PreferenceCategory> -->
+    </PreferenceCategory>
     
 </PreferenceScreen> 

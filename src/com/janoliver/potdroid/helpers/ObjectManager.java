@@ -7,7 +7,7 @@ import java.util.Map;
 import org.jdom.Document;
 import org.jdom.Element;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -29,7 +29,6 @@ import com.janoliver.potdroid.models.User;
 public class ObjectManager {
     
     // no models
-    private Activity mActivity;
     private WebsiteInteraction mWebsiteInteraction;
     
     // single valued storage
@@ -47,12 +46,11 @@ public class ObjectManager {
     private Map<Integer, Topic>    mTopics     = new LinkedHashMap<Integer, Topic>();
     private Map<Integer, Bookmark> mBookmarks  = new LinkedHashMap<Integer, Bookmark>();
     
-    public ObjectManager(Activity act) {
-        mActivity           = act;
-        mWebsiteInteraction = PotUtils.getWebsiteInteractionInstance(mActivity);
+    public ObjectManager(Context cx) {
+        mWebsiteInteraction = PotUtils.getWebsiteInteractionInstance(cx);
         
         // check for login
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(mActivity);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(cx);
         User u = getUser(settings.getInt("user_id", 0));
         u.setNick(settings.getString("user_name", ""));
         mLoginUsername = settings.getString("user_name", "");

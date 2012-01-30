@@ -4,10 +4,10 @@
           android:title="zur ersten Seite" android:showAsAction="ifRoom"/>
     <item android:id="@+id/last_page"
           android:title="zur letzten Seite" android:showAsAction="ifRoom"/>
-    <!-- <item android:id="@+id/add_favourite"
+    <item android:id="@+id/add_favourite"
           android:title="Benachrichtigung an" />
     <item android:id="@+id/delete_favourite"
-          android:title="Benachrichtigung aus" /> -->
+          android:title="Benachrichtigung aus" />
     <item android:id="@+id/removebookmark"
           android:title="Bookmark entfernen" android:showAsAction="ifRoom"/>
 </menu>

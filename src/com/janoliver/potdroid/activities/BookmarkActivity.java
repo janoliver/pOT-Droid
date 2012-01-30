@@ -20,7 +20,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -32,11 +31,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.janoliver.potdroid.R;
 import com.janoliver.potdroid.baseclasses.BaseListActivity;
+import com.janoliver.potdroid.helpers.FavouritesDatabase;
 import com.janoliver.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.janoliver.potdroid.helpers.PotNotification;
 import com.janoliver.potdroid.helpers.PotUtils;
@@ -52,6 +53,12 @@ public class BookmarkActivity extends BaseListActivity {
      * <Id, BookmarkObject> values.
      */
     private Map<Integer, Bookmark> mBookmarks;
+    
+    /**
+     * mFavouritesDatabase is the sqlite database for the favourites among
+     * the bookmarks
+     */
+    private FavouritesDatabase mFavouritesDatabase;
 
     /**
      * Starting point of the activity.
@@ -60,8 +67,10 @@ public class BookmarkActivity extends BaseListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        // create the favourites database
+        mFavouritesDatabase = new FavouritesDatabase(this);
+        
         // check the login status and redirect in case the user is not logged in.
-        PotUtils.log("luklz");
         if (!mObjectManager.isLoggedIn()) {
             finish();
             Intent intent = new Intent(BookmarkActivity.this, ForumActivity.class);
@@ -137,11 +146,14 @@ public class BookmarkActivity extends BaseListActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getMenuInflater();
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("notifications", false)) {
-            inflater.inflate(R.menu.context_bookmark, menu);
+        inflater.inflate(R.menu.context_bookmark, menu);
+        
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+        if(mFavouritesDatabase.isFavourite((Bookmark)mBookmarks.values().toArray()[(int) info.id])) {
+            menu.removeItem(R.id.add_favourite);
         } else {
-            inflater.inflate(R.menu.context_bookmark, menu);
-        } 
+            menu.removeItem(R.id.delete_favourite);
+        }
     }
     
     /**
@@ -151,6 +163,7 @@ public class BookmarkActivity extends BaseListActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        ImageView star = (ImageView) info.targetView.findViewById(R.id.favourite);
         switch (item.getItemId()) {
         case R.id.first_page:
             openThread((Bookmark)mBookmarks.values().toArray()[(int) info.id], false, false);
@@ -169,6 +182,14 @@ public class BookmarkActivity extends BaseListActivity {
                     BookmarkActivity.this.refresh();
                 }
             }).start();
+            return true;
+        case R.id.add_favourite:
+            mFavouritesDatabase.addFavourite((Bookmark)mBookmarks.values().toArray()[(int) info.id]);
+            star.setVisibility(View.VISIBLE);
+            return true;
+        case R.id.delete_favourite:
+            mFavouritesDatabase.deleteFavourite((Bookmark)mBookmarks.values().toArray()[(int) info.id]);
+            star.setVisibility(View.INVISIBLE);
             return true;
         default:
             return super.onContextItemSelected(item);
@@ -220,6 +241,12 @@ public class BookmarkActivity extends BaseListActivity {
 
             View row = inflater.inflate(R.layout.listitem_bookmark, null);
             Bookmark bm = (Bookmark)mBookmarks.values().toArray()[position];
+            
+            ImageView star = (ImageView) row.findViewById(R.id.favourite);
+            if(mSettings.getBoolean("notifications",false)
+                    && BookmarkActivity.this.mFavouritesDatabase.isFavourite(bm)) {
+                star.setVisibility(View.VISIBLE);
+            }
 
             TextView name = (TextView) row.findViewById(R.id.name);
             name.setText(bm.getThread().getTitle());

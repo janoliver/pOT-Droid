@@ -31,7 +31,6 @@ import com.janoliver.potdroid.R;
 import com.janoliver.potdroid.baseclasses.BaseListActivity;
 import com.janoliver.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.janoliver.potdroid.helpers.PotNotification;
-import com.janoliver.potdroid.helpers.PotUtils;
 import com.janoliver.potdroid.models.Category;
 import com.janoliver.potdroid.models.Forum;
 
@@ -89,7 +88,7 @@ public class ForumActivity extends BaseListActivity {
     }
     
     /**
-     * Shopuld be implemented someday.
+     * Should be implemented someday.
      */
     @Override
     public void refresh() {};

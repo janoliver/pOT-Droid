@@ -1,4 +1,4 @@
-package com.janoliver.potdroid.helpers;
+package com.mde.potdroid.helpers;
 
 import java.util.Map;
 import java.util.Timer;
@@ -15,9 +15,9 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 
 import com.janoliver.potdroid.R;
-import com.janoliver.potdroid.activities.BookmarkActivity;
-import com.janoliver.potdroid.helpers.ObjectManager.ParseErrorException;
-import com.janoliver.potdroid.models.Bookmark;
+import com.mde.potdroid.activities.BookmarkActivity;
+import com.mde.potdroid.helpers.ObjectManager.ParseErrorException;
+import com.mde.potdroid.models.Bookmark;
 
 public class NotificationService extends Service {
 

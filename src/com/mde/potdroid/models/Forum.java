@@ -11,7 +11,7 @@
  *  0. You just DO WHAT THE FUCK YOU WANT TO. 
  */
 
-package com.janoliver.potdroid.models;
+package com.mde.potdroid.models;
 
 
 /**

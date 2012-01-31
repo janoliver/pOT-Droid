@@ -11,7 +11,7 @@
  *  0. You just DO WHAT THE FUCK YOU WANT TO. 
  */
 
-package com.janoliver.potdroid.baseclasses;
+package com.mde.potdroid.baseclasses;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -19,10 +19,10 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import com.janoliver.potdroid.R;
-import com.janoliver.potdroid.helpers.ObjectManager;
-import com.janoliver.potdroid.helpers.PotExceptionHandler;
-import com.janoliver.potdroid.helpers.PotUtils;
-import com.janoliver.potdroid.helpers.WebsiteInteraction;
+import com.mde.potdroid.helpers.ObjectManager;
+import com.mde.potdroid.helpers.PotExceptionHandler;
+import com.mde.potdroid.helpers.PotUtils;
+import com.mde.potdroid.helpers.WebsiteInteraction;
 
 /**
  * The Acitivty base class. ATM only takes care of some member variables.

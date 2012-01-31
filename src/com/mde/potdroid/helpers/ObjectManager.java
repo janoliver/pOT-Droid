@@ -1,4 +1,4 @@
-package com.janoliver.potdroid.helpers;
+package com.mde.potdroid.helpers;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,13 +11,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.janoliver.potdroid.models.Board;
-import com.janoliver.potdroid.models.Bookmark;
-import com.janoliver.potdroid.models.Category;
-import com.janoliver.potdroid.models.Forum;
-import com.janoliver.potdroid.models.Post;
-import com.janoliver.potdroid.models.Topic;
-import com.janoliver.potdroid.models.User;
+import com.mde.potdroid.models.Board;
+import com.mde.potdroid.models.Bookmark;
+import com.mde.potdroid.models.Category;
+import com.mde.potdroid.models.Forum;
+import com.mde.potdroid.models.Post;
+import com.mde.potdroid.models.Topic;
+import com.mde.potdroid.models.User;
 
 /**
  * This class is a container of all models that can be created. It builds these

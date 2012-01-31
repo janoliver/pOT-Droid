@@ -1,4 +1,4 @@
-package com.janoliver.potdroid.helpers;
+package com.mde.potdroid.helpers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +10,9 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.janoliver.potdroid.activities.TopicActivity;
-import com.janoliver.potdroid.models.Post;
-import com.janoliver.potdroid.models.Topic;
+import com.mde.potdroid.activities.TopicActivity;
+import com.mde.potdroid.models.Post;
+import com.mde.potdroid.models.Topic;
 
 public class PostDialogs {
 

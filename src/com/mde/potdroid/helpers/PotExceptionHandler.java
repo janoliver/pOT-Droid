@@ -17,7 +17,7 @@
  *  Thanks for the input!
  */
 
-package com.janoliver.potdroid.helpers;
+package com.mde.potdroid.helpers;
 
 import java.io.File;
 import java.io.FileOutputStream;

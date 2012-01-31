@@ -11,7 +11,7 @@
  *  0. You just DO WHAT THE FUCK YOU WANT TO. 
  */
 
-package com.janoliver.potdroid.activities;
+package com.mde.potdroid.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -28,12 +28,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.janoliver.potdroid.R;
-import com.janoliver.potdroid.baseclasses.BaseListActivity;
-import com.janoliver.potdroid.helpers.ObjectManager.ParseErrorException;
-import com.janoliver.potdroid.helpers.PotNotification;
-import com.janoliver.potdroid.helpers.PotUtils;
-import com.janoliver.potdroid.models.Board;
-import com.janoliver.potdroid.models.Category;
+import com.mde.potdroid.baseclasses.BaseListActivity;
+import com.mde.potdroid.helpers.PotNotification;
+import com.mde.potdroid.helpers.PotUtils;
+import com.mde.potdroid.helpers.ObjectManager.ParseErrorException;
+import com.mde.potdroid.models.Board;
+import com.mde.potdroid.models.Category;
 
 /**
  * The view where one category is shown and all the boards it contains.

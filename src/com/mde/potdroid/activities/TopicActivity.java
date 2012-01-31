@@ -11,7 +11,7 @@
  *  0. You just DO WHAT THE FUCK YOU WANT TO. 
  */
 
-package com.janoliver.potdroid.activities;
+package com.mde.potdroid.activities;
 
 import java.io.IOException;
 
@@ -39,15 +39,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.janoliver.potdroid.R;
-import com.janoliver.potdroid.baseclasses.BaseActivity;
-import com.janoliver.potdroid.helpers.DialogWrapper;
-import com.janoliver.potdroid.helpers.ObjectManager.ParseErrorException;
-import com.janoliver.potdroid.helpers.PostDialogs;
-import com.janoliver.potdroid.helpers.PotNotification;
-import com.janoliver.potdroid.helpers.PotUtils;
-import com.janoliver.potdroid.helpers.TopicHtmlGenerator;
-import com.janoliver.potdroid.models.Post;
-import com.janoliver.potdroid.models.Topic;
+import com.mde.potdroid.baseclasses.BaseActivity;
+import com.mde.potdroid.helpers.DialogWrapper;
+import com.mde.potdroid.helpers.PostDialogs;
+import com.mde.potdroid.helpers.PotNotification;
+import com.mde.potdroid.helpers.PotUtils;
+import com.mde.potdroid.helpers.TopicHtmlGenerator;
+import com.mde.potdroid.helpers.ObjectManager.ParseErrorException;
+import com.mde.potdroid.models.Post;
+import com.mde.potdroid.models.Topic;
 
 /**
  * Shows a thread. By far the most involving activity. And, of course, the most

@@ -11,7 +11,7 @@
  *  0. You just DO WHAT THE FUCK YOU WANT TO. 
  */
 
-package com.janoliver.potdroid.helpers;
+package com.mde.potdroid.helpers;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

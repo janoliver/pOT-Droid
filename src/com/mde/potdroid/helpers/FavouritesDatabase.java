@@ -1,4 +1,4 @@
-package com.janoliver.potdroid.helpers;
+package com.mde.potdroid.helpers;
 
 import java.util.Map;
 
@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 
-import com.janoliver.potdroid.models.Bookmark;
+import com.mde.potdroid.models.Bookmark;
 
 public class FavouritesDatabase {
 

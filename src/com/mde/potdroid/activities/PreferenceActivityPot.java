@@ -11,7 +11,7 @@
  *  0. You just DO WHAT THE FUCK YOU WANT TO. 
  */
 
-package com.janoliver.potdroid.activities;
+package com.mde.potdroid.activities;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,8 +35,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.janoliver.potdroid.R;
-import com.janoliver.potdroid.helpers.NotificationService;
-import com.janoliver.potdroid.helpers.PotUtils;
+import com.mde.potdroid.helpers.NotificationService;
+import com.mde.potdroid.helpers.PotUtils;
 
 /**
  * Preference activity.

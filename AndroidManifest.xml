@@ -17,10 +17,10 @@
         <activity android:name=".activities.CategoryActivity"/>
         <activity android:name=".activities.BoardActivity" />
         <activity android:name=".activities.TopicActivity" />
-        <activity android:name=".activities.PreferenceActivityPot" />
+        <activity android:name="com.mde.potdroid.activities.PreferenceActivityPot" />
          
          <service 
-            android:name=".helpers.NotificationService"
+            android:name="com.mde.potdroid.helpers.NotificationService"
             android:exported="false" />
     </application> 
     

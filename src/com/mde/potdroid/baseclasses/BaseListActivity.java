@@ -11,7 +11,7 @@
  *  0. You just DO WHAT THE FUCK YOU WANT TO. 
  */
 
-package com.janoliver.potdroid.baseclasses;
+package com.mde.potdroid.baseclasses;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -24,14 +24,14 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.janoliver.potdroid.R;
-import com.janoliver.potdroid.activities.BoardActivity;
-import com.janoliver.potdroid.activities.BookmarkActivity;
-import com.janoliver.potdroid.activities.ForumActivity;
-import com.janoliver.potdroid.activities.PreferenceActivityPot;
-import com.janoliver.potdroid.helpers.ObjectManager;
-import com.janoliver.potdroid.helpers.PotExceptionHandler;
-import com.janoliver.potdroid.helpers.PotUtils;
-import com.janoliver.potdroid.helpers.WebsiteInteraction;
+import com.mde.potdroid.activities.BoardActivity;
+import com.mde.potdroid.activities.BookmarkActivity;
+import com.mde.potdroid.activities.ForumActivity;
+import com.mde.potdroid.activities.PreferenceActivityPot;
+import com.mde.potdroid.helpers.ObjectManager;
+import com.mde.potdroid.helpers.PotExceptionHandler;
+import com.mde.potdroid.helpers.PotUtils;
+import com.mde.potdroid.helpers.WebsiteInteraction;
 
 /**
  * Base Activity class for all activities that are/use ListActivity. Defines

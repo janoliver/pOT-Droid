@@ -11,7 +11,7 @@
  *  0. You just DO WHAT THE FUCK YOU WANT TO. 
  */
 
-package com.janoliver.potdroid.helpers;
+package com.mde.potdroid.helpers;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,8 +34,8 @@ import biz.source_code.miniTemplator.MiniTemplator;
 import biz.source_code.miniTemplator.MiniTemplator.TemplateSpecification;
 
 import com.janoliver.potdroid.R;
-import com.janoliver.potdroid.models.Post;
-import com.janoliver.potdroid.models.Topic;
+import com.mde.potdroid.models.Post;
+import com.mde.potdroid.models.Topic;
 
 /**
  * This class generates the html code for the topic activity. A topic (thread)

@@ -33,7 +33,7 @@ import android.preference.PreferenceManager;
 import biz.source_code.miniTemplator.MiniTemplator;
 import biz.source_code.miniTemplator.MiniTemplator.TemplateSpecification;
 
-import com.janoliver.potdroid.R;
+import com.mde.potdroid.R;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 

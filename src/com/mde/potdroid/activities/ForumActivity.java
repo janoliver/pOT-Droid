@@ -27,7 +27,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.janoliver.potdroid.R;
+import com.mde.potdroid.R;
 import com.mde.potdroid.baseclasses.BaseListActivity;
 import com.mde.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.mde.potdroid.helpers.PotNotification;

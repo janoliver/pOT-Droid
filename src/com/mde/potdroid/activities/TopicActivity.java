@@ -38,14 +38,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.janoliver.potdroid.R;
+import com.mde.potdroid.R;
 import com.mde.potdroid.baseclasses.BaseActivity;
 import com.mde.potdroid.helpers.DialogWrapper;
+import com.mde.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.mde.potdroid.helpers.PostDialogs;
 import com.mde.potdroid.helpers.PotNotification;
 import com.mde.potdroid.helpers.PotUtils;
 import com.mde.potdroid.helpers.TopicHtmlGenerator;
-import com.mde.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 
@@ -161,6 +161,15 @@ public class TopicActivity extends BaseActivity {
         // tell the superclass we didnt do anything and it should process the
         // event itself
         return super.dispatchKeyEvent(event);
+    }
+    
+    /**
+     * Override the search button
+     */
+    @Override
+    public boolean onSearchRequested() {
+        Toast.makeText(TopicActivity.this, "test", Toast.LENGTH_SHORT).show();
+        return false;
     }
 
     /**

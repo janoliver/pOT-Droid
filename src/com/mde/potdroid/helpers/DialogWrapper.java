@@ -16,7 +16,7 @@ package com.mde.potdroid.helpers;
 import android.view.View;
 import android.widget.EditText;
 
-import com.janoliver.potdroid.R;
+import com.mde.potdroid.R;
 
 /**
  * This class is needed for the reply and edit dialogs. It allows us to change

@@ -34,7 +34,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.janoliver.potdroid.R;
+import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.NotificationService;
 import com.mde.potdroid.helpers.PotUtils;
 

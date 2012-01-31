@@ -23,7 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import com.janoliver.potdroid.R;
+import com.mde.potdroid.R;
 import com.mde.potdroid.activities.BoardActivity;
 import com.mde.potdroid.activities.BookmarkActivity;
 import com.mde.potdroid.activities.ForumActivity;

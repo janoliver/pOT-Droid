@@ -14,7 +14,7 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 
-import com.janoliver.potdroid.R;
+import com.mde.potdroid.R;
 import com.mde.potdroid.activities.BookmarkActivity;
 import com.mde.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.mde.potdroid.models.Bookmark;

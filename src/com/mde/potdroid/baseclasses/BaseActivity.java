@@ -18,7 +18,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
-import com.janoliver.potdroid.R;
+import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.ObjectManager;
 import com.mde.potdroid.helpers.PotExceptionHandler;
 import com.mde.potdroid.helpers.PotUtils;

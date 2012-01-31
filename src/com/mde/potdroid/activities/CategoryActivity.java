@@ -29,9 +29,8 @@ import android.widget.Toast;
 
 import com.janoliver.potdroid.R;
 import com.mde.potdroid.baseclasses.BaseListActivity;
-import com.mde.potdroid.helpers.PotNotification;
-import com.mde.potdroid.helpers.PotUtils;
 import com.mde.potdroid.helpers.ObjectManager.ParseErrorException;
+import com.mde.potdroid.helpers.PotNotification;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Category;
 
@@ -133,7 +132,7 @@ public class CategoryActivity extends BaseListActivity {
      * This async task shows a loader and updates the forum object.
      * When it is finished, the loader is hidden.
      */
-    class PrepareAdapter extends AsyncTask<Void, Void, Void> {
+    class PrepareAdapter extends AsyncTask<Void, Void, Exception> {
         ProgressDialog mDialog;
 
         @Override
@@ -144,29 +143,28 @@ public class CategoryActivity extends BaseListActivity {
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
-
-            PotUtils.log("da!" + mCategory.getBoards().length);
-            if(mCategory.getName() == "")
-                try {
-                    mObjectManager.getForum(true);
-                    mCategory = mObjectManager.getCategory(mCategory.getId());
-                    
-                } catch (ParseErrorException e) {
-                    Toast.makeText(CategoryActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
-                    this.cancel(true);
-                    mDialog.dismiss();
-                    e.printStackTrace();
-                }
-            
-            mBoards = mCategory.getBoards();
-            return null;
+        protected Exception doInBackground(Void... params) {
+            try {
+                mObjectManager.getForum(false);
+                mCategory = mObjectManager.getCategory(mCategory.getId());
+                mBoards = mCategory.getBoards();
+                return null;
+            } catch (ParseErrorException e) {
+                this.cancel(true);
+                return e;
+            }
         }
 
         @Override
-        protected void onPostExecute(Void result) {
-            fillView();
-            mDialog.dismiss();
+        protected void onPostExecute(Exception e) {
+            if(e == null) {
+                fillView();
+                mDialog.dismiss();
+            } else {
+                Toast.makeText(CategoryActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
+                mDialog.dismiss();
+                e.printStackTrace();
+            }
         }
     }
 }

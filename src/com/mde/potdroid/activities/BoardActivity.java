@@ -295,7 +295,7 @@ public class BoardActivity extends BaseListActivity {
      * preload the view. It shows and handles the progressbar and the messages
      * to the user. The magic happens in the doInBackground() method.
      */
-    class PrepareAdapter extends AsyncTask<Void, Void, Void> {
+    class PrepareAdapter extends AsyncTask<Void, Void, Exception> {
         ProgressDialog mDialog;
 
         @Override
@@ -306,24 +306,27 @@ public class BoardActivity extends BaseListActivity {
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Exception doInBackground(Void... params) {
             try {
                 mObjectManager.getBoardByPage(mBoard.getId(), mPage);
                 mThreads = mBoard.getTopics().get(mPage);
+                return null;
             } catch (ParseErrorException e) {
-                Toast.makeText(BoardActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
                 this.cancel(true);
-                mDialog.dismiss();
-                e.printStackTrace();
+                return e;
             }
-            
-            return null;
         }
 
         @Override
-        protected void onPostExecute(Void result) {
-            fillView();
-            mDialog.dismiss();
+        protected void onPostExecute(Exception e) {
+            if(e == null) {
+                fillView();
+                mDialog.dismiss();
+            } else {
+                Toast.makeText(BoardActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
+                mDialog.dismiss();
+                e.printStackTrace();
+            }
         }
     }
 }

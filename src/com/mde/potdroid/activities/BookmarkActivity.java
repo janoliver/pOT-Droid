@@ -267,7 +267,7 @@ public class BookmarkActivity extends BaseListActivity {
      * This async task shows a loader and updates the bookmark object.
      * When it is finished, the loader is hidden.
      */
-    class PrepareAdapter extends AsyncTask<Void, Void, Void> {
+    class PrepareAdapter extends AsyncTask<Void, Void, Exception> {
         ProgressDialog mDialog;
 
         @Override
@@ -278,22 +278,26 @@ public class BookmarkActivity extends BaseListActivity {
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Exception doInBackground(Void... params) {
             try {
                 mBookmarks = mObjectManager.getBookmarks();
             } catch (ParseErrorException e) {
-                Toast.makeText(BookmarkActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
                 this.cancel(true);
-                mDialog.dismiss();
-                e.printStackTrace();
+                return e;
             }
             return null;
         }
 
         @Override
-        protected void onPostExecute(Void nix) {
-            fillView();
-            mDialog.dismiss();
+        protected void onPostExecute(Exception e) {
+            if(e == null) {
+                fillView();
+                mDialog.dismiss();
+            } else {
+                Toast.makeText(BookmarkActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
+                mDialog.dismiss();
+                e.printStackTrace();
+            }
         }
     }
 }

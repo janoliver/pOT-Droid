@@ -14,11 +14,7 @@
 package com.mde.potdroid.activities;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,8 +29,8 @@ import android.widget.Toast;
 
 import com.janoliver.potdroid.R;
 import com.mde.potdroid.baseclasses.BaseListActivity;
-import com.mde.potdroid.helpers.PotNotification;
 import com.mde.potdroid.helpers.ObjectManager.ParseErrorException;
+import com.mde.potdroid.helpers.PotNotification;
 import com.mde.potdroid.models.Category;
 import com.mde.potdroid.models.Forum;
 
@@ -80,27 +76,6 @@ public class ForumActivity extends BaseListActivity {
                 }
             }
         });
-        
-        // test notifications
-        String ns = Context.NOTIFICATION_SERVICE;
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(ns);
-        int icon = R.drawable.icon;
-        CharSequence tickerText = "Hello";
-        long when = System.currentTimeMillis();
-
-        Notification notification = new Notification(icon, tickerText, when);
-        
-        Context context = getApplicationContext();
-        CharSequence contentTitle = "My notification";
-        CharSequence contentText = "Hello World!";
-        Intent notificationIntent = new Intent(this, ForumActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-
-        notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
-        
-        final int HELLO_ID = 1;
-
-        mNotificationManager.notify(HELLO_ID, notification);
     }
     
     /**
@@ -164,7 +139,7 @@ public class ForumActivity extends BaseListActivity {
      * This async task shows a loader and updates the forum object.
      * When it is finished, the loader is hidden.
      */
-    class PrepareAdapter extends AsyncTask<Void, Void, Void> {
+    class PrepareAdapter extends AsyncTask<Void, Void, Exception> {
         ProgressDialog mDialog;
 
         @Override
@@ -175,25 +150,28 @@ public class ForumActivity extends BaseListActivity {
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Exception doInBackground(Void... params) {
             Forum forum;
             try {
                 forum = mObjectManager.getForum(false);
                 mCats = forum.getCategories();
+                return null;
             } catch (ParseErrorException e) {
-                Toast.makeText(ForumActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
                 this.cancel(true);
-                mDialog.dismiss();
-                e.printStackTrace();
+                return e;
             }
-            
-            return null;
         }
 
         @Override
-        protected void onPostExecute(Void unused) {
-            fillView();
-            mDialog.dismiss();
+        protected void onPostExecute(Exception e) {
+            if(e == null) {
+                fillView();
+                mDialog.dismiss();
+            } else {
+                Toast.makeText(ForumActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
+                mDialog.dismiss();
+                e.printStackTrace();
+            }
         }
     }
 

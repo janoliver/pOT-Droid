@@ -512,7 +512,7 @@ public class TopicActivity extends BaseActivity {
      * This async task shows a loader and updates the topic object.
      * When it is finished, the loader is hidden.
      */
-    class ThreadLoader extends AsyncTask<Integer, String, Void> {
+    class ThreadLoader extends AsyncTask<Integer, String, Exception> {
         private ProgressDialog mDialog;
 
         @Override
@@ -523,7 +523,7 @@ public class TopicActivity extends BaseActivity {
         }
 
         @Override
-        protected Void doInBackground(Integer ... args) {
+        protected Exception doInBackground(Integer ... args) {
             // first argument is 0 or pid, second argument is 0 or page
             Integer page = args[1];
             Integer pid  = args[0];
@@ -538,27 +538,21 @@ public class TopicActivity extends BaseActivity {
                     mThread = mObjectManager.getTopicByPage(mThread.getId(), page, true);
                 }
             } catch (ParseErrorException e) {
-                Toast.makeText(TopicActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
                 this.cancel(true);
-                mDialog.dismiss();
-                e.printStackTrace();
+                return e;
             }
             
             // generate html code. This can take a while depending on the amount of bbcode involved...
             publishProgress("Parse Thread...");
-            TopicHtmlGenerator gen = new TopicHtmlGenerator(mThread, mPage, TopicActivity.this);
-            
             try {
+                TopicHtmlGenerator gen = new TopicHtmlGenerator(mThread, mPage, TopicActivity.this);
                 mHtmlCode = gen.buildTopic();
             } catch (IOException e) {
-                Toast.makeText(TopicActivity.this, "HTML Generierung schiefgelaufen.",
-                        Toast.LENGTH_SHORT).show();
                 this.cancel(true);
-                mDialog.dismiss();
-                e.printStackTrace();
+                return e;
             }
-
             
+            // alles ok.
             return null;
         }
         
@@ -568,9 +562,15 @@ public class TopicActivity extends BaseActivity {
         }
 
         @Override
-        protected void onPostExecute(Void unused) {
-            fillView();
-            mDialog.dismiss();
+        protected void onPostExecute(Exception e) {
+            if(e == null) {
+                fillView();
+                mDialog.dismiss();
+            } else {
+                Toast.makeText(TopicActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
+                mDialog.dismiss();
+                e.printStackTrace();
+            }
         }
     }
     

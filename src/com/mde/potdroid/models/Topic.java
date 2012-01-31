@@ -36,6 +36,7 @@ public class Topic {
     private Boolean mIsGlobal        = false;
     private Boolean mIsSticky        = false;
     private String  mNewreplytoken   = "";
+    private Integer mLastFetchedPage = 0;
     private HashMap<Integer, Post[]> mPosts = new HashMap<Integer, Post[]>();
 
     // constructor for TopicActivity
@@ -111,6 +112,20 @@ public class Topic {
      */
     public void setPostsPerPage(Integer postsPerPage) {
         mPostsPerPage = postsPerPage;
+    }
+    
+    /**
+     * @return the postsPerPage
+     */
+    public Integer getLastFetchedPage() {
+        return mLastFetchedPage;
+    }
+
+    /**
+     * @param postsPerPage the postsPerPage to set
+     */
+    public void setLastFetchedPage(Integer lastFetchedPage) {
+        mLastFetchedPage = lastFetchedPage;
     }
 
     /**

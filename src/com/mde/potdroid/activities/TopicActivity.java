@@ -546,7 +546,7 @@ public class TopicActivity extends BaseActivity {
             try {
                 if(pid > 0) {
                     mThread = mObjectManager.getTopicByPid(mThread.getId(), pid);
-                    mPage   = mThread.getLastPage();
+                    mPage   = mThread.getLastFetchedPage();
                 } else {
                     mThread = mObjectManager.getTopicByPage(mThread.getId(), page, true);
                 }

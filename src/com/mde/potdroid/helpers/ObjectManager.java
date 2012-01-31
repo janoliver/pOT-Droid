@@ -397,7 +397,7 @@ public class ObjectManager {
         t.setPid(pid);
         
         // we update the page variable in case the thread was fetched via pid
-        page = _intAttr(root, "posts", "page", 1);
+        t.setLastFetchedPage(_intAttr(root, "posts", "page", 1));
         
         // parse the op
         User topicAuthor = getUser(_intAttr(op, "user", "id", 0));
@@ -431,7 +431,7 @@ public class ObjectManager {
             // write to object storage
             postsTmp[i++] = newPost;
         }
-        t.setPosts(page, postsTmp);
+        t.setPosts(t.getLastFetchedPage(), postsTmp);
         return true;
     }
     

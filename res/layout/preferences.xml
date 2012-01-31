@@ -14,8 +14,6 @@
             android:key="bookmarkStart"
             android:title="Bookmarks als Startseite" />    
             
-        
-        
         <ListPreference 
              android:title="Ziel mata/search Button"
              android:key="mataloc" 

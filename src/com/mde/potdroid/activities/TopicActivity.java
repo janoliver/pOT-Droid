@@ -501,15 +501,18 @@ public class TopicActivity extends BaseActivity {
         switch (loc) {
         case 0:
             goToBookmarkActivity();
+            break;
         case 2:
             Intent intent = new Intent(this, BoardActivity.class);
             intent.putExtra("BID", 14);
             intent.putExtra("page", 1);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            break;
         case 1:
         default:
             goToForumActivity();
+            break;
         }
     }
 

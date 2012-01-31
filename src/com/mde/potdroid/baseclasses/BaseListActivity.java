@@ -72,7 +72,16 @@ public abstract class BaseListActivity extends ListActivity {
         mSettings           = PreferenceManager.getDefaultSharedPreferences(this);
         mExtras             = getIntent().getExtras();
     }
-
+    
+    /**
+     * Override the search button
+     */
+    @Override
+    public boolean onSearchRequested() {
+        goToPresetActivity();
+        return false;
+    }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -121,20 +130,23 @@ public abstract class BaseListActivity extends ListActivity {
     }
     
     protected void goToPresetActivity() {
-     // app icon in action bar clicked
+        // app icon in action bar clicked
         int loc = new Integer(mSettings.getString("mataloc", "0"));
         switch (loc) {
         case 0:
             goToBookmarkActivity();
+            break;
         case 2:
             Intent intent = new Intent(this, BoardActivity.class);
             intent.putExtra("BID", 14);
             intent.putExtra("page", 1);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            break;
         case 1:
         default:
             goToForumActivity();
+            break;
         }
     }
 

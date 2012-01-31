@@ -175,6 +175,18 @@ public class PreferenceActivityPot extends PreferenceActivity {
                 return true;
             }
         });
+        
+        // restart notification service when another interval is selected.
+        Preference notificationInterval = (Preference) findPreference("notificationrefresh");
+        notificationInterval.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference arg0, Object newValue) {
+                Intent notificationServiceIntent = new Intent(PreferenceActivityPot.this,
+                        NotificationService.class);
+                stopService(notificationServiceIntent);
+                startService(notificationServiceIntent);
+                return true;
+            }
+        });
 
     }
 

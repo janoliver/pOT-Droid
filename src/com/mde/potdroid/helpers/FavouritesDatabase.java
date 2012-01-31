@@ -11,21 +11,36 @@ import android.database.sqlite.SQLiteQueryBuilder;
 
 import com.mde.potdroid.models.Bookmark;
 
+/**
+ * This class is a helper for the sqlite database to store the favourited
+ * bookmarks. So far, this is not a very good implementation. Also, the Bookmark
+ * model should be involved more... 
+ */
 public class FavouritesDatabase {
 
     private static final String  DATABASE_NAME    = "potdroid";
     private static final Integer DATABASE_VERSION = 2;
     
+    // this is the SqliteOpenHelper class we define below
     private FavouritesOpenHelper mFavouritesOpenHelper;
     
+    /**
+     * Constructor. Instantiate the sqliteOpenHelper.
+     */
     public FavouritesDatabase(Context cx) {
         mFavouritesOpenHelper = new FavouritesOpenHelper(cx);
     }
     
+    /**
+     * close the db.
+     */
     public void close() {
         mFavouritesOpenHelper.close();
     }
     
+    /**
+     * Check if a Bookmark is marked as favourite or not.
+     */
     public Boolean isFavourite(Bookmark bm) {
         Cursor qry = query("bm_id = ?", new String[] {bm.getId().toString()}, null);
         if(qry != null) {
@@ -35,6 +50,9 @@ public class FavouritesDatabase {
         return false;
     }
     
+    /**
+     * Delete a bookmark from the favourites database.
+     */
     public void deleteFavourite(Bookmark bm) {
         if(isFavourite(bm)) {
             mFavouritesOpenHelper.getWritableDatabase().delete(FavouritesOpenHelper.TABLENAME, 
@@ -42,6 +60,9 @@ public class FavouritesDatabase {
         }
     } 
     
+    /**
+     * Add a bookmark to the favourites database.
+     */
     public void addFavourite(Bookmark bm) {
         if(!isFavourite(bm)) {
             ContentValues values = new ContentValues();
@@ -51,6 +72,10 @@ public class FavouritesDatabase {
         }
     }
     
+    /**
+     * Clean all the entries from the favourites database, that are not bookmarks
+     * anymore so we don't end up with a messy database.
+     */
     public void cleanFavourites(Map<Integer, Bookmark> bookmarks) {
         Cursor qry = query("", new String[] {}, null);
         Integer bmId;
@@ -65,6 +90,10 @@ public class FavouritesDatabase {
         }
     }
     
+    /**
+     * A query helper. selection is the condition, selectionArgs will replace
+     * ? that appear in the condition and columns are the columns to be fetched.
+     */
     private Cursor query(String selection, 
             String[] selectionArgs, String[] columns) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
@@ -82,6 +111,10 @@ public class FavouritesDatabase {
         return cursor;
     }
     
+    /**
+     * The favourites open helper. This class creates the database if
+     * it doesn't exist.
+     */
     public class FavouritesOpenHelper extends SQLiteOpenHelper {
         public static final String TABLENAME = "favourites";
         

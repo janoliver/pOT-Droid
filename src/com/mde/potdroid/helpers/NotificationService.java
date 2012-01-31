@@ -19,6 +19,14 @@ import com.mde.potdroid.activities.BookmarkActivity;
 import com.mde.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.mde.potdroid.models.Bookmark;
 
+/**
+ * This class provides the service, that checks for notifyable events and
+ * in case it finds one, notifys the user. So far, only the favourited bookmarks
+ * are checked. 
+ * 
+ * The magic happens in checkNewPosts() that returns an integer of new posts.
+ * If it is > 0, a notification is posted.
+ */
 public class NotificationService extends Service {
 
     private NotificationManager mNotificationManager;
@@ -29,6 +37,7 @@ public class NotificationService extends Service {
     private PendingIntent       mContentIntent;
     private ObjectManager       mObjectManager;
     
+    // this is the database helper for the favourites.
     private FavouritesDatabase  mFavouritesDatabase;
     
     private static final Integer NOTIFICATION_ID   = 1;
@@ -37,6 +46,7 @@ public class NotificationService extends Service {
     
 
     /** 
+     * Create the Service. We prepare the notification here.
      */
     @Override
     public void onCreate() {
@@ -56,6 +66,9 @@ public class NotificationService extends Service {
     }
 
     /**
+     * This method is called when the service is started (e.g. when the checkbox
+     * in the potdroid settings page is activated. It starts a timer that checks
+     * for new posts each interval, where interval is also defined in the settings.
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -79,15 +92,25 @@ public class NotificationService extends Service {
         return Service.START_STICKY;
     }
     
+    /**
+     * Update the notification with the message msg.
+     */
     private void showNotification(String msg) {
         mNotification.setLatestEventInfo(getApplicationContext(), CONTENT_TITLE, msg, mContentIntent);
         mNotificationManager.notify(NOTIFICATION_ID, mNotification);
     }
     
+    /**
+     * hide the notification
+     */
     private void hideNotification() {
         mNotificationManager.cancel(NOTIFICATION_ID);
     }
     
+    /**
+     * Check for new posts (there might be more notifyable stuff in the futuer.
+     * Depends on enos, if there is going to be a really cool feature. :)
+     */
     private Integer checkNewPosts() {
         int unread = 0;
         
@@ -111,12 +134,16 @@ public class NotificationService extends Service {
     }
 
     /**
+     * Before we stop the service, we want to cancel the timer and hide the 
+     * notification.
      */
     @Override
     public void onDestroy() {
         hideNotification();
         mTimer.cancel();
+        mFavouritesDatabase.close();
         
+        // this might be unneeded. Just in case...
         if(!mSettings.getBoolean("notifications", false)) {
             stopSelf(mStartId);
         }

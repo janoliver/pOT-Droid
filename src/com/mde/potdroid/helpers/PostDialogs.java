@@ -14,8 +14,16 @@ import com.mde.potdroid.activities.TopicActivity;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 
+/**
+ * This class holds the static classes for the edit and post functionality. (i.e.
+ * gathering the post data and submitting it to the server.
+ * They show loading animations while working. 
+ */
 public class PostDialogs {
 
+    /**
+     * Post writer
+     */
     public static class PostWriter extends AsyncTask<Object, Object, Boolean> {
 
         private ProgressDialog mDialog;
@@ -68,6 +76,9 @@ public class PostDialogs {
         }
     }
 
+    /**
+     * Post editer
+     */
     public static class PostEditer extends AsyncTask<Object, Object, Boolean> {
 
         private ProgressDialog mDialog;

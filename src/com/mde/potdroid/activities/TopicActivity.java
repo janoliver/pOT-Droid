@@ -168,7 +168,7 @@ public class TopicActivity extends BaseActivity {
      */
     @Override
     public boolean onSearchRequested() {
-        Toast.makeText(TopicActivity.this, "test", Toast.LENGTH_SHORT).show();
+        goToPresetActivity();
         return false;
     }
 
@@ -195,24 +195,8 @@ public class TopicActivity extends BaseActivity {
         // Handle item selection
         switch (item.getItemId()) {
         case android.R.id.home:
-            // app icon in action bar clicked
-            int loc = new Integer(mSettings.getString("mataloc", "0"));
-            switch (loc) {
-            case 0:
-                goToBookmarkActivity();
-                return true;
-            case 2:
-                Intent intent = new Intent(this, BoardActivity.class);
-                intent.putExtra("BID", 14);
-                intent.putExtra("page", 1);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                return true;
-            case 1:
-            default:
-                goToForumActivity();
-                return true;
-            }
+            goToPresetActivity();
+            return true;
         case R.id.reply:
             if (mThread.isClosed()) {
                 Toast.makeText(TopicActivity.this, "Thread geschlossen.",
@@ -507,6 +491,26 @@ public class TopicActivity extends BaseActivity {
         Intent intent = new Intent(this, ForumActivity.class);
         intent.putExtra("noredirect", true);
         startActivity(intent);
+    }
+    
+    /**
+     * Go to the activity defined in the settings for the actionbar.
+     */
+    protected void goToPresetActivity() {
+        int loc = new Integer(mSettings.getString("mataloc", "0"));
+        switch (loc) {
+        case 0:
+            goToBookmarkActivity();
+        case 2:
+            Intent intent = new Intent(this, BoardActivity.class);
+            intent.putExtra("BID", 14);
+            intent.putExtra("page", 1);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        case 1:
+        default:
+            goToForumActivity();
+        }
     }
 
     /**

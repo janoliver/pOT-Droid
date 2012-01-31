@@ -85,24 +85,8 @@ public abstract class BaseListActivity extends ListActivity {
         // Handle item selection
         switch (item.getItemId()) {
         case android.R.id.home:
-            // app icon in action bar clicked
-            int loc = new Integer(mSettings.getString("mataloc", "0"));
-            switch (loc) {
-            case 0:
-                goToBookmarkActivity();
-                return true;
-            case 2:
-                Intent intent = new Intent(this, BoardActivity.class);
-                intent.putExtra("BID", 14);
-                intent.putExtra("page", 1);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                return true;
-            case 1:
-            default:
-                goToForumActivity();
-                return true;
-            }
+            goToPresetActivity();
+            return true;
         case R.id.forumact:
             goToForumActivity();
             return true;
@@ -134,6 +118,24 @@ public abstract class BaseListActivity extends ListActivity {
     protected void goToBookmarkActivity() {
         Intent intent = new Intent(this, BookmarkActivity.class);
         startActivity(intent);
+    }
+    
+    protected void goToPresetActivity() {
+     // app icon in action bar clicked
+        int loc = new Integer(mSettings.getString("mataloc", "0"));
+        switch (loc) {
+        case 0:
+            goToBookmarkActivity();
+        case 2:
+            Intent intent = new Intent(this, BoardActivity.class);
+            intent.putExtra("BID", 14);
+            intent.putExtra("page", 1);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        case 1:
+        default:
+            goToForumActivity();
+        }
     }
 
     public abstract void refresh();

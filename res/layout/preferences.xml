@@ -14,10 +14,26 @@
             android:key="bookmarkStart"
             android:title="Bookmarks als Startseite" />    
             
-        <CheckBoxPreference
-            android:key="marknewposts"
-            android:title="Ungelesene Posts markieren" />    
         
+        
+        <ListPreference 
+             android:title="Ziel mata/search Button"
+             android:key="mataloc" 
+             android:summary="Wohin führt der Mata/Search button" 
+             android:entries="@array/mataLoc"
+             android:entryValues="@array/mataLocValues" />
+        
+        <CheckBoxPreference
+            android:key="volumeControl"
+            android:defaultValue="false"
+            android:summary="Volume buttons zum Blättern nutzen."
+            android:title="Volume Buttons blättern!" />
+    </PreferenceCategory>
+    
+    
+    
+    <PreferenceCategory
+            android:title="Style">
         <ListPreference
              android:title="Bilder Laden"
              android:summary="Bilder im Thread laden"
@@ -41,30 +57,18 @@
              android:entries="@array/themes"
              android:entryValues="@array/themesValues" />
         
-        <ListPreference 
-             android:title="Ziel mata Button"
-             android:key="mataloc" 
-             android:summary="Wohin führt der Mata button ab Android 3.0" 
-             android:entries="@array/mataLoc"
-             android:entryValues="@array/mataLocValues" />
-        
         <CheckBoxPreference
-            android:key="volumeControl"
-            android:defaultValue="false"
-            android:summary="Volume buttons zum Blättern nutzen."
-            android:title="Volume Buttons blättern!" />
-        
+            android:key="marknewposts"
+            android:title="Ungelesene Posts markieren" />    
+            
         <CheckBoxPreference
             android:key="gravityInThreads"
             android:defaultValue="false"
             android:summary="Auto-scroll nach links in Threads."
             android:title="Experimentell!!! Scrollt automatisch wieder nach links in der Thread Ansicht." />
-            
-        <Preference
-              android:title="About"
-              android:summary="Über diese App"
-              android:key="aboutPref" />
     </PreferenceCategory>
+    
+    
     
     <PreferenceCategory
             android:title="Benachrichtigungen">
@@ -78,6 +82,16 @@
                 android:summary="Wie häufig nach neuen Posts geschaut wird." 
                 android:entries="@array/notificationRefreshTime"
                 android:entryValues="@array/notificationRefreshTimeValues" />
+    </PreferenceCategory>
+    
+    
+    
+    <PreferenceCategory
+            android:title="Sonstiges">
+            <Preference
+              android:title="About"
+              android:summary="Über diese App"
+              android:key="aboutPref" />
     </PreferenceCategory>
     
 </PreferenceScreen> 

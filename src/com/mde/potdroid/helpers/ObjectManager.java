@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.mde.potdroid.helpers.WebsiteInteraction.NoConnectionException;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.Category;
@@ -100,7 +101,7 @@ public class ObjectManager {
         return mPosts.get(id);
     }
     
-    public Map<Integer, Bookmark> getBookmarks() throws ParseErrorException {
+    public Map<Integer, Bookmark> getBookmarks() throws ParseErrorException, NoConnectionException {
         _parseBookmarks();
         return mBookmarks;
     }
@@ -123,7 +124,7 @@ public class ObjectManager {
         return mCategories.get(id);
     }
     
-    public Forum getForum(Boolean refresh) throws ParseErrorException {
+    public Forum getForum(Boolean refresh) throws ParseErrorException, NoConnectionException {
         if(mForum == null) {
             mForum = new Forum();
             _parseForum();
@@ -137,8 +138,9 @@ public class ObjectManager {
      * This function gets the xml document from the api and
      * parses it. 
      * @throws ParseErrorException 
+     * @throws NoConnectionException 
      */
-    private Boolean _parseBookmarks() throws ParseErrorException {
+    private Boolean _parseBookmarks() throws ParseErrorException, NoConnectionException {
         
         // fetch the xml file and return false if there was an error.
         String url   = PotUtils.BOOKMARK_URL;
@@ -195,8 +197,9 @@ public class ObjectManager {
      * This function gets the xml document from the api and
      * parses it. 
      * @throws ParseErrorException 
+     * @throws NoConnectionException 
      */
-    private Boolean _parseForum() throws ParseErrorException {
+    private Boolean _parseForum() throws ParseErrorException, NoConnectionException {
         
         // fetch the xml file and return false if there was an error.
         String url   = PotUtils.FORUM_URL;
@@ -265,8 +268,9 @@ public class ObjectManager {
      * Get the board by specifying the page and the id.
      * It always refreshes the board before it is returned.
      * @throws ParseErrorException 
+     * @throws NoConnectionException 
      */
-    public Board getBoardByPage(int id, int page) throws ParseErrorException {
+    public Board getBoardByPage(int id, int page) throws ParseErrorException, NoConnectionException {
         _parseBoard(id, page);
         return getBoard(id);
     }
@@ -275,8 +279,9 @@ public class ObjectManager {
      * This function gets the xml document from the api and
      * parses it. 
      * @throws ParseErrorException 
+     * @throws NoConnectionException 
      */
-    private Boolean _parseBoard(int id, int page) throws ParseErrorException {
+    private Boolean _parseBoard(int id, int page) throws ParseErrorException, NoConnectionException {
         
         // fetch the xml file and return false if there was an error.
         String url   = PotUtils.BOARD_URL_BASE + id + "&page=" + page;
@@ -343,8 +348,9 @@ public class ObjectManager {
      * Returns some topic with the posts on page "page". When refresh is
      * true, the topic is always fetched from the internet first.
      * @throws ParseErrorException 
+     * @throws NoConnectionException 
      */
-    public Topic getTopicByPage(int id, int page, Boolean refresh) throws ParseErrorException {
+    public Topic getTopicByPage(int id, int page, Boolean refresh) throws ParseErrorException, NoConnectionException {
         Topic t = mTopics.get(id);
         if(t == null || !t.getPosts().containsKey(page) || refresh) {
             _parseTopic(id, page, 0);
@@ -358,8 +364,9 @@ public class ObjectManager {
      * Since this is used only by the bookmarklist atm., it
      * always refreshes the topic before it is returned.
      * @throws ParseErrorException 
+     * @throws NoConnectionException 
      */
-    public Topic getTopicByPid(int id, int pid) throws ParseErrorException {
+    public Topic getTopicByPid(int id, int pid) throws ParseErrorException, NoConnectionException {
         if(!_parseTopic(id, 0, pid))
             return null;
         return getTopic(id);
@@ -369,8 +376,9 @@ public class ObjectManager {
      * This function gets the xml document from the api and
      * parses it. 
      * @throws ParseErrorException 
+     * @throws NoConnectionException 
      */
-    private Boolean _parseTopic(int id, int page, int pid) throws ParseErrorException {
+    private Boolean _parseTopic(int id, int page, int pid) throws ParseErrorException, NoConnectionException {
         
         // fetch the xml file and return false if there was an error.
         String url   = PotUtils.THREAD_URL_BASE + id + ((pid > 0) ? "&PID=" + pid : "&page=" + page);

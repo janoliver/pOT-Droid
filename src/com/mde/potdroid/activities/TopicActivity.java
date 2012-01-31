@@ -41,7 +41,6 @@ import android.widget.Toast;
 import com.mde.potdroid.R;
 import com.mde.potdroid.baseclasses.BaseActivity;
 import com.mde.potdroid.helpers.DialogWrapper;
-import com.mde.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.mde.potdroid.helpers.PostDialogs;
 import com.mde.potdroid.helpers.PotNotification;
 import com.mde.potdroid.helpers.PotUtils;
@@ -553,7 +552,7 @@ public class TopicActivity extends BaseActivity {
                 } else {
                     mThread = mObjectManager.getTopicByPage(mThread.getId(), page, true);
                 }
-            } catch (ParseErrorException e) {
+            } catch (Exception e) {
                 this.cancel(true);
                 return e;
             }
@@ -564,7 +563,6 @@ public class TopicActivity extends BaseActivity {
                 TopicHtmlGenerator gen = new TopicHtmlGenerator(mThread, mPage, TopicActivity.this);
                 mHtmlCode = gen.buildTopic();
             } catch (IOException e) {
-                this.cancel(true);
                 return e;
             }
             

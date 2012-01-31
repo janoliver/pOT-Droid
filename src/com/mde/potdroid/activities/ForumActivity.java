@@ -29,7 +29,6 @@ import android.widget.Toast;
 
 import com.mde.potdroid.R;
 import com.mde.potdroid.baseclasses.BaseListActivity;
-import com.mde.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.mde.potdroid.helpers.PotNotification;
 import com.mde.potdroid.models.Category;
 import com.mde.potdroid.models.Forum;
@@ -156,8 +155,7 @@ public class ForumActivity extends BaseListActivity {
                 forum = mObjectManager.getForum(false);
                 mCats = forum.getCategories();
                 return null;
-            } catch (ParseErrorException e) {
-                this.cancel(true);
+            } catch (Exception e) {
                 return e;
             }
         }

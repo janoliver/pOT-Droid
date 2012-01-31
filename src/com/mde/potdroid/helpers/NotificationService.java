@@ -29,7 +29,6 @@ import android.preference.PreferenceManager;
 
 import com.mde.potdroid.R;
 import com.mde.potdroid.activities.BookmarkActivity;
-import com.mde.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.mde.potdroid.models.Bookmark;
 
 /**
@@ -135,7 +134,7 @@ public class NotificationService extends Service {
                 if(mFavouritesDatabase.isFavourite(b))
                     unread += b.getNumberOfNewPosts();
             }
-        } catch (ParseErrorException e) {}
+        } catch (Exception e) {}
         return unread;
     }
     

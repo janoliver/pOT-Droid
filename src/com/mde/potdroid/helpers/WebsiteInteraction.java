@@ -81,13 +81,14 @@ public class WebsiteInteraction {
 
     /**
      * Get a xml document from the mods.de api
+     * @throws NoConnectionException 
      */
-    public Document getDocument(String url) {
+    public Document getDocument(String url) throws NoConnectionException {
         Document document;
         
         // no internet connection...
         if (getConnectionType(mContext) == 0) {
-            return null;
+            throw new NoConnectionException();
         }
 
         // our xml parser
@@ -103,7 +104,7 @@ public class WebsiteInteraction {
             HttpEntity entity = response.getEntity();
 
             if ((entity == null) || !entity.isStreaming()) {
-                return null;
+                throw new NoConnectionException();
             }
             
             // get the content input stream and take care of gzip encoding
@@ -116,7 +117,7 @@ public class WebsiteInteraction {
             // build the xml document object
             document = parser.build(instream);
         } catch (Exception e) {
-            return null;
+            throw new NoConnectionException();
         }
         return document;
     }
@@ -260,4 +261,14 @@ public class WebsiteInteraction {
         }
     }
 
+    /**
+     * This is the exception that is thrown when internet connection fails.
+     */
+    public class NoConnectionException extends Exception {
+        private static final long serialVersionUID = 1L;
+
+        public NoConnectionException() {
+            super("No internet connection!");
+        }
+    }
 }

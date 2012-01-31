@@ -35,7 +35,6 @@ import android.widget.Toast;
 
 import com.mde.potdroid.R;
 import com.mde.potdroid.baseclasses.BaseListActivity;
-import com.mde.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.mde.potdroid.helpers.PotNotification;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Topic;
@@ -214,7 +213,7 @@ public class BoardActivity extends BaseListActivity {
                 mBoard = mObjectManager.getBoardByPage(mBoard.getId(), mPage+1);
                 mPage++;
                 refresh();
-            } catch (ParseErrorException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             
@@ -223,7 +222,7 @@ public class BoardActivity extends BaseListActivity {
                 mBoard = mObjectManager.getBoardByPage(mBoard.getId(), 1);
                 mPage  = 1;
                 refresh();
-            } catch (ParseErrorException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             
@@ -242,7 +241,7 @@ public class BoardActivity extends BaseListActivity {
                 mBoard = mObjectManager.getBoardByPage(mBoard.getId(), mPage-1);
                 mPage--;
                 refresh();
-            } catch (ParseErrorException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             
@@ -251,7 +250,7 @@ public class BoardActivity extends BaseListActivity {
                 mBoard = mObjectManager.getBoardByPage(mBoard.getId(), mBoard.getNumberOfPages());
                 mPage  = mBoard.getNumberOfPages();
                 refresh();
-            } catch (ParseErrorException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             
@@ -311,8 +310,7 @@ public class BoardActivity extends BaseListActivity {
                 mObjectManager.getBoardByPage(mBoard.getId(), mPage);
                 mThreads = mBoard.getTopics().get(mPage);
                 return null;
-            } catch (ParseErrorException e) {
-                this.cancel(true);
+            } catch (Exception e) {
                 return e;
             }
         }

@@ -38,7 +38,6 @@ import android.widget.Toast;
 import com.mde.potdroid.R;
 import com.mde.potdroid.baseclasses.BaseListActivity;
 import com.mde.potdroid.helpers.FavouritesDatabase;
-import com.mde.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.mde.potdroid.helpers.PotNotification;
 import com.mde.potdroid.helpers.PotUtils;
 import com.mde.potdroid.models.Bookmark;
@@ -281,8 +280,7 @@ public class BookmarkActivity extends BaseListActivity {
         protected Exception doInBackground(Void... params) {
             try {
                 mBookmarks = mObjectManager.getBookmarks();
-            } catch (ParseErrorException e) {
-                this.cancel(true);
+            } catch (Exception e) {
                 return e;
             }
             return null;

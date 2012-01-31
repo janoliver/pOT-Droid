@@ -29,7 +29,6 @@ import android.widget.Toast;
 
 import com.mde.potdroid.R;
 import com.mde.potdroid.baseclasses.BaseListActivity;
-import com.mde.potdroid.helpers.ObjectManager.ParseErrorException;
 import com.mde.potdroid.helpers.PotNotification;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Category;
@@ -149,8 +148,7 @@ public class CategoryActivity extends BaseListActivity {
                 mCategory = mObjectManager.getCategory(mCategory.getId());
                 mBoards = mCategory.getBoards();
                 return null;
-            } catch (ParseErrorException e) {
-                this.cancel(true);
+            } catch (Exception e) {
                 return e;
             }
         }

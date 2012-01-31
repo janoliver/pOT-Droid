@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 Jan Oliver Oelerich <janoliver@oelerich.org>
+ * Copyright (C) 2012 mods.de community 
  *
  * Everyone is permitted to copy and distribute verbatim or modified
  * copies of this software, and changing it is allowed as long as the 

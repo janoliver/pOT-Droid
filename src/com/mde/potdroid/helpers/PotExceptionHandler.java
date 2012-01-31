@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 Jan Oliver Oelerich <janoliver@oelerich.org>
+ * Copyright (C) 2012 mods.de community 
  *
  * Everyone is permitted to copy and distribute verbatim or modified
  * copies of this software, and changing it is allowed as long as the 
@@ -9,12 +9,6 @@
  *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
  *
  *  0. You just DO WHAT THE FUCK YOU WANT TO. 
- *  
- *  
- *  
- *  This class was actually taken from here: 
- *  http://stackoverflow.com/questions/601503/how-do-i-obtain-crash-data-from-my-android-application
- *  Thanks for the input!
  */
 
 package com.mde.potdroid.helpers;

@@ -117,6 +117,7 @@ public class WebsiteInteraction {
             // build the xml document object
             document = parser.build(instream);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new NoConnectionException();
         }
         return document;

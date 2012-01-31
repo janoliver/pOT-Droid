@@ -280,10 +280,10 @@ public class BookmarkActivity extends BaseListActivity {
         protected Exception doInBackground(Void... params) {
             try {
                 mBookmarks = mObjectManager.getBookmarks();
+                return null;
             } catch (Exception e) {
                 return e;
             }
-            return null;
         }
 
         @Override

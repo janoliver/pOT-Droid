@@ -410,7 +410,7 @@ public class ObjectManager {
         t.setIsImportant(_flagAttr(flags, "is-important", "value", "1"));
         t.setIsAnnouncement(_flagAttr(flags, "is-announcement", "value", "1"));
         t.setIsGlobal(_flagAttr(flags, "is-global", "value", "1"));
-        t.setLastPage((int) Math.ceil((double) t.getNumberOfPosts() / t.getPostsPerPage()));
+        t.setLastPage((int) Math.ceil((double) (t.getNumberOfPosts() + 1) / t.getPostsPerPage()));
         t.setNewreplytoken(_strAttr(root, "token-newreply", "value", ""));
         t.setBoard(new Board(_intAttr(root, "in-board", "id", 0)));
         

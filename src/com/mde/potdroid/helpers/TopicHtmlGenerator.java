@@ -174,8 +174,8 @@ public class TopicHtmlGenerator {
      * replaces, if the setting is right, all images with buttons to show it
      */
     private String parseImages(String code) {
-        int loadImages = new Integer(PreferenceManager.getDefaultSharedPreferences(mActivity)
-                .getString("loadImages", "0"));
+        int loadImages = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(mActivity)
+                .getString("loadImages", "0")); 
 
         if ((loadImages == 0)
                 || ((WebsiteInteraction.getConnectionType(mActivity) == 2) && (loadImages == 1))) {

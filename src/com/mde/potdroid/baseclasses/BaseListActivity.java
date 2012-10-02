@@ -29,7 +29,6 @@ import com.mde.potdroid.activities.BookmarkActivity;
 import com.mde.potdroid.activities.ForumActivity;
 import com.mde.potdroid.activities.PreferenceActivityPot;
 import com.mde.potdroid.helpers.ObjectManager;
-import com.mde.potdroid.helpers.PotExceptionHandler;
 import com.mde.potdroid.helpers.PotUtils;
 import com.mde.potdroid.helpers.WebsiteInteraction;
 
@@ -50,12 +49,8 @@ public abstract class BaseListActivity extends ListActivity {
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        // set our own exception handler
-        Thread.setDefaultUncaughtExceptionHandler(new PotExceptionHandler(
-                PotUtils.SDCARD_ERRLOG_LOCATION, null));
-        
         // set the theme
-        int theme = new Integer(PreferenceManager.getDefaultSharedPreferences(this).getString(
+        int theme = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getString(
                 "theme", "0"));
         if(theme == THEME_LIGHT)
             this.setTheme(R.style.PotLight);
@@ -131,7 +126,7 @@ public abstract class BaseListActivity extends ListActivity {
     
     protected void goToPresetActivity() {
         // app icon in action bar clicked
-        int loc = new Integer(mSettings.getString("mataloc", "0"));
+        int loc = Integer.valueOf(mSettings.getString("mataloc", "0"));
         switch (loc) {
         case 0:
             goToBookmarkActivity();

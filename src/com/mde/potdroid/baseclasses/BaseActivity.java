@@ -20,7 +20,6 @@ import android.preference.PreferenceManager;
 
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.ObjectManager;
-import com.mde.potdroid.helpers.PotExceptionHandler;
 import com.mde.potdroid.helpers.PotUtils;
 import com.mde.potdroid.helpers.WebsiteInteraction;
 
@@ -39,10 +38,6 @@ public abstract class BaseActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        // set our own exception handler
-        Thread.setDefaultUncaughtExceptionHandler(new PotExceptionHandler(
-                PotUtils.SDCARD_ERRLOG_LOCATION, null));
-        
         super.onCreate(savedInstanceState);
 
         mWebsiteInteraction = PotUtils.getWebsiteInteractionInstance(this);
@@ -51,7 +46,7 @@ public abstract class BaseActivity extends Activity {
         mExtras             = getIntent().getExtras();
         
         // set the theme
-        int theme = new Integer(mSettings.getString("theme", "0"));
+        int theme = Integer.valueOf(mSettings.getString("theme", "0"));
         if(theme == THEME_LIGHT)
             this.setTheme(R.style.PotLight);
         if(theme == THEME_DARK)

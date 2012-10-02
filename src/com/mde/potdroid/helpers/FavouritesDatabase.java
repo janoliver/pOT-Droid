@@ -94,7 +94,7 @@ public class FavouritesDatabase {
         Integer bmId;
         if (qry != null) {
             while (qry.isAfterLast() == false) {
-                bmId = new Integer(qry.getString(0));
+                bmId = Integer.valueOf(qry.getString(0));
                 if(!bookmarks.containsKey(bmId)) {
                     deleteFavourite(new Bookmark(bmId));
                 }

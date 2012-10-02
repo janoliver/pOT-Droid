@@ -3,9 +3,9 @@
 	<classpathentry including="com/" kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="lib" path="lib/jdom.jar"/>
-	<classpathentry kind="lib" path="lib/kefirbb.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jdom.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/kefirbb.jar"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry kind="lib" path="lib/miniTemplator.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/miniTemplator.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

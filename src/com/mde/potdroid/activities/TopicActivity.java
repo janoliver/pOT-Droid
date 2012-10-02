@@ -626,6 +626,15 @@ public class TopicActivity extends BaseActivity {
                     getDefaultSharedPreferences(TopicActivity.this).
                     getBoolean("gravityInThreads", false);
         }
+        
+        /**
+         * Get the setting for the duration of touch to edit/cite
+         */
+        public int getTouchDuration() {
+            return Integer.valueOf(PreferenceManager.
+                    getDefaultSharedPreferences(TopicActivity.this).
+                    getString("topicTouchDuration", "500")).intValue();
+        }
 
     }
 

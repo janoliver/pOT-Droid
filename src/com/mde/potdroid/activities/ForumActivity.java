@@ -60,7 +60,7 @@ public class ForumActivity extends BaseListActivity {
         }
 
         // the view
-        setListAdapter(null);
+        setListAdapter(null); 
 
         // load the data and display it
         new PrepareAdapter().execute((Void[]) null);

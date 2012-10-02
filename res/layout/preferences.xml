@@ -64,6 +64,13 @@
             android:defaultValue="false"
             android:summary="Auto-scroll nach links in Threads."
             android:title="Experimentell!!! Scrollt automatisch wieder nach links in der Thread Ansicht." />
+        
+        <ListPreference 
+            android:title="Touch Dauer für Post-Menüs"
+            android:key="topicTouchDuration" 
+            android:summary="Touch Dauer bis das Post-Menü erscheint." 
+            android:entries="@array/touchDuration"
+            android:entryValues="@array/touchDurationValues" />
     </PreferenceCategory>
     
     

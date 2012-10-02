@@ -13,7 +13,8 @@
         $('.loaded').each(function() {
         	this.addEventListener("touchstart", function(e) {
         		window.clearTimeout(touching2);
-        		touching2 = window.setTimeout(imgLongTouch, 500, $(this));
+        		touching2 = window.setTimeout(imgLongTouch, window.JSInterface.getTouchDuration(),
+        				$(this));
         	}, false);
         	this.addEventListener("touchmove", function(e) {
         		window.clearTimeout(touching2);
@@ -33,7 +34,8 @@
     $('.post').each(function() {
     	this.addEventListener("touchstart", function(e) {
     		window.clearTimeout(touching);
-    		touching = window.setTimeout(postLongTouch, 500, $(this).attr("id"));
+    		touching = window.setTimeout(postLongTouch, window.JSInterface.getTouchDuration(), 
+    				$(this).attr("id"));
     	}, false);
     	this.addEventListener("touchmove", function(e) {
     		window.clearTimeout(touching);

@@ -2,6 +2,22 @@
  Changelog
 ===========
 
+Changelog Alpha 18 (pOT Droid 0.18)
+===================================
+
+Einmal neu Einloggen ist wie immer nötig!
+
+- Eine Berechtigung weniger, Logs werden nicht mehr auf die SD Karte geschrieben
+- Passwort wird nicht mehr gespeichert.
+- Threadseiten Bug gefixt (Danke Danzelot!)
+- Orientierungsbug gefixt
+- Neue Einstellung: Dauer des nötigen Touches für das Post Menü. (Das mit Zitieren usw.)
+
+Changelog Alpha 17 (pOT Droid 0.17)
+===================================
+
+Hab ich alles vergessen.
+
 Changelog Alpha 16 (pOT Droid 0.16)
 ===================================
 
@@ -15,7 +31,6 @@ Einmal neu Einloggen ist wie immer nötig!
 - Mata BUtton in der Actionbar hat ein in den Settings einstellbares Ziel.
 - Migration zu github für bessere Zusammenarbeit. Mal gucken. :D
 - neue bbcode tags mod/spoiler, sowie b/k gefixt.
-
 
 Changelog Alpha 15 (pOT Droid 0.15)
 ===================================

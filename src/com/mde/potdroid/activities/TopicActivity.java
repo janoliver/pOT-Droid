@@ -15,6 +15,7 @@ package com.mde.potdroid.activities;
 
 import java.io.IOException;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -65,7 +66,8 @@ public class TopicActivity extends BaseActivity {
     /**
      * Starting point of the activity.
      */
-    @Override
+    @SuppressLint("SetJavaScriptEnabled")
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -102,9 +104,11 @@ public class TopicActivity extends BaseActivity {
     public class Orientation {
         public Topic mTopic;
         public Integer mPage;
-        public Orientation(Topic t, Integer p) {
+        public String mHtmlCode;
+        public Orientation(Topic t, Integer p, String s) {
             mTopic = t;
             mPage = p;
+            mHtmlCode = s;
         }
     }
 
@@ -113,7 +117,7 @@ public class TopicActivity extends BaseActivity {
      */
     @Override
     public Object onRetainNonConfigurationInstance() {
-        final Orientation o = new Orientation(mThread, mPage);
+        final Orientation o = new Orientation(mThread, mPage, mHtmlCode);
         return o;
     }
 
@@ -496,7 +500,7 @@ public class TopicActivity extends BaseActivity {
      * Go to the activity defined in the settings for the actionbar.
      */
     protected void goToPresetActivity() {
-        int loc = new Integer(mSettings.getString("mataloc", "0"));
+        int loc = Integer.valueOf(mSettings.getString("mataloc", "0"));
         switch (loc) {
         case 0:
             goToBookmarkActivity();
@@ -601,7 +605,7 @@ public class TopicActivity extends BaseActivity {
          */
         public void showPostContextMenu(String id) {
             id = id.substring(4);
-            mContextMenuInfo = new Integer(id).intValue();
+            mContextMenuInfo = Integer.valueOf(id).intValue();
             registerForContextMenu(mWebView);
             openContextMenu(mWebView);
             unregisterForContextMenu(mWebView);

@@ -124,7 +124,7 @@ public class WebsiteInteraction {
     }
 
     // login
-    public Boolean login() throws Exception {
+    public Boolean login(String password) throws Exception {
 
         // first, create new user agent
         // and recreate the httpclient
@@ -140,7 +140,6 @@ public class WebsiteInteraction {
         // add login data
         List<NameValuePair> nvps = new ArrayList<NameValuePair>();
         String username = mSettings.getString("user_name", "");
-        String password = mSettings.getString("user_password", "");
         if (username.equals("") || password.equals("")) {
             return false;
         }
@@ -171,7 +170,7 @@ public class WebsiteInteraction {
         
         if (m.find()) {
             // set user id
-            editor.putInt("user_id", new Integer(m.group(1)));
+            editor.putInt("user_id", Integer.valueOf(m.group(1)));
             editor.commit();
             
             // url for the setcookie found, send a request

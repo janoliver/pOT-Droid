@@ -68,11 +68,9 @@ public class PreferenceActivityPot extends PreferenceActivity {
 
                 // set values
                 final EditText user = (EditText) dialog.findViewById(R.id.user_name);
+                final EditText pw = (EditText) dialog.findViewById(R.id.user_password);
                 final String oldUser = mSettings.getString("user_name", "");
                 user.setText(oldUser);
-                final EditText pw = (EditText) dialog.findViewById(R.id.user_password);
-                final String oldPw = mSettings.getString("user_password", "");
-                pw.setText(oldPw);
 
                 Button loginButton = (Button) dialog.findViewById(R.id.login);
                 loginButton.setOnClickListener(new OnClickListener() {
@@ -84,7 +82,7 @@ public class PreferenceActivityPot extends PreferenceActivity {
                         editor.commit();
                         try {
                             if (PotUtils.getWebsiteInteractionInstance(PreferenceActivityPot.this)
-                                    .login()) {
+                                    .login(pw.getText().toString())) {
                                 Toast.makeText(PreferenceActivityPot.this,
                                         "Erfolgreich eingeloggt", Toast.LENGTH_LONG).show();
                                 dialog.dismiss();
@@ -92,13 +90,13 @@ public class PreferenceActivityPot extends PreferenceActivity {
                             } else {
                                 // set pref values back
                                 editor.putString("user_name", oldUser);
-                                editor.putString("user_password", oldPw);
                                 editor.commit();
                                 Toast.makeText(PreferenceActivityPot.this, "Falsche Zugangsdaten!",
                                         Toast.LENGTH_LONG).show();
                             }
                         } catch (Exception e) {
-                            Toast.makeText(PreferenceActivityPot.this, "ahhh", Toast.LENGTH_LONG);
+                            Toast.makeText(PreferenceActivityPot.this, "Unbekannter Fehler", 
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
                 });

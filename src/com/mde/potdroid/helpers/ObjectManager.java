@@ -333,7 +333,7 @@ public class ObjectManager {
             newTopic.setIsGlobal(_flagAttr(flags, "is-global", "value", "1"));
             newTopic.setTitle(_strVal(el, "title", ""));
             newTopic.setSubTitle(_strVal(el, "subtitle", ""));
-            newTopic.setNumberOfPosts(_intAttr(el, "number-of-replies", "value", 0));
+            newTopic.setNumberOfPosts(_intAttr(el, "number-of-replies", "value", 0) + 1);
             newTopic.setNumberOfHits(_intAttr(el, "number-of-hits", "value", 0));
             newTopic.setLastPage(_intAttr(el, "number-of-pages", "value", 0));
 
@@ -403,7 +403,7 @@ public class ObjectManager {
         Topic t = getTopic(id);
         t.setTitle(_strVal(root, "title", ""));
         t.setSubTitle(_strVal(root, "subtitle", ""));
-        t.setNumberOfPosts(_intAttr(root, "number-of-replies", "value", 0));
+        t.setNumberOfPosts(_intAttr(root, "number-of-replies", "value", 0)+1);
         t.setNumberOfHits(_intAttr(root, "number-of-hits", "value", 0));
         t.setIsClosed(_flagAttr(flags, "is-closed", "value", "1"));
         t.setIsSticky(_flagAttr(flags, "is-sticky", "value", "1"));
@@ -458,7 +458,7 @@ public class ObjectManager {
     
     private int _intAttr(Element el, String attribute) {
         String tmp = el.getAttributeValue(attribute);
-        return new Integer(tmp).intValue();
+        return Integer.valueOf(tmp).intValue();
     }
     
     private int _intAttr(Element el, String child, String attribute, int altValue) {
@@ -466,7 +466,7 @@ public class ObjectManager {
         if(ch == null)
             return altValue;
         String tmp = ch.getAttributeValue(attribute);
-        return new Integer(tmp).intValue();
+        return Integer.valueOf(tmp).intValue();
     }
     
     private Boolean _flagAttr(Element el, String child, String attribute, String eq) {

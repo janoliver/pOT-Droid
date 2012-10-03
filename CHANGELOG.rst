@@ -2,6 +2,11 @@
  Changelog
 ===========
 
+Changelog Alpha 19 (pOT Droid 0.19)
+===================================
+
+- Orientierungsbug gefixt.
+
 Changelog Alpha 18 (pOT Droid 0.18)
 ===================================
 

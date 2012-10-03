@@ -95,6 +95,7 @@ public class TopicActivity extends BaseActivity {
             mThread = o.mTopic;
             mPage   = o.mPage;
             mHtmlCode = o.mHtmlCode;
+            mPid    = o.mPid;
             fillView();
         }
     }
@@ -106,10 +107,12 @@ public class TopicActivity extends BaseActivity {
         public Topic mTopic;
         public Integer mPage;
         public String mHtmlCode;
-        public Orientation(Topic t, Integer p, String s) {
+        public Integer mPid;
+        public Orientation(Topic t, Integer p, String s, Integer pid) {
             mTopic = t;
             mPage = p;
             mHtmlCode = s;
+            mPid = pid;
         }
     }
 
@@ -118,7 +121,7 @@ public class TopicActivity extends BaseActivity {
      */
     @Override
     public Object onRetainNonConfigurationInstance() {
-        final Orientation o = new Orientation(mThread, mPage, mHtmlCode);
+        final Orientation o = new Orientation(mThread, mPage, mHtmlCode, mPid);
         return o;
     }
 

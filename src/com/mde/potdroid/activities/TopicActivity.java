@@ -94,6 +94,7 @@ public class TopicActivity extends BaseActivity {
             Orientation o = threadSaved;
             mThread = o.mTopic;
             mPage   = o.mPage;
+            mHtmlCode = o.mHtmlCode;
             fillView();
         }
     }

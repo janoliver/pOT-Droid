@@ -1,9 +1,11 @@
 pOT Droid Version XVERSIONX
 
-This app is dedicated to all the pOTlers in the world. 
+This app is dedicated to all the pOTlers in the nation. 
 
-Wer intelligente, witzige oder typisch nerdige Vorschläge hat, was hier reinkönnte, möge sie mir mitteilen.
-
-Danke an Noch-ein-Kamel und Tarantula fürs Helfen.
+Danke an 
+* Noch-ein-Kamel
+* Tarantula
+* Danzelot
+* Klappfallscheibe
 
 Grüße, Oli

@@ -22,18 +22,15 @@ import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.xml.sax.InputSource;
-
-import ru.perm.kefir.bbcode.BBProcessorFactory;
-import ru.perm.kefir.bbcode.TextProcessor;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import biz.source_code.miniTemplator.MiniTemplator;
 import biz.source_code.miniTemplator.MiniTemplator.TemplateSpecification;
+import biz.source_code.miniTemplator.MiniTemplator.VariableNotDefinedException;
 
-import com.mde.potdroid.R;
+import com.mde.potdroid.helpers.BBCodeParser.UnknownErrorException;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 
@@ -48,16 +45,9 @@ public class TopicHtmlGenerator {
     private Resources mResources;
     private Activity  mActivity;
     private Integer   mPage;
+    private BBCodeParser mParser;
     private SharedPreferences mSettings;
-    
-    // precompiled patterns
-    private Pattern   mPatternList1 = Pattern.compile("<ul>(.*?)\\[\\*\\]", Pattern.DOTALL);
-    private Pattern   mPatternList2 = Pattern.compile("\\[\\*\\]");
-    private Pattern   mPatternList3 = Pattern.compile("</ul>");
     private Pattern   mPatternImage = Pattern.compile("<img src=\"([^#]*?)\" />");
-    private Pattern   mPatternQuote = Pattern.compile("HEAD(.*?)CONTENT");
-    private Pattern   mPatternCase  = Pattern.compile("\\[[/]?[A-Z]+(.*?)\\]");
-    
     private HashMap<String, String> mSmileys = new HashMap<String, String>();
 
     public TopicHtmlGenerator(Topic topic, Integer page, Activity callingActivity) {
@@ -89,12 +79,17 @@ public class TopicHtmlGenerator {
         mSmileys.put(":eek:", "icon15.gif");
         mSmileys.put(":o", "icon16.gif");
         mSmileys.put(":roll:", "icon18.gif");
+        
+        // BBCode Parser
+        mParser = prepareBbCodeParser();
     }
 
     /**
      * Returns html code of the topic.
+     * @throws UnknownErrorException 
+     * @throws VariableNotDefinedException 
      */
-    public String buildTopic() throws IOException {
+    public String buildTopic() throws IOException, VariableNotDefinedException {
 
         Post[] posts = mTopic.getPosts().get(mPage);
 
@@ -117,12 +112,14 @@ public class TopicHtmlGenerator {
         // build the topic
         t.setVariable("css", cssFile);
         
+        // 
+        
         for (int i = 0; i < posts.length; i++) {
             t.setVariable("number", i);
             t.setVariable("postId", posts[i].getId());
             t.setVariable("author", posts[i].getAuthor().getNick());
             t.setVariable("date", posts[i].getDate());
-            t.setVariable("postText", postToHtml(posts[i]));
+            t.setVariable("postText", parseBbCode(posts[i]));
             t.setVariable("postTitle", posts[i].getTitle());
             
             if (posts[i].getAuthor().getId() == PotUtils.getObjectManagerInstance(mActivity)
@@ -137,12 +134,29 @@ public class TopicHtmlGenerator {
         
         String htmlCode = t.generateOutput();
         
-        htmlCode = parseQuotes(htmlCode);
         htmlCode = parseImages(htmlCode);
-        htmlCode = parseLists(htmlCode);
         htmlCode = parseSmileys(htmlCode);
         
         return htmlCode;
+    }
+
+    /**
+     * Replace [quote][b] with [quote] and so on (remove bold from quotes)
+     * and fire up the bbcode parser.
+     */
+    private String parseBbCode(Post post) {
+        
+        String input = post.getText();
+        
+        input = input.replaceAll("\\[quote([^\\]]*)\\]\\[b\\]",
+                "[quote$1]");
+        input = input.replaceAll("\\[/b\\]\\[/quote\\]",
+                "[/quote]");
+        try {
+            return mParser.parse(input);
+        } catch (UnknownErrorException e) {
+            return post.getText();
+        }
     }
 
     /**
@@ -156,17 +170,6 @@ public class TopicHtmlGenerator {
             code = code.replace(me.getKey(),
                     "<img src=\"file:///android_asset/smileys/" + me.getValue() + "\" />");
         }
-        return code;
-    }
-
-    /**
-     * Returns parsed lists.
-     */
-    private String parseLists(String code) {
-        code = mPatternList1.matcher(code).replaceAll("<ul><li>");
-        code = mPatternList2.matcher(code).replaceAll("</li><li>");
-        code = mPatternList3.matcher(code).replaceAll("</li></ul>");
-        
         return code;
     }
 
@@ -192,55 +195,161 @@ public class TopicHtmlGenerator {
         }
         return code;
     }
+    
+    private BBCodeParser prepareBbCodeParser() {
+        BBCodeParser a = new BBCodeParser();
 
-    /**
-     * Parses quotes.
-     */
-    private String parseQuotes(String code) {
-        final Matcher matcher = mPatternQuote.matcher(code);
-        while (matcher.find()) {
-            final MatchResult matchResult = matcher.toMatchResult();
-            final String replacement = parseQuoteHead(matchResult.group(1));
-            code = code.substring(0, matchResult.start()) + replacement
-                    + code.substring(matchResult.end());
-            matcher.reset(code);
-        }
-        return code;
-    }
-
-    /**
-     * Takes care of the case, where no author is present in the quote header.
-     */
-    private String parseQuoteHead(String head) {
-        String[] attrs = head.split(",", 3);
-
-        if (attrs.length < 3) {
-            return head;
-        }
-        attrs[2] = attrs[2].replaceAll("\"", "");
-
-        return "<div class=\"author\">" + attrs[2] + "</div>";
-    }
-
-    /**
-     * Parses the post content itself. Uses KefirBB.
-     */
-    private String postToHtml(Post post) {
-        String text = post.getText();
         
-        // convert tags to lower case
-        final Matcher matcher = mPatternCase.matcher(text);
-        while (matcher.find()) {
-            final MatchResult matchResult = matcher.toMatchResult();
-            final String replacement = matchResult.group(0).toLowerCase();
-            text = text.substring(0, matchResult.start()) + replacement
-                    + text.substring(matchResult.end());
-            matcher.reset(text);
-        }
+        String allNodes = "string, b, u, s, i, mod, spoiler, " +
+                "code, img, quote, url, list, table";
+        
+        BBCodeParser.BBCodeTag b;
+        
+        b = new BBCodeParser.BBCodeTag();
+        b.mTag = "b";
+        b.mDescription = "Bold";
+        b.allow(allNodes);
+        b.html("<strong>{0}</strong>");
+        b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
+        b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_REOPEN;
+        a.registerTag(b);
+        
+        b = new BBCodeParser.BBCodeTag();
+        b.mTag = "u";
+        b.mDescription = "Underline";
+        b.allow(allNodes);
+        b.html("<ul>{0}</u>");
+        b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
+        b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_REOPEN;
+        a.registerTag(b);
+        
+        b = new BBCodeParser.BBCodeTag();
+        b.mTag = "s";
+        b.mDescription = "Strike";
+        b.allow(allNodes);
+        b.html("<strike>{0}</strike>");
+        b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
+        b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_REOPEN;
+        a.registerTag(b);
+        
+        b = new BBCodeParser.BBCodeTag();
+        b.mTag = "i";
+        b.mDescription = "Italic";
+        b.allow(allNodes);
+        b.html("<em>{0}</em>");
+        b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
+        b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_REOPEN;
+        a.registerTag(b);
+        
+        b = new BBCodeParser.BBCodeTag();
+        b.mTag = "spoiler";
+        b.mDescription = "Spoiler";
+        b.allow(allNodes);
+        b.html("<span class=\"spoiler\">{0}</span>");
+        b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
+        b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_REOPEN;
+        a.registerTag(b);
+        
+        b = new BBCodeParser.BBCodeTag();
+        b.mTag = "code";
+        b.mDescription = "Code";
+        b.allow("string");
+        b.html("<span class=\"code\">{0}</span>");
+        b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
+        b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_REOPEN;
+        a.registerTag(b);
+        
+        b = new BBCodeParser.BBCodeTag();
+        b.mTag = "mod";
+        b.mDescription = "Highlight";
+        b.allow(allNodes);
+        b.html("<span class=\"mod\">{0}</span>");
+        b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
+        b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_REOPEN;
+        a.registerTag(b);
+        
+        b = new BBCodeParser.BBCodeTag();
+        b.mTag = "list";
+        b.mDescription = "List";
+        b.allow("*");
+        b.html(0, "<ul>{0}</ul>");
+        b.html(1, "<ol>{0}</ol>");
+        b.mInvalidRecoveryAddTag = "*";
+        b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_ADD;
+        b.mInvalidStringRecovery = BBCodeParser.BBCodeTag.RECOVERY_ADD;
+        b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
+        a.registerTag(b);
+        
+        b = new BBCodeParser.BBCodeTag();
+        b.mTag = "quote";
+        b.mDescription = "Zitat";
+        b.allow(allNodes);
+        b.html(0, "<blockquote>{0}</blockquote>");
+        b.html(3, "<blockquote><div class=\"author\">{3}</div>{0}</blockquote>");
+        b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
+        b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_REOPEN;
+        a.registerTag(b);
+        
+        b = new BBCodeParser.BBCodeTag();
+        b.mTag = "*";
+        b.mDescription = "Listitem";
+        b.allow(allNodes);
+        b.html("<li>{0}</li>");
+        b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
+        b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
+        a.registerTag(b);
+        
+        b = new BBCodeParser.BBCodeTag();
+        b.mTag = "url";
+        b.mDescription = "Link";
+        b.allow("string");
+        b.html(0, "<a href=\"{0}\">{0}</a>");
+        b.html(1, "<a href=\"{1}\">{0}</a>");
+        b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_STRING;
+        b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_STRING;
+        a.registerTag(b);
+        
+        b = new BBCodeParser.BBCodeTag();
+        b.mTag = "img";
+        b.mDescription = "Image";
+        b.allow("string");
+        b.html("<img src=\"{0}\">");
+        b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
+        b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_REOPEN;
+        a.registerTag(b);
 
-        InputSource bbcodeConf = new InputSource(mResources.openRawResource(R.raw.bbcode));
-        TextProcessor proc = BBProcessorFactory.getInstance().create(bbcodeConf.getByteStream());
-        return proc.process(text.replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br />"));
+        b = new BBCodeParser.BBCodeTag();
+        b.mTag = "table";
+        b.mDescription = "Table";
+        b.allow("--");
+        b.html("<table>{0}</table>");
+        b.mInvalidRecoveryAddTag = "--";
+        b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_ADD;
+        b.mInvalidStringRecovery = BBCodeParser.BBCodeTag.RECOVERY_ADD;
+        b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
+        a.registerTag(b);
+        
+        b = new BBCodeParser.BBCodeTag();
+        b.mTag = "--";
+        b.mDescription = "TableRow";
+        b.allow("||");
+        b.html("<tr>{0}</tr>");
+        b.mInvalidRecoveryAddTag = "||";
+        b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_ADD;
+        b.mInvalidStringRecovery = BBCodeParser.BBCodeTag.RECOVERY_ADD;
+        b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
+        a.registerTag(b);
+        
+        b = new BBCodeParser.BBCodeTag();
+        b.mTag = "||";
+        b.mDescription = "TableCol";
+        b.allow(allNodes);
+        b.html("<td>{0}</td>");
+        b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
+        b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
+        a.registerTag(b);
+        
+        return a;
     }
 
 }

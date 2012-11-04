@@ -13,8 +13,6 @@
 
 package com.mde.potdroid.activities;
 
-import java.io.IOException;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -96,7 +94,9 @@ public class TopicActivity extends BaseActivity {
             mPage   = o.mPage;
             mHtmlCode = o.mHtmlCode;
             mPid    = o.mPid;
+            
             fillView();
+            
         }
     }
     
@@ -108,6 +108,7 @@ public class TopicActivity extends BaseActivity {
         public Integer mPage;
         public String mHtmlCode;
         public Integer mPid;
+        public float mScroll;
         public Orientation(Topic t, Integer p, String s, Integer pid) {
             mTopic = t;
             mPage = p;
@@ -570,7 +571,7 @@ public class TopicActivity extends BaseActivity {
             try {
                 TopicHtmlGenerator gen = new TopicHtmlGenerator(mThread, mPage, TopicActivity.this);
                 mHtmlCode = gen.buildTopic();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 return e;
             }
             

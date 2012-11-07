@@ -15,5 +15,6 @@
         android:singleLine="false"
         android:lines="7"
         android:gravity="top"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical"
+        android:enabled="true"/>
 </LinearLayout>

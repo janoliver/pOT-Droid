@@ -34,7 +34,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.mde.potdroid.R;
@@ -301,8 +301,12 @@ public class TopicActivity extends BaseActivity {
         // get input box and put it in wrapper class
         LayoutInflater inflater = this.getLayoutInflater();
         View replyBox = inflater.inflate(R.layout.dialog_write, null);
-        TextView textField = (TextView) replyBox.findViewById(R.id.replybox);
+        
+        EditText textField = (EditText) replyBox.findViewById(R.id.replybox);
         textField.setText(text);
+        textField.requestFocus();
+        textField.setSelection(text.length());
+        
         final DialogWrapper wrapper = new DialogWrapper(replyBox);
 
         // build dialog
@@ -342,10 +346,15 @@ public class TopicActivity extends BaseActivity {
         // get input box and put it in wrapper class
         LayoutInflater inflater = this.getLayoutInflater();
         View replyBox = inflater.inflate(R.layout.dialog_write, null);
-        TextView textField = (TextView) replyBox.findViewById(R.id.replybox);
+        
+        EditText textField = (EditText) replyBox.findViewById(R.id.replybox);
         textField.setText(post.getText());
-        TextView titleField = (TextView) replyBox.findViewById(R.id.replytitle);
+        textField.requestFocus();
+        textField.setSelection(post.getText().length());
+        
+        EditText titleField = (EditText) replyBox.findViewById(R.id.replytitle);
         titleField.setText(post.getTitle());
+        
         final DialogWrapper wrapper = new DialogWrapper(replyBox);
 
         // build dialog

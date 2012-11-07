@@ -2,6 +2,14 @@
  Changelog
 ===========
 
+Changelog Alpha 20 (pOT Droid 0.20)
+===================================
+
+- Neuer, schnellerer BBCode Parser, mehr BBCode wird unterstützt
+- Links zum Forum aus einem Browser können mit potdroid geöffnet werden
+- editieren/antworten: Textfeld ist vorausgewählt und der Cursor ans Ende geschoben.
+- Langes Drücken eines Threads in der Board-Ansicht (NICHT in den Bookmarks!) führt zur letzten Seite.
+
 Changelog Alpha 19 (pOT Droid 0.19)
 ===================================
 

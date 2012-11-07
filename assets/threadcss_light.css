@@ -112,3 +112,18 @@ input.loadimage {
     color:#fff;
     
 }
+
+table,td
+{
+    border:1px solid black;
+    
+}
+
+table {
+    border-collapse:collapse;
+}
+
+td,tr,th {
+    text-align:left;
+    vertical-align:top;
+}

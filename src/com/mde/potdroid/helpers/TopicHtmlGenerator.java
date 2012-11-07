@@ -141,20 +141,14 @@ public class TopicHtmlGenerator {
     }
 
     /**
-     * Replace [quote][b] with [quote] and so on (remove bold from quotes)
-     * and fire up the bbcode parser.
+     * Try parsing the bbcode. If it fails for any reason, at least return
+     * the raw code.
      */
     private String parseBbCode(Post post) {
         
-        String input = post.getText();
-        
-        input = input.replaceAll("\\[quote([^\\]]*)\\]\\[b\\]",
-                "[quote$1]");
-        input = input.replaceAll("\\[/b\\]\\[/quote\\]",
-                "[/quote]");
         try {
-            return mParser.parse(input);
-        } catch (UnknownErrorException e) {
+            return mParser.parse(post.getText());
+        } catch (Exception e) {
             return post.getText();
         }
     }

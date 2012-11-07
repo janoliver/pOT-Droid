@@ -18,14 +18,18 @@ import android.util.SparseArray;
  * according to the BBCodeTag objects, that must be registered to the parser.
  * 
  * It handles malformed input text as well as tag arguments.
+ * 
+ * There are some hacks specific to the potdroid app for the mods.de forums. 
+ * They are:
+ *    - in Node.toString() the quote hack
  */
 public class BBCodeParser {
 	
 	// the skeleton regex for the bbcodes. %1$s must be replaced by
 	// the allowed bbcodes
 	private String mRegexSkeleton = 
-			"(.*?)((\\[\\s*(%1$s)\\s*(=((\\s*((\"[^\"]+\")|" +
-			"([^,\"]+?))\\s*,)*(\\s*((\"[^\"]+\")|([^,\"]+?))\\s*)))?\\])|" +
+			"(.*?)((\\[\\s*(%1$s)\\s*(=((\\s*((\"[^\"]+?\")|" +
+			"([^,\\]\"]+?))\\s*,)*(\\s*((\"[^\"]+?\")|([^,\"\\]]+?))\\s*)))?\\])|" +
 			"(\\[/\\s*((%1$s))\\s*\\]))";
 	
 	// this map holds our registered tags
@@ -80,6 +84,8 @@ public class BBCodeParser {
 	    	}
 	    	
 	    	if(matcher.group(2).indexOf("[/") > -1) {
+	    	    if(matcher.group(16) == null)
+	    	        PotUtils.log(matcher.group(2));
 	    		Token t = new Token(Token.TYPE_CLOSE, 
 	    				matcher.group(16).toLowerCase(), matcher.group(2));
 	    		tokens.add(t);
@@ -453,6 +459,14 @@ public class BBCodeParser {
 			int num_args = 0;
 			if(mArgs != null)
 				num_args = mArgs.length;
+			
+			// this is a hack for the potdroid app: if the current tag 
+			// is [quote] and the containing string starts with [b] and ends
+			// with [/b], remove the bold tags.
+			if(mTag.mTag.equals("quote") && res.startsWith("<strong>") &&
+			        res.endsWith("</strong>"))
+			    res = res.substring(8,res.length() - 9);
+			
 			
 			String html = mTag.mHtml.get(num_args).replace("{0}", res);
 			

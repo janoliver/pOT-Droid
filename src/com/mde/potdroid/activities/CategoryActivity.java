@@ -16,6 +16,7 @@ package com.mde.potdroid.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -50,9 +51,16 @@ public class CategoryActivity extends BaseListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // create Board object
-        mCategory = mObjectManager.getCategory(mExtras.getInt("CID"));
+        
+        // the URL handler
+        if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
+            Uri uri = Uri.parse(getIntent().getDataString());
+            Integer cat_id = Integer.valueOf(uri.getQueryParameter("CID"));
+            mCategory = mObjectManager.getCategory(cat_id);
+        } else {
+            // create Board object
+            mCategory = mObjectManager.getCategory(mExtras.getInt("CID"));
+        }
 
         // the view
         setListAdapter(null);

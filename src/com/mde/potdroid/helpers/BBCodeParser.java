@@ -432,7 +432,8 @@ public class BBCodeParser {
 		}
 		
 		// the creation of the html string
-		public String toString() {
+		@Override
+        public String toString() {
 			
 			// is this a string?
 			if(mText != null)

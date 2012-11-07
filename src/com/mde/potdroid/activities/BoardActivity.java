@@ -16,6 +16,7 @@ package com.mde.potdroid.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -56,10 +57,18 @@ public class BoardActivity extends BaseListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // create Board object
-        mPage  = mExtras.getInt("page");
-        mBoard = mObjectManager.getBoard(mExtras.getInt("BID"));
+        
+        // the URL handler
+        if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
+            Uri uri = Uri.parse(getIntent().getDataString());
+            Integer board_id = Integer.valueOf(uri.getQueryParameter("BID"));
+            mPage = 1;
+            mBoard = mObjectManager.getBoard(board_id);
+        } else {
+            // create Board object
+            mPage  = mExtras.getInt("page");
+            mBoard = mObjectManager.getBoard(mExtras.getInt("BID"));
+        }
 
         // update category information and get thread list
         // was only the orientation changed?

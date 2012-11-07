@@ -2,9 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.mde.potdroid"
       android:versionCode="19" android:versionName="0.19">
+    
+    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="7" />
+    
     <application android:icon="@drawable/icon" 
-                 android:label="@string/app_name" 
-                 android:debuggable="false" >
+                 android:label="@string/app_name">
         
         <activity android:name=".activities.ForumActivity"
                   android:label="@string/app_name">
@@ -12,11 +14,55 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http"
+                      android:host="forum.mods.de"
+                      android:pathPattern="/bb/index\\.php" />
+            </intent-filter>
         </activity>
-        <activity android:name=".activities.BookmarkActivity" />
-        <activity android:name=".activities.CategoryActivity"/>
-        <activity android:name=".activities.BoardActivity" />
-        <activity android:name=".activities.TopicActivity" />
+        
+        <activity android:name=".activities.BookmarkActivity"
+            android:exported="false" />
+        
+        <activity android:name=".activities.CategoryActivity"
+            android:exported="false">
+            <intent-filter>
+	            <action android:name="android.intent.action.VIEW" />
+	            <category android:name="android.intent.category.DEFAULT" />
+	            <category android:name="android.intent.category.BROWSABLE" />
+	            <data android:scheme="http"
+	                  android:host="forum.mods.de"
+	                  android:pathPattern="/bb/index\\.php.*" />
+	        </intent-filter>
+        </activity>
+        
+        <activity android:name=".activities.BoardActivity"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http"
+                      android:host="forum.mods.de"
+                      android:pathPattern="/bb/board\\.php.*" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".activities.TopicActivity"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http"
+                      android:host="forum.mods.de"
+                      android:pathPattern="/bb/thread\\.php.*" />
+            </intent-filter>
+        </activity>
+        
         <activity android:name="com.mde.potdroid.activities.PreferenceActivityPot" />
          
          <service 
@@ -24,9 +70,7 @@
             android:exported="false" />
     </application> 
     
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" /> 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     
-    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="7" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" /> 
 </manifest> 

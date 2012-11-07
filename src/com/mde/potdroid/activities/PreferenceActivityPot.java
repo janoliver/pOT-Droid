@@ -159,7 +159,7 @@ public class PreferenceActivityPot extends PreferenceActivity {
         });
 
         // callbacks for notification service
-        Preference notificationOnOff = (Preference) findPreference("notifications");
+        Preference notificationOnOff = findPreference("notifications");
         notificationOnOff.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 
             public boolean onPreferenceChange(Preference arg0, Object newValue) {
@@ -175,7 +175,7 @@ public class PreferenceActivityPot extends PreferenceActivity {
         });
         
         // restart notification service when another interval is selected.
-        Preference notificationInterval = (Preference) findPreference("notificationrefresh");
+        Preference notificationInterval = findPreference("notificationrefresh");
         notificationInterval.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference arg0, Object newValue) {
                 Intent notificationServiceIntent = new Intent(PreferenceActivityPot.this,

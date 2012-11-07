@@ -19,6 +19,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -83,9 +84,19 @@ public class TopicActivity extends BaseActivity {
         // was only the orientation changed?
         final Orientation threadSaved = (Orientation) getLastNonConfigurationInstance();
         if (threadSaved == null) {
-            mThread = mObjectManager.getTopic(mExtras.getInt("TID"));
-            mPid    = mExtras.getInt("PID",0);
-            mPage   = mExtras.getInt("page",1);
+
+            // the URL handler
+            if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
+                Uri uri = Uri.parse(getIntent().getDataString());
+                Integer topic_id = Integer.valueOf(uri.getQueryParameter("TID"));
+                mPage = 1;
+                mPid = 0;
+                mThread = mObjectManager.getTopic(topic_id);
+            } else {
+                mThread = mObjectManager.getTopic(mExtras.getInt("TID"));
+                mPid    = mExtras.getInt("PID",0);
+                mPage   = mExtras.getInt("page",1);
+            }
             
             new ThreadLoader().execute(mPid, mPage);
         } else {

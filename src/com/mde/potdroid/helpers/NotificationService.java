@@ -88,6 +88,7 @@ public class NotificationService extends Service {
         
         Long interval = new Long(mSettings.getString("notificationrefresh","120"));
         mTimer.schedule( new TimerTask() {
+            @Override
             public void run() {
                 int unread = checkNewPosts();
                 

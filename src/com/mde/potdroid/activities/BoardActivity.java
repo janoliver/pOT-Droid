@@ -77,13 +77,20 @@ public class BoardActivity extends BaseListActivity {
         }
 
         // setup listview
-        registerForContextMenu(mListView);
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
                     openThread(mThreads[position - 1], false);
                 }
             }
+        });
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){ 
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) { 
+                if (position > 0) {
+                    openThread(mThreads[position - 1], true);
+                }
+                return false; 
+            } 
         });
     } 
 
@@ -118,35 +125,6 @@ public class BoardActivity extends BaseListActivity {
         startActivity(intent);
     }
     
-    /**
-     * context menu creator
-     */
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.context_thread, menu);
-    }
-    
-    /**
-     * context menu item selected
-     */
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-        Topic thread = mThreads[(int) info.id];
-        switch (item.getItemId()) {
-        case R.id.first_page:
-            openThread(thread, false);
-            return true;
-        case R.id.last_page:
-            openThread(thread, true);
-            return true;
-        default:
-            return super.onContextItemSelected(item);
-        }
-    }
-
     /**
      * Returns the header view for the list.
      */

@@ -13,7 +13,6 @@
 
 package com.mde.potdroid.activities;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -23,8 +22,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -57,7 +54,6 @@ public class TopicActivity extends BaseActivity {
     private WebView   mWebView;
     private ViewGroup mLinearLayout;
     private Topic     mThread;
-    private Integer   mContextMenuInfo;
     private Integer   mPage            = 1;
     private Integer   mPid             = 0;
     private String    mHtmlCode        = "";
@@ -65,7 +61,6 @@ public class TopicActivity extends BaseActivity {
     /**
      * Starting point of the activity.
      */
-    @SuppressLint("SetJavaScriptEnabled")
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +73,7 @@ public class TopicActivity extends BaseActivity {
         // take care of the javascript and html. JSInterface is defined below.
         mWebView.getSettings().setJavaScriptEnabled(true);
         JSInterface myJsInterface = new JSInterface(mWebView);
-        mWebView.addJavascriptInterface(myJsInterface, "JSInterface");
+        mWebView.addJavascriptInterface(myJsInterface, "JSI");
         mWebView.loadData("<html><body></body></html>", "text/html", "utf-8");
 
         // was only the orientation changed?
@@ -109,6 +104,7 @@ public class TopicActivity extends BaseActivity {
             fillView();
             
         }
+        
     }
     
     /**
@@ -239,65 +235,6 @@ public class TopicActivity extends BaseActivity {
             return true;
         default:
             return super.onOptionsItemSelected(item);
-        }
-    }
-
-    /**
-     * context menu creator
-     */
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.context_post, menu);
-    }
-
-    /**
-     * context menu selection handler
-     * adding bookmark could show a loading animation
-     */
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        Post post = mThread.getPosts().get(mPage)[mContextMenuInfo];
-
-        switch (item.getItemId()) {
-        case R.id.edit:
-            // edit post dialog (check if user is allowed first)
-            if (post.getAuthor().getId() != mObjectManager.getCurrentUser().getId()) {
-                Toast.makeText(TopicActivity.this, "Du darfst diesen Post nicht editieren.",
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                editDialog(post);
-                return true;
-            }
-            return true;
-        case R.id.cite:
-            // reply dialog with quote
-            String text = "[quote=" + mThread.getId() + "," + post.getId() + ",\""
-                    + post.getAuthor().getNick() + "\"][b]\n" + post.getText() + "\n[/b][/quote]";
-            replyDialog(text);
-            return true;
-        case R.id.bookmark:
-            // bookmark
-            final String url = PotUtils.ASYNC_URL + "set-bookmark.php?PID=" + post.getId()
-                    + "&token=" + post.getBookmarktoken();
-            new Thread(new Runnable() {
-                public void run() {
-                    mWebsiteInteraction.callPage(url);
-
-                    TopicActivity.this.runOnUiThread(new Runnable() {
-                        public void run() {
-                            Toast.makeText(TopicActivity.this, "Bookmark hinzugefügt.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                }
-            }).start();
-
-            return true;
-        default:
-            return super.onContextItemSelected(item);
         }
     }
 
@@ -629,11 +566,66 @@ public class TopicActivity extends BaseActivity {
          * Shows a context menu after long-touch on a post.
          */
         public void showPostContextMenu(String id) {
-            id = id.substring(4);
-            mContextMenuInfo = Integer.valueOf(id).intValue();
-            registerForContextMenu(mWebView);
-            openContextMenu(mWebView);
-            unregisterForContextMenu(mWebView);
+            final Integer fid = Integer.valueOf(id.substring(4)).intValue();
+            
+            runOnUiThread(new Runnable() {
+				public void run() {
+                    
+				    AlertDialog.Builder alertDialog = new AlertDialog.Builder(TopicActivity.this);
+                    alertDialog.setItems(R.array.post_context_items, new DialogInterface.OnClickListener() {
+                        
+                        public void onClick(DialogInterface dialog, int which) {
+                            Post post = mThread.getPosts().get(mPage)[fid];
+
+                            switch (which) {
+                            
+                            case 0:
+                                // edit post dialog (check if user is allowed first)
+                                if (post.getAuthor().getId() != mObjectManager.getCurrentUser().getId()) {
+                                    Toast.makeText(TopicActivity.this, "Du darfst diesen Post nicht editieren.",
+                                            Toast.LENGTH_SHORT).show();
+                                } else {
+                                    editDialog(post);
+                                }
+                                break;
+                                
+                            case 1:
+                                // reply dialog with quote
+                                String text = "[quote=" + mThread.getId() + "," + post.getId() + ",\""
+                                        + post.getAuthor().getNick() + "\"][b]\n" + post.getText() + "\n[/b][/quote]";
+                                replyDialog(text);
+                                break;
+                                
+                            case 2:
+                                // bookmark
+                                final String url = PotUtils.ASYNC_URL + "set-bookmark.php?PID=" + post.getId()
+                                        + "&token=" + post.getBookmarktoken();
+                                new Thread(new Runnable() {
+                                    public void run() {
+                                        mWebsiteInteraction.callPage(url);
+
+                                        TopicActivity.this.runOnUiThread(new Runnable() {
+                                            public void run() {
+                                                Toast.makeText(TopicActivity.this, "Bookmark hinzugefügt.",
+                                                        Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+
+                                    }
+                                }).start();
+                                break;
+                                
+                            default:
+                                //nothing
+                            }
+                        }
+                    });
+                    
+                    AlertDialog d = alertDialog.create();
+                    d.show();
+                }
+            });
+            
         }
         
         /**
@@ -663,4 +655,4 @@ public class TopicActivity extends BaseActivity {
 
     }
 
-}
+} 

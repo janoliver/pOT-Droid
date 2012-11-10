@@ -307,7 +307,7 @@ public class TopicHtmlGenerator {
         b.mTag = "img";
         b.mDescription = "Image";
         b.allow("string");
-        b.html("<img src=\"{0}\">");
+        b.html("<img src=\"{0}\" />");
         b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
         b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_REOPEN;
         a.registerTag(b);

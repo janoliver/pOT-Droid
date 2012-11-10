@@ -11,6 +11,7 @@
 	    android:id="@+id/webview"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
+	    android:autoLink="none"
 	    android:padding="0pt"
 	    android:paddingLeft="0pt"
 	    android:paddingTop="0pt"
@@ -18,4 +19,5 @@
 	    android:paddingBottom="0pt"
 	    android:layout_margin="0pt"
 	    android:scrollbarStyle="outsideOverlay" />
+
 </LinearLayout>

@@ -2,7 +2,7 @@
     $('.loadimage').click(function(e) {
         e.preventDefault();
         url = $(this).attr("alt");
-        window.JSInterface.showToast("Bild wird geladen..");
+        JSI.showToast("Bild wird geladen..");
         $(this).replaceWith('<img class="loaded" src="' + url + '" />');
         addTouchHandler();
     });
@@ -13,7 +13,7 @@
         $('.loaded').each(function() {
         	this.addEventListener("touchstart", function(e) {
         		window.clearTimeout(touching2);
-        		touching2 = window.setTimeout(imgLongTouch, window.JSInterface.getTouchDuration(),
+        		touching2 = window.setTimeout(imgLongTouch, JSI.getTouchDuration(),
         				$(this));
         	}, false);
         	this.addEventListener("touchmove", function(e) {
@@ -34,7 +34,7 @@
     $('.post').each(function() {
     	this.addEventListener("touchstart", function(e) {
     		window.clearTimeout(touching);
-    		touching = window.setTimeout(postLongTouch, window.JSInterface.getTouchDuration(), 
+    		touching = window.setTimeout(postLongTouch, JSI.getTouchDuration(), 
     				$(this).attr("id"));
     	}, false);
     	this.addEventListener("touchmove", function(e) {
@@ -46,10 +46,10 @@
     });
 
     function postLongTouch(id) {
-    	window.JSInterface.showPostContextMenu(id);
+    	JSI.showPostContextMenu(id);
     }
     
-    // your mama sits on the left of the window, which is why a strong
+    // your mom sits on the left of the window, which is why a strong
     // gravitational force pushes the screen to the left side.
     var scrollTimer = null;
     function watchScroll() {
@@ -62,7 +62,7 @@
         }
     }
     // your mama only exists if the setting is switched on.
-    if(window.JSInterface.gravityOn())
+    if(JSI.gravityOn())
     	watchScroll();
     
  });

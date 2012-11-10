@@ -2,6 +2,13 @@
  Changelog
 ===========
 
+Changelog Alpha 21 (pOT Droid 0.21)
+===================================
+
+- Spoiler durch button ersetzt
+- Bilder können automatisch verkleinert werden (siehe settings)
+- Diverse Bugs behoben
+
 Changelog Alpha 20 (pOT Droid 0.20)
 ===================================
 

@@ -1,11 +1,17 @@
 $(document).ready(function(){
 
 	// the image loader
+	var resize = "";
+	if(JSI.resizeImages()) {
+		resize = 'resize';
+		$("img").addClass(resize);
+	}
+	
 	$('.loadimage').click(function(e) {
 		e.preventDefault();
 		url = $(this).attr("alt");
 		JSI.showToast("Bild wird geladen..");
-		$(this).replaceWith('<img class="loaded" src="' + url + '" />');
+		$(this).replaceWith('<img class="' + resize + '" src="' + url + '" />');
 	});
 	 
 	// this is for the context menu showing.
@@ -31,7 +37,7 @@ $(document).ready(function(){
 	// spoilers.
 	$("span.spoiler").hide()
 		.before("<input type=\"button\" value=\"Spoiler\" class=\"spoiler\" /><br />");
-	$("input.spoiler").live("click", function() {
+	$("input.spoiler").on("click", function() {
 		$(this).next().next("span.spoiler").toggle();
 	});
 	

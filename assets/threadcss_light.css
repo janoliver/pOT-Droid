@@ -125,3 +125,7 @@ td,tr,th {
 .spoiler {
     background:#eee;
 }
+
+img.resize {
+	max-width:100%;
+}

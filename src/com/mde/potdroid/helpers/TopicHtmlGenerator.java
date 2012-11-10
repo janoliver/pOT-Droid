@@ -174,7 +174,7 @@ public class TopicHtmlGenerator {
     private String parseImages(String code) {
         int loadImages = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(mActivity)
                 .getString("loadImages", "0")); 
-
+        
         if ((loadImages == 0)
                 || ((WebsiteInteraction.getConnectionType(mActivity) == 2) && (loadImages == 1))) {
             
@@ -308,7 +308,7 @@ public class TopicHtmlGenerator {
         b.mTag = "img";
         b.mDescription = "Image";
         b.allow("string");
-        b.html("<img src=\"{0}\" />");
+        b.html("<img src=\"{0}\" class=\"\" />");
         b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
         b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_REOPEN;
         a.registerTag(b);

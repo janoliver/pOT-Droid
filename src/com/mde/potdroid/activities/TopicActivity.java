@@ -655,6 +655,15 @@ public class TopicActivity extends BaseActivity {
         }
         
         /**
+         * Returns true or false if or not if the gravity feature is switched on.
+         */
+        public boolean resizeImages() {
+            return PreferenceManager.
+                    getDefaultSharedPreferences(TopicActivity.this).
+                    getBoolean("resizeImages", true);
+        }
+        
+        /**
          * Get the setting for the duration of touch to edit/cite
          */
         public int getTouchDuration() {

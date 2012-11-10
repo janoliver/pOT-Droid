@@ -63,7 +63,13 @@
             android:key="gravityInThreads"
             android:defaultValue="false"
             android:summary="Auto-scroll nach links in Threads."
-            android:title="Experimentell!!! Scrollt automatisch wieder nach links in der Thread Ansicht." />
+            android:title="Scrollt automatisch wieder nach links in der Thread Ansicht." />
+        
+        <CheckBoxPreference
+            android:key="resizeImages"
+            android:defaultValue="true"
+            android:summary="Bilder automatisch verkleinern"
+            android:title="Sollen Bilder automatisch verkleinert werden?" />
         
         <ListPreference 
             android:title="Touch Dauer für Post-Menüs"

@@ -1,72 +1,57 @@
- $(document).ready(function(){
-    $('.loadimage').click(function(e) {
-        e.preventDefault();
-        url = $(this).attr("alt");
-        JSI.showToast("Bild wird geladen..");
-        $(this).replaceWith('<img class="loaded" src="' + url + '" />');
-        addTouchHandler();
-    });
-    
-    function addTouchHandler()
-    {
-    	var touching2 = null;
-        $('.loaded').each(function() {
-        	this.addEventListener("touchstart", function(e) {
-        		window.clearTimeout(touching2);
-        		touching2 = window.setTimeout(imgLongTouch, JSI.getTouchDuration(),
-        				$(this));
-        	}, false);
-        	this.addEventListener("touchmove", function(e) {
-        		window.clearTimeout(touching2);
-        	}, false);
-        	this.addEventListener("touchend", function(e) {
-        		window.clearTimeout(touching2);
-        	}, false);
-        });
-    }
-    addTouchHandler();
-    
-    function imgLongTouch(img) {
-    	img.replaceWith('<input type="button" value="Bild anzeigen." class="loadimage" alt="'+img.attr('src')+'" />');
-    }
-    
-    var touching = null;
-    $('.post').each(function() {
-    	this.addEventListener("touchstart", function(e) {
-    		window.clearTimeout(touching);
-    		touching = window.setTimeout(postLongTouch, JSI.getTouchDuration(), 
-    				$(this).attr("id"));
-    	}, false);
-    	this.addEventListener("touchmove", function(e) {
-    		window.clearTimeout(touching);
-    	}, false);
-    	this.addEventListener("touchend", function(e) {
-    		window.clearTimeout(touching);
-    	}, false);
-    });
+$(document).ready(function(){
 
-    function postLongTouch(id) {
-    	JSI.showPostContextMenu(id);
-    }
-    
-    // your mom sits on the left of the window, which is why a strong
-    // gravitational force pushes the screen to the left side.
-    var scrollTimer = null;
-    function watchScroll() {
-        scrollTimer = window.setTimeout(watchScroll, 1500);
-        var win = $(document);
-        if(win.scrollLeft() > 0) {
-        	$("body").animate({
-                scrollLeft: 0
-            },1000);
-        }
-    }
-    // your mama only exists if the setting is switched on.
-    if(JSI.gravityOn())
-    	watchScroll();
-    
- });
- 
+	// the image loader
+	$('.loadimage').click(function(e) {
+		e.preventDefault();
+		url = $(this).attr("alt");
+		JSI.showToast("Bild wird geladen..");
+		$(this).replaceWith('<img class="loaded" src="' + url + '" />');
+	});
+	 
+	// this is for the context menu showing.
+	var touching = null;
+	$('.post').each(function() {
+		this.addEventListener("touchstart", function(e) {
+			window.clearTimeout(touching);
+			touching = window.setTimeout(postLongTouch, JSI.getTouchDuration(), 
+					$(this).attr("id"));
+		}, false);
+		this.addEventListener("touchmove", function(e) {
+			window.clearTimeout(touching);
+		}, false);
+		this.addEventListener("touchend", function(e) {
+			window.clearTimeout(touching);
+		}, false);
+	});
+	
+	function postLongTouch(id) {
+		JSI.showPostContextMenu(id);
+	}
+	
+	// spoilers.
+	$("span.spoiler").hide()
+		.before("<input type=\"button\" value=\"Spoiler\" class=\"spoiler\" /><br />");
+	$("input.spoiler").live("click", function() {
+		$(this).next().next("span.spoiler").toggle();
+	});
+	
+	// your mom sits on the left of the window, which is why a strong
+	// gravitational force pushes the screen to the left side.
+	var scrollTimer = null;
+	function watchScroll() {
+		scrollTimer = window.setTimeout(watchScroll, 1500);
+		var win = $(document);
+		if(win.scrollLeft() > 0) 
+			$("body").animate({scrollLeft: 0},1000);
+	}
+	
+	// your mama only exists if the setting is switched on.
+	if(JSI.gravityOn())
+		watchScroll();
+
+});
+
+// scroll to some element with a given id.
 function scrollToElement(id) {
     var elem = document.getElementById(id);
     var x = 0;

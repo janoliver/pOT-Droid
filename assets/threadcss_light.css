@@ -50,11 +50,6 @@ body {
 	text-decoration:none;
 }
 
-.spoiler {
-    background:#000;
-    color: #333;
-}
-
 .mod {
     color:#FACC2E;
     font-size:14px;
@@ -104,13 +99,12 @@ ul {
     margin-left:20px;
 }
 
-input.loadimage {
+input.spoiler, input.loadimage {
     padding:3px;
     background:#333;
     padding:15px 5px;
     font-size:14px;
     color:#fff;
-    
 }
 
 table,td
@@ -126,4 +120,8 @@ table {
 td,tr,th {
     text-align:left;
     vertical-align:top;
+}
+
+.spoiler {
+    background:#eee;
 }

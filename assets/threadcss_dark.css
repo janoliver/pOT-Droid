@@ -48,7 +48,7 @@ body {
 
 .spoiler {
     background:#fff;
-    color: #ccc;
+    color: #eee;
 }
 
 .mod {
@@ -101,7 +101,7 @@ ul {
     margin-left:20px;
 }
 
-input.loadimage {
+input.loadimage, input.spoiler {
     padding:3px;
     background:#CCC;
     padding:15px 5px;

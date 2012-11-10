@@ -112,8 +112,7 @@ public class TopicHtmlGenerator {
         // build the topic
         t.setVariable("css", cssFile);
         
-        // 
-        
+        // iterate the posts
         for (int i = 0; i < posts.length; i++) {
             t.setVariable("number", i);
             t.setVariable("postId", posts[i].getId());
@@ -124,7 +123,9 @@ public class TopicHtmlGenerator {
             
             if (posts[i].getAuthor().getId() == PotUtils.getObjectManagerInstance(mActivity)
                     .getCurrentUser().getId())
-                t.setVariableOpt("currentUser", "curruser");
+                t.setVariable("currentUser", "curruser");
+            else
+                t.setVariable("currentUser", "");
             
             if ((posts[i].getId() > mTopic.getPid()) && mSettings.getBoolean("marknewposts", false))
                 t.setVariableOpt("newPost", "newpost");

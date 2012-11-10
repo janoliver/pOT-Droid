@@ -102,7 +102,6 @@ public class TopicActivity extends BaseActivity {
             mPid    = o.mPid;
             
             fillView();
-            
         }
         
     }
@@ -555,6 +554,69 @@ public class TopicActivity extends BaseActivity {
     }
     
     /**
+     * This is a dirty workaround to some bug with jelly bean of not handling 
+     * the context menu correctly. Instead, we create our own menu with the 
+     * alert dialog. 
+     */
+    public AlertDialog getPostContextMenu(int post_id_p) {
+        
+        final int post_id = post_id_p;
+        
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(TopicActivity.this);
+        
+        alertDialog.setItems(R.array.post_context_items, new DialogInterface.OnClickListener() {
+            
+            public void onClick(DialogInterface dialog, int which) {
+                Post post = mThread.getPosts().get(mPage)[post_id];
+
+                switch (which) {
+                
+                case 0:
+                    // edit post dialog (check if user is allowed first)
+                    if (post.getAuthor().getId() != mObjectManager.getCurrentUser().getId()) {
+                        Toast.makeText(TopicActivity.this, "Du darfst diesen Post nicht editieren.",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        editDialog(post);
+                    }
+                    break;
+                    
+                case 1:
+                    // reply dialog with quote
+                    String text = "[quote=" + mThread.getId() + "," + post.getId() + ",\""
+                            + post.getAuthor().getNick() + "\"][b]\n" + post.getText() + "\n[/b][/quote]";
+                    replyDialog(text);
+                    break;
+                    
+                case 2:
+                    // bookmark
+                    final String url = PotUtils.ASYNC_URL + "set-bookmark.php?PID=" + post.getId()
+                            + "&token=" + post.getBookmarktoken();
+                    new Thread(new Runnable() {
+                        public void run() {
+                            mWebsiteInteraction.callPage(url);
+
+                            TopicActivity.this.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    Toast.makeText(TopicActivity.this, "Bookmark hinzugefügt.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        }
+                    }).start();
+                    break;
+                    
+                default:
+                    //nothing
+                }
+            }
+        });
+        
+        return alertDialog.create();
+    }
+    
+    /**
      * This class resembles the interface to the javascript in the 
      * WebView where the topic is displayed in.
      */
@@ -570,62 +632,10 @@ public class TopicActivity extends BaseActivity {
             
             runOnUiThread(new Runnable() {
 				public void run() {
-                    
-				    AlertDialog.Builder alertDialog = new AlertDialog.Builder(TopicActivity.this);
-                    alertDialog.setItems(R.array.post_context_items, new DialogInterface.OnClickListener() {
-                        
-                        public void onClick(DialogInterface dialog, int which) {
-                            Post post = mThread.getPosts().get(mPage)[fid];
-
-                            switch (which) {
-                            
-                            case 0:
-                                // edit post dialog (check if user is allowed first)
-                                if (post.getAuthor().getId() != mObjectManager.getCurrentUser().getId()) {
-                                    Toast.makeText(TopicActivity.this, "Du darfst diesen Post nicht editieren.",
-                                            Toast.LENGTH_SHORT).show();
-                                } else {
-                                    editDialog(post);
-                                }
-                                break;
-                                
-                            case 1:
-                                // reply dialog with quote
-                                String text = "[quote=" + mThread.getId() + "," + post.getId() + ",\""
-                                        + post.getAuthor().getNick() + "\"][b]\n" + post.getText() + "\n[/b][/quote]";
-                                replyDialog(text);
-                                break;
-                                
-                            case 2:
-                                // bookmark
-                                final String url = PotUtils.ASYNC_URL + "set-bookmark.php?PID=" + post.getId()
-                                        + "&token=" + post.getBookmarktoken();
-                                new Thread(new Runnable() {
-                                    public void run() {
-                                        mWebsiteInteraction.callPage(url);
-
-                                        TopicActivity.this.runOnUiThread(new Runnable() {
-                                            public void run() {
-                                                Toast.makeText(TopicActivity.this, "Bookmark hinzugefügt.",
-                                                        Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-
-                                    }
-                                }).start();
-                                break;
-                                
-                            default:
-                                //nothing
-                            }
-                        }
-                    });
-                    
-                    AlertDialog d = alertDialog.create();
+                    AlertDialog d = getPostContextMenu(fid);
                     d.show();
                 }
             });
-            
         }
         
         /**

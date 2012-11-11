@@ -144,7 +144,8 @@ public class NotificationService extends Service {
      * Update the notification with the message msg.
      */
     private void showNewPmNotification(String msg) {
-        mPmNotification.setLatestEventInfo(getApplicationContext(), CONTENT_TITLE, msg, mContentIntent);
+        mPmNotification.setLatestEventInfo(getApplicationContext(), CONTENT_TITLE, msg, 
+                PendingIntent.getActivity(getApplicationContext(), 0, new Intent(), 0));
         mNotificationManager.notify(NOTIFICATION_ID, mPmNotification);
     }
     

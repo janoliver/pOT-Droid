@@ -86,14 +86,14 @@ public class BoardActivity extends BaseListActivity {
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
-                    openThread(mThreads[position - 1], false);
+                    openThread(mThreads[position - 1], true);
                 }
             }
         });
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){ 
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) { 
                 if (position > 0) {
-                    openThread(mThreads[position - 1], true);
+                    openThread(mThreads[position - 1], false);
                 }
                 return false; 
             } 

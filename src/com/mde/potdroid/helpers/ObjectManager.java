@@ -13,17 +13,22 @@
 
 package com.mde.potdroid.helpers;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.WebsiteInteraction.NoConnectionException;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Bookmark;
@@ -50,6 +55,7 @@ public class ObjectManager {
     private Forum   mForum           = null;
     private String  mLoginUsername   = "";
     private Integer mUnreadBookmarks = 0;
+    private Context mContext         = null;
     
     // the objects that are known to the class are stored in a 
     // hashmap, using the object's id as identifier. 
@@ -62,6 +68,7 @@ public class ObjectManager {
     
     public ObjectManager(Context cx) {
         mWebsiteInteraction = PotUtils.getWebsiteInteractionInstance(cx);
+        mContext = cx;
         
         // check for login
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(cx);
@@ -124,7 +131,7 @@ public class ObjectManager {
         return mCategories.get(id);
     }
     
-    public Forum getForum(Boolean refresh) throws ParseErrorException, NoConnectionException {
+    public Forum getForum(Boolean refresh) throws ParseErrorException, NoConnectionException, JDOMException, IOException {
         if(mForum == null) {
             mForum = new Forum();
             _parseForum();
@@ -198,15 +205,15 @@ public class ObjectManager {
      * parses it. 
      * @throws ParseErrorException 
      * @throws NoConnectionException 
+     * @throws IOException 
+     * @throws JDOMException 
      */
-    private Boolean _parseForum() throws ParseErrorException, NoConnectionException {
+    private Boolean _parseForum() throws ParseErrorException, NoConnectionException, JDOMException, IOException {
         
-        // fetch the xml file and return false if there was an error.
-        String url   = PotUtils.FORUM_URL;
-        Document doc = mWebsiteInteraction.getDocument(url);
-        if (doc == null) {
-            throw new ParseErrorException();
-        }
+        // fetch xml file
+        SAXBuilder parser = new SAXBuilder();
+        InputStream raw = mContext.getResources().openRawResource(R.raw.boards);
+        Document doc = parser.build(raw);
         
         // predefine some elements
         Element root        = doc.getRootElement();

@@ -2,6 +2,14 @@
  Changelog
 ===========
 
+Changelog Alpha 22 (pOT Droid 0.22)
+===================================
+
+- New PM Notifications
+- Verhalten von touch auf Thread getauscht (long touch -> erste Seitem, short touch -> letzte Seite)
+- Startactivity auswählbar. (Forenübersicht, Bookmarks, einzelnes Forum.)
+- Ein paar Bugs behoben.
+
 Changelog Alpha 21 (pOT Droid 0.21)
 ===================================
 

@@ -7,5 +7,6 @@ Danke an
 * Tarantula
 * Danzelot
 * Klappfallscheibe
+* Alle Bug Reporter und den Android Thread.
 
 Grüße, Oli

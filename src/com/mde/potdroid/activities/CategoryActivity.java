@@ -152,7 +152,7 @@ public class CategoryActivity extends BaseListActivity {
         @Override
         protected Exception doInBackground(Void... params) {
             try {
-                mObjectManager.getForum(false);
+                mObjectManager.getForum();
                 mCategory = mObjectManager.getCategory(mCategory.getId());
                 mBoards = mCategory.getBoards();
                 return null;

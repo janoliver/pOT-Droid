@@ -15,6 +15,8 @@ package com.mde.potdroid.activities;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import android.app.Dialog;
@@ -22,6 +24,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -36,7 +39,10 @@ import android.widget.Toast;
 
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.NotificationService;
+import com.mde.potdroid.helpers.ObjectManager;
 import com.mde.potdroid.helpers.PotUtils;
+import com.mde.potdroid.models.Board;
+import com.mde.potdroid.models.Forum;
 
 /**
  * Preference activity.
@@ -157,7 +163,33 @@ public class PreferenceActivityPot extends PreferenceActivity {
             }
 
         });
-
+        
+        // start forum list
+        List<String> keys = new ArrayList<String>();
+        List<String> values = new ArrayList<String>();
+        
+        ObjectManager objectManager = PotUtils.getObjectManagerInstance(this);
+        try {
+            Forum f = objectManager.getForum();
+            int key = 0;
+            for(int i = 0; i < f.getBoards().size(); i++) {
+               key = f.getBoards().keyAt(i);
+               Board b = f.getBoards().valueAt(i);
+               
+               keys.add("" + key);
+               values.add(b.getName());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        final CharSequence[] entries = values.toArray(new CharSequence[values.size()]);
+        final CharSequence[] entryValues = keys.toArray(new CharSequence[keys.size()]);
+        
+        ListPreference lp = (ListPreference)findPreference("startForum");
+        lp.setEntries(entries);
+        lp.setEntryValues(entryValues);
+        lp.setValue(mSettings.getString("startForum", "14"));
+        
         // callbacks for notification service
         Preference notificationOnOff = findPreference("notifications");
         notificationOnOff.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -185,6 +217,8 @@ public class PreferenceActivityPot extends PreferenceActivity {
                 return true;
             }
         });
+        
+        
 
     }
 

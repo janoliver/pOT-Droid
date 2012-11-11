@@ -131,11 +131,9 @@ public class ObjectManager {
         return mCategories.get(id);
     }
     
-    public Forum getForum(Boolean refresh) throws ParseErrorException, NoConnectionException, JDOMException, IOException {
+    public Forum getForum() throws ParseErrorException, NoConnectionException, JDOMException, IOException {
         if(mForum == null) {
             mForum = new Forum();
-            _parseForum();
-        } else if(refresh) {
             _parseForum();
         }
         return mForum;
@@ -251,8 +249,6 @@ public class ObjectManager {
                     Board b = getBoard(_intAttr(bel, "id"));
                     b.setName(_strVal(bel, "name", ""));
                     b.setDescription(_strVal(bel, "description", ""));
-                    b.setNumberOfReplies(_intAttr(bel, "number-of-replies", "value", 0));
-                    b.setNumberOfThreads(_intAttr(bel, "number-of-threads", "value", 0));
                     b.setCategory(getCategory(_intAttr(bel, "in-category", "id", 0)));
                     
                     // skipping moderators...

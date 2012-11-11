@@ -13,6 +13,8 @@
 
 package com.mde.potdroid.models;
 
+import android.util.SparseArray;
+
 
 /**
  * Forum model.
@@ -26,6 +28,18 @@ public class Forum {
      */
     public Category[] getCategories() {
         return mCategories;
+    }
+    
+    /**
+     * @return the categories
+     */
+    public SparseArray<Board> getBoards() {
+        SparseArray<Board> b = new SparseArray<Board>();
+        for(Category c : mCategories)
+            if(c.getBoards() != null)
+                for(Board bo : c.getBoards())
+                    b.put(bo.getId(), bo);
+        return b;
     }
 
     /**

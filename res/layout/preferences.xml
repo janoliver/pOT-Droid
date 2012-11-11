@@ -9,10 +9,20 @@
 	          android:title="Login"
 	          android:summary="mods.de Forum Login"
 	          android:key="loginPref" />
-	          
-	     <CheckBoxPreference
-            android:key="bookmarkStart"
-            android:title="Bookmarks als Startseite" />    
+	     
+	     <ListPreference
+             android:title="Startseite"
+             android:summary="Was soll als Startactivity für die App dienen?"
+             android:key="startActivity"
+             android:defaultValue="0"
+             android:entries="@array/startActivity"
+             android:entryValues="@array/startActivityValues" />
+	     
+	     <ListPreference 
+	         android:title="Startforum"
+	         android:summary="Nur wichtig, falls 'Startseite' auf 'Forum' steht"
+	         android:key="startForum"
+	         android:defaultValue="14"/>
             
         <ListPreference 
              android:title="Ziel mata/search Button"

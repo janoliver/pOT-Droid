@@ -80,4 +80,14 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+    <string-array name="startActivity">
+        <item>Forenübersicht</item>
+        <item>Bookmarks</item>
+        <item>Forum</item>
+    </string-array>
+    <string-array name="startActivityValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
 </resources>

@@ -50,11 +50,22 @@ public class ForumActivity extends BaseListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // redirect to bookmarks?
+        // redirect?
         if ((mExtras == null || !mExtras.getBoolean("noredirect", false))
-                && mSettings.getBoolean("bookmarkStart", false)) {
+                && !mSettings.getString("startActivity", "0").equals("0")) {
+            
             finish();
-            Intent intent = new Intent(ForumActivity.this, BookmarkActivity.class);
+            
+            // redirect to bookmark?
+            Intent intent = null;
+            if(mSettings.getString("startActivity", "0").equals("1")) {
+                intent = new Intent(ForumActivity.this, BookmarkActivity.class);
+            } else if(mSettings.getString("startActivity", "0").equals("2")) {
+                intent = new Intent(ForumActivity.this, BoardActivity.class);
+                Integer board_id = Integer.valueOf(mSettings.getString("startForum", "14"));
+                intent.putExtra("BID", board_id);
+                intent.putExtra("page", 1);
+            }
             startActivityForResult(intent, 1);
             return;
         }
@@ -152,7 +163,7 @@ public class ForumActivity extends BaseListActivity {
         protected Exception doInBackground(Void... params) {
             Forum forum;
             try {
-                forum = mObjectManager.getForum(false);
+                forum = mObjectManager.getForum();
                 mCats = forum.getCategories();
                 return null;
             } catch (Exception e) {

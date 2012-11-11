@@ -112,6 +112,14 @@
                 android:summary="Wie häufig nach neuen Posts geschaut wird." 
                 android:entries="@array/notificationRefreshTime"
                 android:entryValues="@array/notificationRefreshTimeValues" />
+            <CheckBoxPreference
+                android:key="newPostsNotifications"
+                android:defaultValue="false"
+                android:title="Bei neuen Posts in starred Topics benachrichtigen." />
+            <CheckBoxPreference
+                android:key="newPmNotifications"
+                android:defaultValue="false"
+                android:title="Bei neuer PM benachrichtigen." />
     </PreferenceCategory>
     
     

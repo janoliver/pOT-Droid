@@ -16,6 +16,8 @@ package com.mde.potdroid.helpers;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -42,7 +44,8 @@ import com.mde.potdroid.models.Bookmark;
 public class NotificationService extends Service {
 
     private NotificationManager mNotificationManager;
-    private Notification        mNotification;
+    private Notification        mPostNotification;
+    private Notification        mPmNotification;
     private Timer               mTimer;
     private SharedPreferences   mSettings;
     private Integer             mStartId;
@@ -53,7 +56,8 @@ public class NotificationService extends Service {
     private FavouritesDatabase  mFavouritesDatabase;
     
     private static final Integer NOTIFICATION_ID   = 1;
-    private static final String  NOTIFICATION_TEXT = "pOT Droid: Neue Posts";
+    private static final String  NOTIFICATION_NEWPOST = "pOT Droid: Neue Posts";
+    private static final String  NOTIFICATION_NEWPM = "pOT Droid: Neue PM";
     private static final String  CONTENT_TITLE     = "pOT Droid";
     
 
@@ -72,9 +76,14 @@ public class NotificationService extends Service {
         // prepare the notification
         Intent notificationIntent = new Intent(this, BookmarkActivity.class);
         mContentIntent       = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-        mNotification        = new Notification(R.drawable.icon, 
-                NOTIFICATION_TEXT, System.currentTimeMillis());
-        mNotification.flags |= Notification.FLAG_AUTO_CANCEL;
+        
+        mPostNotification        = new Notification(R.drawable.icon, 
+                NOTIFICATION_NEWPOST, System.currentTimeMillis());
+        mPostNotification.flags |= Notification.FLAG_AUTO_CANCEL;
+        
+        mPmNotification        = new Notification(R.drawable.icon, 
+                NOTIFICATION_NEWPM, System.currentTimeMillis());
+        mPmNotification.flags |= Notification.FLAG_AUTO_CANCEL;
     }
 
     /**
@@ -86,17 +95,30 @@ public class NotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         mStartId = startId;
         
-        Long interval = new Long(mSettings.getString("notificationrefresh","120"));
+        Long interval = Long.valueOf(mSettings.getString("notificationrefresh","120"));
         mTimer.schedule( new TimerTask() {
             @Override
             public void run() {
-                int unread = checkNewPosts();
-                
-                if(unread > 0) {
-                    showNotification(unread + " neue Posts!");
-                } else {
-                    hideNotification();
+                // the new pm stuff
+                if(mSettings.getBoolean("newPmNotifications",false)) {
+                    int unread = checkNewPm();
+                   
+                    if(unread > 0)
+                        showNewPmNotification(unread + " ungelesene PMs!");
+                    else
+                        hideNewPmNotification();
                 }
+                
+                // the new post stuff
+                if(mSettings.getBoolean("newPostsNotifications",false)) {
+                    int unread = checkNewPosts();
+                   
+                    if(unread > 0)
+                        showNewPostNotification(unread + " neue Posts!");
+                    else
+                        hideNewPostNotification();
+                }
+                
             }
         }, 0, interval * 1000);
         
@@ -106,15 +128,30 @@ public class NotificationService extends Service {
     /**
      * Update the notification with the message msg.
      */
-    private void showNotification(String msg) {
-        mNotification.setLatestEventInfo(getApplicationContext(), CONTENT_TITLE, msg, mContentIntent);
-        mNotificationManager.notify(NOTIFICATION_ID, mNotification);
+    private void showNewPostNotification(String msg) {
+        mPostNotification.setLatestEventInfo(getApplicationContext(), CONTENT_TITLE, msg, mContentIntent);
+        mNotificationManager.notify(NOTIFICATION_ID, mPostNotification);
     }
     
     /**
      * hide the notification
      */
-    private void hideNotification() {
+    private void hideNewPostNotification() {
+        mNotificationManager.cancel(NOTIFICATION_ID);
+    }
+    
+    /**
+     * Update the notification with the message msg.
+     */
+    private void showNewPmNotification(String msg) {
+        mPmNotification.setLatestEventInfo(getApplicationContext(), CONTENT_TITLE, msg, mContentIntent);
+        mNotificationManager.notify(NOTIFICATION_ID, mPmNotification);
+    }
+    
+    /**
+     * hide the notification
+     */
+    private void hideNewPmNotification() {
         mNotificationManager.cancel(NOTIFICATION_ID);
     }
     
@@ -139,6 +176,22 @@ public class NotificationService extends Service {
         return unread;
     }
     
+    /**
+     * Check for new posts (there might be more notifyable stuff in the futuer.
+     * Depends on enos, if there is going to be a really cool feature. :)
+     */
+    private Integer checkNewPm() {
+        int unread = 0;
+        String html = PotUtils.getWebsiteInteractionInstance(this).callPage("http://forum.mods.de/bb");
+        Pattern pattern = Pattern.compile("<span class=\"infobar_newpm\">([0-9]+)</span>");
+        Matcher m = pattern.matcher(html);
+        
+        if (m.find()) {
+            unread = Integer.valueOf(m.group(1));
+        }
+        return unread;
+    }
+    
     @Override
     public IBinder onBind(Intent arg0) {
         return null;
@@ -150,7 +203,8 @@ public class NotificationService extends Service {
      */
     @Override
     public void onDestroy() {
-        hideNotification();
+        hideNewPostNotification();
+        hideNewPmNotification();
         mTimer.cancel();
         mFavouritesDatabase.close();
         

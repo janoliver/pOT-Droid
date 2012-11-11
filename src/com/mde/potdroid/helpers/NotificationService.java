@@ -52,6 +52,9 @@ public class NotificationService extends Service {
     private PendingIntent       mContentIntent;
     private ObjectManager       mObjectManager;
     
+    private int                 mPostsUnread = 0;
+    private int                 mPmUnread = 0;
+    
     // this is the database helper for the favourites.
     private FavouritesDatabase  mFavouritesDatabase;
     
@@ -103,9 +106,11 @@ public class NotificationService extends Service {
                 if(mSettings.getBoolean("newPmNotifications",false)) {
                     int unread = checkNewPm();
                    
-                    if(unread > 0)
+                    if(unread > mPmUnread) {
+                        mPmUnread = unread;
                         showNewPmNotification(unread + " ungelesene PMs!");
-                    else
+                    }
+                    else if(unread == 0)
                         hideNewPmNotification();
                 }
                 
@@ -113,9 +118,10 @@ public class NotificationService extends Service {
                 if(mSettings.getBoolean("newPostsNotifications",false)) {
                     int unread = checkNewPosts();
                    
-                    if(unread > 0)
+                    if(unread > mPostsUnread) {
+                        mPostsUnread = unread;
                         showNewPostNotification(unread + " neue Posts!");
-                    else
+                    } else if(unread == 0)
                         hideNewPostNotification();
                 }
                 

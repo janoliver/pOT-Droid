@@ -213,7 +213,7 @@ public class TopicHtmlGenerator {
         b.mTag = "u";
         b.mDescription = "Underline";
         b.allow(allNodes);
-        b.html("<ul>{0}</u>");
+        b.html("<u>{0}</u>");
         b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
         b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_REOPEN;
         a.registerTag(b);

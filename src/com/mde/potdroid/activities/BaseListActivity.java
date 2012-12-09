@@ -11,7 +11,7 @@
  *  0. You just DO WHAT THE FUCK YOU WANT TO. 
  */
 
-package com.mde.potdroid.baseclasses;
+package com.mde.potdroid.activities;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -24,10 +24,6 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.mde.potdroid.R;
-import com.mde.potdroid.activities.BoardActivity;
-import com.mde.potdroid.activities.BookmarkActivity;
-import com.mde.potdroid.activities.ForumActivity;
-import com.mde.potdroid.activities.PreferenceActivityPot;
 import com.mde.potdroid.helpers.ObjectManager;
 import com.mde.potdroid.helpers.PotUtils;
 import com.mde.potdroid.helpers.WebsiteInteraction;

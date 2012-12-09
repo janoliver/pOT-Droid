@@ -36,7 +36,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.mde.potdroid.R;
-import com.mde.potdroid.baseclasses.BaseActivity;
 import com.mde.potdroid.helpers.DialogWrapper;
 import com.mde.potdroid.helpers.PostDialogs;
 import com.mde.potdroid.helpers.PotNotification;

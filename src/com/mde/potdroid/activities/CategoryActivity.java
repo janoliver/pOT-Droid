@@ -29,7 +29,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mde.potdroid.R;
-import com.mde.potdroid.baseclasses.BaseListActivity;
 import com.mde.potdroid.helpers.PotNotification;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Category;

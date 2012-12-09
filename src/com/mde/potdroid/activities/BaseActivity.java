@@ -11,7 +11,7 @@
  *  0. You just DO WHAT THE FUCK YOU WANT TO. 
  */
 
-package com.mde.potdroid.baseclasses;
+package com.mde.potdroid.activities;
 
 import android.app.Activity;
 import android.content.SharedPreferences;

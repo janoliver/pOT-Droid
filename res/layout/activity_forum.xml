@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/root">
+    
+    <fragment class="com.mde.potdroid.activities.NavigationFragment"
+            android:id="@+id/nav"
+            android:layout_width="300dp" 
+            android:layout_height="fill_parent" />
+
+    <ListView android:id="@+id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+</LinearLayout>

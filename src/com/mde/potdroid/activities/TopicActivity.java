@@ -65,7 +65,7 @@ public class TopicActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         // set view
-        setContentView(R.layout.topic);
+        setContentView(R.layout.activity_topic);
         mLinearLayout = (ViewGroup) findViewById(R.id.linlayout);
         mWebView = (WebView) findViewById(R.id.webview);
         

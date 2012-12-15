@@ -14,16 +14,20 @@
 package com.mde.potdroid.activities;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,12 +39,13 @@ import com.mde.potdroid.models.Forum;
 /**
  * In this activity, the forum and the containing categories are shown.
  */
-public class ForumActivity extends BaseListActivity {
+public class ForumActivity extends BaseActivity {
     /**
      * mCats is an array of the forum's categories. It is filled after
      * PrepareAdapter was executed.
      */
     private Category[] mCats;
+    private ListView mListView;
 
     /**
      * Starting point of the activity.
@@ -48,6 +53,13 @@ public class ForumActivity extends BaseListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // find the views
+        setContentView(R.layout.activity_forum);
+        mListView = (ListView) findViewById(R.id.list);
+         
+        // hide navigation bar
+        toggleNavigation();
 
         // redirect?
         if ((mExtras == null || !mExtras.getBoolean("noredirect", false))
@@ -69,9 +81,6 @@ public class ForumActivity extends BaseListActivity {
             return;
         }
 
-        // the view
-        setListAdapter(null); 
-
         // load the data and display it
         new PrepareAdapter().execute((Void[]) null);
         
@@ -85,6 +94,41 @@ public class ForumActivity extends BaseListActivity {
                 }
             }
         });
+    }
+    
+    public void toggleNavigation() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        NavigationFragment nav = (NavigationFragment)fm.findFragmentById(R.id.nav);
+        if(nav.isHidden())
+            ft.show(nav);
+        else
+            ft.hide(nav);
+        ft.commit();
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            toggleNavigation();
+            return true;
+        case R.id.forumact:
+            goToForumActivity();
+            return true;
+        case R.id.preferences:
+            goToPreferencesActivityPot();
+            return true;
+        case R.id.bookmarks:
+            goToBookmarkActivity();
+            return true;
+        case R.id.refresh:
+            refresh();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
     
     /**

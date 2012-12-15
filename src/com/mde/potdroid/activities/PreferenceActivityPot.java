@@ -20,9 +20,11 @@ import java.util.List;
 import java.util.Random;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -40,6 +42,7 @@ import android.widget.Toast;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.NotificationService;
 import com.mde.potdroid.helpers.ObjectManager;
+import com.mde.potdroid.helpers.PotNotification;
 import com.mde.potdroid.helpers.PotUtils;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Forum;
@@ -81,29 +84,8 @@ public class PreferenceActivityPot extends PreferenceActivity {
                 Button loginButton = (Button) dialog.findViewById(R.id.login);
                 loginButton.setOnClickListener(new OnClickListener() {
                     public void onClick(View v) {
-                        SharedPreferences.Editor editor = mSettings.edit();
-
-                        editor.putString("user_name", user.getText().toString());
-                        editor.putString("user_password", pw.getText().toString());
-                        editor.commit();
-                        try {
-                            if (PotUtils.getWebsiteInteractionInstance(PreferenceActivityPot.this)
-                                    .login(pw.getText().toString())) {
-                                Toast.makeText(PreferenceActivityPot.this,
-                                        "Erfolgreich eingeloggt", Toast.LENGTH_LONG).show();
-                                dialog.dismiss();
-                                PotUtils.clear();
-                            } else {
-                                // set pref values back
-                                editor.putString("user_name", oldUser);
-                                editor.commit();
-                                Toast.makeText(PreferenceActivityPot.this, "Falsche Zugangsdaten!",
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            Toast.makeText(PreferenceActivityPot.this, "Unbekannter Fehler", 
-                                    Toast.LENGTH_LONG).show();
-                        }
+                        new LoginTask(dialog).execute(user.getText().toString(), 
+                                pw.getText().toString());
                     }
                 });
                 dialog.show();
@@ -112,7 +94,8 @@ public class PreferenceActivityPot extends PreferenceActivity {
             }
 
         });
-
+        
+        
         Preference aboutPref = findPreference("aboutPref");
         aboutPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
@@ -235,4 +218,57 @@ public class PreferenceActivityPot extends PreferenceActivity {
         });
         dialog.show();
     }
+    
+    public class LoginTask extends AsyncTask<String, Void, Boolean> {
+        ProgressDialog mDialog;
+        Dialog mLoginDialog;
+        
+        public LoginTask(Dialog loginDialog) {
+            super();
+            mLoginDialog = loginDialog;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            
+            mDialog = new PotNotification(PreferenceActivityPot.this, this, true);
+            mDialog.setMessage("Login...");
+            mDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            String username = (String) params[0];
+            String password = (String) params[1];
+            
+            SharedPreferences.Editor editor = mSettings.edit();
+
+            editor.putString("user_name", username);
+            editor.putString("user_password", password);
+            editor.commit();
+            try {
+                if (PotUtils.getWebsiteInteractionInstance(PreferenceActivityPot.this)
+                        .login(password)) {
+                    PotUtils.clear();
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            mDialog.dismiss();
+            if(success) {
+                mLoginDialog.dismiss();
+                Toast.makeText(PreferenceActivityPot.this, "Erfolgreich eingeloggt!", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(PreferenceActivityPot.this, "Fehler!", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.mde.potdroid.activities;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import android.app.Activity;
@@ -73,6 +74,20 @@ public class NavigationFragment extends Fragment {
     }
     
     /**
+     * Return a Map<Integer, Bookmark> with only Bookmarks with unread posts.
+     */
+    protected Map<Integer, Bookmark> filterBookmarksByUnread() {
+        Map<Integer, Bookmark> newMap  = new LinkedHashMap<Integer, Bookmark>();
+        int c = 0;
+        for( Bookmark value : mBookmarks.values()) {
+            if(value.getNumberOfNewPosts() > 0) {
+                newMap.put(c++, value);
+            }
+        }
+        return newMap;
+    }
+    
+    /**
      * Custom view adapter for the ListView items
      */
     class BookmarkViewAdapter extends ArrayAdapter<Bookmark> {
@@ -80,32 +95,20 @@ public class NavigationFragment extends Fragment {
 
         BookmarkViewAdapter(Activity context) {
             super(context, R.layout.listitem_fragment_bookmark, R.id.name, 
-                    mBookmarks.values().toArray(new Bookmark[0]));
+                    filterBookmarksByUnread().values().toArray(new Bookmark[0]));
             this.context = context;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             
-            // dp to px
-            
             View row = mInflater.inflate(R.layout.listitem_fragment_bookmark, null);
-            Bookmark bm = (Bookmark)mBookmarks.values().toArray()[position];
+            Bookmark bm = (Bookmark)filterBookmarksByUnread().values().toArray()[position];
             
             TextView name = (TextView) row.findViewById(R.id.name);
-            TextView descr = (TextView) row.findViewById(R.id.newposts);
-            
             name.setText(bm.getThread().getTitle());
-            
-            if(bm.getNumberOfNewPosts() > 0) {
-                descr.setText("" + bm.getNumberOfNewPosts());
-            } else {
-                name.setTextColor(0xFFaaaaaa);
-                name.setTextSize(11);
-                name.setPadding(0, 0, (int)(20 * getResources().getDisplayMetrics().density + 0.5f), 0);
-                descr.setVisibility(View.GONE);
-            }
-            
+            TextView descr = (TextView) row.findViewById(R.id.newposts);
+            descr.setText("" + bm.getNumberOfNewPosts());
             
             return row;
         }

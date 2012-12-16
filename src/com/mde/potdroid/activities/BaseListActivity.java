@@ -27,6 +27,7 @@ import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.ObjectManager;
 import com.mde.potdroid.helpers.PotUtils;
 import com.mde.potdroid.helpers.WebsiteInteraction;
+import com.slidingmenu.lib.SlidingMenu;
 
 /**
  * Base Activity class for all activities that are/use ListActivity. Defines
@@ -62,6 +63,18 @@ public abstract class BaseListActivity extends ListActivity {
         mObjectManager      = PotUtils.getObjectManagerInstance(this);
         mSettings           = PreferenceManager.getDefaultSharedPreferences(this);
         mExtras             = getIntent().getExtras();
+        
+
+        // sliding menu
+        SlidingMenu menu = new SlidingMenu(this);
+        menu.setMode(SlidingMenu.LEFT);
+        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        menu.setShadowWidthRes(R.dimen.shadow_width);
+        menu.setShadowDrawable(R.drawable.shadow);
+        menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+        menu.setFadeDegree(0.35f);
+        menu.attachToActivity(this, SlidingMenu.SLIDING_WINDOW);
+        menu.setMenu(R.layout.menu_frame);
     }
     
     /**

@@ -14,14 +14,11 @@
 package com.mde.potdroid.activities;
 
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,6 +28,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.MenuItem;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.PotNotification;
 import com.mde.potdroid.models.Category;
@@ -57,10 +55,7 @@ public class ForumActivity extends BaseActivity {
         // find the views
         setContentView(R.layout.activity_forum);
         mListView = (ListView) findViewById(R.id.list);
-         
-        // hide navigation bar
-        toggleNavigation();
-
+        
         // redirect?
         if ((mExtras == null || !mExtras.getBoolean("noredirect", false))
                 && !mSettings.getString("startActivity", "0").equals("0")) {
@@ -96,24 +91,10 @@ public class ForumActivity extends BaseActivity {
         });
     }
     
-    public void toggleNavigation() {
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        NavigationFragment nav = (NavigationFragment)fm.findFragmentById(R.id.nav);
-        if(nav.isHidden())
-            ft.show(nav);
-        else
-            ft.hide(nav);
-        ft.commit();
-    }
-    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-        case android.R.id.home:
-            toggleNavigation();
-            return true;
         case R.id.forumact:
             goToForumActivity();
             return true;
@@ -136,7 +117,6 @@ public class ForumActivity extends BaseActivity {
      */
     private void fillView() {
         ForumViewAdapter adapter = new ForumViewAdapter(ForumActivity.this);
-        mListView.addHeaderView(getHeaderView());
         mListView.setAdapter(adapter);
     }
     
@@ -146,22 +126,6 @@ public class ForumActivity extends BaseActivity {
     @Override
     public void refresh() {};
 
-    /**
-     * Returns the header view for the list.
-     */
-    public View getHeaderView() {
-        LayoutInflater inflater = this.getLayoutInflater();
-        View row = inflater.inflate(R.layout.header_general, null);
-
-        TextView descr = (TextView) row.findViewById(R.id.pagetext);
-        descr.setText("Übersicht");
-
-        TextView loggedin = (TextView) row.findViewById(R.id.loggedin);
-        loggedin.setText(mObjectManager.isLoggedIn() ? "Hallo "
-                + mObjectManager.getCurrentUser().getNick() : "nicht eingeloggt");
-
-        return (row);
-    }
 
     /**
      * Custom view adapter for the ListView items

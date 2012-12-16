@@ -13,24 +13,25 @@
 
 package com.mde.potdroid.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.ObjectManager;
 import com.mde.potdroid.helpers.PotUtils;
 import com.mde.potdroid.helpers.WebsiteInteraction;
+import com.slidingmenu.lib.SlidingMenu;
 
 /**
  * The Acitivty base class. ATM only takes care of some member variables.
  */
-public abstract class BaseActivity extends Activity {
+public abstract class BaseActivity extends SherlockActivity {
 
     protected WebsiteInteraction mWebsiteInteraction;
     protected ObjectManager      mObjectManager;
@@ -55,6 +56,17 @@ public abstract class BaseActivity extends Activity {
             this.setTheme(R.style.PotLight);
         if(theme == THEME_DARK)
             this.setTheme(R.style.PotDark);
+        
+        // sliding menu
+        SlidingMenu menu = new SlidingMenu(this);
+        menu.setMode(SlidingMenu.LEFT);
+        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        menu.setShadowWidthRes(R.dimen.shadow_width);
+        menu.setShadowDrawable(R.drawable.shadow);
+        menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+        menu.setFadeDegree(0.35f);
+        menu.attachToActivity(this, SlidingMenu.SLIDING_WINDOW);
+        menu.setMenu(R.layout.menu_frame);
     }
     
     
@@ -69,7 +81,7 @@ public abstract class BaseActivity extends Activity {
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getSupportMenuInflater();
         inflater.inflate(R.menu.iconmenu, menu);
         return true;
     }

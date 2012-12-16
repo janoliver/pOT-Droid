@@ -5,7 +5,6 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,23 +14,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.ObjectManager;
-import com.mde.potdroid.helpers.PotNotification;
 import com.mde.potdroid.helpers.PotUtils;
 import com.mde.potdroid.helpers.WebsiteInteraction;
 import com.mde.potdroid.models.Bookmark;
 
-public class NavigationFragment extends Fragment {
+public class LeftMenu extends Fragment {
     protected WebsiteInteraction mWebsiteInteraction;
     protected ObjectManager      mObjectManager;
     protected SharedPreferences  mSettings;
     private Activity             mActivity;
     private ListView             mBookmarksView;
     private LayoutInflater       mInflater;
+    private RelativeLayout       mLoader;
     
     /**
      * mBookmarks is a Map with all the bookmarks stored as 
@@ -57,6 +57,9 @@ public class NavigationFragment extends Fragment {
         mInflater = inflater;
         
         View fragmentView = inflater.inflate(R.layout.fragment_navigation, container, false);
+        
+        mLoader = (RelativeLayout) fragmentView.findViewById(R.id.loadingPanel);
+        //mLoader.setVisibility(View.GONE);
         
         // logged in and stuff
         TextView loggedIn = (TextView) fragmentView.findViewById(R.id.hello);
@@ -122,13 +125,11 @@ public class NavigationFragment extends Fragment {
      * When it is finished, the loader is hidden.
      */
     class PrepareAdapter extends AsyncTask<Void, Void, Exception> {
-        ProgressDialog mDialog;
-
+        
         @Override
         protected void onPreExecute() {
-            mDialog = new PotNotification(mActivity, this, true);
-            mDialog.setMessage("Lade...");
-            mDialog.show();
+            mLoader.setVisibility(View.VISIBLE);
+            
         }
 
         @Override
@@ -143,15 +144,14 @@ public class NavigationFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Exception e) {
+            //mLoader.setVisibility(View.GONE);
             if(e == null) {
                 
                 BookmarkViewAdapter adapter = new BookmarkViewAdapter(mActivity);
                 mBookmarksView.setAdapter(adapter);
 
-                mDialog.dismiss();
             } else {
                 Toast.makeText(mActivity, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
-                mDialog.dismiss();
                 e.printStackTrace();
             }
         }

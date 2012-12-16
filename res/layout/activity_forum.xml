@@ -5,11 +5,6 @@
     android:layout_height="fill_parent"
     android:id="@+id/root">
     
-    <fragment class="com.mde.potdroid.activities.NavigationFragment"
-            android:id="@+id/nav"
-            android:layout_width="300dp" 
-            android:layout_height="fill_parent" />
-
     <ListView android:id="@+id/list"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />

@@ -30,17 +30,35 @@
         android:text="Hallo, Unbekannter!"
         android:textStyle="bold"
         android:maxLines="1"/>
-    <TextView
-        android:id="@+id/bookmarks_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:paddingLeft="5dp"
-        android:paddingBottom="3dp"
-        android:textColor="#eeeeee"
-        android:textSize="12sp"
-        android:text="Bookmarks"
-        android:maxLines="1"/>
+    
+    <RelativeLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"
+        android:paddingTop="20dp">
+
+	   <TextView
+	        android:id="@+id/bookmarks_title"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="0dp"
+	        android:paddingLeft="5dp"
+	        android:paddingBottom="3dp"
+	        android:textColor="#eeeeee"
+	        android:textSize="12sp"
+	        android:text="BOOKMARKS"
+	        android:maxLines="1"
+	        android:layout_alignParentLeft="true" />
+    
+	    <RelativeLayout style="@style/GenericProgressBackground"
+	        android:id="@+id/loadingPanel"
+	        android:layout_alignParentRight="true" >
+	        <ProgressBar style="@style/GenericProgressIndicator"/>
+	    </RelativeLayout>
+	</RelativeLayout>
+    
+    
+    
     <View
 	    android:layout_width="fill_parent"
 	    android:layout_height="2dp"

@@ -24,9 +24,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -35,6 +32,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.DialogWrapper;
 import com.mde.potdroid.helpers.PostDialogs;
@@ -190,7 +190,7 @@ public class TopicActivity extends BaseActivity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getSupportMenuInflater();
         if (mObjectManager.isLoggedIn()) {
             inflater.inflate(R.menu.iconmenu_thread, menu);
             return true;

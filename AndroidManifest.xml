@@ -3,7 +3,7 @@
       package="com.mde.potdroid"
       android:versionCode="23" android:versionName="2.0">
     
-    <uses-sdk android:minSdkVersion="11" android:targetSdkVersion="11" />
+    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="15" />
     
     <application android:icon="@drawable/icon" 
                  android:label="@string/app_name">

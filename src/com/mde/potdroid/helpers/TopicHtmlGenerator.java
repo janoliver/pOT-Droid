@@ -30,7 +30,6 @@ import biz.source_code.miniTemplator.MiniTemplator;
 import biz.source_code.miniTemplator.MiniTemplator.TemplateSpecification;
 import biz.source_code.miniTemplator.MiniTemplator.VariableNotDefinedException;
 
-import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.BBCodeParser.UnknownErrorException;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;

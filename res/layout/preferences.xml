@@ -66,13 +66,6 @@
              android:entryValues="@array/loadImagesValues" />
         
         <ListPreference 
-             android:title="Style Threadansicht"
-             android:key="style" 
-             android:summary="Style der Threadsicht auswählen" 
-             android:entries="@array/forumStyle"
-             android:entryValues="@array/forumStyleValues" />
-             
-        <ListPreference 
              android:title="Style Sonstiges"
              android:key="theme" 
              android:summary="Style der restlichen Ansichten wählen." 

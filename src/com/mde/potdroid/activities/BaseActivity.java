@@ -38,9 +38,6 @@ public abstract class BaseActivity extends SlidingActivity {
     protected Bundle             mExtras;
     protected LeftMenu           mLeftMenu;
 
-    private final int THEME_LIGHT = 0;
-    private final int THEME_DARK  = 1; 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +49,9 @@ public abstract class BaseActivity extends SlidingActivity {
         
         // set the theme
         int theme = Integer.valueOf(mSettings.getString("theme", "0"));
-        if(theme == THEME_LIGHT)
+        if(theme == PotUtils.THEME_LIGHT)
             this.setTheme(R.style.PotLight);
-        if(theme == THEME_DARK)
+        if(theme == PotUtils.THEME_DARK)
             this.setTheme(R.style.PotDark);
         
         // sliding menu

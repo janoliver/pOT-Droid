@@ -42,10 +42,13 @@ public class PotUtils {
     public static final String DEFAULT_ENCODING = "ISO-8859-15";
     public static final String FORUM_HOST = "forum.mods.de";
     public static final String COOKIE_LIFETIME = "31536000";
-    public static final String SDCARD_ERRLOG_LOCATION = "/sdcard/Android/data/com.janoliver.potdroid/files";
-
+    
     public static final String LOG_TAG = "pOT Droid";
     public static final int WAIT_CONNECTION_TIME = 500;
+
+    public static final int THEME_LIGHT = 0;
+    public static final int THEME_DARK  = 1; 
+
 
     /**
      * Returns an instance of the WebsiteInteraction class.

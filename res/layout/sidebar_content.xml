@@ -2,86 +2,82 @@
 <RelativeLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" 
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:background="?attr/color_background_indicator">
+   
+    <TextView
+        android:id="@+id/hello"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingLeft="5dp"
+        android:paddingBottom="0dp"
+        android:textColor="?attr/color_text_primary"
+        android:textSize="14sp"
+        android:text="@string/greeting"
+        android:textStyle="bold"
+        android:maxLines="1"/>
     
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-	    android:paddingLeft="16dp"
-	    android:paddingRight="16dp"
-	    android:orientation="vertical" 
-	    android:background="#394E63">
-	    
-	    <TextView
-	        android:id="@+id/hello"
+    <RelativeLayout
+        android:id="@+id/refresh_view"
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"
+        android:paddingTop="30dp"
+        android:clickable="true"
+        android:layout_below="@id/hello">
+
+	   <TextView
+	        android:id="@+id/bookmarks_title"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:paddingTop="10dp"
+	        android:paddingTop="0dp"
 	        android:paddingLeft="5dp"
-	        android:paddingBottom="0dp"
-	        android:textColor="#ffffff"
+	        android:paddingBottom="3dp"
+	        android:textColor="?attr/color_text_secondary"
 	        android:textSize="14sp"
-	        android:text="Hallo, Unbekannter!"
-	        android:textStyle="bold"
-	        android:maxLines="1"/>
-	    
-	    <RelativeLayout
-	        android:id="@+id/refresh_view"
-		    xmlns:android="http://schemas.android.com/apk/res/android"
-		    android:layout_width="wrap_content" 
-		    android:layout_height="wrap_content"
-	        android:paddingTop="30dp"
-	        android:clickable="true">
-	
-		   <TextView
-		        android:id="@+id/bookmarks_title"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:paddingTop="0dp"
-		        android:paddingLeft="5dp"
-		        android:paddingBottom="3dp"
-		        android:textColor="#eeeeee"
-		        android:textSize="14sp"
-		        android:text="BOOKMARKS"
-		        android:maxLines="1"
-		        android:layout_alignParentLeft="true" />
-	        
-		    <RelativeLayout style="@style/GenericProgressBackground"
-		        android:id="@+id/loadingPanel"
-		        android:layout_alignParentRight="true" >
-		        <ProgressBar style="@style/GenericProgressIndicator"/>
-		    </RelativeLayout>
-		</RelativeLayout>
-	    
-	    
-	    
-	    <View
-		    android:layout_width="fill_parent"
-		    android:layout_height="2dp"
-		    android:layout_marginLeft="5dp"
-		    android:background="#222E3A" />
-	    <TextView
-            android:id="@+id/error_message"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:paddingBottom="3dp"
-            android:textColor="#eeeeee"
-            android:textSize="12sp"
-            android:text="Fehler"
-            android:maxLines="1"
-            android:gravity="center"
-            android:visibility="gone" />
-	    <ListView 
-	        android:id="@+id/bookmark_list"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" 
-	        android:paddingTop="2dp"
-	        android:paddingLeft="5dp"
-	        android:paddingBottom="0dp"
-	        android:divider="#222E3A"
-	        android:dividerHeight="1dp"/>
-	    
-	</LinearLayout>
-
+	        android:text="@string/bookmarks"
+	        android:maxLines="1"
+	        android:layout_alignParentLeft="true" />
+        
+	    <RelativeLayout style="@style/GenericProgressBackground"
+	        android:id="@+id/loadingPanel"
+	        android:layout_alignParentRight="true" >
+	        <ProgressBar style="@style/GenericProgressIndicator"/>
+	    </RelativeLayout>
+	</RelativeLayout>
+    
+    <View
+        android:id="@+id/separator"
+	    android:layout_width="fill_parent"
+	    android:layout_height="2dp"
+	    android:layout_marginLeft="5dp"
+	    android:background="?attr/color_background_forum"
+        android:layout_below="@id/refresh_view" />
+    <TextView
+        android:id="@+id/error_message"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="3dp"
+        android:textColor="?attr/color_text_primary"
+        android:textSize="12sp"
+        android:text=""
+        android:maxLines="1"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_below="@id/separator" />
+    <ListView 
+        android:id="@+id/bookmark_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:paddingTop="2dp"
+        android:paddingLeft="5dp"
+        android:paddingBottom="0dp"
+        android:divider="?attr/color_background_forum"
+        android:dividerHeight="1dp"
+        android:layout_below="@id/error_message"/>
+    
 </RelativeLayout>

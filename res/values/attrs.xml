@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="textColor1" format="color" />
-    <attr name="textColor2" format="color" />
-    <attr name="textColor3" format="color" />
-    <attr name="bgColor1" format="color" />
-    <attr name="bgColor2" format="color" />
-    <attr name="bgColor3" format="color" />
+    <attr name="color_text_primary" format="color" />
+    <attr name="color_text_secondary" format="color" />
+    <attr name="color_text_third" format="color" />
+    
+    <attr name="color_background_indicator" format="color" />
+    <attr name="color_background_category" format="color" />
+    <attr name="color_background_forum" format="color" />
     
     <!-- menu icons -->
     <attr name="menu_icon_preferences" format="reference" />

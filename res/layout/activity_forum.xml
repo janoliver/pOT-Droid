@@ -3,10 +3,12 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:id="@+id/root"
-    android:background="#000000">
+    android:id="@+id/root">
     
     <ExpandableListView android:id="@+id/list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+        android:childDivider="?attr/color_background_indicator"
+        android:divider="?attr/color_background_indicator"
+        android:dividerHeight="1dp" />
 </LinearLayout>

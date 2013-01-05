@@ -9,19 +9,19 @@
         <item name="menu_icon_refresh">@drawable/light_navigation_refresh</item>
         <item name="menu_icon_favorite">@drawable/light_rating_favorite</item>
         <item name="menu_icon_home">@drawable/light_navigation_home</item>
-    
-        <item name="textColor1">#000000</item>
-        <item name="textColor2">#333333</item>
-        <item name="textColor3">#666666</item>
-        <item name="bgColor1">#ffffff</item>
-        <item name="bgColor2">#000000</item>
-        <item name="bgColor3">#000000</item>
+        
+        <item name="color_background_category">#ffffff</item>
+        <item name="color_background_forum">#999999</item>
+        <item name="color_background_indicator">#aaaaaa</item>
+        <item name="color_text_primary">#000000</item>
+        <item name="color_text_secondary">#444444</item>
+        <item name="color_text_third">#bbbbbb</item>
         
         <item name="actionBarSize">48dip</item>
         <item name="android:actionBarSize">48dip</item> 
     </style>
     
-    <style name="PotDark" parent="Theme.Sherlock.Light.DarkActionBar">
+    <style name="PotDark" parent="Theme.Sherlock">
         <item name="menu_icon_preferences">@drawable/dark_action_settings</item>
         <item name="menu_icon_edit">@drawable/dark_content_edit</item>
         <item name="menu_icon_back">@drawable/dark_navigation_back</item>
@@ -30,13 +30,13 @@
         <item name="menu_icon_favorite">@drawable/dark_rating_favorite</item>
         <item name="menu_icon_home">@drawable/dark_navigation_home</item>
         
-        <item name="textColor1">#ffffff</item>
-        <item name="textColor2">#eeeeee</item>
-        <item name="textColor3">#bbbbbb</item>
-        <item name="bgColor1">#000000</item>
-        <item name="bgColor2">#ffffff</item>
-        <item name="bgColor3">#ffffff</item>
-        
+        <item name="color_background_category">#07141C</item>
+        <item name="color_background_forum">#222E3A</item>
+        <item name="color_background_indicator">#394E63</item>
+        <item name="color_text_primary">#ffffff</item>
+        <item name="color_text_secondary">#aaaaaa</item>
+        <item name="color_text_third">#333333</item>
+    
         <item name="actionBarSize">48dip</item>
         <item name="android:actionBarSize">48dip</item> 
     </style>
@@ -46,6 +46,7 @@
 	    <item name="android:layout_height">wrap_content</item>  
 	    <item name="android:gravity">center</item>  
 	</style>
+	
 	<style name="GenericProgressIndicator" parent="@android:style/Widget.ProgressBar.Small">
 	    <item name="android:layout_width">wrap_content</item>
 	    <item name="android:layout_height">wrap_content</item>

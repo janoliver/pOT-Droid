@@ -30,6 +30,7 @@ import biz.source_code.miniTemplator.MiniTemplator;
 import biz.source_code.miniTemplator.MiniTemplator.TemplateSpecification;
 import biz.source_code.miniTemplator.MiniTemplator.VariableNotDefinedException;
 
+import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.BBCodeParser.UnknownErrorException;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
@@ -100,6 +101,13 @@ public class TopicHtmlGenerator {
         InputStream template     = mResources.getAssets().open("thread.html");
         tplSpecs.templateText    = PotUtils.inputStreamToString(template);
         MiniTemplator t          = new MiniTemplator(tplSpecs);
+        
+        // select the correct css file
+        int theme = Integer.valueOf(mSettings.getString("theme", "0"));
+        if(theme == PotUtils.THEME_LIGHT)
+            t.setVariable("theme", "Light");
+        if(theme == PotUtils.THEME_DARK)
+            t.setVariable("theme", "Dark");
         
         // iterate the posts
         for (int i = 0; i < posts.length; i++) {

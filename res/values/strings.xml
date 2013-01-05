@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">pOT Droid</string>
+    <string name="image_content_description">Bild</string>
+    <string name="bookmarks">BOOKMARKS</string>
+    <string name="greeting">Hallo, Unbekannter!</string>
 </resources>

@@ -13,9 +13,9 @@
 
 package com.mde.potdroid.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -145,7 +145,7 @@ public class TopicActivity extends BaseActivity {
         };
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        SpinnerAdapter mSpinnerAdapter = new TitleSpinnerAdapter(this);
+        SpinnerAdapter mSpinnerAdapter = new TitleSpinnerAdapter(actionBar.getThemedContext());
         actionBar.setListNavigationCallbacks(mSpinnerAdapter, mOnNavigationListener);
     }
 	
@@ -169,19 +169,17 @@ public class TopicActivity extends BaseActivity {
     
 
     class TitleSpinnerAdapter extends ArrayAdapter<String> {
-        private Activity mContext;
         private Topic mThread;
         
-        TitleSpinnerAdapter(Activity context) {
+        TitleSpinnerAdapter(Context context) {
             super(context, android.R.layout.simple_spinner_dropdown_item, mTitleNavItems);
-            mContext = context;
             mThread = TopicActivity.this.mThread;
         }
         
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
                 
-            LayoutInflater inflater = mContext.getLayoutInflater();
+            LayoutInflater inflater = TopicActivity.this.getLayoutInflater();
             
             View row = inflater.inflate(R.layout.actionbar_title_thread, null);
 

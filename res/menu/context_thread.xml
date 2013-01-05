@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/first_page"
-          android:title="zur ersten Seite" android:showAsAction="ifRoom" android:icon="@drawable/ic_menu_back"/>
+          android:title="zur ersten Seite" android:showAsAction="ifRoom" android:icon="?attr/menu_icon_forward"/>
     <item android:id="@+id/last_page"
-          android:title="zur letzten Seite" android:showAsAction="ifRoom" android:icon="@drawable/ic_menu_forward"/>
+          android:title="zur letzten Seite" android:showAsAction="ifRoom" android:icon="?attr/menu_icon_forward"/>
 </menu>

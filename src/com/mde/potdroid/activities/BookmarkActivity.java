@@ -32,6 +32,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,13 +45,16 @@ import com.mde.potdroid.models.Bookmark;
 /**
  * This Activity shows the bookmark list and handles all it's actions.
  */
-public class BookmarkActivity extends BaseListActivity {
+public class BookmarkActivity extends BaseActivity {
 
     /**
      * mBookmarks is a Map with all the bookmarks stored as 
      * <Id, BookmarkObject> values.
      */
     private Map<Integer, Bookmark> mBookmarks;
+    
+
+    private ListView mListView;
     
     /**
      * mFavouritesDatabase is the sqlite database for the favourites among
@@ -64,6 +68,9 @@ public class BookmarkActivity extends BaseListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        setContentView(R.layout.activity_bookmarks);
+        mListView = (ListView) findViewById(R.id.list);
         
         // create the favourites database
         mFavouritesDatabase = new FavouritesDatabase(this);
@@ -81,7 +88,7 @@ public class BookmarkActivity extends BaseListActivity {
         @SuppressWarnings("unchecked")
         final Map<Integer, Bookmark> stateSaved = (Map<Integer, Bookmark>) getLastNonConfigurationInstance();
         if (stateSaved == null) {
-            setListAdapter(null);
+            mListView.setAdapter(null);
             new PrepareAdapter().execute((Void[]) null);
         } else {
             mBookmarks = stateSaved;
@@ -104,7 +111,6 @@ public class BookmarkActivity extends BaseListActivity {
      */
     private void fillView() {
         BookmarkViewAdapter adapter = new BookmarkViewAdapter(BookmarkActivity.this);
-        mListView.addHeaderView(getHeaderView());
         mListView.setAdapter(adapter);
 
         setTitle("Bookmarks (" + mObjectManager.getUnreadBookmarks() + " neue Posts)");
@@ -113,11 +119,11 @@ public class BookmarkActivity extends BaseListActivity {
     /**
      * Needed for orientation change
      */
-    @Override
-    public Object onRetainNonConfigurationInstance() {
-        final Map<Integer, Bookmark> stateSaved = mBookmarks;
-        return stateSaved;
-    }
+//    @Override
+//    public Object onRetainNonConfigurationInstance() {
+//        final Map<Integer, Bookmark> stateSaved = mBookmarks;
+//        return stateSaved;
+//    }
 
     /**
      * Open a thread after a click on a bookmark.
@@ -192,23 +198,6 @@ public class BookmarkActivity extends BaseListActivity {
         default:
             return super.onContextItemSelected(item);
         }
-    }
-
-    /**
-     * Returns the header view for the list.
-     */
-    public View getHeaderView() {
-        LayoutInflater inflater = this.getLayoutInflater();
-        View row = inflater.inflate(R.layout.header_general, null);
-
-        TextView descr = (TextView) row.findViewById(R.id.pagetext);
-        descr.setText("Bookmarks: " + mBookmarks.size());
-
-        TextView loggedin = (TextView) row.findViewById(R.id.loggedin);
-        loggedin.setText(mObjectManager.isLoggedIn() ? "Hallo "
-                + mObjectManager.getCurrentUser().getNick() : "nicht eingeloggt");
-
-        return (row);
     }
 
     /**

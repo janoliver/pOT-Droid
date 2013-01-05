@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="10dp"
-    android:background="#07141C">
+    android:background="#222E3A">
+    
+    <View xmlns:android="http://schemas.android.com/apk/res/android" 
+        android:layout_width="20dp"
+        android:layout_height="fill_parent"
+        android:background="#394E63"
+        />
     
 	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
+	    android:paddingLeft="5dp"
         android:paddingBottom="5dp"
         android:paddingTop="5dp">
 	    <TextView
@@ -33,4 +39,5 @@
 	        android:paddingBottom="5dp"
 	        android:textSize="12sp" />
 	</RelativeLayout>
+	
 </LinearLayout>

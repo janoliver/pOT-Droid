@@ -6,7 +6,7 @@
     android:id="@+id/root"
     android:background="#000000">
     
-    <ExpandableListView android:id="@+id/list"
+    <ListView android:id="@+id/list"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
 </LinearLayout>

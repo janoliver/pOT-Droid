@@ -13,6 +13,7 @@
 
 package com.mde.potdroid.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -22,16 +23,23 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.webkit.WebView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -51,11 +59,15 @@ import com.mde.potdroid.models.Topic;
 public class TopicActivity extends BaseActivity {
 
     private WebView   mWebView;
-    private ViewGroup mLinearLayout;
     private Topic     mThread;
     private Integer   mPage            = 1;
     private Integer   mPid             = 0;
     private String    mHtmlCode        = "";
+    private String[]  mTitleNavItems   = {
+            "","Aktualisieren", "Letzte Seite", "Erste Seite"
+            };
+    private Boolean   mEnableNavigation = false;
+    private OnNavigationListener mOnNavigationListener;
 
     /**
      * Starting point of the activity.
@@ -66,7 +78,6 @@ public class TopicActivity extends BaseActivity {
 
         // set view
         setContentView(R.layout.activity_topic);
-        mLinearLayout = (ViewGroup) findViewById(R.id.linlayout);
         mWebView = (WebView) findViewById(R.id.webview);
         
         // take care of the javascript and html. JSInterface is defined below.
@@ -95,7 +106,7 @@ public class TopicActivity extends BaseActivity {
             new ThreadLoader().execute(mPid, mPage);
         } else {
             Orientation o = threadSaved;
-            mThread = o.mTopic;
+            mThread = o.mTopic; 
             mPage   = o.mPage;
             mHtmlCode = o.mHtmlCode;
             mPid    = o.mPid;
@@ -103,8 +114,41 @@ public class TopicActivity extends BaseActivity {
             fillView();
         }
         
+        ActionBar actionBar = getSupportActionBar();
+        mOnNavigationListener = new OnNavigationListener() {
+            
+            
+            public boolean onNavigationItemSelected(int position, long itemId) {
+                if(mEnableNavigation) {
+                    PotUtils.log(""+position);
+                    switch(position) {
+                    case 0: // do nothing
+                        break;
+                    case 1: //refresh
+                        refresh();
+                        break;
+                    case 2: // last page
+                        mPage = mThread.getLastPage();
+                        refresh();
+                        break;
+                    case 3: // first page
+                    default:
+                        mPage = 1;
+                        refresh();
+                        break;
+                    }
+                } else {
+                    mEnableNavigation = true;
+                }
+                return true;
+            } 
+        };
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        SpinnerAdapter mSpinnerAdapter = new TitleSpinnerAdapter(this);
+        actionBar.setListNavigationCallbacks(mSpinnerAdapter, mOnNavigationListener);
     }
-    
+	
     /**
      * This is a small class to help storing objects in case of orientation change
      */
@@ -120,16 +164,56 @@ public class TopicActivity extends BaseActivity {
             mHtmlCode = s;
             mPid = pid;
         }
+        
     }
+    
+
+    class TitleSpinnerAdapter extends ArrayAdapter<String> {
+        private Activity mContext;
+        private Topic mThread;
+        
+        TitleSpinnerAdapter(Activity context) {
+            super(context, android.R.layout.simple_spinner_dropdown_item, mTitleNavItems);
+            mContext = context;
+            mThread = TopicActivity.this.mThread;
+        }
+        
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+                
+            LayoutInflater inflater = mContext.getLayoutInflater();
+            
+            View row = inflater.inflate(R.layout.actionbar_title_thread, null);
+
+            TextView title = (TextView) row.findViewById(R.id.title);
+            TextView subtitle = (TextView) row.findViewById(R.id.subtitle);
+            
+            title.setText(mThread.getTitle());
+            Spanned subtitleText = Html.fromHtml("Seite <b>" + TopicActivity.this.mPage
+                    + "</b> von <b>" + mThread.getLastPage() + "</b>");
+            subtitle.setText(subtitleText);
+            
+            return row;
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+
+            if (position == 0)
+                return new ViewStub(TopicActivity.this);            
+            return super.getView(position, null, parent);
+        }
+    }
+
 
     /**
      * Needed for orientation change
      */
-    @Override
-    public Object onRetainNonConfigurationInstance() {
-        final Orientation o = new Orientation(mThread, mPage, mHtmlCode, mPid);
-        return o;
-    }
+//    @Override
+//    public Object onRetainNonConfigurationInstance() {
+//        final Orientation o = new Orientation(mThread, mPage, mHtmlCode, mPid);
+//        return o;
+//    }
 
     /**
      * After downloading, shows the thread in the current activity.
@@ -138,8 +222,10 @@ public class TopicActivity extends BaseActivity {
         
         mWebView.loadDataWithBaseURL("file:///android_asset/", mHtmlCode, "text/html", "UTF-8", null);
         setTitle(mThread.getTitle());
-        mLinearLayout.addView(getHeaderView(), 0);
 
+        SpinnerAdapter mSpinnerAdapter = new TitleSpinnerAdapter(this);
+        getSupportActionBar().setListNavigationCallbacks(mSpinnerAdapter, mOnNavigationListener);
+        
         try {
             Thread.sleep(200);
             mWebView.loadUrl("javascript:scrollToElement('" + mThread.getPid() + "')");
@@ -191,13 +277,13 @@ public class TopicActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getSupportMenuInflater();
+        inflater.inflate(R.menu.actionmenu_topic, menu);
         if (mObjectManager.isLoggedIn()) {
-            inflater.inflate(R.menu.iconmenu_thread, menu);
-            return true;
+            menu.setGroupVisible(R.id.loggedin, true);
         } else {
-            inflater.inflate(R.menu.iconmenu_paginate, menu);
-            return true;
+            menu.setGroupVisible(R.id.loggedin, false);
         }
+        return true;
     }
 
     /**
@@ -207,9 +293,9 @@ public class TopicActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-        case android.R.id.home:
-            goToPresetActivity();
-            return true;
+//        case android.R.id.home:
+//            goToPresetActivity();
+//            return true;
         case R.id.reply:
             if (mThread.isClosed()) {
                 Toast.makeText(TopicActivity.this, "Thread geschlossen.",
@@ -218,18 +304,11 @@ public class TopicActivity extends BaseActivity {
                 replyDialog("");
             }
             return true;
-        case R.id.preferences:
-            Intent intent = new Intent(this, PreferenceActivityPot.class);
-            startActivity(intent);
+        case R.id.next:
+            showNextPage();
             return true;
-        case R.id.forumact:
-            goToForumActivity();
-            return true;
-        case R.id.refresh:
-            refresh();
-            return true;
-        case R.id.bookmarks:
-            goToBookmarkActivity();
+        case R.id.previous:
+            showPreviousPage();
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -328,67 +407,6 @@ public class TopicActivity extends BaseActivity {
                 new PostDialogs.PostEditer(TopicActivity.this).execute(mThread, wrapper, toEdit);
             }
         });
-    }
-
-    /**
-     * returns the view that is set as header for the list
-     */
-    public View getHeaderView() {
-        LayoutInflater inflater = this.getLayoutInflater();
-        View row = inflater.inflate(R.layout.header_thread, null);
-
-        // choose page number dialog
-        Button descr = (Button) row.findViewById(R.id.buttonList);
-        descr.setText(mPage + "/" + mThread.getLastPage());
-        descr.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                final CharSequence[] pages = new String[mThread.getLastPage()];
-                // list pages
-                for (int i = 0; i < pages.length; i++) {
-                    pages[i] = "Seite " + (i + 1);
-                    if (mPage == (i + 1)) {
-                        pages[i] = pages[i] + " (aktuell)";
-                    }
-                }
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(TopicActivity.this);
-                builder.setTitle("Seite wählen");
-                builder.setItems(pages, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        toPage(item + 1);
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.setCancelable(true);
-                dialog.show();
-            }
-        });
-
-        // prev page
-        Button prev = (Button) row.findViewById(R.id.buttonPrev);
-        if (mPage == 1) {
-            prev.setEnabled(false);
-        } else {
-            prev.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    showPreviousPage();
-                }
-            });
-        }
-
-        // next page
-        Button next = (Button) row.findViewById(R.id.buttonNext);
-        if (mPage == mThread.getLastPage()) {
-            next.setEnabled(false);
-        } else {
-            next.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    showNextPage();
-                }
-            });
-        }
-
-        return (row);
     }
 
     /**
@@ -543,6 +561,7 @@ public class TopicActivity extends BaseActivity {
         protected void onPostExecute(Exception e) {
             if(e == null) {
                 fillView();
+                ((LeftMenu)getSupportFragmentManager().findFragmentById(R.id.leftmenu)).refresh();
                 mDialog.dismiss();
             } else {
                 Toast.makeText(TopicActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();

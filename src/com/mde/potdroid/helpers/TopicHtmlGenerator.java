@@ -93,14 +93,6 @@ public class TopicHtmlGenerator {
 
         Post[] posts = mTopic.getPosts().get(mPage);
 
-        // Check for preferred style and set it accordingly
-        String cssFile = mSettings.getString("style", "threadcss_bbstyle");
-
-        // compatibility hack
-        if (cssFile.equals("1") || cssFile.equals("2") || cssFile.equals("3")) {
-            cssFile = "threadcss_bbcode";
-        }
-        
         // generate template specs
         TemplateSpecification tplSpecs = new TemplateSpecification();
 
@@ -108,9 +100,6 @@ public class TopicHtmlGenerator {
         InputStream template     = mResources.getAssets().open("thread.html");
         tplSpecs.templateText    = PotUtils.inputStreamToString(template);
         MiniTemplator t          = new MiniTemplator(tplSpecs);
-        
-        // build the topic
-        t.setVariable("css", cssFile);
         
         // iterate the posts
         for (int i = 0; i < posts.length; i++) {

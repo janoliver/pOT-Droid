@@ -3,65 +3,35 @@
       package="com.mde.potdroid"
       android:versionCode="23" android:versionName="2.0">
     
-    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="15" />
+    <uses-sdk android:minSdkVersion="11" android:targetSdkVersion="15" />
     
     <application android:icon="@drawable/icon" 
                  android:label="@string/app_name">
         
-        <activity android:name=".activities.ForumActivity"
-                  android:label="@string/app_name">
+        <activity 
+            android:name=".activities.ForumActivity"
+            android:label="@string/app_name">
+            
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http"
-                      android:host="forum.mods.de"
-                      android:pathPattern="/bb/index\\.php" />
-            </intent-filter>
+            
         </activity>
         
-        <activity android:name=".activities.BookmarkActivity"
+        <activity 
+            android:name=".activities.BookmarkActivity"
             android:exported="false" />
         
-        <activity android:name=".activities.CategoryActivity"
-            android:exported="false">
-            <intent-filter>
-	            <action android:name="android.intent.action.VIEW" />
-	            <category android:name="android.intent.category.DEFAULT" />
-	            <category android:name="android.intent.category.BROWSABLE" />
-	            <data android:scheme="http"
-	                  android:host="forum.mods.de"
-	                  android:pathPattern="/bb/index\\.php.*" />
-	        </intent-filter>
-        </activity>
+        <activity 
+            android:name=".activities.BoardActivity"
+            android:uiOptions="splitActionBarWhenNarrow"
+            android:exported="false" />
         
-        <activity android:name=".activities.BoardActivity"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http"
-                      android:host="forum.mods.de"
-                      android:pathPattern="/bb/board\\.php.*" />
-            </intent-filter>
-        </activity>
-        
-        <activity android:name=".activities.TopicActivity"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http"
-                      android:host="forum.mods.de"
-                      android:pathPattern="/bb/thread\\.php.*" />
-            </intent-filter>
-        </activity>
+        <activity 
+            android:name=".activities.TopicActivity"
+            android:uiOptions="splitActionBarWhenNarrow"
+            android:exported="false" />
         
         <activity android:name="com.mde.potdroid.activities.PreferenceActivityPot" />
          

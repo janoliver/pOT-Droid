@@ -14,25 +14,23 @@
 package com.mde.potdroid.activities;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.mde.potdroid.R;
-import com.mde.potdroid.helpers.PotNotification;
+import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Category;
-import com.mde.potdroid.models.Forum;
 
 /**
  * In this activity, the forum and the containing categories are shown.
@@ -43,7 +41,7 @@ public class ForumActivity extends BaseActivity {
      * PrepareAdapter was executed.
      */
     private Category[] mCats;
-    private ListView mListView;
+    private ExpandableListView mListView;
 
     /**
      * Starting point of the activity.
@@ -51,10 +49,6 @@ public class ForumActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        // find the views
-        setContentView(R.layout.activity_forum);
-        mListView = (ListView) findViewById(R.id.list);
         
         // redirect?
         if ((mExtras == null || !mExtras.getBoolean("noredirect", false))
@@ -75,20 +69,40 @@ public class ForumActivity extends BaseActivity {
             startActivityForResult(intent, 1);
             return;
         }
-
-        // load the data and display it
-        new PrepareAdapter().execute((Void[]) null);
         
-        // set the touch listener
-        mListView.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 0) {
-                    Intent intent = new Intent(ForumActivity.this, CategoryActivity.class);
-                    intent.putExtra("CID", mCats[position - 1].getId());
-                    startActivity(intent);
-                }
+        // prepare the views
+        setContentView(R.layout.activity_forum);
+        mListView = (ExpandableListView) findViewById(R.id.list);
+        mListView.setGroupIndicator(null);
+        mListView.setOnChildClickListener(new OnChildClickListener() 
+        {               
+            public boolean onChildClick(ExpandableListView parent, View v,int groupPosition, int childPosition, long id) 
+            { 
+                Intent intent = new Intent(ForumActivity.this, BoardActivity.class);
+                intent.putExtra("BID", mCats[groupPosition].getBoards()[childPosition].getId());
+                intent.putExtra("CID", mCats[groupPosition].getId());
+                intent.putExtra("page", 1);
+                startActivity(intent);
+                return true;
             }
         });
+        
+        // load the data and display it
+        try {
+            mCats = mObjectManager.getForum().getCategories();
+            ForumListAdapter adapter = new ForumListAdapter(ForumActivity.this);
+            mListView.setAdapter(adapter);
+        } catch (Exception e) {
+            Toast.makeText(ForumActivity.this, "Ladefehler.", Toast.LENGTH_LONG).show();
+        } 
+    }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        
+        // refresh the leftmenu stuff.
+        refreshLeftMenu();
     }
     
     @Override
@@ -112,12 +126,16 @@ public class ForumActivity extends BaseActivity {
         }
     }
     
-    /**
-     * After having downloaded the data, fill the view
-     */
-    private void fillView() {
-        ForumViewAdapter adapter = new ForumViewAdapter(ForumActivity.this);
-        mListView.setAdapter(adapter);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getSupportMenuInflater();
+        inflater.inflate(R.menu.actionmenu_forum, menu);
+        if (mObjectManager.isLoggedIn()) {
+            menu.setGroupVisible(R.id.loggedin, true);
+        } else {
+            menu.setGroupVisible(R.id.loggedin, false);
+        }
+        return true;
     }
     
     /**
@@ -125,70 +143,77 @@ public class ForumActivity extends BaseActivity {
      */
     @Override
     public void refresh() {};
-
-
-    /**
-     * Custom view adapter for the ListView items
-     */
-    class ForumViewAdapter extends ArrayAdapter<Category> {
-        Activity context;
-
-        ForumViewAdapter(Activity context) {
-            super(context, R.layout.listitem_category, R.id.name, mCats);
-            this.context = context;
+    
+    public class ForumListAdapter extends BaseExpandableListAdapter {
+        Activity mContext;
+        
+        public ForumListAdapter(Activity context) {
+            mContext = context;
+        }
+        
+        public Object getChild(int groupPosition, int childPosition) {
+            return mCats[groupPosition].getBoards()[childPosition];
         }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = context.getLayoutInflater();
+        public long getChildId(int groupPosition, int childPosition) {
+            return childPosition;
+        }
+
+        public int getChildrenCount(int groupPosition) {
+            return mCats[groupPosition].getBoards().length;
+        }
+        
+        public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
+                View convertView, ViewGroup parent) {
+            LayoutInflater inflater = mContext.getLayoutInflater();
+            View row = inflater.inflate(R.layout.listitem_forum, null);
+
+            TextView name = (TextView) row.findViewById(R.id.name);
+            TextView descr = (TextView) row.findViewById(R.id.description);
+            
+            Board b = mCats[groupPosition].getBoards()[childPosition];
+            
+            name.setText(b.getName());
+            descr.setText(b.getDescription());
+            
+            return (row);
+            
+        }
+
+        public Object getGroup(int groupPosition) {
+            return mCats[groupPosition];
+        }
+
+        public int getGroupCount() {
+            return mCats.length;
+        }
+
+        public long getGroupId(int groupPosition) {
+            return groupPosition;
+        }
+
+        public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
+                ViewGroup parent) {
+            LayoutInflater inflater = mContext.getLayoutInflater();
             View row = inflater.inflate(R.layout.listitem_category, null);
 
             TextView name = (TextView) row.findViewById(R.id.name);
-            name.setText(mCats[position].getName());
             TextView descr = (TextView) row.findViewById(R.id.description);
-            descr.setText(mCats[position].getDescription());
+            
+            name.setText(mCats[groupPosition].getName());
+            descr.setText(mCats[groupPosition].getDescription());
+            
 
             return (row);
         }
+
+        public boolean isChildSelectable(int groupPosition, int childPosition) {
+            return true;
+        }
+
+        public boolean hasStableIds() {
+            return true;
+        }
+
     }
-
-    /**
-     * This async task shows a loader and updates the forum object.
-     * When it is finished, the loader is hidden.
-     */
-    class PrepareAdapter extends AsyncTask<Void, Void, Exception> {
-        ProgressDialog mDialog;
-
-        @Override
-        protected void onPreExecute() {
-            mDialog = new PotNotification(ForumActivity.this, this, true);
-            mDialog.setMessage("Lade...");
-            mDialog.show();
-        }
-
-        @Override
-        protected Exception doInBackground(Void... params) {
-            Forum forum;
-            try {
-                forum = mObjectManager.getForum();
-                mCats = forum.getCategories();
-                return null;
-            } catch (Exception e) {
-                return e;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Exception e) {
-            if(e == null) {
-                fillView();
-                mDialog.dismiss();
-            } else {
-                Toast.makeText(ForumActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
-                mDialog.dismiss();
-                e.printStackTrace();
-            }
-        }
-    }
-
 }

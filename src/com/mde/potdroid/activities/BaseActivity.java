@@ -17,29 +17,29 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.ObjectManager;
 import com.mde.potdroid.helpers.PotUtils;
 import com.mde.potdroid.helpers.WebsiteInteraction;
 import com.slidingmenu.lib.SlidingMenu;
+import com.slidingmenu.lib.app.SlidingActivity;
 
 /**
  * The Acitivty base class. ATM only takes care of some member variables.
  */
-public abstract class BaseActivity extends SherlockActivity {
+public abstract class BaseActivity extends SlidingActivity {
 
     protected WebsiteInteraction mWebsiteInteraction;
     protected ObjectManager      mObjectManager;
     protected SharedPreferences  mSettings;
     protected Bundle             mExtras;
+    protected LeftMenu           mLeftMenu;
 
     private final int THEME_LIGHT = 0;
-    private final int THEME_DARK  = 1;
+    private final int THEME_DARK  = 1; 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,15 +58,45 @@ public abstract class BaseActivity extends SherlockActivity {
             this.setTheme(R.style.PotDark);
         
         // sliding menu
-        SlidingMenu menu = new SlidingMenu(this);
-        menu.setMode(SlidingMenu.LEFT);
-        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        menu.setShadowWidthRes(R.dimen.shadow_width);
-        menu.setShadowDrawable(R.drawable.shadow);
-        menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-        menu.setFadeDegree(0.35f);
-        menu.attachToActivity(this, SlidingMenu.SLIDING_WINDOW);
-        menu.setMenu(R.layout.menu_frame);
+        SlidingMenu sm = getSlidingMenu();
+        sm.setMode(SlidingMenu.LEFT);
+        sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        sm.setShadowWidthRes(R.dimen.shadow_width);
+        sm.setShadowDrawable(R.drawable.shadow);
+        sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+        sm.setFadeDegree(0.35f);
+        
+        setBehindContentView(R.layout.sidebar_frame);
+        
+        // get or create and attach the leftmenu fragment
+        FragmentManager fm = (FragmentManager)getSupportFragmentManager();
+
+        // Check to see if we have retained the worker fragment.
+        mLeftMenu = (LeftMenu)fm.findFragmentByTag("lm");
+
+        // If not retained (or first time running), we need to create it.
+        if (mLeftMenu == null) {
+            mLeftMenu = new LeftMenu();
+            // Tell it who it is working with.
+            
+            fm.beginTransaction().add(mLeftMenu, "lm").commit();
+        }
+        
+        fm.beginTransaction().add(R.id.leftmenu, mLeftMenu).commit();
+        
+        // actionbar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setSlidingActionBarEnabled(true);
+        
+    }
+    
+    @Override
+    public void onBackPressed() {
+        if (getSlidingMenu().isMenuShowing()) {
+            getSlidingMenu().showContent();
+        } else {
+            super.onBackPressed();
+        }
     }
     
     
@@ -78,20 +108,13 @@ public abstract class BaseActivity extends SherlockActivity {
         goToPresetActivity();
         return false;
     }
-    
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getSupportMenuInflater();
-        inflater.inflate(R.menu.iconmenu, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
         case android.R.id.home:
-            goToPresetActivity();
+            getSlidingMenu().showMenu();
             return true;
         case R.id.forumact:
             goToForumActivity();
@@ -108,6 +131,10 @@ public abstract class BaseActivity extends SherlockActivity {
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+    
+    public void refreshLeftMenu() {
+        ((LeftMenu)getSupportFragmentManager().findFragmentById(R.id.leftmenu)).refresh();
     }
 
     protected void goToPreferencesActivityPot() {

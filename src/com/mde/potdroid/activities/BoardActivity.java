@@ -16,21 +16,23 @@ package com.mde.potdroid.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.PotNotification;
 import com.mde.potdroid.models.Board;
@@ -40,7 +42,7 @@ import com.mde.potdroid.models.Topic;
  * This is the BoardView, showing the content of a specific mBoard. It extends
  * PaginateListActivity
  */
-public class BoardActivity extends BaseListActivity {
+public class BoardActivity extends BaseActivity {
     
     /**
      * mThreads is an array of all the threads currently visible on the page
@@ -49,6 +51,7 @@ public class BoardActivity extends BaseListActivity {
     private Topic[] mThreads;
     private Integer mPage;
     private Board   mBoard;
+    private ListView mListView;
     
     /**
      * Starting point of the activity.
@@ -57,21 +60,29 @@ public class BoardActivity extends BaseListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // the URL handler
-        if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
-            Uri uri = Uri.parse(getIntent().getDataString());
-            Integer board_id = Integer.valueOf(uri.getQueryParameter("BID"));
-            mPage = 1;
-            mBoard = mObjectManager.getBoard(board_id);
-        } else {
-            // create Board object
-            mPage  = mExtras.getInt("page");
-            mBoard = mObjectManager.getBoard(mExtras.getInt("BID"));
-        }
-
+        // create Board object
+        mPage  = mExtras.getInt("page");
+        mBoard = mObjectManager.getBoard(mExtras.getInt("BID"));
+        
+        
+        // prepare the views
+        setContentView(R.layout.activity_board);
+        mListView = (ListView) findViewById(R.id.list);
+        mListView.setAdapter(null);
+        mListView.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                openThread(mThreads[position], true);
+            }
+        });
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){ 
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) { 
+                openThread(mThreads[position], false);
+                return false; 
+            } 
+        });
+        
         // update category information and get thread list
         // was only the orientation changed?
-        setListAdapter(null);
         final Board stateSaved = (Board) getLastNonConfigurationInstance();
         if (stateSaved == null) {
             new PrepareAdapter().execute((Void[]) null);
@@ -80,42 +91,26 @@ public class BoardActivity extends BaseListActivity {
             mThreads = mBoard.getTopics().get(mExtras.getInt("page"));
             fillView();
         }
-
-        // setup listview
-        mListView.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 0) {
-                    openThread(mThreads[position - 1], true);
-                }
-            }
-        });
-        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){ 
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) { 
-                if (position > 0) {
-                    openThread(mThreads[position - 1], false);
-                }
-                return false; 
-            } 
-        });
     } 
+    
+    
 
     /**
      * Needed for orientation change
      */
-    @Override
-    public Object onRetainNonConfigurationInstance() {
-        final Board stateSaved = mBoard;
-        return stateSaved;
-    }
+//    @Override
+//    public Object onRetainNonConfigurationInstance() {
+//        final Board stateSaved = mBoard;
+//        return stateSaved;
+//    }
 
     /**
      * After having downloaded the data, fill the view
      */
     private void fillView() {
         CategoryViewAdapter adapter = new CategoryViewAdapter(BoardActivity.this);
-        mListView.addHeaderView(getHeaderView());
         mListView.setAdapter(adapter);
-        setTitle("Board: " + mBoard.getName());
+        setTitle(mBoard.getName());
     }
 
     /**
@@ -131,29 +126,17 @@ public class BoardActivity extends BaseListActivity {
     }
     
     /**
-     * Returns the header view for the list.
-     */
-    public View getHeaderView() {
-        LayoutInflater inflater = this.getLayoutInflater();
-        View row = inflater.inflate(R.layout.header_general, null);
-
-        TextView descr = (TextView) row.findViewById(R.id.pagetext);
-        descr.setText("Seite " + mPage + "/" + mBoard.getNumberOfPages());
-
-        TextView loggedin = (TextView) row.findViewById(R.id.loggedin);
-        loggedin.setText(mObjectManager.isLoggedIn() ? "Hallo "
-                + mObjectManager.getCurrentUser().getNick() : "nicht eingeloggt");
-
-        return (row);
-    }
-    
-    /**
      * options menu creator
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.iconmenu_paginate, menu);
+        MenuInflater inflater = getSupportMenuInflater();
+        inflater.inflate(R.menu.actionmenu_board, menu);
+        if (mObjectManager.isLoggedIn()) {
+            menu.setGroupVisible(R.id.loggedin, true);
+        } else {
+            menu.setGroupVisible(R.id.loggedin, false);
+        }
         return true;
     }
     
@@ -242,7 +225,7 @@ public class BoardActivity extends BaseListActivity {
         }
 
     }
-
+    
     /**
      * Custom view adapter for the ListView items
      */
@@ -258,13 +241,21 @@ public class BoardActivity extends BaseListActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = context.getLayoutInflater();
             View row = inflater.inflate(R.layout.listitem_thread, null);
+            Topic t = mThreads[position];
 
             TextView name = (TextView) row.findViewById(R.id.name);
-            name.setText(mThreads[position].getTitle());
             TextView descr = (TextView) row.findViewById(R.id.description);
-            descr.setText(mThreads[position].getSubTitle());
+            TextView lastpost = (TextView) row.findViewById(R.id.lastpost);
             TextView important = (TextView) row.findViewById(R.id.important);
+            
+            name.setText(t.getTitle());
+            descr.setText(t.getSubTitle());
+            Spanned content = Html.fromHtml("<b>"+t.getNumberOfPosts()+"</b> Posts auf <b>"+t.getLastPage()+"</b> Seiten");
+            lastpost.setText(content);
+            
             if (mThreads[position].isImportant()) {
+                important.setVisibility(View.GONE);
+            } else if(mThreads[position].isSticky()) {
                 important.setBackgroundResource(R.color.darkred);
             }
 
@@ -303,6 +294,7 @@ public class BoardActivity extends BaseListActivity {
             if(e == null) {
                 fillView();
                 mDialog.dismiss();
+                mLeftMenu.refresh();
             } else {
                 Toast.makeText(BoardActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
                 mDialog.dismiss();

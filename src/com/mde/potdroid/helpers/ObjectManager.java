@@ -108,7 +108,8 @@ public class ObjectManager {
         return mPosts.get(id);
     }
     
-    public Map<Integer, Bookmark> getBookmarks() throws ParseErrorException, NoConnectionException {
+    public Map<Integer, Bookmark> getBookmarks() throws ParseErrorException, 
+                                NoConnectionException, NotLoggedInException {
         _parseBookmarks();
         return mBookmarks;
     }
@@ -144,14 +145,17 @@ public class ObjectManager {
      * parses it. 
      * @throws ParseErrorException 
      * @throws NoConnectionException 
+     * @throws NotLoggedInException 
      */
-    private Boolean _parseBookmarks() throws ParseErrorException, NoConnectionException {
+    private Boolean _parseBookmarks() throws ParseErrorException, NoConnectionException, NotLoggedInException {
         
         // fetch the xml file and return false if there was an error.
         String url   = PotUtils.BOOKMARK_URL;
         Document doc = mWebsiteInteraction.getDocument(url);
-        if (doc == null || doc.getRootElement().getName().equals("not-logged-in")) {
+        if (doc == null) {
             throw new ParseErrorException();
+        } else if(doc.getRootElement().getName().equals("not-logged-in")) {
+            throw new NotLoggedInException();
         }
         
         // predefine some elements
@@ -503,6 +507,17 @@ public class ObjectManager {
 
         public ParseErrorException() {
             super("Error fetching the xml of the request.");
+        }
+    }
+    
+    /**
+     * user is not logged in
+     */
+    public class NotLoggedInException extends Exception {
+        private static final long serialVersionUID = 2L;
+
+        public NotLoggedInException() {
+            super("You are not logged in!");
         }
     }
 }

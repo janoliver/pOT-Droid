@@ -4,22 +4,26 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.ObjectManager;
+import com.mde.potdroid.helpers.ObjectManager.NotLoggedInException;
 import com.mde.potdroid.helpers.PotUtils;
 import com.mde.potdroid.helpers.WebsiteInteraction;
 import com.mde.potdroid.models.Bookmark;
@@ -31,7 +35,9 @@ public class LeftMenu extends Fragment {
     private Activity             mActivity;
     private ListView             mBookmarksView;
     private LayoutInflater       mInflater;
+    private View                 mFragmentView;
     private RelativeLayout       mLoader;
+    private Boolean              mRefreshing = false;
     
     /**
      * mBookmarks is a Map with all the bookmarks stored as 
@@ -50,30 +56,64 @@ public class LeftMenu extends Fragment {
         mSettings           = PreferenceManager.getDefaultSharedPreferences(mActivity);
     }
     
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         
         mInflater = inflater;
         
-        View fragmentView = inflater.inflate(R.layout.fragment_navigation, container, false);
+        mFragmentView = mInflater.inflate(R.layout.sidebar_content, container, false);
         
-        mLoader = (RelativeLayout) fragmentView.findViewById(R.id.loadingPanel);
-        //mLoader.setVisibility(View.GONE);
+        mLoader = (RelativeLayout) mFragmentView.findViewById(R.id.loadingPanel);
+        mLoader.setVisibility(View.GONE);
         
         // logged in and stuff
-        TextView loggedIn = (TextView) fragmentView.findViewById(R.id.hello);
+        TextView loggedIn = (TextView) mFragmentView.findViewById(R.id.hello);
         loggedIn.setText(mObjectManager.isLoggedIn() ? 
                 "Hallo " + mObjectManager.getCurrentUser().getNick() + "!" : 
                     "Hallo Unbekannter!");
         
         // populate the bookmarks listview
-        mBookmarksView = (ListView) fragmentView.findViewById( R.id.bookmark_list);
+        mBookmarksView = (ListView) mFragmentView.findViewById( R.id.bookmark_list);
         mBookmarksView.setAdapter( null );
-        new PrepareAdapter().execute((Void[]) null);
+        mBookmarksView.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                openThread((Bookmark)filterBookmarksByUnread().values().toArray()[position]);
+            }
+        });
+        
+        View refreshView = (RelativeLayout) mFragmentView.findViewById( R.id.refresh_view);
+        refreshView.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                refresh();
+            }
+        });
         
         // Inflate the layout for this fragment
-        return fragmentView;
+        return mFragmentView;
+    }
+    
+    public void refresh() {
+        if(!mRefreshing)
+            new PrepareAdapter().execute((Void[]) null);
+    }
+    
+    public void openThread(Bookmark bm) {
+        Intent intent = new Intent(mActivity, TopicActivity.class);
+        intent.putExtra("TID", bm.getThread().getId());
+        intent.putExtra("PID", bm.getLastPost().getId());
+        startActivity(intent);
+    }
+    
+    public void setListError(String error) {
+        TextView err = (TextView)mFragmentView.findViewById(R.id.error_message);
+        if(error.length() == 0) {
+            err.setVisibility(View.GONE);
+        } else {
+            err.setText(error);
+            err.setVisibility(View.VISIBLE);
+        }
     }
     
     /**
@@ -97,7 +137,7 @@ public class LeftMenu extends Fragment {
         Activity context;
 
         BookmarkViewAdapter(Activity context) {
-            super(context, R.layout.listitem_fragment_bookmark, R.id.name, 
+            super(context, R.layout.sidebar_bookmark_listitem, R.id.name, 
                     filterBookmarksByUnread().values().toArray(new Bookmark[0]));
             this.context = context;
         }
@@ -105,7 +145,7 @@ public class LeftMenu extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             
-            View row = mInflater.inflate(R.layout.listitem_fragment_bookmark, null);
+            View row = mInflater.inflate(R.layout.sidebar_bookmark_listitem, null);
             Bookmark bm = (Bookmark)filterBookmarksByUnread().values().toArray()[position];
             
             TextView name = (TextView) row.findViewById(R.id.name);
@@ -128,8 +168,9 @@ public class LeftMenu extends Fragment {
         
         @Override
         protected void onPreExecute() {
+            setListError("");
+            mRefreshing = true;
             mLoader.setVisibility(View.VISIBLE);
-            
         }
 
         @Override
@@ -144,15 +185,16 @@ public class LeftMenu extends Fragment {
 
         @Override
         protected void onPostExecute(Exception e) {
-            //mLoader.setVisibility(View.GONE);
+            mLoader.setVisibility(View.GONE);
+            mRefreshing = false;
             if(e == null) {
                 
                 BookmarkViewAdapter adapter = new BookmarkViewAdapter(mActivity);
                 mBookmarksView.setAdapter(adapter);
-
+            } else if(e instanceof NotLoggedInException) {
+                setListError("Nicht eingeloggt.");
             } else {
-                Toast.makeText(mActivity, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
-                e.printStackTrace();
+                setListError("Verbindungsfehler.");
             }
         }
     }

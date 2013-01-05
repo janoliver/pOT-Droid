@@ -6,4 +6,13 @@
     <attr name="bgColor1" format="color" />
     <attr name="bgColor2" format="color" />
     <attr name="bgColor3" format="color" />
+    
+    <!-- menu icons -->
+    <attr name="menu_icon_preferences" format="reference" />
+    <attr name="menu_icon_home" format="reference" />
+    <attr name="menu_icon_favorite" format="reference" />
+    <attr name="menu_icon_refresh" format="reference" />
+    <attr name="menu_icon_back" format="reference" />
+    <attr name="menu_icon_forward" format="reference" />
+    <attr name="menu_icon_edit" format="reference" />
 </resources>

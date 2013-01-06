@@ -25,8 +25,6 @@ import android.text.Spanned;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -38,6 +36,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.FavouritesDatabase;
 import com.mde.potdroid.helpers.PotNotification;
@@ -107,6 +108,14 @@ public class BookmarkActivity extends BaseActivity {
             }
         });
     }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        
+        // refresh the leftmenu stuff.
+        refreshLeftMenu();
+    }
 
     /**
      * After having downloaded the data, fill the view
@@ -126,6 +135,34 @@ public class BookmarkActivity extends BaseActivity {
 //        final Map<Integer, Bookmark> stateSaved = mBookmarks;
 //        return stateSaved;
 //    }
+    
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+        case R.id.forumact:
+            goToForumActivity();
+            return true;
+        case R.id.preferences:
+            goToPreferencesActivityPot();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getSupportMenuInflater();
+        inflater.inflate(R.menu.actionmenu_bookmarks, menu);
+        if (mObjectManager.isLoggedIn()) {
+            menu.setGroupVisible(R.id.loggedin, true);
+        } else {
+            menu.setGroupVisible(R.id.loggedin, false);
+        }
+        return true;
+    }
 
     /**
      * Open a thread after a click on a bookmark.
@@ -151,7 +188,7 @@ public class BookmarkActivity extends BaseActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
+        android.view.MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_bookmark, menu);
         
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
@@ -167,7 +204,7 @@ public class BookmarkActivity extends BaseActivity {
      * removebookmark could show a loading animation.
      */
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         ImageView star = (ImageView) info.targetView.findViewById(R.id.favourite);
         switch (item.getItemId()) {
@@ -234,7 +271,6 @@ public class BookmarkActivity extends BaseActivity {
             TextView name = (TextView) row.findViewById(R.id.name);
             TextView descr = (TextView) row.findViewById(R.id.description);
             TextView important = (TextView) row.findViewById(R.id.important);
-            TextView pages = (TextView) row.findViewById(R.id.lastpost);
             
             if(mSettings.getBoolean("notifications",false)
                     && BookmarkActivity.this.mFavouritesDatabase.isFavourite(bm))

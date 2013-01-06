@@ -109,17 +109,11 @@ public class ForumActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-        case R.id.forumact:
-            goToForumActivity();
-            return true;
         case R.id.preferences:
             goToPreferencesActivityPot();
             return true;
         case R.id.bookmarks:
             goToBookmarkActivity();
-            return true;
-        case R.id.refresh:
-            refresh();
             return true;
         default:
             return super.onOptionsItemSelected(item);

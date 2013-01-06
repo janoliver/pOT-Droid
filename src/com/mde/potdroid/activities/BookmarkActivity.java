@@ -20,6 +20,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -228,23 +230,23 @@ public class BookmarkActivity extends BaseActivity {
 
             View row = inflater.inflate(R.layout.listitem_bookmark, null);
             Bookmark bm = (Bookmark)mBookmarks.values().toArray()[position];
-            
             ImageView star = (ImageView) row.findViewById(R.id.favourite);
-            if(mSettings.getBoolean("notifications",false)
-                    && BookmarkActivity.this.mFavouritesDatabase.isFavourite(bm)) {
-                star.setVisibility(View.VISIBLE);
-            }
-
             TextView name = (TextView) row.findViewById(R.id.name);
-            name.setText(bm.getThread().getTitle());
             TextView descr = (TextView) row.findViewById(R.id.description);
-            descr.setText("Neue Posts: " + bm.getNumberOfNewPosts());
             TextView important = (TextView) row.findViewById(R.id.important);
+            TextView pages = (TextView) row.findViewById(R.id.lastpost);
             
-            // red line when unread posts
-            if (bm.getNumberOfNewPosts() > 0) {
+            if(mSettings.getBoolean("notifications",false)
+                    && BookmarkActivity.this.mFavouritesDatabase.isFavourite(bm))
+                star.setVisibility(View.VISIBLE);
+            name.setText(bm.getThread().getTitle());
+            
+            Spanned content = Html.fromHtml("Neue Posts: <b>"+bm.getNumberOfNewPosts()+"</b>"
+                    + "   Seiten: <b>"+bm.getThread().getLastPage()+"</b>");
+            descr.setText(content);
+            
+            if (bm.getNumberOfNewPosts() > 0)
                 important.setBackgroundResource(R.color.darkred);
-            }
 
             return (row);
         }

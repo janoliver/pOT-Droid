@@ -13,13 +13,16 @@
 
 package com.mde.potdroid.models;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 
 /**
  * Post model.
  */
-public class Post {
+public class Post implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    
     private Integer mId;
     private Topic   mTopic = null;
     private String  mText   = "";

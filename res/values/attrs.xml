@@ -3,12 +3,16 @@
     <attr name="color_text_primary" format="color" />
     <attr name="color_text_secondary" format="color" />
     <attr name="color_text_third" format="color" />
+    <attr name="color_text_input" format="color" />
+    <attr name="color_text_input_hint" format="color" />
     
     <attr name="color_background_indicator" format="color" />
     <attr name="color_background_category" format="color" />
     <attr name="color_background_forum" format="color" />
+    <attr name="color_background_input" format="color" />
     
     <!-- menu icons -->
+    <attr name="menu_icon_accept" format="reference" />
     <attr name="menu_icon_preferences" format="reference" />
     <attr name="menu_icon_home" format="reference" />
     <attr name="menu_icon_favorite" format="reference" />

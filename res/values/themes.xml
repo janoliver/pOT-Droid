@@ -9,6 +9,7 @@
         <item name="menu_icon_refresh">@drawable/light_navigation_refresh</item>
         <item name="menu_icon_favorite">@drawable/light_rating_favorite</item>
         <item name="menu_icon_home">@drawable/light_navigation_home</item>
+        <item name="menu_icon_accept">@drawable/light_navigation_accept</item>
         
         <item name="color_background_category">#ffffff</item>
         <item name="color_background_forum">#999999</item>
@@ -16,6 +17,9 @@
         <item name="color_text_primary">#000000</item>
         <item name="color_text_secondary">#444444</item>
         <item name="color_text_third">#bbbbbb</item>
+        <item name="color_text_input">#000000</item>
+        <item name="color_text_input_hint">#aaaaaa</item>
+        <item name="color_background_input">#ffffff</item>
         
         <item name="actionBarSize">48dip</item>
         <item name="android:actionBarSize">48dip</item> 
@@ -29,6 +33,7 @@
         <item name="menu_icon_refresh">@drawable/dark_navigation_refresh</item>
         <item name="menu_icon_favorite">@drawable/dark_rating_favorite</item>
         <item name="menu_icon_home">@drawable/dark_navigation_home</item>
+        <item name="menu_icon_accept">@drawable/dark_navigation_accept</item>
         
         <item name="color_background_category">#07141C</item>
         <item name="color_background_forum">#222E3A</item>
@@ -36,6 +41,9 @@
         <item name="color_text_primary">#ffffff</item>
         <item name="color_text_secondary">#aaaaaa</item>
         <item name="color_text_third">#333333</item>
+        <item name="color_text_input">#000000</item>
+        <item name="color_text_input_hint">#aaaaaa</item>
+        <item name="color_background_input">#ffffff</item>
     
         <item name="actionBarSize">48dip</item>
         <item name="android:actionBarSize">48dip</item> 

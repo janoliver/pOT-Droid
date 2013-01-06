@@ -18,7 +18,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,8 +31,6 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,8 +41,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.mde.potdroid.R;
-import com.mde.potdroid.helpers.DialogWrapper;
-import com.mde.potdroid.helpers.PostDialogs;
 import com.mde.potdroid.helpers.PotNotification;
 import com.mde.potdroid.helpers.PotUtils;
 import com.mde.potdroid.helpers.TopicHtmlGenerator;
@@ -66,6 +61,7 @@ public class TopicActivity extends BaseActivity {
     private String[]  mTitleNavItems   = {
             "","Aktualisieren", "Letzte Seite", "Erste Seite"
             };
+    private static int EDITER_ACTIVITY = 1;
     private Boolean   mEnableNavigation = false;
     private OnNavigationListener mOnNavigationListener;
 
@@ -291,15 +287,14 @@ public class TopicActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-//        case android.R.id.home:
-//            goToPresetActivity();
-//            return true;
         case R.id.reply:
             if (mThread.isClosed()) {
                 Toast.makeText(TopicActivity.this, "Thread geschlossen.",
                         Toast.LENGTH_SHORT).show();
             } else {
-                replyDialog("");
+                Intent intent = new Intent(TopicActivity.this, EditorActivity.class);
+                intent.putExtra("thread", mThread);
+                startActivityForResult(intent, EDITER_ACTIVITY);
             }
             return true;
         case R.id.next:
@@ -311,100 +306,6 @@ public class TopicActivity extends BaseActivity {
         default:
             return super.onOptionsItemSelected(item);
         }
-    }
-
-    /**
-     * Opens dialog to reply to thread. String text is a preset text for the
-     * reply textfield.
-     */
-    public void replyDialog(String text) {
-        int orientation = getResources().getConfiguration().orientation;
-        setRequestedOrientation(orientation);
-
-        // get input box and put it in wrapper class
-        LayoutInflater inflater = this.getLayoutInflater();
-        View replyBox = inflater.inflate(R.layout.dialog_write, null);
-        
-        EditText textField = (EditText) replyBox.findViewById(R.id.replybox);
-        textField.setText(text);
-        textField.requestFocus();
-        textField.setSelection(text.length());
-        
-        final DialogWrapper wrapper = new DialogWrapper(replyBox);
-
-        // build dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Antwort verfassen").setCancelable(false)
-                .setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        TopicActivity.this
-                                .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-                        dialog.cancel();
-                    }
-                }).setPositiveButton("Senden", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                }).setView(replyBox);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-        // we need to overwrite the button again to keep the dialog open
-        // on "cancel" click
-        Button theButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-        theButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                new PostDialogs.PostWriter(TopicActivity.this).execute(mThread, wrapper);
-            }
-        });
-    }
-
-    /**
-     * Nearly the same as replyDialog, but to edit the text. Expects the post to
-     * edit as parameter.
-     */
-    public void editDialog(Post post) {
-        int orientation = getResources().getConfiguration().orientation;
-        setRequestedOrientation(orientation);
-
-        // get input box and put it in wrapper class
-        LayoutInflater inflater = this.getLayoutInflater();
-        View replyBox = inflater.inflate(R.layout.dialog_write, null);
-        
-        EditText textField = (EditText) replyBox.findViewById(R.id.replybox);
-        textField.setText(post.getText());
-        textField.requestFocus();
-        textField.setSelection(post.getText().length());
-        
-        EditText titleField = (EditText) replyBox.findViewById(R.id.replytitle);
-        titleField.setText(post.getTitle());
-        
-        final DialogWrapper wrapper = new DialogWrapper(replyBox);
-
-        // build dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final Post toEdit = post;
-        builder.setMessage("Beitrag editieren").setCancelable(false)
-                .setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        TopicActivity.this
-                                .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-                        dialog.cancel();
-                    }
-                }).setPositiveButton("Speichern", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                }).setView(replyBox);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-        // we need to overwrite the button again to keep the dialog open
-        // on "cancel" click
-        Button theButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-        theButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                new PostDialogs.PostEditer(TopicActivity.this).execute(mThread, wrapper, toEdit);
-            }
-        });
     }
 
     /**
@@ -584,7 +485,10 @@ public class TopicActivity extends BaseActivity {
             
             public void onClick(DialogInterface dialog, int which) {
                 Post post = mThread.getPosts().get(mPage)[post_id];
-
+                Intent intent = new Intent(TopicActivity.this, EditorActivity.class);
+                intent.putExtra("thread", mThread);
+                intent.putExtra("post", post);
+                
                 switch (which) {
                 
                 case 0:
@@ -593,15 +497,13 @@ public class TopicActivity extends BaseActivity {
                         Toast.makeText(TopicActivity.this, "Du darfst diesen Post nicht editieren.",
                                 Toast.LENGTH_SHORT).show();
                     } else {
-                        editDialog(post);
+                        intent.putExtra("edit", true);
+                        startActivityForResult(intent, EDITER_ACTIVITY);
                     }
                     break;
                     
                 case 1:
-                    // reply dialog with quote
-                    String text = "[quote=" + mThread.getId() + "," + post.getId() + ",\""
-                            + post.getAuthor().getNick() + "\"][b]\n" + post.getText() + "\n[/b][/quote]";
-                    replyDialog(text);
+                    startActivityForResult(intent, EDITER_ACTIVITY);
                     break;
                     
                 case 2:
@@ -618,7 +520,6 @@ public class TopicActivity extends BaseActivity {
                                             Toast.LENGTH_SHORT).show();
                                 }
                             });
-
                         }
                     }).start();
                     break;
@@ -630,6 +531,12 @@ public class TopicActivity extends BaseActivity {
         });
         
         return alertDialog.create();
+    }
+    
+    // refresh this if somethind was posted or edited.
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == EDITER_ACTIVITY && resultCode == RESULT_OK) 
+            refresh();
     }
     
     /**

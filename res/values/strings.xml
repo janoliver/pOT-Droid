@@ -4,4 +4,6 @@
     <string name="image_content_description">Bild</string>
     <string name="bookmarks">BOOKMARKS</string>
     <string name="greeting">Hallo, Unbekannter!</string>
+    <string name="editor_title">Titel</string>
+    <string name="editor_body">Post</string>
 </resources>

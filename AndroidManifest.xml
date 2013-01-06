@@ -35,6 +35,10 @@
             android:exported="false" />
         
         <activity 
+            android:name=".activities.EditorActivity"
+            android:exported="false" />
+        
+        <activity 
             android:name=".activities.BoardActivity"
             android:uiOptions="splitActionBarWhenNarrow"
             android:exported="false" />

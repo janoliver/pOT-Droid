@@ -13,14 +13,17 @@
 
 package com.mde.potdroid.models;
 
+import java.io.Serializable;
+
 import android.util.SparseArray;
 
 
 /**
  * Forum model.
  */
-public class Forum {
+public class Forum implements Serializable {
 
+    private static final long serialVersionUID = 4L;
     Category[] mCategories;
 
     /**

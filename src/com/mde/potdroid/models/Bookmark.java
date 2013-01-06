@@ -13,11 +13,15 @@
 
 package com.mde.potdroid.models;
 
+import java.io.Serializable;
+
 /**
  * The Bookmark model.
  */
-public class Bookmark {
+public class Bookmark implements Serializable {
 
+    private static final long serialVersionUID = 6L;
+    
     private Integer mId;
     private Integer mNumberOfNewPosts = 0;
     private Post    mLastPost         = null;

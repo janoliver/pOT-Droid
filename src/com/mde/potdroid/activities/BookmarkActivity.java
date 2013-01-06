@@ -102,9 +102,7 @@ public class BookmarkActivity extends BaseActivity {
         registerForContextMenu(mListView);
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 0) {
-                    openThread((Bookmark)mBookmarks.values().toArray()[position -1], false, true);
-                }
+                openThread((Bookmark)mBookmarks.values().toArray()[position], false, true);
             }
         });
     }

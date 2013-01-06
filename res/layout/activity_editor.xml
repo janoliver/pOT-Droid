@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/linlayout"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:padding="10pt"
+    android:background="?attr/color_background_forum">
+
+	<EditText
+        android:id="@+id/editor_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="@string/editor_title"
+        android:background="?attr/color_background_input"
+        android:layout_marginBottom="10dp"
+        android:textColor="?attr/color_text_input"
+        android:textColorHint="?attr/color_text_input_hint"
+        android:textSize="12sp"
+        android:padding="5dp"
+        android:textCursorDrawable="@null"/>
+	
+    <EditText
+        android:id="@+id/editor_body"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:singleLine="false"
+        android:gravity="top"
+        android:scrollbars="vertical"
+        android:enabled="true"
+        android:inputType="textLongMessage|textMultiLine"
+        android:scrollHorizontally="false"
+        android:hint="@string/editor_body"
+        android:background="?attr/color_background_input"
+        android:textColor="?attr/color_text_input"
+        android:textColorHint="?attr/color_text_input_hint"
+        android:textCursorDrawable="@null"
+        android:textSize="12sp"
+        android:padding="5dp"/>
+
+</LinearLayout>

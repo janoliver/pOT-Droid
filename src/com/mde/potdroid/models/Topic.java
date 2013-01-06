@@ -13,13 +13,16 @@
 
 package com.mde.potdroid.models;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * Thread model.
  */
-public class Topic {
+public class Topic implements Serializable{
 
+    private static final long serialVersionUID = 2L;
+    
     private Integer mId;
     private Integer mNumberOfPosts   = 0;
     private Integer mNumberOfHits    = 0;

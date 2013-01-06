@@ -13,13 +13,16 @@
 
 package com.mde.potdroid.models;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * The Board model.
  */
-public class Board {
+public class Board implements Serializable {
 
+    private static final long serialVersionUID = 7L;
+    
     private Integer mId;
     private Integer mNumberOfThreads = 0;
     private Integer mNumberOfReplies = 0;

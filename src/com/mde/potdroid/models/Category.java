@@ -13,12 +13,16 @@
 
 package com.mde.potdroid.models;
 
+import java.io.Serializable;
+
 
 /**
  * Forum category model.
  */
-public class Category {
+public class Category implements Serializable {
 
+    private static final long serialVersionUID = 5L;
+    
     private Integer mId;
     private String  mName        = "";
     private String  mDescription = "";

@@ -12,7 +12,7 @@
         <screen android:screenDensity="mdpi" />
         <screen android:screenDensity="hdpi" />
         <screen android:screenDensity="xhdpi" />
-    </compatible-screens>
+    </compatible-screens> 
     
     <application 
         android:icon="@drawable/icon" 

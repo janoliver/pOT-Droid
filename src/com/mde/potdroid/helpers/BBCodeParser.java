@@ -59,7 +59,7 @@ public class BBCodeParser {
 		List<Token> tokens = new ArrayList<Token>();
 
         input = input.replace("<", "&lt;");
-        input = input.replace(">", "&lt;");
+        input = input.replace(">", "&gt;");
         input = input.replace("\n", "<br />\n"); 
         
 		Pattern pattern = generatePattern();

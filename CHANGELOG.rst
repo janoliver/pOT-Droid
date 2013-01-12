@@ -2,6 +2,13 @@
  Changelog
 ===========
 
+Changelog Alpha 23 (pOT Droid 0.23)
+===================================
+
+- peter,pansen Bug gefixt
+- kleinere Bugs im bbcode parser gefixt
+- links aus dem Browser (und auch aus der app) können erstmal nicht mehr mit potdroid geöffnet werden. 
+
 Changelog Alpha 22 (pOT Droid 0.22)
 ===================================
 

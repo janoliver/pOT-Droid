@@ -5,22 +5,18 @@
     
     <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="7" />
     
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" /> 
+    
     <application android:icon="@drawable/icon" 
-                 android:label="@string/app_name">
+                 android:label="@string/app_name"
+                 android:allowBackup="true">
         
         <activity android:name=".activities.ForumActivity"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http"
-                      android:host="forum.mods.de"
-                      android:pathPattern="/bb/index\\.php" />
             </intent-filter>
         </activity>
         
@@ -29,38 +25,14 @@
         
         <activity android:name=".activities.CategoryActivity"
             android:exported="false">
-            <intent-filter>
-	            <action android:name="android.intent.action.VIEW" />
-	            <category android:name="android.intent.category.DEFAULT" />
-	            <category android:name="android.intent.category.BROWSABLE" />
-	            <data android:scheme="http"
-	                  android:host="forum.mods.de"
-	                  android:pathPattern="/bb/index\\.php.*" />
-	        </intent-filter>
         </activity>
         
         <activity android:name=".activities.BoardActivity"
             android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http"
-                      android:host="forum.mods.de"
-                      android:pathPattern="/bb/board\\.php.*" />
-            </intent-filter>
         </activity>
         
         <activity android:name=".activities.TopicActivity"
             android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http"
-                      android:host="forum.mods.de"
-                      android:pathPattern="/bb/thread\\.php.*" />
-            </intent-filter>
         </activity>
         
         <activity android:name="com.mde.potdroid.activities.PreferenceActivityPot" />
@@ -70,7 +42,4 @@
             android:exported="false" />
     </application> 
     
-    
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" /> 
 </manifest> 

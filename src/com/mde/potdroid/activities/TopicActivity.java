@@ -13,12 +13,12 @@
 
 package com.mde.potdroid.activities;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -51,13 +51,11 @@ import com.mde.potdroid.models.Topic;
  * Shows a thread. By far the most involving activity. And, of course, the most
  * important one. Also, Ponies suck.
  */
+@SuppressLint("SetJavaScriptEnabled")
 public class TopicActivity extends BaseActivity {
 
     private WebView   mWebView;
-    private Topic     mThread;
-    private Integer   mPage            = 1;
-    private Integer   mPid             = 0;
-    private String    mHtmlCode        = "";
+    private DataHandler mDataHandler;
     private String[]  mTitleNavItems   = {
             "","Aktualisieren", "Letzte Seite", "Erste Seite"
             };
@@ -74,46 +72,33 @@ public class TopicActivity extends BaseActivity {
 
         // set view
         setContentView(R.layout.activity_topic);
-        mWebView = (WebView) findViewById(R.id.webview);
         
         // take care of the javascript and html. JSInterface is defined below.
+        mWebView = (WebView) findViewById(R.id.webview);
         mWebView.getSettings().setJavaScriptEnabled(true);
         JSInterface myJsInterface = new JSInterface(mWebView);
         mWebView.addJavascriptInterface(myJsInterface, "JSI");
         mWebView.loadData("<html><body></body></html>", "text/html", "utf-8");
 
-        // was only the orientation changed?
-        final Orientation threadSaved = (Orientation) getLastNonConfigurationInstance();
-        if (threadSaved == null) {
-
-            // the URL handler
-            if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
-                Uri uri = Uri.parse(getIntent().getDataString());
-                Integer topic_id = Integer.valueOf(uri.getQueryParameter("TID"));
-                mPage = 1;
-                mPid = 0;
-                mThread = mObjectManager.getTopic(topic_id);
-            } else {
-                mThread = mObjectManager.getTopic(mExtras.getInt("TID"));
-                mPid    = mExtras.getInt("PID",0);
-                mPage   = mExtras.getInt("page",1);
-            }
+        // initialize the data handler
+        mDataHandler = (DataHandler)mFragmentManager.findFragmentByTag("data");
+        if (mDataHandler == null) {
+            mDataHandler = new DataHandler();
+            mFragmentManager.beginTransaction().add(mDataHandler, "data").commit();
             
-            new ThreadLoader().execute(mPid, mPage);
+            // initialize the data
+            mDataHandler.mThread = mObjectManager.getTopic(mExtras.getInt("TID"));
+            mDataHandler.mPid    = mExtras.getInt("PID",0);
+            mDataHandler.mPage   = mExtras.getInt("page",1);
+            mDataHandler.mHtmlCode = "";
+            
+            refresh();
         } else {
-            Orientation o = threadSaved;
-            mThread = o.mTopic; 
-            mPage   = o.mPage;
-            mHtmlCode = o.mHtmlCode;
-            mPid    = o.mPid;
-            
             fillView();
         }
         
         ActionBar actionBar = getSupportActionBar();
         mOnNavigationListener = new OnNavigationListener() {
-            
-            
             public boolean onNavigationItemSelected(int position, long itemId) {
                 if(mEnableNavigation) {
                     PotUtils.log(""+position);
@@ -124,13 +109,11 @@ public class TopicActivity extends BaseActivity {
                         refresh();
                         break;
                     case 2: // last page
-                        mPage = mThread.getLastPage();
-                        refresh();
+                        showLastPage();
                         break;
                     case 3: // first page
                     default:
-                        mPage = 1;
-                        refresh();
+                        showFirstPage();
                         break;
                     }
                 } else {
@@ -145,31 +128,28 @@ public class TopicActivity extends BaseActivity {
         actionBar.setListNavigationCallbacks(mSpinnerAdapter, mOnNavigationListener);
     }
 	
-    /**
-     * This is a small class to help storing objects in case of orientation change
-     */
-    public class Orientation {
-        public Topic mTopic;
-        public Integer mPage;
-        public String mHtmlCode;
-        public Integer mPid;
-        public float mScroll;
-        public Orientation(Topic t, Integer p, String s, Integer pid) {
-            mTopic = t;
-            mPage = p;
-            mHtmlCode = s;
-            mPid = pid;
-        }
-        
-    }
-    
-
+	/**
+	 * This fragment handles the data 
+	 */
+	public static class DataHandler extends FragmentBase {
+	    private Topic     mThread;
+	    private Integer   mPage;
+	    private Integer   mPid;
+	    private String    mHtmlCode;
+	    
+	    @Override
+	    public void onCreate(Bundle savedInstanceState) {
+	        super.onCreate(savedInstanceState);
+	        setRetainInstance(true);
+	    }
+	}
+	
     class TitleSpinnerAdapter extends ArrayAdapter<String> {
         private Topic mThread;
         
         TitleSpinnerAdapter(Context context) {
             super(context, android.R.layout.simple_spinner_dropdown_item, mTitleNavItems);
-            mThread = TopicActivity.this.mThread;
+            mThread = TopicActivity.this.mDataHandler.mThread;
         }
         
         @Override
@@ -183,7 +163,7 @@ public class TopicActivity extends BaseActivity {
             TextView subtitle = (TextView) row.findViewById(R.id.subtitle);
             
             title.setText(mThread.getTitle());
-            Spanned subtitleText = Html.fromHtml("Seite <b>" + TopicActivity.this.mPage
+            Spanned subtitleText = Html.fromHtml("Seite <b>" + TopicActivity.this.mDataHandler.mPage
                     + "</b> von <b>" + mThread.getLastPage() + "</b>");
             subtitle.setText(subtitleText);
             
@@ -192,37 +172,26 @@ public class TopicActivity extends BaseActivity {
 
         @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
-
             if (position == 0)
                 return new ViewStub(TopicActivity.this);            
             return super.getView(position, null, parent);
         }
     }
 
-
-    /**
-     * Needed for orientation change
-     */
-//    @Override
-//    public Object onRetainNonConfigurationInstance() {
-//        final Orientation o = new Orientation(mThread, mPage, mHtmlCode, mPid);
-//        return o;
-//    }
-
     /**
      * After downloading, shows the thread in the current activity.
      */
     private void fillView() {
         
-        mWebView.loadDataWithBaseURL("file:///android_asset/", mHtmlCode, "text/html", "UTF-8", null);
-        setTitle(mThread.getTitle());
+        mWebView.loadDataWithBaseURL("file:///android_asset/", mDataHandler.mHtmlCode, "text/html", "UTF-8", null);
+        setTitle(mDataHandler.mThread.getTitle());
 
-        SpinnerAdapter mSpinnerAdapter = new TitleSpinnerAdapter(this);
-        getSupportActionBar().setListNavigationCallbacks(mSpinnerAdapter, mOnNavigationListener);
+        SpinnerAdapter spinnerAdapter = new TitleSpinnerAdapter(this);
+        getSupportActionBar().setListNavigationCallbacks(spinnerAdapter, mOnNavigationListener);
         
         try {
             Thread.sleep(200);
-            mWebView.loadUrl("javascript:scrollToElement('" + mThread.getPid() + "')");
+            mWebView.loadUrl("javascript:scrollToElement('" + mDataHandler.mThread.getPid() + "')");
         } catch (InterruptedException e) {
             Toast.makeText(TopicActivity.this, "Zum richtigen Post scrollen schiefgelaufen.",
                     Toast.LENGTH_SHORT).show();
@@ -288,12 +257,13 @@ public class TopicActivity extends BaseActivity {
         // Handle item selection
         switch (item.getItemId()) {
         case R.id.reply:
-            if (mThread.isClosed()) {
+            if (mDataHandler.mThread.isClosed()) {
                 Toast.makeText(TopicActivity.this, "Thread geschlossen.",
                         Toast.LENGTH_SHORT).show();
             } else {
                 Intent intent = new Intent(TopicActivity.this, EditorActivity.class);
-                intent.putExtra("thread", mThread);
+                intent.putExtra("thread", mDataHandler.mThread);
+                intent.putExtra("action", EditorActivity.ACTION_REPLY);
                 startActivityForResult(intent, EDITER_ACTIVITY);
             }
             return true;
@@ -307,42 +277,25 @@ public class TopicActivity extends BaseActivity {
             return super.onOptionsItemSelected(item);
         }
     }
-
-    /**
-     * This method calls this same activity refreshing the view (or switching
-     * the site, when thread.setPage() has been set.
-     */
-    public void toPage(int page) {
-        Intent intent = new Intent(TopicActivity.this, TopicActivity.class);
-        intent.putExtra("TID", mThread.getId());
-        intent.putExtra("page", page);
-        intent.putExtra("lastPage", false);
-        intent.putExtra("unreadCount", 0);
-        startActivity(intent);
-    }
-
+    
     /**
      * refresh the current view
      */
     public void refresh() {
-        Intent intent = new Intent(TopicActivity.this, TopicActivity.class);
-        intent.putExtra("TID", mThread.getId());
-        intent.putExtra("page", mPage);
-        intent.putExtra("lastPage", false);
-        intent.putExtra("unreadCount", 0);
-        startActivity(intent);
-        finish();
+        new ThreadLoader().execute(mDataHandler.mPid, mDataHandler.mPage);
     }
 
     /**
      * show the next page if there is one. (cycle otherwise)
      */
     public void showNextPage() {
-        if (mPage < mThread.getLastPage()) {
-            mPage++;
+        if (mDataHandler.mPage < mDataHandler.mThread.getLastPage()) {
+            mDataHandler.mPage++;
+            mDataHandler.mPid = 0;
             refresh();
-        } else if (mPage > 1) {
-            mPage = 1;
+        } else if (mDataHandler.mPage > 1) {
+            mDataHandler.mPage = 1;
+            mDataHandler.mPid = 0;
             refresh();
         } else {
             Toast.makeText(this, "Keine weiteren Seiten vorhanden", Toast.LENGTH_SHORT).show();
@@ -353,15 +306,38 @@ public class TopicActivity extends BaseActivity {
      * show the previous page if there is one. (cycle otherwise)
      */
     public void showPreviousPage() {
-        if (mPage > 1) {
-            mPage--;
+        if (mDataHandler.mPage > 1) {
+            mDataHandler.mPage--;
+            mDataHandler.mPid = 0;
             refresh();
-        } else if (mThread.getLastPage() > 1) {
-            mPage = mThread.getLastPage();
+        } else if (mDataHandler.mThread.getLastPage() > 1) {
+            mDataHandler.mPage = mDataHandler.mThread.getLastPage();
             refresh();
         } else {
             Toast.makeText(this, "Keine weiteren Seiten vorhanden", Toast.LENGTH_SHORT).show();
         }
+    }
+    
+    /**
+     * show the öast page
+     */
+    public void showLastPage() {
+        if (mDataHandler.mPage != mDataHandler.mThread.getLastPage()) {
+            mDataHandler.mPage = mDataHandler.mThread.getLastPage();
+            mDataHandler.mPid = 0;
+            refresh();
+        } 
+    }
+    
+    /**
+     * show the first page
+     */
+    public void showFirstPage() {
+        if (mDataHandler.mPage != 1) {
+            mDataHandler.mPage = 1;
+            mDataHandler.mPid = 0;
+            refresh();
+        } 
     }
 
     /**
@@ -428,10 +404,10 @@ public class TopicActivity extends BaseActivity {
             publishProgress("Lade Thread...");
             try {
                 if(pid > 0) {
-                    mThread = mObjectManager.getTopicByPid(mThread.getId(), pid);
-                    mPage   = mThread.getLastFetchedPage();
+                    mDataHandler.mThread = mObjectManager.getTopicByPid(mDataHandler.mThread.getId(), pid);
+                    mDataHandler.mPage   = mDataHandler.mThread.getLastFetchedPage();
                 } else {
-                    mThread = mObjectManager.getTopicByPage(mThread.getId(), page, true);
+                    mDataHandler.mThread = mObjectManager.getTopicByPage(mDataHandler.mThread.getId(), page, true);
                 }
             } catch (Exception e) {
                 this.cancel(true);
@@ -441,8 +417,8 @@ public class TopicActivity extends BaseActivity {
             // generate html code. This can take a while depending on the amount of bbcode involved...
             publishProgress("Parse Thread...");
             try {
-                TopicHtmlGenerator gen = new TopicHtmlGenerator(mThread, mPage, TopicActivity.this);
-                mHtmlCode = gen.buildTopic();
+                TopicHtmlGenerator gen = new TopicHtmlGenerator(mDataHandler.mThread, mDataHandler.mPage, TopicActivity.this);
+                mDataHandler.mHtmlCode = gen.buildTopic();
             } catch (Exception e) {
                 return e;
             }
@@ -484,9 +460,9 @@ public class TopicActivity extends BaseActivity {
         alertDialog.setItems(R.array.post_context_items, new DialogInterface.OnClickListener() {
             
             public void onClick(DialogInterface dialog, int which) {
-                Post post = mThread.getPosts().get(mPage)[post_id];
+                Post post = mDataHandler.mThread.getPosts().get(mDataHandler.mPage)[post_id];
                 Intent intent = new Intent(TopicActivity.this, EditorActivity.class);
-                intent.putExtra("thread", mThread);
+                intent.putExtra("thread", mDataHandler.mThread);
                 intent.putExtra("post", post);
                 
                 switch (which) {
@@ -497,12 +473,13 @@ public class TopicActivity extends BaseActivity {
                         Toast.makeText(TopicActivity.this, "Du darfst diesen Post nicht editieren.",
                                 Toast.LENGTH_SHORT).show();
                     } else {
-                        intent.putExtra("edit", true);
+                        intent.putExtra("action", EditorActivity.ACTION_EDIT);
                         startActivityForResult(intent, EDITER_ACTIVITY);
                     }
                     break;
                     
                 case 1:
+                    intent.putExtra("action", EditorActivity.ACTION_QUOTE);
                     startActivityForResult(intent, EDITER_ACTIVITY);
                     break;
                     

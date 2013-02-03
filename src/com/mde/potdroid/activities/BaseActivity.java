@@ -37,6 +37,7 @@ public abstract class BaseActivity extends SlidingActivity {
     protected SharedPreferences  mSettings;
     protected Bundle             mExtras;
     protected LeftMenu           mLeftMenu;
+    protected FragmentManager    mFragmentManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,20 +67,20 @@ public abstract class BaseActivity extends SlidingActivity {
         setBehindContentView(R.layout.sidebar_frame);
         
         // get or create and attach the leftmenu fragment
-        FragmentManager fm = (FragmentManager)getSupportFragmentManager();
+        mFragmentManager = (FragmentManager)getSupportFragmentManager();
 
         // Check to see if we have retained the worker fragment.
-        mLeftMenu = (LeftMenu)fm.findFragmentByTag("lm");
+        mLeftMenu = (LeftMenu)mFragmentManager.findFragmentByTag("lm");
 
         // If not retained (or first time running), we need to create it.
         if (mLeftMenu == null) {
             mLeftMenu = new LeftMenu();
             // Tell it who it is working with.
             
-            fm.beginTransaction().add(mLeftMenu, "lm").commit();
+            mFragmentManager.beginTransaction().add(mLeftMenu, "lm").commit();
         }
         
-        fm.beginTransaction().add(R.id.leftmenu, mLeftMenu).commit();
+        mFragmentManager.beginTransaction().add(R.id.leftmenu, mLeftMenu).commit();
         
         // actionbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

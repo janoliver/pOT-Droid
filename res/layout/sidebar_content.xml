@@ -40,7 +40,8 @@
 	        android:textSize="14sp"
 	        android:text="@string/bookmarks"
 	        android:maxLines="1"
-	        android:layout_alignParentLeft="true" />
+	        android:layout_alignParentLeft="true"
+            android:background="?android:attr/selectableItemBackground" />
         
 	    <RelativeLayout style="@style/GenericProgressBackground"
 	        android:id="@+id/loadingPanel"

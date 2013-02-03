@@ -48,10 +48,9 @@ public class BoardActivity extends BaseActivity {
      * mThreads is an array of all the threads currently visible on the page
      * mPage in the board mBoard.
      */
-    private Topic[] mThreads;
-    private Integer mPage;
-    private Board   mBoard;
+    
     private ListView mListView;
+    private DataHandler mDataHandler;
     
     /**
      * Starting point of the activity.
@@ -60,57 +59,62 @@ public class BoardActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // create Board object
-        mPage  = mExtras.getInt("page");
-        mBoard = mObjectManager.getBoard(mExtras.getInt("BID"));
-        
-        
         // prepare the views
         setContentView(R.layout.activity_board);
         mListView = (ListView) findViewById(R.id.list);
         mListView.setAdapter(null);
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openThread(mThreads[position], true);
+                openThread(mDataHandler.mThreads[position], true);
             }
         });
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){ 
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) { 
-                openThread(mThreads[position], false);
+                openThread(mDataHandler.mThreads[position], false);
                 return false; 
             } 
         });
-        
-        // update category information and get thread list
-        // was only the orientation changed?
-        final Board stateSaved = (Board) getLastNonConfigurationInstance();
-        if (stateSaved == null) {
-            new PrepareAdapter().execute((Void[]) null);
+
+        // initialize the data handler
+        mDataHandler = (DataHandler)mFragmentManager.findFragmentByTag("data");
+        if (mDataHandler == null) {
+            mDataHandler = new DataHandler();
+            mFragmentManager.beginTransaction().add(mDataHandler, "data").commit();
+            
+            // initialize the data
+            mDataHandler.mBoard  = mObjectManager.getBoard(mExtras.getInt("BID"));
+            mDataHandler.mPage   = mExtras.getInt("page",1);
+            
+            refresh();
         } else {
-            mBoard   = stateSaved;
-            mThreads = mBoard.getTopics().get(mExtras.getInt("page"));
             fillView();
         }
+        
     } 
     
-    
-
     /**
-     * Needed for orientation change
+     * This fragment handles the data 
      */
-//    @Override
-//    public Object onRetainNonConfigurationInstance() {
-//        final Board stateSaved = mBoard;
-//        return stateSaved;
-//    }
-
+    public static class DataHandler extends FragmentBase {
+        private Topic[] mThreads;
+        private Integer mPage;
+        private Board   mBoard;
+        
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setRetainInstance(true);
+        }
+    }
+    
     /**
      * After having downloaded the data, fill the view
      */
     private void fillView() {
         CategoryViewAdapter adapter = new CategoryViewAdapter(BoardActivity.this);
         mListView.setAdapter(adapter);
-        setTitle(mBoard.getName());
+        setTitle(mDataHandler.mBoard.getName());
+        getSupportActionBar().setSubtitle("Seite " + mDataHandler.mPage);
     }
 
     /**
@@ -162,36 +166,19 @@ public class BoardActivity extends BaseActivity {
      */
     @Override
     public void refresh() {
-        Intent intent = new Intent(BoardActivity.this, BoardActivity.class);
-        intent.putExtra("CID", mBoard.getCategory().getId());
-        intent.putExtra("page", mPage);
-        intent.putExtra("BID", mBoard.getId());
-        startActivity(intent);
+        new PrepareAdapter().execute((Void[]) null);
     }
     
     /**
      * Shows the next page. This could maybe be changed into an intent...
      */
     public void showNextPage() {
-        if (mPage < mBoard.getNumberOfPages()) {
-            
-            try {
-                mBoard = mObjectManager.getBoardByPage(mBoard.getId(), mPage+1);
-                mPage++;
-                refresh();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            
-        } else if (mPage > 1) {
-            try {
-                mBoard = mObjectManager.getBoardByPage(mBoard.getId(), 1);
-                mPage  = 1;
-                refresh();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            
+        if (mDataHandler.mPage < mDataHandler.mBoard.getNumberOfPages()) {
+            mDataHandler.mPage++;
+            refresh();
+        } else if (mDataHandler.mPage > 1) {
+            mDataHandler.mPage  = 1;
+            refresh();
         } else {
             Toast.makeText(this, "Keine weiteren Seiten vorhanden", Toast.LENGTH_SHORT).show();
         }
@@ -201,29 +188,15 @@ public class BoardActivity extends BaseActivity {
      * Shows the previous page. This could maybe be changed into an intent...
      */
     public void showPreviousPage() {
-        if (mPage > 1) {
-            
-            try {
-                mBoard = mObjectManager.getBoardByPage(mBoard.getId(), mPage-1);
-                mPage--;
-                refresh();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            
-        } else if (mBoard.getNumberOfPages() > 1) {
-            try {
-                mBoard = mObjectManager.getBoardByPage(mBoard.getId(), mBoard.getNumberOfPages());
-                mPage  = mBoard.getNumberOfPages();
-                refresh();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            
+        if (mDataHandler.mPage > 1) {
+            mDataHandler.mPage--;
+            refresh();
+        } else if (mDataHandler.mPage < mDataHandler.mBoard.getNumberOfPages()) {
+            mDataHandler.mPage = mDataHandler.mBoard.getNumberOfPages();
+            refresh();
         } else {
             Toast.makeText(this, "Keine weiteren Seiten vorhanden", Toast.LENGTH_SHORT).show();
         }
-
     }
     
     /**
@@ -233,7 +206,7 @@ public class BoardActivity extends BaseActivity {
         Activity context;
 
         CategoryViewAdapter(Activity context) {
-            super(context, R.layout.listitem_thread, R.id.name, mThreads);
+            super(context, R.layout.listitem_thread, R.id.name, mDataHandler.mThreads);
             this.context = context;
         }
 
@@ -241,7 +214,7 @@ public class BoardActivity extends BaseActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = context.getLayoutInflater();
             View row = inflater.inflate(R.layout.listitem_thread, null);
-            Topic t = mThreads[position];
+            Topic t = mDataHandler.mThreads[position];
 
             TextView name = (TextView) row.findViewById(R.id.name);
             TextView descr = (TextView) row.findViewById(R.id.description);
@@ -253,9 +226,9 @@ public class BoardActivity extends BaseActivity {
             Spanned content = Html.fromHtml("<b>"+t.getNumberOfPosts()+"</b> Posts auf <b>"+t.getLastPage()+"</b> Seiten");
             lastpost.setText(content);
             
-            if (mThreads[position].isImportant()) {
+            if (mDataHandler.mThreads[position].isImportant()) {
                 important.setVisibility(View.GONE);
-            } else if(mThreads[position].isSticky()) {
+            } else if(mDataHandler.mThreads[position].isSticky()) {
                 important.setBackgroundResource(R.color.darkred);
             }
 
@@ -281,8 +254,8 @@ public class BoardActivity extends BaseActivity {
         @Override
         protected Exception doInBackground(Void... params) {
             try {
-                mObjectManager.getBoardByPage(mBoard.getId(), mPage);
-                mThreads = mBoard.getTopics().get(mPage);
+                mObjectManager.getBoardByPage(mDataHandler.mBoard.getId(), mDataHandler.mPage);
+                mDataHandler.mThreads = mDataHandler.mBoard.getTopics().get(mDataHandler.mPage);
                 return null;
             } catch (Exception e) {
                 return e;

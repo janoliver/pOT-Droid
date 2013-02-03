@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.annotation.SuppressLint;
 import android.util.SparseArray;
 
 /**
@@ -23,6 +24,7 @@ import android.util.SparseArray;
  * They are:
  *    - in Node.toString() the quote hack
  */
+@SuppressLint("DefaultLocale")
 public class BBCodeParser {
 	
 	// the skeleton regex for the bbcodes. %1$s must be replaced by
@@ -31,10 +33,10 @@ public class BBCodeParser {
 			"(.*?)((\\[\\s*(%1$s)\\s*(=((\\s*((\"[^\"]+?\")|" +
 			"([^,\\]\"]+?))\\s*,)*(\\s*((\"[^\"]+?\")|([^,\"\\]]+?))\\s*)))?\\])|" +
 			"(\\[/\\s*((%1$s))\\s*\\]))";
-	
+    Pattern mArgsPattern = Pattern.compile("([^,\"]+)|(\"[^\"]+\")");
+    
 	// this map holds our registered tags
 	private Map<String, BBCodeTag> mTags = new HashMap<String,BBCodeTag>();
-	
 	
 	// register a new tag
 	public void registerTag(BBCodeTag tag) {
@@ -90,9 +92,13 @@ public class BBCodeParser {
 	    				matcher.group(16).toLowerCase(), matcher.group(2));
 	    		tokens.add(t);
 	    	} else {
-	    		String[] args = {};
-	    		if(matcher.group(6) != null && matcher.group(6).length() > 0)
-	    			args = matcher.group(6).replace("\"", "").split(",");
+	    	    List<String> args = new ArrayList<String>();
+	    	    
+	    	    if (matcher.group(6) != null && matcher.group(6).length() > 0) {
+                    Matcher args_matcher = mArgsPattern.matcher(matcher.group(6));
+                    while (args_matcher.find())
+                        args.add(args_matcher.group(0).replace("\"", ""));
+                }
 	    		Token t = new Token(Token.TYPE_OPEN, 
 	    				matcher.group(4).toLowerCase(),
 	    				matcher.group(2), args);
@@ -256,7 +262,7 @@ public class BBCodeParser {
 		return new_node;
 	}
 	
-	public Node add_start(Node current, String tagStr, String[] args, String raw)
+	public Node add_start(Node current, String tagStr, List<String> args, String raw)
 		throws  InvalidTokenException, InvalidParameterCountException {
 		
 		// create the node 
@@ -270,7 +276,7 @@ public class BBCodeParser {
 			throw new InvalidTokenException();
 		
 		// check the parameter count
-		if(tag.mHtml.indexOfKey(args.length) < 0)
+		if(tag.mHtml.indexOfKey(args.size()) < 0)
 			throw new InvalidParameterCountException();
 
 		new_node.mParent = current;
@@ -357,7 +363,7 @@ public class BBCodeParser {
 		public int mType;
 		public String mText;
 		public String mTag;
-		public String[] mArgs = {};
+		public List<String> mArgs = new ArrayList<String>();
 		
 		public Token(int type, String text) {
 			mType = type;
@@ -384,7 +390,7 @@ public class BBCodeParser {
 			mTag = tag;
 		}
 		
-		public Token(int type, String tag, String text, String[] args) {
+		public Token(int type, String tag, String text, List<String> args) {
 			mType = type;
 			mText = text;
 			mTag = tag;
@@ -401,7 +407,7 @@ public class BBCodeParser {
 		public Node mParent;
 		public BBCodeTag mTag = null;
 		public String mText = null;
-		public String[] mArgs;
+		public List<String> mArgs;
 		public String mRawStart = null;
 		public String mRawEnd = null;
 		public Boolean mInvalid = false;
@@ -410,7 +416,7 @@ public class BBCodeParser {
 		public Node(){};
 		
 		// initializer for a new bbcode node
-		public Node(BBCodeTag type, String[] args, String raw) {
+		public Node(BBCodeTag type, List<String> args, String raw) {
 			mTag = type;
 			mArgs = args;
 			mRawStart = raw;
@@ -459,7 +465,7 @@ public class BBCodeParser {
 			// replace the arguments if there are some
 			int num_args = 0;
 			if(mArgs != null)
-				num_args = mArgs.length;
+				num_args = mArgs.size();
 			
 			// this is a hack for the potdroid app: if the current tag 
 			// is [quote] and the containing string starts with [b] and ends
@@ -473,7 +479,7 @@ public class BBCodeParser {
 			
 			if(num_args > 0) 
 				for(int i = 0; i < num_args; i++) 
-					html = html.replace("{" + (i+1) + "}", mArgs[i]);
+					html = html.replace("{" + (i+1) + "}", mArgs.get(i));
 			
 			return html;
 		}

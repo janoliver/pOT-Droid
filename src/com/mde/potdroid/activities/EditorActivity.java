@@ -43,7 +43,12 @@ public class EditorActivity extends BaseActivity {
     private EditText mBody;
     private Topic mThread = null;
     private Post mPost = null;
-    private Boolean mEditing = false;
+    private Integer mAction;
+    
+    public static final int ACTION_REPLY = 1;
+    public static final int ACTION_QUOTE = 2 ;
+    public static final int ACTION_EDIT = 3;
+    
 
     /**
      * Starting point of the activity.
@@ -58,7 +63,7 @@ public class EditorActivity extends BaseActivity {
         // topic
         mThread = (Topic)getIntent().getSerializableExtra("thread");
         mPost = (Post)getIntent().getSerializableExtra("post");
-        mEditing = getIntent().getBooleanExtra("edit", false);
+        mAction = getIntent().getIntExtra("action", ACTION_REPLY);
         
         // preset some text
         mTitle = (EditText)findViewById(R.id.editor_title);
@@ -72,11 +77,11 @@ public class EditorActivity extends BaseActivity {
     public void onResume() {
         super.onResume();
         
-        String text = null;
-        if(!mEditing) {
+        String text = "";
+        if(mAction == ACTION_QUOTE) {
             text = "[quote=" + mThread.getId() + "," + mPost.getId() + ",\""
                     + mPost.getAuthor().getNick() + "\"][b]\n" + mPost.getText() + "\n[/b][/quote]";
-        } else if(mPost != null) {
+        } else if(mAction == ACTION_EDIT) {
             text = mPost.getText();
         }
         mBody.setText(text);
@@ -99,12 +104,8 @@ public class EditorActivity extends BaseActivity {
     }
     
     public void savePost() {
-        if(mPost != null) {
-            new PostEditer().execute(mThread, mPost, mTitle.getText().toString(), 
-                    mBody.getText().toString(), mEditing);
-        } else {
-            
-        }
+        new PostEditer().execute(mThread, mPost, mTitle.getText().toString(), 
+                    mBody.getText().toString(), mAction);
         
     }
     
@@ -142,7 +143,7 @@ public class EditorActivity extends BaseActivity {
             Post post = (Post) params[1];
             String title = (String) params[2];
             String body = (String) params[3];
-            Boolean editing = (Boolean) params[4];
+            Boolean editing = (Integer)params[4] == ACTION_EDIT;
             
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
             

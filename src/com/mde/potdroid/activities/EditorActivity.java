@@ -29,6 +29,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.mde.potdroid.R;
+import com.mde.potdroid.activities.TopicActivity.DataHandler;
 import com.mde.potdroid.helpers.PotNotification;
 import com.mde.potdroid.helpers.PotUtils;
 import com.mde.potdroid.helpers.WebsiteInteraction;
@@ -41,9 +42,8 @@ import com.mde.potdroid.models.Topic;
 public class EditorActivity extends BaseActivity {
     private EditText mTitle;
     private EditText mBody;
-    private Topic mThread = null;
-    private Post mPost = null;
-    private Integer mAction;
+    private DataHandler mDataHandler;
+    
     
     public static final int ACTION_REPLY = 1;
     public static final int ACTION_QUOTE = 2 ;
@@ -60,35 +60,69 @@ public class EditorActivity extends BaseActivity {
         // prepare the views
         setContentView(R.layout.activity_editor);
         
-        // topic
-        mThread = (Topic)getIntent().getSerializableExtra("thread");
-        mPost = (Post)getIntent().getSerializableExtra("post");
-        mAction = getIntent().getIntExtra("action", ACTION_REPLY);
-        
         // preset some text
         mTitle = (EditText)findViewById(R.id.editor_title);
         mBody = (EditText)findViewById(R.id.editor_body);
-        
-        
+
+        // initialize the data handler
+        mDataHandler = (DataHandler)mFragmentManager.findFragmentByTag("data");
+        if (mDataHandler == null) {
+            mDataHandler = new DataHandler();
+            mFragmentManager.beginTransaction().add(mDataHandler, "data").commit();
+            
+            mDataHandler.mThread = (Topic)getIntent().getSerializableExtra("thread");
+            mDataHandler.mPost = (Post)getIntent().getSerializableExtra("post");
+            mDataHandler.mAction = getIntent().getIntExtra("action", ACTION_REPLY);
+            
+            String text = "";
+            if(mDataHandler.mAction == ACTION_QUOTE) {
+                text = "[quote=" + mDataHandler.mThread.getId() + "," + mDataHandler.mPost.getId() + ",\""
+                        + mDataHandler.mPost.getAuthor().getNick() + "\"][b]\n" + mDataHandler.mPost.getText() + "\n[/b][/quote]";
+            } else if(mDataHandler.mAction == ACTION_EDIT) {
+                text = mDataHandler.mPost.getText();
+            }
+            mDataHandler.mBody = text;
+            mDataHandler.mTitle = "";
+        }
+        fillView();
         
     }
     
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onSaveInstanceState(Bundle state)
+    {
+        mDataHandler.mBody = mBody.getText().toString();
+        mDataHandler.mTitle = mTitle.getText().toString();
+
+        super.onSaveInstanceState(state);
+    }
+
+    /**
+     * This fragment handles the data 
+     */
+    public static class DataHandler extends FragmentBase {
+        private String    mTitle;
+        private String    mBody;
+        private Topic     mThread;
+        private Post      mPost;
+        private Integer   mAction;
         
-        String text = "";
-        if(mAction == ACTION_QUOTE) {
-            text = "[quote=" + mThread.getId() + "," + mPost.getId() + ",\""
-                    + mPost.getAuthor().getNick() + "\"][b]\n" + mPost.getText() + "\n[/b][/quote]";
-        } else if(mAction == ACTION_EDIT) {
-            text = mPost.getText();
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setRetainInstance(true);
         }
-        mBody.setText(text);
+    }
+    
+    private void fillView() {
+        mBody.setText(mDataHandler.mBody);
+        mTitle.setText(mDataHandler.mTitle);
         mBody.requestFocus();
         mBody.setSelection(mBody.getText().length());
         
-        refreshLeftMenu();
+        // set the subtitle
+        getSupportActionBar().setSubtitle(mDataHandler.mAction == ACTION_EDIT ? 
+                "Post bearbeiten" : "Antwort verfassen");
     }
     
     @Override
@@ -104,8 +138,8 @@ public class EditorActivity extends BaseActivity {
     }
     
     public void savePost() {
-        new PostEditer().execute(mThread, mPost, mTitle.getText().toString(), 
-                    mBody.getText().toString(), mAction);
+        new PostEditer().execute(mDataHandler.mThread, mDataHandler.mPost, mTitle.getText().toString(), 
+                    mBody.getText().toString(), mDataHandler.mAction);
         
     }
     

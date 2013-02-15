@@ -23,7 +23,8 @@
             android:icon="?attr/menu_icon_favorite"/>
         <item android:id="@+id/reply"
             android:title="Antworten"
-            android:icon="?attr/menu_icon_edit"/>
+            android:icon="?attr/menu_icon_edit"
+            android:showAsAction="ifRoom" />
     </group>
     
 </menu>

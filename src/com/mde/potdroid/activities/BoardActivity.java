@@ -16,6 +16,7 @@ package com.mde.potdroid.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -220,8 +221,11 @@ public class BoardActivity extends BaseActivity {
             TextView descr = (TextView) row.findViewById(R.id.description);
             TextView lastpost = (TextView) row.findViewById(R.id.lastpost);
             TextView important = (TextView) row.findViewById(R.id.important);
-            
+
             name.setText(t.getTitle());
+            if(t.isClosed())
+                name.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            
             descr.setText(t.getSubTitle());
             Spanned content = Html.fromHtml("<b>"+t.getNumberOfPosts()+"</b> Posts auf <b>"+t.getLastPage()+"</b> Seiten");
             lastpost.setText(content);

@@ -94,6 +94,20 @@ public class LeftMenu extends Fragment {
         return mFragmentView;
     }
     
+    /**
+     * We need to do this for the following reason: if the list was updated
+     * and one hits "back" in the application, previously read bookmarks are
+     * still shown and clicking on them leads to an error. With this function,
+     * the bookmark list will always be up to date!
+     */
+    public void onResume() {
+        super.onResume();
+        if(mBookmarks != null) {
+            BookmarkViewAdapter adapter = new BookmarkViewAdapter(mActivity);
+            mBookmarksView.setAdapter(adapter);
+        }
+    }
+    
     public void refresh() {
         if(!mRefreshing)
             new PrepareAdapter().execute((Void[]) null);

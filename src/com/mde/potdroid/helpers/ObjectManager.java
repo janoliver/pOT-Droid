@@ -454,6 +454,7 @@ public class ObjectManager {
             newPost.setEdited(_intAttr(el.getChild("message"), "edited" ,"count", 0));
             newPost.setBookmarktoken(_strAttr(el, "token-setbookmark", "value", ""));
             newPost.setEdittoken(_strAttr(el, "token-editreply", "value", ""));
+            newPost.setIcon(_intAttr(el, "icon", "id", 0));
             newPost.setTopic(t);
 
             // write to object storage

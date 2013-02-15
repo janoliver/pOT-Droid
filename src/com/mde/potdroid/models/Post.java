@@ -30,6 +30,7 @@ public class Post implements Serializable {
     private String  mTitle  = "";
     private User    mAuthor = null;
     private Integer mEdited = 0;
+    private Integer mIcon = 0;
     public String mBookmarktoken = "";
     public String mEdittoken     = "";
 
@@ -74,6 +75,10 @@ public class Post implements Serializable {
     public void setTitle(String title) {
         mTitle = title;
     }
+    
+    public void setIcon(Integer icon) {
+        mIcon = icon;
+    }
 
     public Integer getId() {
         return mId;
@@ -101,6 +106,10 @@ public class Post implements Serializable {
 
     public String getText() {
         return mText;
+    }
+    
+    public Integer getIcon() {
+        return mIcon;
     }
 
     public Topic getTopic() {

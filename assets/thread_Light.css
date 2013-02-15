@@ -107,11 +107,6 @@ blockquote blockquote blockquote blockquote blockquote blockquote {
     color:#666;
 }
 
-
-ul {
-    margin-left:20px;
-}
-
 input.loadimage,input.spoiler {
     padding:3px;
     background:#CCC;
@@ -119,19 +114,4 @@ input.loadimage,input.spoiler {
     font-size:14px;
     color:#000;
     
-}
-
-table,td
-{
-    border:1px solid black;
-    
-}
-
-table {
-    border-collapse:collapse;
-}
-
-td,tr,th {
-	text-align:left;
-    vertical-align:top;
 }

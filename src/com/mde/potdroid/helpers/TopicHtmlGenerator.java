@@ -117,6 +117,12 @@ public class TopicHtmlGenerator {
             t.setVariable("postText", parseBbCode(posts[i]));
             t.setVariable("postTitle", posts[i].getTitle());
             
+            if(posts[i].getIcon() != 0 && mSettings.getBoolean("posticons", false))
+                t.setVariable("icon", 
+                        "<img class=\"icon\" src=\"file:///android_asset/icons/icon" + posts[i].getIcon() + ".gif\" />");
+            else
+                t.setVariable("icon", "");
+            
             if (posts[i].getAuthor().getId() == PotUtils.getObjectManagerInstance(mActivity)
                     .getCurrentUser().getId())
                 t.setVariable("currentUser", "curruser");

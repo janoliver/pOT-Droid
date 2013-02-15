@@ -1,0 +1,26 @@
+img.resize {
+    max-width:100%;
+}
+
+ul {
+    margin-left:20px;
+}
+
+table,td
+{
+    border:1px solid black;
+    
+}
+
+table {
+    border-collapse:collapse;
+}
+
+td,tr,th {
+    text-align:left;
+    vertical-align:top;
+}
+
+.icon {
+	margin:-2px 0 -2px 0;
+}

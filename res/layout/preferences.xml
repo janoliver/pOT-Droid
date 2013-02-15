@@ -76,6 +76,10 @@
         <CheckBoxPreference
             android:key="marknewposts"
             android:title="Ungelesene Posts markieren" />
+        
+        <CheckBoxPreference
+            android:key="posticons"
+            android:title="Post Icons anzeigen" />
             
         <CheckBoxPreference
             android:key="gravityInThreads"

@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/color_background_forum">
+    android:layout_height="wrap_content">
     
     <View xmlns:android="http://schemas.android.com/apk/res/android" 
         android:layout_width="20dp"

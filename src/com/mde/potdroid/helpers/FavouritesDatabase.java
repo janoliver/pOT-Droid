@@ -89,15 +89,21 @@ public class FavouritesDatabase {
      * Clean all the entries from the favourites database, that are not bookmarks
      * anymore so we don't end up with a messy database.
      */
-    public void cleanFavourites(Map<Integer, Bookmark> bookmarks) {
+    public void cleanFavourites(Bookmark[] bookmarks) {
         Cursor qry = query("", new String[] {}, null);
         Integer bmId;
+        Boolean found;
         if (qry != null) {
             while (qry.isAfterLast() == false) {
                 bmId = Integer.valueOf(qry.getString(0));
-                if(!bookmarks.containsKey(bmId)) {
+                found = false;
+                for(Bookmark bm: bookmarks)
+                    if(bm.getId() == bmId)
+                        found = true;
+                
+                if(!found)
                     deleteFavourite(new Bookmark(bmId));
-                }
+                
                 qry.moveToNext();
             }
         }

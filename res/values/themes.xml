@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="PotLight" parent="Theme.Sherlock.Light">
+    <style name="PotLight" parent="Holo.Theme.Light">
         <item name="menu_icon_preferences">@drawable/light_action_settings</item>
 	    <item name="menu_icon_edit">@drawable/light_content_edit</item>
         <item name="menu_icon_back">@drawable/light_navigation_back</item>
@@ -11,10 +11,10 @@
         <item name="menu_icon_home">@drawable/light_navigation_home</item>
         <item name="menu_icon_accept">@drawable/light_navigation_accept</item>
         
-        <item name="color_background_category">#ffffff</item>
-        <item name="color_background_forum">#999999</item>
-        <item name="color_background_indicator">#aaaaaa</item>
-        <item name="color_text_primary">#000000</item>
+        <item name="color_background_category">#eeeeee</item>
+        <item name="color_background_forum">#cccccc</item>
+        <item name="color_background_indicator">#999999</item>
+        <item name="color_text_primary">#333333</item>
         <item name="color_text_secondary">#444444</item>
         <item name="color_text_third">#bbbbbb</item>
         <item name="color_text_input">#000000</item>
@@ -25,7 +25,7 @@
         <item name="android:actionBarSize">48dip</item> 
     </style>
     
-    <style name="PotDark" parent="Theme.Sherlock">
+    <style name="PotDark" parent="Holo.Theme">
         <item name="menu_icon_preferences">@drawable/dark_action_settings</item>
         <item name="menu_icon_edit">@drawable/dark_content_edit</item>
         <item name="menu_icon_back">@drawable/dark_navigation_back</item>

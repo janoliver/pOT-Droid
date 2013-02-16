@@ -53,6 +53,7 @@ public class BoardActivity extends BaseActivity {
     private ListView mListView;
     private DataHandler mDataHandler;
     
+    
     /**
      * Starting point of the activity.
      */
@@ -91,7 +92,9 @@ public class BoardActivity extends BaseActivity {
             fillView();
         }
         
-    } 
+        
+    }
+    
     
     /**
      * This fragment handles the data 
@@ -279,4 +282,5 @@ public class BoardActivity extends BaseActivity {
             }
         }
     }
+    
 }

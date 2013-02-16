@@ -9,6 +9,6 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
         android:childDivider="?attr/color_background_indicator"
-        android:divider="?attr/color_background_indicator"
+        android:divider="?attr/color_background_forum"
         android:dividerHeight="1dp" />
 </LinearLayout>

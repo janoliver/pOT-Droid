@@ -13,6 +13,8 @@
 
 package com.mde.potdroid.activities;
 
+import org.holoeverywhere.app.Activity;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,12 +27,11 @@ import com.mde.potdroid.helpers.ObjectManager;
 import com.mde.potdroid.helpers.PotUtils;
 import com.mde.potdroid.helpers.WebsiteInteraction;
 import com.slidingmenu.lib.SlidingMenu;
-import com.slidingmenu.lib.app.SlidingActivity;
 
 /**
  * The Acitivty base class. ATM only takes care of some member variables.
  */
-public abstract class BaseActivity extends SlidingActivity {
+public abstract class BaseActivity extends Activity {
 
     protected WebsiteInteraction mWebsiteInteraction;
     protected ObjectManager      mObjectManager;
@@ -38,6 +39,7 @@ public abstract class BaseActivity extends SlidingActivity {
     protected Bundle             mExtras;
     protected LeftMenu           mLeftMenu;
     protected FragmentManager    mFragmentManager;
+    protected SlidingMenu        mSlidingMenu;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,14 +58,14 @@ public abstract class BaseActivity extends SlidingActivity {
             this.setTheme(R.style.PotDark);
         
         // sliding menu
-        SlidingMenu sm = getSlidingMenu();
-        sm.setMode(SlidingMenu.LEFT);
-        sm.setShadowWidthRes(R.dimen.shadow_width);
-        sm.setShadowDrawable(R.drawable.shadow);
-        sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-        sm.setFadeDegree(0.35f);
-        
-        setBehindContentView(R.layout.sidebar_frame);
+        mSlidingMenu = new SlidingMenu(this);
+        mSlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_WINDOW);
+        mSlidingMenu.setMode(SlidingMenu.LEFT);
+        mSlidingMenu.setShadowWidthRes(R.dimen.shadow_width);
+        mSlidingMenu.setShadowDrawable(R.drawable.shadow);
+        mSlidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset); 
+        mSlidingMenu.setFadeDegree(0.35f);
+        mSlidingMenu.setMenu(R.layout.sidebar_frame);
         
         // get or create and attach the leftmenu fragment
         mFragmentManager = (FragmentManager)getSupportFragmentManager();
@@ -74,8 +76,6 @@ public abstract class BaseActivity extends SlidingActivity {
         // If not retained (or first time running), we need to create it.
         if (mLeftMenu == null) {
             mLeftMenu = new LeftMenu();
-            // Tell it who it is working with.
-            
             mFragmentManager.beginTransaction().add(mLeftMenu, "lm").commit();
         }
         
@@ -83,14 +83,13 @@ public abstract class BaseActivity extends SlidingActivity {
         
         // actionbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setSlidingActionBarEnabled(true);
         
     }
     
     @Override
     public void onBackPressed() {
-        if (getSlidingMenu().isMenuShowing()) {
-            getSlidingMenu().showContent();
+        if (mSlidingMenu.isMenuShowing()) {
+            mSlidingMenu.showContent();
         } else {
             super.onBackPressed();
         }
@@ -111,7 +110,7 @@ public abstract class BaseActivity extends SlidingActivity {
         // Handle item selection
         switch (item.getItemId()) {
         case android.R.id.home:
-            getSlidingMenu().showMenu();
+            mSlidingMenu.showMenu();
             return true;
         case R.id.forumact:
             goToForumActivity();

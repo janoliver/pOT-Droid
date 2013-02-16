@@ -129,8 +129,12 @@ public class TopicHtmlGenerator {
             else
                 t.setVariable("currentUser", "");
             
-            if ((posts[i].getId() > mTopic.getPid()) && mSettings.getBoolean("marknewposts", false))
+            if ((posts[i].getId() > mTopic.getPid()) && 
+                    mSettings.getBoolean("marknewposts", false) &&
+                    mTopic.getPid() != 0)
                 t.setVariableOpt("newPost", "newpost");
+            else
+                t.setVariableOpt("newPost", "");
             
             t.addBlock("post");
         }

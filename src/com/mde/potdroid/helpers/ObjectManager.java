@@ -108,10 +108,10 @@ public class ObjectManager {
         return mPosts.get(id);
     }
     
-    public Map<Integer, Bookmark> getBookmarks() throws ParseErrorException, 
+    public Bookmark[] getBookmarks() throws ParseErrorException, 
                                 NoConnectionException, NotLoggedInException {
         _parseBookmarks();
-        return mBookmarks;
+        return mBookmarks.values().toArray(new Bookmark[0]);
     }
     
     public Bookmark getBookmark(int id) {
@@ -197,6 +197,7 @@ public class ObjectManager {
             t.setBoard(x);
             
             b.setThread(t);
+                
         }
 
         return true;

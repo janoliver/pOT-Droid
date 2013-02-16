@@ -1,7 +1,6 @@
 package com.mde.potdroid.activities;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -43,7 +42,7 @@ public class LeftMenu extends Fragment {
      * mBookmarks is a Map with all the bookmarks stored as 
      * <Id, BookmarkObject> values.
      */
-    private Map<Integer, Bookmark> mBookmarks;
+    private Bookmark[] mBookmarks;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,7 +78,7 @@ public class LeftMenu extends Fragment {
         mBookmarksView.setAdapter( null );
         mBookmarksView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openThread((Bookmark)filterBookmarksByUnread().values().toArray()[position]);
+                openThread(mBookmarks[position]);
             }
         });
         
@@ -92,20 +91,6 @@ public class LeftMenu extends Fragment {
         
         // Inflate the layout for this fragment
         return mFragmentView;
-    }
-    
-    /**
-     * We need to do this for the following reason: if the list was updated
-     * and one hits "back" in the application, previously read bookmarks are
-     * still shown and clicking on them leads to an error. With this function,
-     * the bookmark list will always be up to date!
-     */
-    public void onResume() {
-        super.onResume();
-        if(mBookmarks != null) {
-            BookmarkViewAdapter adapter = new BookmarkViewAdapter(mActivity);
-            mBookmarksView.setAdapter(adapter);
-        }
     }
     
     public void refresh() {
@@ -131,28 +116,13 @@ public class LeftMenu extends Fragment {
     }
     
     /**
-     * Return a Map<Integer, Bookmark> with only Bookmarks with unread posts.
-     */
-    protected Map<Integer, Bookmark> filterBookmarksByUnread() {
-        Map<Integer, Bookmark> newMap  = new LinkedHashMap<Integer, Bookmark>();
-        int c = 0;
-        for( Bookmark value : mBookmarks.values()) {
-            if(value.getNumberOfNewPosts() > 0) {
-                newMap.put(c++, value);
-            }
-        }
-        return newMap;
-    }
-    
-    /**
      * Custom view adapter for the ListView items
      */
     class BookmarkViewAdapter extends ArrayAdapter<Bookmark> {
         Activity context;
 
         BookmarkViewAdapter(Activity context) {
-            super(context, R.layout.sidebar_bookmark_listitem, R.id.name, 
-                    filterBookmarksByUnread().values().toArray(new Bookmark[0]));
+            super(context, R.layout.sidebar_bookmark_listitem, R.id.name, mBookmarks);
             this.context = context;
         }
 
@@ -160,7 +130,7 @@ public class LeftMenu extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             
             View row = mInflater.inflate(R.layout.sidebar_bookmark_listitem, null);
-            Bookmark bm = (Bookmark)filterBookmarksByUnread().values().toArray()[position];
+            Bookmark bm = mBookmarks[position];
             
             TextView name = (TextView) row.findViewById(R.id.name);
             name.setText(bm.getThread().getTitle());
@@ -190,7 +160,12 @@ public class LeftMenu extends Fragment {
         @Override
         protected Exception doInBackground(Void... params) {
             try {
-                mBookmarks = mObjectManager.getBookmarks();
+                Bookmark[] tmp = mObjectManager.getBookmarks();
+                ArrayList<Bookmark> tmp2 = new ArrayList<Bookmark>();
+                for (Bookmark bm: tmp)
+                    if(bm.getNumberOfNewPosts() > 0)
+                        tmp2.add(bm);
+                mBookmarks = tmp2.toArray(new Bookmark[0]);
                 return null;
             } catch (Exception e) {
                 return e;

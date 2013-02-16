@@ -13,8 +13,6 @@
 
 package com.mde.potdroid.activities;
 
-import java.util.Map;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -22,7 +20,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +33,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.ContextMenu;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -49,15 +47,10 @@ import com.mde.potdroid.models.Bookmark;
  * This Activity shows the bookmark list and handles all it's actions.
  */
 public class BookmarkActivity extends BaseActivity {
-
-    /**
-     * mBookmarks is a Map with all the bookmarks stored as 
-     * <Id, BookmarkObject> values.
-     */
-    private Map<Integer, Bookmark> mBookmarks;
     
 
     private ListView mListView;
+    private DataHandler mDataHandler;
     
     /**
      * mFavouritesDatabase is the sqlite database for the favourites among
@@ -74,6 +67,7 @@ public class BookmarkActivity extends BaseActivity {
         
         setContentView(R.layout.activity_bookmarks);
         mListView = (ListView) findViewById(R.id.list);
+        mListView.setAdapter(null);
         
         // create the favourites database
         mFavouritesDatabase = new FavouritesDatabase(this);
@@ -87,14 +81,17 @@ public class BookmarkActivity extends BaseActivity {
             return;
         }
 
-        // set view
-        @SuppressWarnings("unchecked")
-        final Map<Integer, Bookmark> stateSaved = (Map<Integer, Bookmark>) getLastNonConfigurationInstance();
-        if (stateSaved == null) {
-            mListView.setAdapter(null);
-            new PrepareAdapter().execute((Void[]) null);
+        // initialize the data handler
+        mDataHandler = (DataHandler)mFragmentManager.findFragmentByTag("data");
+        if (mDataHandler == null) {
+            mDataHandler = new DataHandler();
+            mFragmentManager.beginTransaction().add(mDataHandler, "data").commit();
+            
+            // initialize the data
+            mDataHandler.mBookmarks  = null;
+            
+            refresh();
         } else {
-            mBookmarks = stateSaved;
             fillView();
         }
         
@@ -102,38 +99,32 @@ public class BookmarkActivity extends BaseActivity {
         registerForContextMenu(mListView);
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openThread((Bookmark)mBookmarks.values().toArray()[position], false, true);
+                openThread((Bookmark)mDataHandler.mBookmarks[position], false, true);
             }
         });
     }
     
-    @Override
-    public void onResume() {
-        super.onResume();
+    /**
+     * This fragment handles the data 
+     */
+    public static class DataHandler extends FragmentBase {
+        private Bookmark[] mBookmarks;
         
-        // refresh the leftmenu stuff.
-        refreshLeftMenu();
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setRetainInstance(true);
+        }
     }
-
+    
     /**
      * After having downloaded the data, fill the view
      */
     private void fillView() {
         BookmarkViewAdapter adapter = new BookmarkViewAdapter(BookmarkActivity.this);
         mListView.setAdapter(adapter);
-
         setTitle("Bookmarks (" + mObjectManager.getUnreadBookmarks() + " neue Posts)");
     }
-
-    /**
-     * Needed for orientation change
-     */
-//    @Override
-//    public Object onRetainNonConfigurationInstance() {
-//        final Map<Integer, Bookmark> stateSaved = mBookmarks;
-//        return stateSaved;
-//    }
-    
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -186,11 +177,11 @@ public class BookmarkActivity extends BaseActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        android.view.MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getSupportMenuInflater();
         inflater.inflate(R.menu.context_bookmark, menu);
         
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        if(mFavouritesDatabase.isFavourite((Bookmark)mBookmarks.values().toArray()[(int) info.id])) {
+        if(mFavouritesDatabase.isFavourite((Bookmark)mDataHandler.mBookmarks[(int) info.id])) {
             menu.removeItem(R.id.add_favourite);
         } else {
             menu.removeItem(R.id.delete_favourite);
@@ -202,19 +193,19 @@ public class BookmarkActivity extends BaseActivity {
      * removebookmark could show a loading animation.
      */
     @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
+    public boolean onContextItemSelected(MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         ImageView star = (ImageView) info.targetView.findViewById(R.id.favourite);
         switch (item.getItemId()) {
         case R.id.first_page:
-            openThread((Bookmark)mBookmarks.values().toArray()[(int) info.id], false, false);
+            openThread((Bookmark)mDataHandler.mBookmarks[(int) info.id], false, false);
             return true;
         case R.id.last_page:
-            openThread((Bookmark)mBookmarks.values().toArray()[(int) info.id], true, false);
+            openThread((Bookmark)mDataHandler.mBookmarks[(int) info.id], true, false);
             return true;
         case R.id.removebookmark:
             // bookmark
-            Bookmark bm = (Bookmark)mBookmarks.values().toArray()[(int) info.id];
+            Bookmark bm = (Bookmark)mDataHandler.mBookmarks[(int) info.id];
             final String url = PotUtils.ASYNC_URL + "remove-bookmark.php?BMID=" + bm.getId()
                     + "&token=" + bm.getRemovetoken();
             new Thread(new Runnable() {
@@ -225,11 +216,11 @@ public class BookmarkActivity extends BaseActivity {
             }).start();
             return true;
         case R.id.add_favourite:
-            mFavouritesDatabase.addFavourite((Bookmark)mBookmarks.values().toArray()[(int) info.id]);
+            mFavouritesDatabase.addFavourite((Bookmark)mDataHandler.mBookmarks[(int) info.id]);
             star.setVisibility(View.VISIBLE);
             return true;
         case R.id.delete_favourite:
-            mFavouritesDatabase.deleteFavourite((Bookmark)mBookmarks.values().toArray()[(int) info.id]);
+            mFavouritesDatabase.deleteFavourite((Bookmark)mDataHandler.mBookmarks[(int) info.id]);
             star.setVisibility(View.INVISIBLE);
             return true;
         default:
@@ -242,9 +233,7 @@ public class BookmarkActivity extends BaseActivity {
      */
     @Override
     public void refresh() {
-        Intent intent = new Intent(BookmarkActivity.this, BookmarkActivity.class);
-        startActivity(intent);
-        finish();
+        new PrepareAdapter().execute((Void[]) null);
     }
 
     /**
@@ -254,8 +243,7 @@ public class BookmarkActivity extends BaseActivity {
         Activity context;
 
         BookmarkViewAdapter(Activity context) {
-            super(context, R.layout.listitem_thread, R.id.name, 
-                    mBookmarks.values().toArray(new Bookmark[0]));
+            super(context, R.layout.listitem_thread, R.id.name, mDataHandler.mBookmarks);
             this.context = context;
         }
 
@@ -264,7 +252,7 @@ public class BookmarkActivity extends BaseActivity {
             LayoutInflater inflater = context.getLayoutInflater();
 
             View row = inflater.inflate(R.layout.listitem_bookmark, null);
-            Bookmark bm = (Bookmark)mBookmarks.values().toArray()[position];
+            Bookmark bm = (Bookmark)mDataHandler.mBookmarks[position];
             ImageView star = (ImageView) row.findViewById(R.id.favourite);
             TextView name = (TextView) row.findViewById(R.id.name);
             TextView descr = (TextView) row.findViewById(R.id.description);
@@ -303,7 +291,7 @@ public class BookmarkActivity extends BaseActivity {
         @Override
         protected Exception doInBackground(Void... params) {
             try {
-                mBookmarks = mObjectManager.getBookmarks();
+                mDataHandler.mBookmarks = mObjectManager.getBookmarks();
                 return null;
             } catch (Exception e) {
                 return e;
@@ -315,6 +303,7 @@ public class BookmarkActivity extends BaseActivity {
             if(e == null) {
                 fillView();
                 mDialog.dismiss();
+                mLeftMenu.refresh();
             } else {
                 Toast.makeText(BookmarkActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
                 mDialog.dismiss();

@@ -4,19 +4,20 @@
 
 body {
     font-size:14px;
-    background:#000000;
+    background:#fff;
 }
 
 .post {
 	margin:15px 10px;
-    background:#394E63;
+    background:#eee;
+    border:1px solid #bbb;
 }
 
 .title {
     padding:5px;
-    background:#222E3A;
+    background:#bbb;
     font-size:16px;
-    color:#fff;
+    color:#333;
 }
 
 .title .nick {
@@ -33,27 +34,27 @@ body {
 
 .content {
     padding:5px;
-    color:#fff;
+    color:#222;
     
 }
 
 .content .posttitle {
-    color:#ccc;
+    color:#555;
     text-align:right;
     font-size:0.9em;
 }
 
 
-.curruser .title, .curruser .content {
-    border-left:2px solid darkred;
+.curruser .title {
+    border-left:4px solid darkred;
 }
 
-.newpost {
-    border-right:4px solid yellow;
+.newpost .title {
+    border-left:4px solid yellow;
 }
 
 .content a {
-	color:#999;
+	color:#444;
 }
 
 .spoiler {
@@ -69,9 +70,9 @@ body {
 
 blockquote {
     /*border-left:2px solid #666666;*/
-    color:#bbb;
+    color:#444;
     margin:5px 3px 5px 3px;
-    background:#21354C;
+    background:#ddd;
     padding:2px;
     padding-left:4px;
     border-radius:3px;
@@ -83,28 +84,28 @@ blockquote .author {
 }
 
 blockquote blockquote {
-	background: #1E3044;
-	color:#aaa;
+	background: #ccc;
+	color:#444;
 }
 
 blockquote blockquote blockquote {
-    background: #1A2A3D;
-    color:#999;
+    background: #bbb;
+    color:#444;
 }
 
 blockquote blockquote blockquote blockquote {
-    background: #172535;
-    color:#888;
+    background: #aaa;
+    color:#444;
 }
 
 blockquote blockquote blockquote blockquote blockquote {
-    background: #14202E;
-    color:#777;
+    background: #999;
+    color:#444;
 }
 
 blockquote blockquote blockquote blockquote blockquote blockquote {
-    background: #101A26;
-    color:#666;
+    background: #888;
+    color:#444;
 }
 
 input.loadimage,input.spoiler {

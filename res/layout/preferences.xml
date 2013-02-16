@@ -66,9 +66,9 @@
              android:entryValues="@array/loadImagesValues" />
         
         <ListPreference 
-             android:title="Style Sonstiges"
+             android:title="Theme"
              android:key="theme" 
-             android:summary="Style der restlichen Ansichten wählen." 
+             android:summary="App Theme wählen" 
              android:defaultValue="0"
              android:entries="@array/themes"
              android:entryValues="@array/themesValues" />

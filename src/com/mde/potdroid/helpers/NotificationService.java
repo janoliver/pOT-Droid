@@ -170,12 +170,12 @@ public class NotificationService extends Service {
         int unread = 0;
         
         try {
-            Map<Integer, Bookmark> bookmarks = mObjectManager.getBookmarks();
+            Bookmark[] bookmarks = mObjectManager.getBookmarks();
         
             // remove bookmark entries from database that aren't bookmarks anymore
             mFavouritesDatabase.cleanFavourites(bookmarks);
         
-            for(Bookmark b : bookmarks.values()) {
+            for(Bookmark b : bookmarks) {
                 if(mFavouritesDatabase.isFavourite(b))
                     unread += b.getNumberOfNewPosts();
             }

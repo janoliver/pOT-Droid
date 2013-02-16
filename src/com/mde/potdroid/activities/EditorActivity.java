@@ -106,7 +106,6 @@ public class EditorActivity extends BaseActivity {
                 text = mDataHandler.mPost.getText();
             }
             mDataHandler.mBody = text;
-            mDataHandler.mTitle = "";
         }
         fillView();
         
@@ -138,7 +137,6 @@ public class EditorActivity extends BaseActivity {
     public void onSaveInstanceState(Bundle state)
     {
         mDataHandler.mBody = mBody.getText().toString();
-        mDataHandler.mTitle = mTitle.getText().toString();
 
         super.onSaveInstanceState(state);
     }
@@ -147,7 +145,6 @@ public class EditorActivity extends BaseActivity {
      * This fragment handles the data 
      */
     public static class DataHandler extends FragmentBase {
-        private String    mTitle;
         private String    mBody;
         private Topic     mThread;
         private Post      mPost;
@@ -162,7 +159,7 @@ public class EditorActivity extends BaseActivity {
     
     private void fillView() {
         mBody.setText(mDataHandler.mBody);
-        mTitle.setText(mDataHandler.mTitle);
+        mTitle.setText(mDataHandler.mPost.getTitle());
         mBody.requestFocus();
         mBody.setSelection(mBody.getText().length());
         

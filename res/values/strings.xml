@@ -6,6 +6,6 @@
     <string name="greeting">Hallo, Unbekannter!</string>
     <string name="editor_title">Titel</string>
     <string name="editor_body">Post</string>
-    <string name="noicon">Icon:</string>
+    <string name="noicon">Icon</string>
     <string name="whichicon">Post Icon</string>
 </resources>

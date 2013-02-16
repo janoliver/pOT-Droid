@@ -2,7 +2,8 @@ img.resize {
     max-width:100%;
 }
 
-ul,ol
+ul,ol {
+	margin-left:20px;
 }
 
 table,td

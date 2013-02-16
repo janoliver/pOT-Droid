@@ -98,6 +98,20 @@ public class LeftMenu extends Fragment {
             new PrepareAdapter().execute((Void[]) null);
     }
     
+    public void onResume() {
+        super.onResume();
+        updateView();
+    }
+    
+    public void updateView() {
+        if(mBookmarks != null && mBookmarks.length > 0) {
+            BookmarkViewAdapter adapter = new BookmarkViewAdapter(mActivity);
+            mBookmarksView.setAdapter(adapter);
+        } else if(mBookmarks != null && mBookmarks.length == 0) {
+            setListError("Keine ungelesenen Bookmarks.");
+        }
+    }
+    
     public void openThread(Bookmark bm) {
         Intent intent = new Intent(mActivity, TopicActivity.class);
         intent.putExtra("TID", bm.getThread().getId());
@@ -106,6 +120,7 @@ public class LeftMenu extends Fragment {
     }
     
     public void setListError(String error) {
+        mBookmarksView.setAdapter(null);
         TextView err = (TextView)mFragmentView.findViewById(R.id.error_message);
         if(error.length() == 0) {
             err.setVisibility(View.GONE);
@@ -120,17 +135,19 @@ public class LeftMenu extends Fragment {
      */
     class BookmarkViewAdapter extends ArrayAdapter<Bookmark> {
         Activity context;
+        Bookmark[] buffer;
 
         BookmarkViewAdapter(Activity context) {
             super(context, R.layout.sidebar_bookmark_listitem, R.id.name, mBookmarks);
             this.context = context;
+            this.buffer = mBookmarks;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             
             View row = mInflater.inflate(R.layout.sidebar_bookmark_listitem, null);
-            Bookmark bm = mBookmarks[position];
+            Bookmark bm = buffer[position];
             
             TextView name = (TextView) row.findViewById(R.id.name);
             name.setText(bm.getThread().getTitle());
@@ -176,11 +193,8 @@ public class LeftMenu extends Fragment {
         protected void onPostExecute(Exception e) {
             mLoader.setVisibility(View.GONE);
             mRefreshing = false;
-            if(e == null && mBookmarks.length > 0) {
-                BookmarkViewAdapter adapter = new BookmarkViewAdapter(mActivity);
-                mBookmarksView.setAdapter(adapter);
-            } else if(e == null && mBookmarks.length == 0) {
-                setListError("Keine ungelesenen Bookmarks.");
+            if(e == null) {
+                updateView();
             } else if(e instanceof NotLoggedInException) {
                 setListError("Nicht eingeloggt.");
             } else {

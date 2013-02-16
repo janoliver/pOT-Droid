@@ -159,7 +159,8 @@ public class EditorActivity extends BaseActivity {
     
     private void fillView() {
         mBody.setText(mDataHandler.mBody);
-        mTitle.setText(mDataHandler.mPost.getTitle());
+        if(mDataHandler.mPost != null)
+            mTitle.setText(mDataHandler.mPost.getTitle());
         mBody.requestFocus();
         mBody.setSelection(mBody.getText().length());
         

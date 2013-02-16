@@ -170,7 +170,7 @@ public class EditorActivity extends BaseActivity {
             try {
                 bitmap = getIconBitmap("icon"+mDataHandler.mPost.getIcon()+".gif");
                 Drawable dr = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, 40, 40, true));
-                mIcon.setCompoundDrawablesWithIntrinsicBounds(dr,null,null,null);
+                mIcon.setCompoundDrawablesWithIntrinsicBounds(null,null,dr,null);
             } catch (IOException e) {}
             
             mIconId = mDataHandler.mPost.getIcon()+"";

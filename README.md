@@ -24,6 +24,7 @@ Im Wiki findet ihr unter Umständen irgendwelche Infos. Vielleicht aber auch nic
 * [mods.de Forum](http://forum.mods.de/bb/)
 * [Google Group für Development Diskussionen](https://groups.google.com/forum/#!forum/pot-droid)
 * [Play Store](https://play.google.com/store/apps/details?id=com.mde.potdroid)
+* [Screenshots](http://www.abload.de/gallery.php?key=s6iLQPqf)
 
 ## Hacking
 

@@ -36,7 +36,6 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,6 +118,7 @@ public class EditorActivity extends BaseActivity {
         } catch (IOException e) {}
         
         mIcon.setOnClickListener(new View.OnClickListener() {
+            @SuppressWarnings("deprecation")
             public void onClick(View v) {
                 IconSelection id = new IconSelection();
                 id.show(getSupportFragmentManager(), "icondialog");

@@ -176,10 +176,11 @@ public class LeftMenu extends Fragment {
         protected void onPostExecute(Exception e) {
             mLoader.setVisibility(View.GONE);
             mRefreshing = false;
-            if(e == null) {
-                
+            if(e == null && mBookmarks.length > 0) {
                 BookmarkViewAdapter adapter = new BookmarkViewAdapter(mActivity);
                 mBookmarksView.setAdapter(adapter);
+            } else if(mBookmarks.length == 0) {
+                setListError("Keine ungelesenen Bookmarks.");
             } else if(e instanceof NotLoggedInException) {
                 setListError("Nicht eingeloggt.");
             } else {

@@ -13,7 +13,6 @@
 
 package com.mde.potdroid.helpers;
 
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;

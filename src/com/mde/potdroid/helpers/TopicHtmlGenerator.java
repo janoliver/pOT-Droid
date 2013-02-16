@@ -203,6 +203,7 @@ public class TopicHtmlGenerator {
         
         String allNodes = "string, b, u, s, i, mod, spoiler, " +
                 "code, img, quote, url, list, table";
+        String inLinks = "string, b, u, s, i, mod, img, url, list, table";
         
         BBCodeParser.BBCodeTag b;
         
@@ -303,7 +304,7 @@ public class TopicHtmlGenerator {
         b = new BBCodeParser.BBCodeTag();
         b.mTag = "url";
         b.mDescription = "Link";
-        b.allow("string");
+        b.allow(inLinks);
         b.html(0, "<a href=\"{0}\">{0}</a>");
         b.html(1, "<a href=\"{1}\">{0}</a>");
         b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_STRING;

@@ -110,7 +110,7 @@ public abstract class BaseActivity extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
         case android.R.id.home:
-            mSlidingMenu.showMenu();
+            goToPresetActivity();
             return true;
         case R.id.forumact:
             goToForumActivity();
@@ -164,9 +164,11 @@ public abstract class BaseActivity extends Activity {
             startActivity(intent);
             break;
         case 1:
-        default:
             goToForumActivity();
             break;
+        case 3:
+        default:
+            mSlidingMenu.showMenu();
         }
     }
 

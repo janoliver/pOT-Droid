@@ -254,6 +254,7 @@ public class TopicActivity extends BaseActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        PotUtils.log(item.getItemId()+"loool");
         // Handle item selection
         switch (item.getItemId()) {
         case R.id.reply:
@@ -338,46 +339,6 @@ public class TopicActivity extends BaseActivity {
             mDataHandler.mPid = 0;
             refresh();
         } 
-    }
-
-    /**
-     * go to the forum activity
-     */
-    protected void goToForumActivity() {
-        Intent intent = new Intent(this, ForumActivity.class);
-        intent.putExtra("noredirect", true);
-        startActivity(intent);
-    }
-    
-    /**
-     * Go to the activity defined in the settings for the actionbar.
-     */
-    protected void goToPresetActivity() {
-        int loc = Integer.valueOf(mSettings.getString("mataloc", "0"));
-        switch (loc) {
-        case 0:
-            goToBookmarkActivity();
-            break;
-        case 2:
-            Intent intent = new Intent(this, BoardActivity.class);
-            intent.putExtra("BID", 14);
-            intent.putExtra("page", 1);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            break;
-        case 1:
-        default:
-            goToForumActivity();
-            break;
-        }
-    }
-
-    /**
-     * go to the bookmark activity
-     */
-    protected void goToBookmarkActivity() {
-        Intent intent = new Intent(this, BookmarkActivity.class);
-        startActivity(intent);
     }
 
     /**

@@ -64,11 +64,13 @@
         <item>Lesezeichen</item>
         <item>Forenübersicht</item>
         <item>pOT</item>
+        <item>Öffnet Sidebar</item>
     </string-array>
     <string-array name="mataLocValues">
         <item>0</item>
         <item>1</item>
         <item>2</item>
+        <item>3</item>
     </string-array>
     <string-array name="startActivity">
         <item>Forenübersicht</item>

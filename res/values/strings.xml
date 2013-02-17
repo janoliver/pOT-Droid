@@ -8,4 +8,5 @@
     <string name="editor_body">Post</string>
     <string name="noicon">Icon</string>
     <string name="whichicon">Post Icon</string>
+    <string name="pick_page">Gehe zu ..</string>
 </resources>

@@ -13,8 +13,11 @@
 
 package com.mde.potdroid.activities;
 
+import org.holoeverywhere.app.AlertDialog;
+import org.holoeverywhere.app.Dialog;
+import org.holoeverywhere.app.DialogFragment;
+
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -57,7 +60,7 @@ public class TopicActivity extends BaseActivity {
     private WebView   mWebView;
     private DataHandler mDataHandler;
     private String[]  mTitleNavItems   = {
-            "","Aktualisieren", "Letzte Seite", "Erste Seite"
+            "","Aktualisieren", "Letzte Seite", "Erste Seite", "Seite..."
             };
     private static int EDITER_ACTIVITY = 1;
     private Boolean   mEnableNavigation = false;
@@ -99,6 +102,7 @@ public class TopicActivity extends BaseActivity {
         
         ActionBar actionBar = getSupportActionBar();
         mOnNavigationListener = new OnNavigationListener() {
+            @SuppressWarnings("deprecation")
             public boolean onNavigationItemSelected(int position, long itemId) {
                 if(mEnableNavigation) {
                     PotUtils.log(""+position);
@@ -112,8 +116,12 @@ public class TopicActivity extends BaseActivity {
                         showLastPage();
                         break;
                     case 3: // first page
-                    default:
                         showFirstPage();
+                        break;
+                    case 4:
+                    default:
+                        ChoosePageDialog d = new ChoosePageDialog();
+                        d.show(getSupportFragmentManager(), "pagedialog");
                         break;
                     }
                 } else {
@@ -340,6 +348,17 @@ public class TopicActivity extends BaseActivity {
             refresh();
         } 
     }
+    
+    /**
+     * show the first page
+     */
+    public void showPage(int p) {
+        if (mDataHandler.mPage != p) {
+            mDataHandler.mPage = p;
+            mDataHandler.mPid = 0;
+            refresh();
+        } 
+    }
 
     /**
      * This async task shows a loader and updates the topic object.
@@ -533,6 +552,25 @@ public class TopicActivity extends BaseActivity {
                     getString("topicTouchDuration", "500")).intValue();
         }
 
+    }
+    
+    public class ChoosePageDialog extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            CharSequence[] items = new CharSequence[mDataHandler.mThread.getLastPage()];
+            for(int i=0; i < items.length; ++i) {
+                items[i] = "Seite "+(i+1);
+            }
+            
+            builder.setTitle(R.string.pick_page)
+                   .setItems(items, new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int which) {
+                           showPage(which+1);
+                       }
+            });
+            return builder.create();
+        }
     }
 
 } 

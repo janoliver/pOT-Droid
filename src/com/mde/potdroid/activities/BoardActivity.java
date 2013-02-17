@@ -203,6 +203,7 @@ public class BoardActivity extends BaseActivity {
         }
     }
     
+    
     /**
      * Custom view adapter for the ListView items
      */

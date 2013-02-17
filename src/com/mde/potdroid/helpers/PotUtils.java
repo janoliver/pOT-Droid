@@ -14,6 +14,7 @@
 package com.mde.potdroid.helpers;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -93,6 +94,18 @@ public class PotUtils {
 
     public static void log(String msg) {
         Log.v(PotUtils.LOG_TAG, msg);
+    }
+    
+    public static String readFileAsString(String filePath) throws java.io.IOException
+    {
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String line, results = "";
+        while( ( line = reader.readLine() ) != null)
+        {
+            results += line;
+        }
+        reader.close();
+        return results;
     }
 
 }

@@ -13,8 +13,14 @@
 
 package com.mde.potdroid.activities;
 
-import org.holoeverywhere.app.Activity;
+import java.io.InputStream;
 
+import org.holoeverywhere.app.Activity;
+import org.holoeverywhere.app.AlertDialog;
+import org.holoeverywhere.app.Dialog;
+import org.holoeverywhere.app.DialogFragment;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -84,6 +90,19 @@ public abstract class BaseActivity extends Activity {
         // actionbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
+        
+    }
+    
+    public void onStart() {
+        super.onStart();
+        
+        if(mSettings.getBoolean("firstRun", true)) {
+            SharedPreferences.Editor edit = mSettings.edit();
+            edit.putBoolean("firstRun", false);
+            edit.commit();
+            
+            showFirstRunDialog();
+        }
     }
     
     @Override
@@ -172,5 +191,38 @@ public abstract class BaseActivity extends Activity {
         }
     }
 
-    public abstract void refresh();
+    public abstract void refresh(); 
+    
+    @SuppressWarnings("deprecation")
+    protected void showFirstRunDialog() {
+        FirstRunDialog d = new FirstRunDialog();
+        d.show(getSupportFragmentManager(), "pagedialog");
+    }
+    
+    public class FirstRunDialog extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            try {
+                InputStream aboutTxt= BaseActivity.this.getResources().getAssets()
+                        .open("introduction.txt");
+                String aboutTxtStr = PotUtils.inputStreamToString(aboutTxt);
+                
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(aboutTxtStr)
+                       .setTitle("Vorwort")
+                       .setPositiveButton(R.string.gotit, new DialogInterface.OnClickListener() {
+                           public void onClick(DialogInterface dialog, int id) {
+                               dialog.dismiss();
+                           }
+                       });
+                // Create the AlertDialog object and return it
+                return builder.create();
+                
+            } catch (Exception e) {
+                return null;
+            } 
+            
+            
+        }
+    }
 }

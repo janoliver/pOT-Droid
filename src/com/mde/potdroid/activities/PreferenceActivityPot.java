@@ -108,28 +108,21 @@ public class PreferenceActivityPot extends PreferenceActivity {
 
                 TextView txt = (TextView) dialog.findViewById(R.id.text);
                 // get about txt
-                InputStream aboutTxt = null;
+                
                 try {
-                    aboutTxt = PreferenceActivityPot.this.getResources().getAssets()
+                    InputStream aboutTxt = PreferenceActivityPot.this.getResources().getAssets()
                             .open("about.txt");
-                } catch (IOException e1) {
-                }
-                String aboutTxtStr = "";
-                try {
-                    aboutTxtStr = PotUtils.inputStreamToString(aboutTxt);
-                } catch (IOException e) {
-                }
-                PreferenceActivityPot.this.getPackageManager();
-                String version = "";
-                try {
-                    version = PreferenceActivityPot.this.getPackageManager().getPackageInfo(
-                            getPackageName(), 0).versionName;
-                } catch (NameNotFoundException e) {
-                }
-
-                aboutTxtStr = aboutTxtStr.replace("XVERSIONX", version);
-                txt.setText(aboutTxtStr);
-
+                    String aboutTxtStr = PotUtils.inputStreamToString(aboutTxt);
+                    
+                    PreferenceActivityPot.this.getPackageManager();
+                    String version = PreferenceActivityPot.this.getPackageManager().getPackageInfo(
+                                getPackageName(), 0).versionName;
+                    
+                    aboutTxtStr = aboutTxtStr.replace("XVERSIONX", version);
+                    txt.setText(aboutTxtStr);
+                        
+                } catch (Exception e1) {}
+                
                 Button cancelButton = (Button) dialog.findViewById(R.id.cancel);
                 cancelButton.setOnClickListener(new OnClickListener() {
                     public void onClick(View v) {

@@ -44,12 +44,12 @@ body {
 }
 
 
-.curruser .title, .curruser .content {
-    border-left:2px solid darkred;
+.curruser .title {
+    border-left:4px solid darkred;
 }
 
-.newpost {
-    border-right:4px solid yellow;
+.newpost .title {
+    border-left:4px solid yellow;
 }
 
 .content a {

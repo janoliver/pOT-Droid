@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/important"
-        android:layout_width="20dp"
+        android:layout_width="15dp"
         android:layout_height="fill_parent"
         android:background="?attr/color_background_indicator"
         android:layout_weight="0"/>
@@ -24,12 +24,12 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
+            android:paddingTop="0dp"
             android:paddingRight="5dp"
             android:paddingLeft="0dp"
             android:textColor="?attr/color_text_primary"
             android:paddingBottom="0dp"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:scrollHorizontally="true"/>
         <TextView
             android:id="@+id/description"
@@ -49,7 +49,7 @@
             android:paddingTop="3dp"
             android:paddingRight="5dp"
             android:paddingLeft="0dp"
-            android:paddingBottom="5dp"
+            android:paddingBottom="0dp"
             android:textSize="12sp" />
     </LinearLayout>
 </LinearLayout>

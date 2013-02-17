@@ -23,6 +23,8 @@
         
         <item name="actionBarSize">48dip</item>
         <item name="android:actionBarSize">48dip</item> 
+        
+        <item name="list_selector">@drawable/list_selector_holo_light</item>
     </style>
     
     <style name="PotDark" parent="Holo.Theme">
@@ -47,6 +49,8 @@
     
         <item name="actionBarSize">48dip</item>
         <item name="android:actionBarSize">48dip</item> 
+        
+        <item name="list_selector">@drawable/list_selector_holo_dark</item>
     </style>
     
     <style name="GenericProgressBackground" parent="android:Theme">

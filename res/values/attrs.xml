@@ -20,4 +20,6 @@
     <attr name="menu_icon_back" format="reference" />
     <attr name="menu_icon_forward" format="reference" />
     <attr name="menu_icon_edit" format="reference" />
+    
+    <attr name="list_selector" format="reference" />
 </resources>

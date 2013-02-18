@@ -55,7 +55,7 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="2dp"
 	    android:layout_marginLeft="5dp"
-	    android:background="?attr/color_background_forum"
+        android:background="?attr/color_background_forum"
         android:layout_below="@id/refresh_view" />
     <TextView
         android:id="@+id/error_message"

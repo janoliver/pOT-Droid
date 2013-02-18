@@ -2,6 +2,25 @@
  Changelog
 ===========
 
+Changelog Alpha 24 (pOT Droid 2.0.4)
+===================================
+
+- Komplett überarbeitetes Layout, überall Holo
+- Actionbars
+- Sidebar (wischen vom linken Bildschirmrand) mit ungelesenen Bookmarks
+- Post icons hinzugefügt
+- Eigene Activity zum Posten
+- Code an vielen Stellen modernisiert
+- Viele, viele Bugs gefixt
+- Viele, viele kleinere Verbesserungen
+
+Changelog Alpha 23 (pOT Droid 0.23)
+===================================
+
+- peter,pansen Bug gefixt
+- kleinere Bugs im bbcode parser gefixt
+- links aus dem Browser (und auch aus der app) können erstmal nicht mehr mit potdroid geöffnet werden.
+
 Changelog Alpha 22 (pOT Droid 0.22)
 ===================================
 

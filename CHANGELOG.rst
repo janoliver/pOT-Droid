@@ -2,6 +2,11 @@
  Changelog
 ===========
 
+Changelog Alpha 25 (pOT Droid 2.0.5)
+===================================
+
+- Bugfixes
+
 Changelog Alpha 24 (pOT Droid 2.0.4)
 ===================================
 

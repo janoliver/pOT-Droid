@@ -102,6 +102,7 @@ public class EditorActivity extends BaseActivity {
             if(mDataHandler.mAction == ACTION_QUOTE) {
                 text = "[quote=" + mDataHandler.mThread.getId() + "," + mDataHandler.mPost.getId() + ",\""
                         + mDataHandler.mPost.getAuthor().getNick() + "\"][b]\n" + mDataHandler.mPost.getText() + "\n[/b][/quote]";
+                mDataHandler.mPost.setIcon(0);
             } else if(mDataHandler.mAction == ACTION_EDIT) {
                 text = mDataHandler.mPost.getText();
             }

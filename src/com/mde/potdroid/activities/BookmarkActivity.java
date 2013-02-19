@@ -206,14 +206,7 @@ public class BookmarkActivity extends BaseActivity {
         case R.id.removebookmark:
             // bookmark
             Bookmark bm = (Bookmark)mDataHandler.mBookmarks[(int) info.id];
-            final String url = PotUtils.ASYNC_URL + "remove-bookmark.php?BMID=" + bm.getId()
-                    + "&token=" + bm.getRemovetoken();
-            new Thread(new Runnable() {
-                public void run() {
-                    mWebsiteInteraction.callPage(url);
-                    BookmarkActivity.this.refresh();
-                }
-            }).start();
+            new DeleteBookmarkAdapter().execute(bm);
             return true;
         case R.id.add_favourite:
             mFavouritesDatabase.addFavourite((Bookmark)mDataHandler.mBookmarks[(int) info.id]);
@@ -291,6 +284,49 @@ public class BookmarkActivity extends BaseActivity {
         @Override
         protected Exception doInBackground(Void... params) {
             try {
+                mDataHandler.mBookmarks = mObjectManager.getBookmarks();
+                return null;
+            } catch (Exception e) {
+                return e;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Exception e) {
+            if(e == null) {
+                fillView();
+                mDialog.dismiss();
+                mLeftMenu.refresh();
+            } else {
+                Toast.makeText(BookmarkActivity.this, "Verbindungsfehler!", Toast.LENGTH_LONG).show();
+                mDialog.dismiss();
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    /**
+     * This async task shows a loader and updates the bookmark object.
+     * When it is finished, the loader is hidden.
+     */
+    class DeleteBookmarkAdapter extends AsyncTask<Bookmark, Void, Exception> {
+        ProgressDialog mDialog;
+
+        @Override
+        protected void onPreExecute() {
+            mDialog = new PotNotification(BookmarkActivity.this, this, true);
+            mDialog.setMessage("Lade...");
+            mDialog.show();
+        }
+
+        @Override
+        protected Exception doInBackground(Bookmark... params) {
+            Bookmark bm  = params[0];
+            
+            try {
+                final String url = PotUtils.ASYNC_URL + "remove-bookmark.php?BMID=" + bm.getId()
+                        + "&token=" + bm.getRemovetoken();
+                mWebsiteInteraction.callPage(url);
                 mDataHandler.mBookmarks = mObjectManager.getBookmarks();
                 return null;
             } catch (Exception e) {

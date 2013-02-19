@@ -47,8 +47,7 @@
         <activity 
             android:name=".activities.TopicActivity"
             android:uiOptions="splitActionBarWhenNarrow"
-            android:exported="false"
-            android:noHistory="true" />
+            android:exported="false" />
         
         <activity android:name="com.mde.potdroid.activities.PreferenceActivityPot" />
          

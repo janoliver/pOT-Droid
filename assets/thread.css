@@ -24,3 +24,7 @@ td,tr,th {
 .icon {
 	margin:-2px 0 -2px 0;
 }
+
+.inline {
+	display:inline;
+}

@@ -202,8 +202,8 @@ public class TopicHtmlGenerator {
 
         
         String allNodes = "string, b, u, s, i, mod, spoiler, " +
-                "code, img, quote, url, list, table";
-        String inLinks = "string, b, u, s, i, mod, img, url, list, table";
+                "code, img, quote, url, list, table, m";
+        String inLinks = "string, b, u, s, i, mod, img, url, list, table, m";
         
         BBCodeParser.BBCodeTag b;
         
@@ -212,6 +212,15 @@ public class TopicHtmlGenerator {
         b.mDescription = "Bold";
         b.allow(allNodes);
         b.html("<strong>{0}</strong>");
+        b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
+        b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_REOPEN;
+        a.registerTag(b);
+        
+        b = new BBCodeParser.BBCodeTag();
+        b.mTag = "m";
+        b.mDescription = "Code";
+        b.allow("string");
+        b.html("<pre class=\"inline\">{0}</pre>");
         b.mInvalidStartRecovery = BBCodeParser.BBCodeTag.RECOVERY_CLOSE;
         b.mInvalidEndRecovery = BBCodeParser.BBCodeTag.RECOVERY_REOPEN;
         a.registerTag(b);

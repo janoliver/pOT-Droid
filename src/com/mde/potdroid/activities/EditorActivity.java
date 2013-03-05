@@ -90,7 +90,7 @@ public class EditorActivity extends BaseActivity {
 
         // initialize the data handler
         mDataHandler = (DataHandler)mFragmentManager.findFragmentByTag("data");
-        if (mDataHandler == null) {
+        if (mDataHandler == null || !mDataHandler.hasData()) {
             mDataHandler = new DataHandler();
             mFragmentManager.beginTransaction().add(mDataHandler, "data").commit();
             
@@ -155,6 +155,13 @@ public class EditorActivity extends BaseActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setRetainInstance(true);
+        }
+        
+        /**
+         * @return true if all fields != null
+         */
+        public boolean hasData() {
+            return mBody != null && mThread != null && mPost != null && mAction != null;
         }
     }
     

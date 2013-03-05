@@ -85,7 +85,7 @@ public class TopicActivity extends BaseActivity {
 
         // initialize the data handler
         mDataHandler = (DataHandler)mFragmentManager.findFragmentByTag("data");
-        if (mDataHandler == null) {
+        if (mDataHandler == null || !mDataHandler.hasData()) {
             mDataHandler = new DataHandler();
             mFragmentManager.beginTransaction().add(mDataHandler, "data").commit();
             
@@ -150,6 +150,13 @@ public class TopicActivity extends BaseActivity {
 	        super.onCreate(savedInstanceState);
 	        setRetainInstance(true);
 	    }
+	    
+	    /**
+         * @return true if all fields != null
+         */
+        public boolean hasData() {
+            return mThread != null && mPage != null && mPid != null && mHtmlCode != null;
+        }
 	}
 	
     class TitleSpinnerAdapter extends ArrayAdapter<String> {

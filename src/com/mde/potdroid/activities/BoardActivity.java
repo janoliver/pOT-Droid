@@ -79,7 +79,7 @@ public class BoardActivity extends BaseActivity {
 
         // initialize the data handler
         mDataHandler = (DataHandler)mFragmentManager.findFragmentByTag("data");
-        if (mDataHandler == null) {
+        if (mDataHandler == null || !mDataHandler.hasData()) {
             mDataHandler = new DataHandler();
             mFragmentManager.beginTransaction().add(mDataHandler, "data").commit();
             
@@ -108,6 +108,13 @@ public class BoardActivity extends BaseActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setRetainInstance(true);
+        }
+        
+        /**
+         * @return true if all fields != null
+         */
+        public boolean hasData() {
+            return mThreads != null && mPage != null && mBoard != null;
         }
     }
     

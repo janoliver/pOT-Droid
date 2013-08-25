@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_theme_entries">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+    <string-array name="pref_theme_values">
+        <item>theme_light</item>
+        <item>theme_dark</item>
+    </string-array>
+    <string-array name="load_images">
+        <item>Nie</item>
+        <item>Nur mit WLAN</item>
+        <item>Immer</item>
+    </string-array>
+    <string-array name="load_images_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+</resources>

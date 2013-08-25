@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/preferences"
+          android:title="Einstellungen"
+          android:icon="?attr/menu_icon_preferences"
+          android:showAsAction="ifRoom" />
+    <item android:id="@+id/refresh"
+          android:title="Aktualisieren"
+          android:icon="?attr/menu_icon_refresh"
+          android:showAsAction="ifRoom" />
+    <group android:id="@+id/loggedin">
+        <item android:id="@+id/bookmarks"
+              android:title="Bookmarks"
+              android:icon="?attr/menu_icon_favorite"
+              android:showAsAction="ifRoom" />
+    </group>
+</menu>

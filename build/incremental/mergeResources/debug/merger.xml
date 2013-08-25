@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="main" >
+        <source path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res" >
+            <file
+                name="dark_content_edit"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/dark_content_edit.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="light_navigation_accept"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/light_navigation_accept.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="dark_navigation_accept"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/dark_navigation_accept.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="dark_rating_favorite"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/dark_rating_favorite.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="light_content_edit"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/light_content_edit.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="light_navigation_refresh"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/light_navigation_refresh.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="dark_navigation_refresh"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/dark_navigation_refresh.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="dark_navigation_forward"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/dark_navigation_forward.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="light_rating_favorite"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/light_rating_favorite.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/ic_launcher.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="dark_navigation_back"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/dark_navigation_back.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="dark_action_settings"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/dark_action_settings.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="light_navigation_back"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/light_navigation_back.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="light_navigation_forward"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/light_navigation_forward.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="light_action_settings"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/light_action_settings.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="light_navigation_home"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/light_navigation_home.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="dark_navigation_home"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/dark_navigation_home.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="actionmenu_forum"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/menu/actionmenu_forum.xml"
+                qualifiers=""
+                type="menu" />
+            <file
+                name="actionmenu_board"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/menu/actionmenu_board.xml"
+                qualifiers=""
+                type="menu" />
+            <file
+                name="actionmenu_topic"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/menu/actionmenu_topic.xml"
+                qualifiers=""
+                type="menu" />
+            <file
+                name="preferences"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/xml/preferences.xml"
+                qualifiers=""
+                type="xml" />
+            <file
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/preference_lists.xml"
+                qualifiers="" >
+                <string-array name="pref_theme_entries" >
+                    <item>
+Light
+                    </item>
+                    <item>
+Dark
+                    </item>
+                </string-array>
+                <string-array name="load_images_values" >
+                    <item>
+0
+                    </item>
+                    <item>
+1
+                    </item>
+                    <item>
+2
+                    </item>
+                </string-array>
+                <string-array name="load_images" >
+                    <item>
+Nie
+                    </item>
+                    <item>
+Nur mit WLAN
+                    </item>
+                    <item>
+Immer
+                    </item>
+                </string-array>
+                <string-array name="pref_theme_values" >
+                    <item>
+theme_light
+                    </item>
+                    <item>
+theme_dark
+                    </item>
+                </string-array>
+            </file>
+            <file
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/strings.xml"
+                qualifiers="" >
+                <string name="action_settings" >Settings
+                </string>
+                <string name="app_name" >pOT-Droid3
+                </string>
+                <string name="hello_world" >Hello world!
+                </string>
+            </file>
+            <file
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/dimens.xml"
+                qualifiers="" >
+                <dimen name="activity_horizontal_margin" >16dp
+                </dimen>
+                <dimen name="activity_vertical_margin" >16dp
+                </dimen>
+            </file>
+            <file
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/attrs.xml"
+                qualifiers="" >
+                <attr
+                    name="menu_icon_back"
+                    format="reference" />
+                <attr
+                    name="color_text_secondary"
+                    format="color" />
+                <attr
+                    name="color_background_indicator"
+                    format="color" />
+                <attr
+                    name="color_background_input"
+                    format="color" />
+                <attr
+                    name="list_selector"
+                    format="reference" />
+                <attr
+                    name="color_background_category"
+                    format="color" />
+                <attr
+                    name="color_background_forum"
+                    format="color" />
+                <attr
+                    name="menu_icon_forward"
+                    format="reference" />
+                <attr
+                    name="menu_icon_favorite"
+                    format="reference" />
+                <attr
+                    name="menu_icon_accept"
+                    format="reference" />
+                <attr
+                    name="color_text_input"
+                    format="color" />
+                <attr
+                    name="menu_icon_edit"
+                    format="reference" />
+                <attr
+                    name="color_text_input_hint"
+                    format="color" />
+                <attr
+                    name="menu_icon_refresh"
+                    format="reference" />
+                <attr
+                    name="color_text_primary"
+                    format="color" />
+                <attr
+                    name="menu_icon_preferences"
+                    format="reference" />
+                <attr
+                    name="color_text_third"
+                    format="color" />
+                <attr
+                    name="menu_icon_home"
+                    format="reference" />
+            </file>
+            <file
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/styles.xml"
+                qualifiers="" >
+
+                <style
+                    name="GenericProgressIndicator"
+                    parent="@android:style/Widget.ProgressBar.Small" >
+                    <item name="android:layout_width">
+wrap_content
+                    </item>
+                    <item name="android:layout_height">
+wrap_content
+                    </item>
+                    <item name="android:indeterminate">
+true
+                    </item>
+                </style>
+
+                <style
+                    name="PotDroidDark"
+                    parent="android:Theme.Holo" >
+                    <item name="menu_icon_preferences">
+@drawable/dark_action_settings
+                    </item>
+                    <item name="menu_icon_edit">
+@drawable/dark_content_edit
+                    </item>
+                    <item name="menu_icon_back">
+@drawable/dark_navigation_back
+                    </item>
+                    <item name="menu_icon_forward">
+@drawable/dark_navigation_forward
+                    </item>
+                    <item name="menu_icon_refresh">
+@drawable/dark_navigation_refresh
+                    </item>
+                    <item name="menu_icon_favorite">
+@drawable/dark_rating_favorite
+                    </item>
+                    <item name="menu_icon_home">
+@drawable/dark_navigation_home
+                    </item>
+                    <item name="menu_icon_accept">
+@drawable/dark_navigation_accept
+                    </item>
+                </style>
+
+                <style
+                    name="GenericProgressBackground"
+                    parent="android:Theme" >
+                    <item name="android:layout_width">
+fill_parent
+                    </item>
+                    <item name="android:layout_height">
+fill_parent
+                    </item>
+                    <item name="android:background">
+@android:color/transparent
+                    </item>
+                    <item name="android:gravity">
+center
+                    </item>
+                </style>
+
+                <style
+                    name="PotDroidLight"
+                    parent="android:Theme.Holo.Light" >
+                    <item name="menu_icon_preferences">
+@drawable/light_action_settings
+                    </item>
+                    <item name="menu_icon_edit">
+@drawable/light_content_edit
+                    </item>
+                    <item name="menu_icon_back">
+@drawable/light_navigation_back
+                    </item>
+                    <item name="menu_icon_forward">
+@drawable/light_navigation_forward
+                    </item>
+                    <item name="menu_icon_refresh">
+@drawable/light_navigation_refresh
+                    </item>
+                    <item name="menu_icon_favorite">
+@drawable/light_rating_favorite
+                    </item>
+                    <item name="menu_icon_home">
+@drawable/light_navigation_home
+                    </item>
+                    <item name="menu_icon_accept">
+@drawable/light_navigation_accept
+                    </item>
+                </style>
+            </file>
+            <file
+                name="ic_launcher"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xxhdpi/ic_launcher.png"
+                qualifiers="xxhdpi"
+                type="drawable" />
+            <file
+                name="dark_content_edit"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/dark_content_edit.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="light_navigation_accept"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/light_navigation_accept.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="dark_navigation_accept"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/dark_navigation_accept.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="dark_rating_favorite"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/dark_rating_favorite.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="light_content_edit"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/light_content_edit.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="light_navigation_refresh"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/light_navigation_refresh.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="dark_navigation_refresh"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/dark_navigation_refresh.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="dark_navigation_forward"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/dark_navigation_forward.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="light_rating_favorite"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/light_rating_favorite.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/ic_launcher.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="dark_navigation_back"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/dark_navigation_back.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="dark_action_settings"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/dark_action_settings.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="light_navigation_back"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/light_navigation_back.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="light_navigation_forward"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/light_navigation_forward.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="light_action_settings"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/light_action_settings.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="light_navigation_home"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/light_navigation_home.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="dark_navigation_home"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/dark_navigation_home.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="dark_content_edit"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/dark_content_edit.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="light_navigation_accept"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/light_navigation_accept.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="dark_navigation_accept"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/dark_navigation_accept.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="dark_rating_favorite"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/dark_rating_favorite.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="light_content_edit"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/light_content_edit.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="light_navigation_refresh"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/light_navigation_refresh.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="dark_navigation_refresh"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/dark_navigation_refresh.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="dark_navigation_forward"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/dark_navigation_forward.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="light_rating_favorite"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/light_rating_favorite.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/ic_launcher.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="dark_navigation_back"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/dark_navigation_back.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="dark_action_settings"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/dark_action_settings.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="light_navigation_back"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/light_navigation_back.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="light_navigation_forward"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/light_navigation_forward.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="light_action_settings"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/light_action_settings.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="light_navigation_home"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/light_navigation_home.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="dark_navigation_home"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/dark_navigation_home.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="notification_loader"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/layout/notification_loader.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="listitem_thread"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/layout/listitem_thread.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="layout_expandablelist_container"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/layout/layout_expandablelist_container.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="listitem_category"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/layout/listitem_category.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="listitem_forum"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/layout/listitem_forum.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="layout_activity_single_fragment"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/layout/layout_activity_single_fragment.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="notification_message"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/layout/notification_message.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="listitem_post"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/layout/listitem_post.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="layout_list_container"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/layout/layout_list_container.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="notification_container"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/layout/notification_container.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="layout_topic"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/layout/layout_topic.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="error"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/layout/error.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="dark_reply"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/dark_reply.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="dark_reply"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/dark_reply.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="light_reply"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-xhdpi/light_reply.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="light_reply"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/light_reply.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="light_reply"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-mdpi/light_reply.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="dark_reply"
+                path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable-hdpi/dark_reply.png"
+                qualifiers="hdpi"
+                type="drawable" />
+        </source>
+        <source path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/build/res/rs/debug" />
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/debug/res" />
+    </dataSet>
+
+</merger>

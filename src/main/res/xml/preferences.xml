@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+            android:title="Style"
+            android:key="pref_style_settings">
+        <ListPreference
+                android:key="pref_theme"
+                android:title="Theme"
+                android:summary="Erscheinungsbild der App"
+                android:dialogTitle="Theme"
+                android:entries="@array/pref_theme_entries"
+                android:entryValues="@array/pref_theme_values"
+                android:defaultValue="theme_dark"/>
+
+        <CheckBoxPreference
+                android:key="pref_show_benders"
+                android:title="Bender anzeigen wenn vorhanden" />
+
+        <ListPreference
+                android:key="pref_load_benders"
+                android:title="Bender downloaden"
+                android:summary="Wann sollen Bender mit heruntergeladen werden"
+                android:defaultValue="0"
+                android:entries="@array/load_images"
+                android:entryValues="@array/load_images_values" />
+    </PreferenceCategory>
+</PreferenceScreen>

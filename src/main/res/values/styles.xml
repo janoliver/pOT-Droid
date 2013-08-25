@@ -1,0 +1,37 @@
+<resources>
+
+    <style name="GenericProgressBackground" parent="android:Theme">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="GenericProgressIndicator" parent="@android:style/Widget.ProgressBar.Small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:indeterminate">true</item>
+    </style>
+
+    <style name="PotDroidLight" parent="android:Theme.Holo.Light">
+        <item name="menu_icon_preferences">@drawable/light_action_settings</item>
+        <item name="menu_icon_edit">@drawable/light_content_edit</item>
+        <item name="menu_icon_back">@drawable/light_navigation_back</item>
+        <item name="menu_icon_forward">@drawable/light_navigation_forward</item>
+        <item name="menu_icon_refresh">@drawable/light_navigation_refresh</item>
+        <item name="menu_icon_favorite">@drawable/light_rating_favorite</item>
+        <item name="menu_icon_home">@drawable/light_navigation_home</item>
+        <item name="menu_icon_accept">@drawable/light_navigation_accept</item>
+    </style>
+
+    <style name="PotDroidDark" parent="android:Theme.Holo">
+        <item name="menu_icon_preferences">@drawable/dark_action_settings</item>
+        <item name="menu_icon_edit">@drawable/dark_content_edit</item>
+        <item name="menu_icon_back">@drawable/dark_navigation_back</item>
+        <item name="menu_icon_forward">@drawable/dark_navigation_forward</item>
+        <item name="menu_icon_refresh">@drawable/dark_navigation_refresh</item>
+        <item name="menu_icon_favorite">@drawable/dark_rating_favorite</item>
+        <item name="menu_icon_home">@drawable/dark_navigation_home</item>
+        <item name="menu_icon_accept">@drawable/dark_navigation_accept</item>
+    </style>
+
+</resources>

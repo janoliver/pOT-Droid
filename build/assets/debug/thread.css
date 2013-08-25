@@ -1,0 +1,108 @@
+body {
+    padding:0;
+    margin:0;
+    background:#000;
+    color:#ddd;
+    overflow-x: none;
+}
+
+section {
+    background:#394E63;
+    margin:10px;
+    border-bottom:2px solid #2E3E4F;
+    border-radius: 4px;
+}
+
+header {
+    background-color:#091827;
+    font-weight:bold;
+    padding:.5em;
+    height:3.4em;
+}
+
+header div.bender {
+    display:block;
+    background-image:url(images/placeholder_bender.gif);
+    background-position:top left;
+    background-size:contain;
+    background-repeat:no-repeat;
+    height:3.2em;
+    width:3.2em;
+    float:left;
+}
+
+header div.author {
+    color:#fff;
+    font-size:1.0em;
+}
+
+header div.title {
+    color:#aaa;
+    font-size:0.8em;
+}
+
+header div.date {
+    color:#aaa;
+    font-size:0.8em;
+}
+
+header div.icons {
+    float:right;
+}
+
+header div.icons a {
+    width:2.0em;
+    height:2.0em;
+    display:inline-block;
+    background-position:top left;
+    background-size:contain;
+    background-repeat:no-repeat;
+}
+
+header div.icons a.reply {
+    background-image:url("icons/dark_reply.png");
+}
+
+header div.icons a.edit {
+    background-image:url("icons/dark_edit.png");
+}
+
+article {
+    padding:5px;
+}
+
+article > div {
+    width:100%;
+    overflow:auto;
+    font-size:0.9em;
+}
+
+article div img {
+    max-width:100%;
+}
+
+article div a {
+    color:#ccc;
+}
+
+article div blockquote {
+    background:rgba(9, 24, 39, 0.35);
+    border:1px solid rgba(9, 24, 39, 0.35);
+    display:block;
+    margin:5px 5px 5px 20px;
+}
+
+article div blockquote div.author {
+    background:rgba(9, 24, 39, 0.35);
+    font-weight:bold;
+    padding:4px;
+    color:#fff;
+}
+
+article div blockquote div.content {
+    padding:4px;
+}
+
+.strike {
+    text-decoration: line-through;
+}

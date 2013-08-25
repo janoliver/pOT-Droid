@@ -80,7 +80,6 @@ public class BenderHandler {
                 String[] parts = u.getAvatarFile().split("/");
                 parts[parts.length-1] = URLEncoder.encode(parts[parts.length-1], "UTF-8").replace("+", "%20");
                 String url = Utils.BASE_URL + TextUtils.join("/",parts);
-                Utils.log(url);
                 InputStream is = new URL(url).openStream();
                 OutputStream os = new FileOutputStream(avatar_file);
                 Utils.CopyStream(is, os);

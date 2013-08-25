@@ -3,7 +3,6 @@ package com.mde.potdroid3.fragments;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,7 +17,8 @@ import com.mde.potdroid3.helpers.TopicJSInterface;
 import com.mde.potdroid3.models.Topic;
 import com.mde.potdroid3.parsers.TopicParser;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class TopicFragment extends BaseFragment {
 
@@ -51,17 +51,20 @@ public class TopicFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         mWebView = (WebView)getView().findViewById(R.id.topic_webview);
+        mJsInterface = new TopicJSInterface(mWebView, getActivity());
+
         mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.getSettings().setDomStorageEnabled(true);
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         mWebView.getSettings().setAllowFileAccess(true);
-        mWebView.addJavascriptInterface(new TopicJSInterface(mWebView, getActivity()), "api");
+        mWebView.addJavascriptInterface(mJsInterface, "api");
+        mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.loadData("", "text/html", "utf-8");
 
         new BaseLoaderTask().execute((Void[]) null);
 
     }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -74,21 +77,13 @@ public class TopicFragment extends BaseFragment {
     public void loadHtml() {
         // generate topic html
         TopicBuilder t = new TopicBuilder(getActivity());
-        String html = t.parse(mTopic);
-
-        BufferedWriter output = null;
+        String html = "Parse error";
         try {
-            File logFile = new File(Environment.getExternalStorageDirectory().toString(), "topic.html");
-            if(!logFile.exists()) {
-                logFile.createNewFile();
-            }
-            output = new BufferedWriter(new FileWriter(logFile));
-
-            output.write(html);
-            output.close();
+            html = t.parse(mTopic);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         mWebView.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "UTF-8", null);
     }
 

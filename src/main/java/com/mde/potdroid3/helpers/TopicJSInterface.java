@@ -8,17 +8,21 @@ import com.mde.potdroid3.models.User;
 public class TopicJSInterface {
     private WebView mWebView;
     private BenderHandler mBenderHandler;
-    private Activity mActivty;
+    private Activity mActivity;
+    private Integer mCurrentVisiblePost;
 
     public TopicJSInterface(WebView wv, Activity cx) {
         mWebView = wv;
-        mActivty = cx;
-        mBenderHandler = new BenderHandler(mActivty);
+        mActivity = cx;
+        mBenderHandler = new BenderHandler(mActivity);
+        mCurrentVisiblePost = 0;
     }
 
-    /**
-     * Shows a toast issued from within the webviews javascript.
-     */
+    @JavascriptInterface
+    public void registerScroll(int id) {
+        mCurrentVisiblePost = id;
+    }
+
     @JavascriptInterface
     public void log(String msg) {
         Utils.log(msg);
@@ -35,7 +39,12 @@ public class TopicJSInterface {
         u.setAvatarFile(avatar_file);
         u.setAvatarId(avatar_id);
 
-        return mBenderHandler.getAvatar(u, new JSInterfaceListener(mWebView, mActivty));
+        return mBenderHandler.getAvatar(u, new JSInterfaceListener(mWebView, mActivity));
+    }
+
+    @JavascriptInterface
+    public int getScroll() {
+        return mCurrentVisiblePost;
     }
 
     public class JSInterfaceListener {

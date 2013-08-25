@@ -9,8 +9,19 @@ $(document).ready(function() {
             api.getBenderUrl(parseInt(user_id,10), user_avatar_file, parseInt(user_avatar_id,10));
         });
     }
+
+    // register waypoints while scrolling over them
+    $("header").waypoint(function() {
+        api.registerScroll(parseInt($(this).parent().attr("data-id"),10));
+    });
+
+    // scroll to the last post, when there was one
+    if(api.getScroll() > 0) {
+        document.location.href = "#" + api.getScroll();
+    }
 });
 
+// load the bender of user_id
 function loadBender(user_id) {
     var el = $("section[data-user-id='"+user_id+"']");
     el.find("div.bender")

@@ -3,13 +3,11 @@ package com.mde.potdroid3.helpers;
 import android.content.Context;
 import com.mde.potdroid3.models.Post;
 import com.mde.potdroid3.models.Topic;
+import com.samskivert.mustache.Mustache;
 
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by oli on 8/10/13.
@@ -19,10 +17,12 @@ public class TopicBuilder {
     private Context mContext;
     private HashMap<String, String> mSmileys = new HashMap<String, String>();
     private SettingsWrapper mSettings;
+    private BBCodeParser mParser;
 
     public TopicBuilder(Context cx) {
         mContext = cx;
         mSettings = new SettingsWrapper(cx);
+        mParser = getBBCodeParserInstance();
 
         // smileys
         mSmileys.put(":bang:", "banghead.gif");
@@ -47,61 +47,12 @@ public class TopicBuilder {
         mSmileys.put(":roll:", "icon18.gif");
     }
 
-    public String parse(Topic t) {
-        StringBuilder sb = new StringBuilder();
-        BBCodeParser parser = getBBCodeParserInstance();
-
-        // document header
-        sb.append("<!DOCTYPE html>\n<html><head><title>-</title>\n");
-        sb.append("<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n");
-        sb.append("<script type=\"text/javascript\" src=\"jquery.js\"></script>\n");
-        sb.append("<script type=\"text/javascript\" src=\"thread.js\"></script>\n");
-        sb.append("<link rel=\"stylesheet\" href=\"thread.css\" type=\"text/css\" />\n");
-        sb.append("</head><body>\n");
-
-        String text;
-
-        for(Post p: t.getPosts()) {
-            sb.append("<section ");
-
-            sb.append("data-id=\"").append(p.getId()).append("\" ");
-            sb.append("data-user=\"").append(p.getAuthor().getNick()).append("\" ");
-            sb.append("data-user-id=\"").append(p.getAuthor().getId()).append("\" ");
-            sb.append("data-user-avatar=\"").append(p.getAuthor().getAvatarFile()).append("\" ");
-            sb.append("data-user-avatar-id=\"").append(p.getAuthor().getAvatarId()).append("\" ");
-            sb.append("data-user-avatar-path=\"").append(p.getAuthor().getAvatarLocalFileUrl(mContext)).append("\" ");
-            sb.append(">\n");
-
-            // header section
-            sb.append("<header>\n");
-            sb.append("<div class=\"icons\"><a href=\"#\" class=\"reply\"></a></div>\n");
-            sb.append("<div class=\"icons\"><a href=\"#\" class=\"edit\"></a></div>\n");
-            sb.append("<div class=\"author\" ");
-            sb.append("data-path=\"").append(p.getAuthor().getAvatarLocalFileUrl(mContext)).append("\">");
-
-            if(mSettings.showBenders())
-                sb.append("<div class=\"bender\"></div>");
-
-            sb.append(p.getAuthor().getNick()).append("</div>\n");
-            sb.append("<div class=\"date\">").append(p.getDate()).append("</div>\n");
-            if(!p.getTitle().isEmpty())
-                sb.append("<div class=\"title\">").append(p.getTitle()).append("</div>\n");
-            sb.append("</header>\n");
-
-            try {
-                text = parser.parse(p.getText());
-                text = parseSmileys(text);
-            } catch (BBCodeParser.UnknownErrorException e) {
-                text = "Could not parse post!";
-            }
-            sb.append("<article><div>").append(text).append("</div></article>\n");
-
-            sb.append("</section>\n");
-        }
-
-        sb.append("</body></html>");
-
-        return sb.toString();
+    public String parse(Topic t) throws IOException {
+        InputStream is = mContext.getResources().getAssets().open("thread.html");
+        Reader reader = new InputStreamReader(is);
+        StringWriter sw = new StringWriter();
+        Mustache.compiler().compile(reader).execute(new TopicContext(t), sw);
+        return sw.toString();
     }
 
     private String parseSmileys(String code) {
@@ -109,10 +60,76 @@ public class TopicBuilder {
 
         while (i.hasNext()) {
             Map.Entry<String, String> me = i.next();
-            code = code.replace(me.getKey(), "<img src=\"smileys/" + me.getValue() + "\" alt=\"+ " +
-                    me.getKey() +"\" />");
+            code = code.replace(me.getKey(),
+                    "<img src=\"smileys/" + me.getValue() + "\" alt=\"+ " + me.getKey() +"\" />");
         }
         return code;
+    }
+
+    class TopicContext {
+        private Topic mTopic;
+
+        public TopicContext(Topic t) {
+            mTopic = t;
+        }
+
+        public List<PostContext> getPosts() {
+            List<PostContext> pc = new ArrayList<PostContext>();
+            for(Post p: mTopic.getPosts())
+                pc.add(new PostContext(p));
+            return pc;
+        }
+    }
+
+    class PostContext {
+        private Post mPost;
+
+        public PostContext(Post p) {
+            mPost = p;
+        }
+
+        public Integer getId() {
+            return mPost.getId();
+        }
+
+        public String getAuthor() {
+            return mPost.getAuthor().getNick();
+        }
+
+        public Integer getAuthorId() {
+            return mPost.getAuthor().getId();
+        }
+
+        public String getAvatar() {
+            return mPost.getAuthor().getAvatarFile();
+        }
+
+        public Integer getAvatarId() {
+            return mPost.getAuthor().getAvatarId();
+        }
+
+        public String getAvatarPath() {
+            return mPost.getAuthor().getAvatarLocalFileUrl(mContext);
+        }
+
+        public String getDate() {
+            return mPost.getDate().toString();
+        }
+
+        public String getTitle() {
+            return mPost.getTitle();
+        }
+
+        public String getText() {
+            String text = "parse error";
+            try {
+                text = mParser.parse(mPost.getText());
+                text = parseSmileys(text);
+            } catch (BBCodeParser.UnknownErrorException e) {
+                text = "Could not parse post!";
+            }
+            return text;
+        }
     }
 
     private static BBCodeParser getBBCodeParserInstance() {

@@ -7,11 +7,15 @@
         }
     }
 
+    apply plugin: 'android'
+
     repositories {
-        mavenLocal()
+        mavenCentral()
     }
 
-    apply plugin: 'android'
+    dependencies {
+        compile 'com.samskivert:jmustache:1.8@jar'
+    }
 
     android {
         compileSdkVersion 18

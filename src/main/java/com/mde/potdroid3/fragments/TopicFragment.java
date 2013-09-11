@@ -1,11 +1,11 @@
 package com.mde.potdroid3.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.os.Environment;
+import android.view.*;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -17,8 +17,7 @@ import com.mde.potdroid3.helpers.TopicJSInterface;
 import com.mde.potdroid3.models.Topic;
 import com.mde.potdroid3.parsers.TopicParser;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 public class TopicFragment extends BaseFragment {
 
@@ -42,7 +41,6 @@ public class TopicFragment extends BaseFragment {
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setHasOptionsMenu(true);
     }
 
@@ -52,6 +50,8 @@ public class TopicFragment extends BaseFragment {
 
         mWebView = (WebView)getView().findViewById(R.id.topic_webview);
         mJsInterface = new TopicJSInterface(mWebView, getActivity());
+
+        registerForContextMenu(mWebView);
 
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setDomStorageEnabled(true);
@@ -63,6 +63,18 @@ public class TopicFragment extends BaseFragment {
 
         new BaseLoaderTask().execute((Void[]) null);
 
+    }
+
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        WebView.HitTestResult hitTestResult = mWebView.getHitTestResult();
+        if (hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE ||
+            hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.parse(hitTestResult.getExtra()), "image/*");
+            startActivity(intent);
+        }
     }
 
 
@@ -81,6 +93,18 @@ public class TopicFragment extends BaseFragment {
         try {
             html = t.parse(mTopic);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        File sdCard = Environment.getExternalStorageDirectory();
+        File file = new File(sdCard, "topic.html");
+
+        try {
+            FileOutputStream f = new FileOutputStream(file);
+            PrintWriter pw = new PrintWriter(f);
+            pw.println(html);
+            f.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -147,8 +171,6 @@ public class TopicFragment extends BaseFragment {
             hideLoader();
         }
     }
-
-    public String mCurrentText = "";
 
 
 }

@@ -23,5 +23,13 @@
                 android:defaultValue="0"
                 android:entries="@array/load_images"
                 android:entryValues="@array/load_images_values" />
+
+        <ListPreference
+                android:key="pref_load_images"
+                android:title="Bilder automatisch anzeigen"
+                android:summary="Wann sollen Bilder automatisch angezeigt werden"
+                android:defaultValue="0"
+                android:entries="@array/load_images"
+                android:entryValues="@array/load_images_values" />
     </PreferenceCategory>
 </PreferenceScreen>

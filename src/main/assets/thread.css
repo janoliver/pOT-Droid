@@ -8,7 +8,7 @@ body {
 
 section {
     background:#394E63;
-    margin:10px;
+    margin:.5em;
     border-bottom:2px solid #2E3E4F;
     border-radius: 4px;
 }
@@ -46,29 +46,18 @@ header div.date {
     font-size:0.8em;
 }
 
-header div.icons {
+header i.menu-icon {
+    font-size:2em;
+    color:#aaa;
     float:right;
-}
-
-header div.icons a {
-    width:2.0em;
-    height:2.0em;
-    display:inline-block;
-    background-position:top left;
-    background-size:contain;
-    background-repeat:no-repeat;
-}
-
-header div.icons a.reply {
-    background-image:url("icons/dark_reply.png");
-}
-
-header div.icons a.edit {
-    background-image:url("icons/dark_edit.png");
+    display:block;
+    width:1em;
+    height:1em;
+    text-align:center;
 }
 
 article {
-    padding:5px;
+    padding:.3em;
 }
 
 article > div {
@@ -89,20 +78,54 @@ article div blockquote {
     background:rgba(9, 24, 39, 0.35);
     border:1px solid rgba(9, 24, 39, 0.35);
     display:block;
-    margin:5px 5px 5px 20px;
+    margin:.3em;
 }
 
 article div blockquote div.author {
     background:rgba(9, 24, 39, 0.35);
     font-weight:bold;
-    padding:4px;
+    padding:.3em;
     color:#fff;
 }
 
 article div blockquote div.content {
-    padding:4px;
+    padding:.3em;
 }
 
 .strike {
     text-decoration: line-through;
+}
+
+div.img i,
+div.spoiler i {
+    font-size:2.3em;
+    color:#000;
+}
+
+div.img,
+div.spoiler {
+    border:1px solid #000;
+    background: rgba(9,24,39,0.6);
+    padding:.2em;
+    text-align:center;
+    margin:.2em;
+}
+
+div.spoiler div {
+    color:#eee;
+    text-align:left;
+    display:none;
+}
+
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+
+.spin {
+    display:inline-block;
+    -webkit-animation-name: spin;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-duration: 1s;
 }

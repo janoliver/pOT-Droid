@@ -23,6 +23,12 @@ public class SettingsWrapper {
 
     public Boolean downloadBenders() {
         String lb = mSharedPreferences.getString("pref_load_benders", "0");
-        return !(lb == "0" || (lb == "1" && Network.getConnectionType(mContext) != Network.NETWORK_WIFI));
+        return !(lb.equals("0") || (lb.equals("1") && Network.getConnectionType(mContext) != Network.NETWORK_WIFI));
+    }
+
+    public Boolean downloadImages() {
+        String lb = mSharedPreferences.getString("pref_load_images", "0");
+        Utils.log(lb);
+        return !(lb.equals("0") || (lb.equals("1") && Network.getConnectionType(mContext) != Network.NETWORK_WIFI));
     }
 }

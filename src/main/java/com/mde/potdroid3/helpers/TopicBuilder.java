@@ -203,7 +203,7 @@ public class TopicBuilder {
         a.registerTag(new SimpleTag("spoiler", "spoiler") {
             @Override
             public String html(String content, List<String> args) {
-                return "<span class=\"spoiler\">" + content + "</span>";
+                return "<div class=\"spoiler\"><i class=\"icon-warning-sign\"></i><div>" + content + "</div></div>";
             }
         });
 
@@ -224,7 +224,7 @@ public class TopicBuilder {
         BBCodeParser.BBCodeTag list = new BBCodeParser.BBCodeTag("list", "list", "*") {
             @Override
             public String html(String content, List<String> args) {
-                return "<span class=\"trigger\">" + content + "</span>";
+                return "<ul>" + content + "</ul>";
             }
         };
         list.setInvalidStartRecovery(BBCodeParser.BBCodeTag.RECOVERY_ADD);
@@ -267,7 +267,7 @@ public class TopicBuilder {
         a.registerTag(new SimpleTag("img", "image", "string") {
             @Override
             public String html(String content, List<String> args) {
-                return "<img src=\"" + content + "\" class=\"\" alt=\"" + content + "\" />";
+                return "<div class=\"img\" data-src=\"" + content + "\"><i class=\"icon-picture\"></i></div>";
             }
         });
 

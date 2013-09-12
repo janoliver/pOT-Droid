@@ -164,31 +164,36 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int light_reply=0x7f020012;
     }
     public static final class id {
-        public static final int bookmarks=0x7f0a0014;
-        public static final int container=0x7f0a000e;
+        public static final int bookmarks=0x7f0a0019;
+        public static final int container=0x7f0a0013;
         public static final int content=0x7f0a0002;
         public static final int description=0x7f0a0006;
         public static final int error_text=0x7f0a0000;
-        public static final int forumact=0x7f0a0012;
+        public static final int forumact=0x7f0a0017;
+        public static final int layout_root=0x7f0a000b;
         public static final int list_content=0x7f0a0003;
-        public static final int loader=0x7f0a000c;
+        public static final int loader=0x7f0a0011;
         public static final int loader_img=0x7f0a0001;
-        public static final int loader_text=0x7f0a000d;
-        public static final int loggedin=0x7f0a0013;
-        public static final int msg_text=0x7f0a0010;
-        public static final int msg_title=0x7f0a000f;
+        public static final int loader_text=0x7f0a0012;
+        public static final int loggedin=0x7f0a0018;
+        public static final int login_progress=0x7f0a000f;
+        public static final int msg_text=0x7f0a0015;
+        public static final int msg_title=0x7f0a0014;
         public static final int name=0x7f0a0005;
-        public static final int next=0x7f0a0017;
-        public static final int notifications=0x7f0a000b;
+        public static final int next=0x7f0a001c;
+        public static final int notifications=0x7f0a0010;
         public static final int post_text=0x7f0a0008;
         public static final int post_title=0x7f0a0007;
-        public static final int preferences=0x7f0a0011;
-        public static final int previous=0x7f0a0015;
-        public static final int refresh=0x7f0a0016;
-        public static final int reply=0x7f0a0018;
+        public static final int preferences=0x7f0a0016;
+        public static final int previous=0x7f0a001a;
+        public static final int refresh=0x7f0a001b;
+        public static final int reply=0x7f0a001d;
         public static final int subtitle=0x7f0a000a;
+        public static final int text=0x7f0a000c;
         public static final int title=0x7f0a0009;
         public static final int topic_webview=0x7f0a0004;
+        public static final int user_name=0x7f0a000d;
+        public static final int user_password=0x7f0a000e;
     }
     public static final class layout {
         public static final int error=0x7f030000;
@@ -200,9 +205,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int listitem_forum=0x7f030006;
         public static final int listitem_post=0x7f030007;
         public static final int listitem_thread=0x7f030008;
-        public static final int notification_container=0x7f030009;
-        public static final int notification_loader=0x7f03000a;
-        public static final int notification_message=0x7f03000b;
+        public static final int login_dialog=0x7f030009;
+        public static final int notification_container=0x7f03000a;
+        public static final int notification_loader=0x7f03000b;
+        public static final int notification_message=0x7f03000c;
     }
     public static final class menu {
         public static final int actionmenu_board=0x7f090000;

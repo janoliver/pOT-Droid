@@ -1,10 +1,8 @@
 package com.mde.potdroid3.helpers;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.preference.PreferenceManager;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -14,7 +12,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreProtocolPNames;
 import org.w3c.dom.Document;
@@ -22,8 +19,6 @@ import org.w3c.dom.Document;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -37,27 +32,23 @@ public class Network {
 
     private DefaultHttpClient mHttpClient;
     private Context mContext;
-    private SharedPreferences mSettings;
+    private SettingsWrapper mSettings;
 
-    public static int NETWORK_NONE = 0;
-    public static int NETWORK_WIFI = 1;
-    public static int NETWORK_ELSE = 2;
+    public static final String UAGENT_BASE = "Apache-HttpClient/potdroid";
+    public static final String UAGENT_TAIL = "potdroid";
+
+    public static final int NETWORK_NONE = 0;
+    public static final int NETWORK_WIFI = 1;
+    public static final int NETWORK_ELSE = 2;
 
     public Network(Context context) {
         mContext    = context;
-        mSettings   = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mSettings   = new SettingsWrapper(mContext);
         mHttpClient = new DefaultHttpClient();
-        mHttpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT,
-                "Apache-HttpClient/potdroid " + mSettings.getString("unique_uagent", "potdroid"));
+        mHttpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, mSettings.getUserAgent());
 
-        // check if login cookie exists. If so, attach it to the
-        // http client
-        if (mSettings.contains("cookie_name")) {
-            BasicClientCookie cookie = new BasicClientCookie(mSettings.getString("cookie_name",
-                    null), mSettings.getString("cookie_value", null));
-            cookie.setPath(mSettings.getString("cookie_path", null));
-            cookie.setDomain(mSettings.getString("cookie_url", null));
-            mHttpClient.getCookieStore().addCookie(cookie);
+        if (mSettings.hasLoginCookie()) {
+            mHttpClient.getCookieStore().addCookie(mSettings.getLoginCookie());
         }
     }
 
@@ -101,22 +92,17 @@ public class Network {
     }
 
     // login
-    public Boolean login(String password) throws Exception {
+    public Boolean login(String username, String password) throws Exception {
 
         // first, create new user agent
         // and recreate the httpclient
-        SecureRandom random = new SecureRandom();
-        String uAgent = new BigInteger(50, random).toString(32);
-        SharedPreferences.Editor editor = mSettings.edit();
-        editor.putString("unique_uagent", uAgent);
-        editor.commit();
+        mSettings.generateUniqueUserAgent();
+
         mHttpClient = new DefaultHttpClient();
-        mHttpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT,
-                "Apache-HttpClient/potdroid " + mSettings.getString("unique_uagent", "potdroid"));
+        mHttpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, mSettings.getUserAgent());
 
         // add login data
         List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-        String username = mSettings.getString("user_name", "");
         if (username.equals("") || password.equals("")) {
             return false;
         }
@@ -147,8 +133,7 @@ public class Network {
 
         if (m.find()) {
             // set user id
-            editor.putInt("user_id", Integer.valueOf(m.group(1)));
-            editor.commit();
+            mSettings.setUserId( Integer.valueOf(m.group(1)));
 
             // url for the setcookie found, send a request
             HttpGet cookieUrl = new HttpGet(m.group(0));
@@ -159,11 +144,7 @@ public class Network {
             List<Cookie> cookies = mHttpClient.getCookieStore().getCookies();
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("MDESID")) {
-                    editor.putString("cookie_name", cookie.getName());
-                    editor.putString("cookie_value", cookie.getValue());
-                    editor.putString("cookie_url", cookie.getDomain());
-                    editor.putString("cookie_path", cookie.getPath());
-                    editor.commit();
+                    mSettings.setLoginCookie(cookie);
                 }
             }
             return true;

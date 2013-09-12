@@ -30,6 +30,9 @@ $(document).ready(function() {
     });
 
     // automatic image loader
+    // Only images within or after the currently visible post are loaded, so
+    // the visible position is not changed
+    // also, we don't really need to see the pictures above.
     if(api.isLoadImages()) {
         var all = [];
         if(api.getScroll() > 0) {

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/preferences"
+          android:title="Einstellungen"
+          android:icon="?attr/menu_icon_preferences"/>
+    <item android:id="@+id/forumact"
+          android:title="Forenübersicht"
+          android:icon="?attr/menu_icon_home"/>
+    <item android:id="@+id/previous"
+          android:title="Seite zurück"
+          android:showAsAction="always"
+          android:icon="?attr/menu_icon_back"/>
+    <item android:id="@+id/refresh"
+          android:title="Aktualisieren"
+          android:icon="?attr/menu_icon_refresh"
+          android:showAsAction="ifRoom" />
+    <item android:id="@+id/next"
+          android:title="Seite vor"
+          android:showAsAction="always"
+          android:icon="?attr/menu_icon_forward"/>
+</menu>

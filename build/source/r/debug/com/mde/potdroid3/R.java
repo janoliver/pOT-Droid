@@ -272,8 +272,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class menu {
         public static final int actionmenu_board=0x7f0a0000;
-        public static final int actionmenu_forum=0x7f0a0001;
-        public static final int actionmenu_topic=0x7f0a0002;
+        public static final int actionmenu_bookmarks=0x7f0a0001;
+        public static final int actionmenu_forum=0x7f0a0002;
+        public static final int actionmenu_topic=0x7f0a0003;
     }
     public static final class string {
         /**  From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/strings.xml 

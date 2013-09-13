@@ -37,6 +37,10 @@
                 android:exported="false"/>
 
         <activity
+                android:name=".BookmarkActivity"
+                android:exported="false"/>
+
+        <activity
                 android:name=".TopicActivity"
                 android:exported="false"/>
 

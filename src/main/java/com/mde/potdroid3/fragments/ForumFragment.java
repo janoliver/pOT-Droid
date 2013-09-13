@@ -8,6 +8,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import com.mde.potdroid3.BoardActivity;
+import com.mde.potdroid3.BookmarkActivity;
 import com.mde.potdroid3.R;
 import com.mde.potdroid3.SettingsActivity;
 import com.mde.potdroid3.models.Board;
@@ -66,14 +67,17 @@ public class ForumFragment extends BaseFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
+        Intent intent;
         switch (item.getItemId()) {
             case R.id.refresh:
                 new BaseLoaderTask().execute((Void[]) null);
                 return true;
             case R.id.bookmarks:
+                intent = new Intent(getActivity(), BookmarkActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.preferences:
-                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                intent = new Intent(getActivity(), SettingsActivity.class);
                 startActivity(intent);
                 return true;
             default:

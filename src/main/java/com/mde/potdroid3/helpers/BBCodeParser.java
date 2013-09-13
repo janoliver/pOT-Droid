@@ -116,8 +116,7 @@ public class BBCodeParser {
                     switch (current.mTag.mInvalidStringRecovery) {
                         case BBCodeTag.RECOVERY_ADD:
                             // we add a new token to the list
-                            t = new Token(Token.TYPE_OPEN,
-                                    current.mTag.mInvalidRecoveryAddTag);
+                            t = new Token(Token.TYPE_OPEN, current.mTag.mInvalidRecoveryAddTag);
                             tokens.add(0, t);
                             break;
                         default:

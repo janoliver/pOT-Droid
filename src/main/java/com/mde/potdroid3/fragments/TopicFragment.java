@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.*;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -17,7 +16,8 @@ import com.mde.potdroid3.helpers.TopicJSInterface;
 import com.mde.potdroid3.models.Topic;
 import com.mde.potdroid3.parsers.TopicParser;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class TopicFragment extends BaseFragment {
 
@@ -94,18 +94,6 @@ public class TopicFragment extends BaseFragment {
         try {
             html = t.parse(mTopic);
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        File sdCard = Environment.getExternalStorageDirectory();
-        File file = new File(sdCard, "topic.html");
-
-        try {
-            FileOutputStream f = new FileOutputStream(file);
-            PrintWriter pw = new PrintWriter(f);
-            pw.println(html);
-            f.close();
-        } catch (Exception e) {
             e.printStackTrace();
         }
 

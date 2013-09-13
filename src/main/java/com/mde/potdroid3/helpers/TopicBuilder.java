@@ -292,6 +292,7 @@ public class TopicBuilder {
                 return "<table>" + content + "</table>";
             }
         };
+        table.setInvalidRecoveryTag("--");
         table.setInvalidStartRecovery(BBCodeParser.BBCodeTag.RECOVERY_ADD);
         table.setInvalidStringRecovery(BBCodeParser.BBCodeTag.RECOVERY_ADD);
         table.setInvalidEndRecovery(BBCodeParser.BBCodeTag.RECOVERY_CLOSE);
@@ -303,9 +304,10 @@ public class TopicBuilder {
                 return "<tr>" + content + "</tr>";
             }
         };
-        table.setInvalidStartRecovery(BBCodeParser.BBCodeTag.RECOVERY_ADD);
-        table.setInvalidStringRecovery(BBCodeParser.BBCodeTag.RECOVERY_ADD);
-        table.setInvalidEndRecovery(BBCodeParser.BBCodeTag.RECOVERY_CLOSE);
+        row.setInvalidRecoveryTag("||");
+        row.setInvalidStartRecovery(BBCodeParser.BBCodeTag.RECOVERY_ADD);
+        row.setInvalidStringRecovery(BBCodeParser.BBCodeTag.RECOVERY_ADD);
+        row.setInvalidEndRecovery(BBCodeParser.BBCodeTag.RECOVERY_CLOSE);
         a.registerTag(row);
 
         BBCodeParser.BBCodeTag col = new BBCodeParser.BBCodeTag("||", "tablecol") {
@@ -314,9 +316,11 @@ public class TopicBuilder {
                 return "<td>" + content + "</td>";
             }
         };
-        table.setInvalidStartRecovery(BBCodeParser.BBCodeTag.RECOVERY_CLOSE);
-        table.setInvalidEndRecovery(BBCodeParser.BBCodeTag.RECOVERY_CLOSE);
+        col.setInvalidStartRecovery(BBCodeParser.BBCodeTag.RECOVERY_CLOSE);
+        col.setInvalidEndRecovery(BBCodeParser.BBCodeTag.RECOVERY_CLOSE);
         a.registerTag(col);
+
+
         return a;
     }
 

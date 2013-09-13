@@ -39,6 +39,14 @@ public class SettingsWrapper {
         return mSharedPreferences.getBoolean(PREF_KEY_SHOW_BENDERS, true);
     }
 
+    public String loadBenders() {
+        return mSharedPreferences.getString(PREF_KEY_LOAD_BENDERS, "0");
+    }
+
+    public String loadImages() {
+        return mSharedPreferences.getString(PREF_KEY_LOAD_IMAGES, "0");
+    }
+
     public Boolean downloadBenders() {
         String lb = mSharedPreferences.getString(PREF_KEY_LOAD_BENDERS, "0");
         return !(lb.equals("0") || (lb.equals("1") && Network.getConnectionType(mContext) != Network.NETWORK_WIFI));

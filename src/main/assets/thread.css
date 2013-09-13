@@ -8,7 +8,7 @@ body {
 
 section {
     background:#394E63;
-    margin:.5em;
+    margin:1em .4em;
     border-bottom:2px solid #2E3E4F;
     border-radius: 4px;
 }
@@ -48,7 +48,7 @@ header div.date {
 
 header i.menu-icon {
     font-size:2em;
-    color:#aaa;
+    color:#394E63;
     float:right;
     display:block;
     width:1em;

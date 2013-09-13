@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import com.mde.potdroid3.helpers.Utils;
 
 public class BaseActivity extends Activity {
 
@@ -18,9 +17,9 @@ public class BaseActivity extends Activity {
         mSettings = PreferenceManager.getDefaultSharedPreferences(this);
         mExtras = getIntent().getExtras();
 
-        String theme = mSettings.getString("theme", Utils.THEME_LIGHT);
-        if(theme == Utils.THEME_LIGHT)   this.setTheme(R.style.PotDroidLight);
-        if(theme == Utils.THEME_DARK)    this.setTheme(R.style.PotDroidDark);
+//        String theme = mSettings.getString("theme", Utils.THEME_LIGHT);
+//        if(theme == Utils.THEME_LIGHT)   this.setTheme(R.style.PotDroidLight);
+//        if(theme == Utils.THEME_DARK)    this.setTheme(R.style.PotDroidDark);
 
         setContentView(R.layout.layout_activity_single_fragment);
 

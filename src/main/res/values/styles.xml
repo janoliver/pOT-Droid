@@ -21,9 +21,11 @@
         <item name="menu_icon_favorite">@drawable/light_rating_favorite</item>
         <item name="menu_icon_home">@drawable/light_navigation_home</item>
         <item name="menu_icon_accept">@drawable/light_navigation_accept</item>
+        <item name="menu_icon_link">@drawable/light_navigation_link</item>
+        <item name="menu_icon_quote">@drawable/light_navigation_quote</item>
     </style>
 
-    <style name="PotDroidDark" parent="android:Theme.Holo">
+    <style name="PotDroidDark" parent="Theme.Bbdarkstyle">
         <item name="menu_icon_preferences">@drawable/dark_action_settings</item>
         <item name="menu_icon_edit">@drawable/dark_content_edit</item>
         <item name="menu_icon_back">@drawable/dark_navigation_back</item>
@@ -32,6 +34,8 @@
         <item name="menu_icon_favorite">@drawable/dark_rating_favorite</item>
         <item name="menu_icon_home">@drawable/dark_navigation_home</item>
         <item name="menu_icon_accept">@drawable/dark_navigation_accept</item>
+        <item name="menu_icon_link">@drawable/dark_navigation_link</item>
+        <item name="menu_icon_quote">@drawable/dark_navigation_quote</item>
     </style>
 
 </resources>

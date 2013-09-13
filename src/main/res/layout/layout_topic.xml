@@ -4,19 +4,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-     <WebView
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:id="@+id/topic_webview"
-             android:autoLink="none"
-             android:padding="0pt"
-             android:paddingLeft="0pt"
-             android:paddingTop="0pt"
-             android:paddingRight="0pt"
-             android:paddingBottom="0pt"
-             android:layout_margin="0pt"
-             android:scrollbarStyle="outsideOverlay" />
+        <WebView
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:id="@+id/topic_webview"
+                 android:autoLink="none"
+                 android:layout_margin="0pt"
+                 android:scrollbarStyle="outsideOverlay"
+                 android:background="@color/black"/>
 
     <include layout="@layout/notification_container"/>
 

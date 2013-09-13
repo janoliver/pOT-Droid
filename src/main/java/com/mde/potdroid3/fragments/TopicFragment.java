@@ -60,6 +60,7 @@ public class TopicFragment extends BaseFragment {
         mWebView.addJavascriptInterface(mJsInterface, "api");
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.loadData("", "text/html", "utf-8");
+        mWebView.setBackgroundColor(0x00000000);
 
         new BaseLoaderTask().execute((Void[]) null);
 

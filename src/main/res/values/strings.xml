@@ -11,5 +11,16 @@
         Cookie erstellt.</string>
     <string name="login_dialog_username_hint">Username</string>
     <string name="login_dialog_password_hint">Passwort</string>
+    <string name="pref_state_benders_shown">Bender werden angezeigt.</string>
+    <string name="pref_state_benders_notshown">Bender werden nicht angezeigt.</string>
+    <string name="pref_state_images_never">Bilder werden nie heruntergeladen.</string>
+    <string name="pref_state_images_wifi">Bilder werden nur im WLAN heruntergeladen.</string>
+    <string name="pref_state_images_always">Bilder werden immer heruntergeladen.</string>
+    <string name="pref_state_benders_never">Bender werden nie heruntergeladen.</string>
+    <string name="pref_state_benders_wifi">Bender werden nur im WLAN heruntergeladen.</string>
+    <string name="pref_state_benders_always">Bender werden immer heruntergeladen.</string>
+    <string name="pref_state_notloggedin">Nicht eingeloggt!</string>
+    <string name="pref_state_loggedin">Eingeloggt als:</string>
+    <string name="subtitle_settings">Settings</string>
 
 </resources>

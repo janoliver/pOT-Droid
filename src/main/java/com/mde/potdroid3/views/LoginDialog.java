@@ -44,7 +44,7 @@ public class LoginDialog extends DialogPreference {
         mSettingsWrapper = new SettingsWrapper(mContext);
         mLoggingIn = false;
 
-        setDialogLayoutResource(R.layout.login_dialog);
+        setDialogLayoutResource(R.layout.dialog_login);
     }
 
     @Override

@@ -37,8 +37,16 @@
     <attr name="menu_icon_favorite" format="reference" />
     <attr name="menu_icon_forward" format="reference" />
     <attr name="menu_icon_home" format="reference" />
+    <attr name="menu_icon_link" format="reference" />
     <attr name="menu_icon_preferences" format="reference" />
+    <attr name="menu_icon_quote" format="reference" />
     <attr name="menu_icon_refresh" format="reference" />
+    <!-- From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/colors.xml -->
+    <color name="black">#111111</color>
+    <!-- From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/colors_bbdarkstyle.xml -->
+    <color name="pressed_bbdarkstyle">#CC81A9D2</color>
+    <!-- From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/colors.xml -->
+    <color name="white">#ffffff</color>
     <!-- From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/dimens.xml -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
@@ -46,6 +54,54 @@
     <string name="action_settings">Settings</string>
     <string name="app_name">pOT-Droid3</string>
     <string name="hello_world">Hello world!</string>
+    <string name="login_dialog_password_hint">Passwort</string>
+    <string name="login_dialog_username_hint">Username</string>
+    <string name="login_dialog_warning">Das Passwort wird NICHT gespeichert! Es wird lediglich ein
+        Cookie erstellt.</string>
+    <string name="login_failure">Fehler!</string>
+    <string name="login_success">Erfolgreich eingeloggt!</string>
+    <string name="logout_success">Daten gelöscht!</string>
+    <string name="pref_state_benders_always">Bender werden immer heruntergeladen.</string>
+    <string name="pref_state_benders_never">Bender werden nie heruntergeladen.</string>
+    <string name="pref_state_benders_notshown">Bender werden nicht angezeigt.</string>
+    <string name="pref_state_benders_shown">Bender werden angezeigt.</string>
+    <string name="pref_state_benders_wifi">Bender werden nur im WLAN heruntergeladen.</string>
+    <string name="pref_state_images_always">Bilder werden immer heruntergeladen.</string>
+    <string name="pref_state_images_never">Bilder werden nie heruntergeladen.</string>
+    <string name="pref_state_images_wifi">Bilder werden nur im WLAN heruntergeladen.</string>
+    <string name="pref_state_loggedin">Eingeloggt als:</string>
+    <string name="pref_state_notloggedin">Nicht eingeloggt!</string>
+    <string name="subtitle_settings">Settings</string>
+    <!-- From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/styles_bbdarkstyle.xml -->
+    <style name="ActionBar.Solid.Bbdarkstyle" parent="@android:style/Widget.Holo.ActionBar.Solid">
+        <item name="android:background">@drawable/ab_background_textured_bbdarkstyle</item>
+        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_bbdarkstyle</item>
+        <item name="android:backgroundSplit">@drawable/ab_background_textured_bbdarkstyle</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Bbdarkstyle</item>
+    </style>
+
+    <style name="ActionBar.Transparent.Bbdarkstyle" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@drawable/ab_transparent_bbdarkstyle</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Bbdarkstyle</item>
+    </style>
+
+    <style name="ActionBarTabStyle.Bbdarkstyle" parent="@android:style/Widget.Holo.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_indicator_ab_bbdarkstyle</item>
+    </style>
+
+    <style name="ActionButton.CloseMode.Bbdarkstyle" parent="@android:style/Widget.Holo.ActionButton.CloseMode">
+        <item name="android:background">@drawable/btn_cab_done_bbdarkstyle</item>
+    </style>
+
+    <style name="DropDownListView.Bbdarkstyle" parent="@android:style/Widget.Holo.ListView.DropDown">
+        <item name="android:listSelector">@drawable/selectable_background_bbdarkstyle</item>
+    </style>
+
+    <style name="DropDownNav.Bbdarkstyle" parent="@android:style/Widget.Holo.Spinner">
+        <item name="android:background">@drawable/spinner_background_ab_bbdarkstyle</item>
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_bbdarkstyle</item>
+        <item name="android:dropDownSelector">@drawable/selectable_background_bbdarkstyle</item>
+    </style>
     <!-- From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/styles.xml -->
     <style name="GenericProgressBackground" parent="android:Theme">
         <item name="android:layout_width">fill_parent</item>
@@ -59,8 +115,12 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:indeterminate">true</item>
     </style>
-
-    <style name="PotDroidDark" parent="android:Theme.Holo">
+    <!-- From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/styles_bbdarkstyle.xml -->
+    <style name="PopupMenu.Bbdarkstyle" parent="@android:style/Widget.Holo.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_bbdarkstyle</item>
+    </style>
+    <!-- From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/styles.xml -->
+    <style name="PotDroidDark" parent="Theme.Bbdarkstyle">
         <item name="menu_icon_preferences">@drawable/dark_action_settings</item>
         <item name="menu_icon_edit">@drawable/dark_content_edit</item>
         <item name="menu_icon_back">@drawable/dark_navigation_back</item>
@@ -69,6 +129,8 @@
         <item name="menu_icon_favorite">@drawable/dark_rating_favorite</item>
         <item name="menu_icon_home">@drawable/dark_navigation_home</item>
         <item name="menu_icon_accept">@drawable/dark_navigation_accept</item>
+        <item name="menu_icon_link">@drawable/dark_navigation_link</item>
+        <item name="menu_icon_quote">@drawable/dark_navigation_quote</item>
     </style>
 
     <style name="PotDroidLight" parent="android:Theme.Holo.Light">
@@ -80,6 +142,29 @@
         <item name="menu_icon_favorite">@drawable/light_rating_favorite</item>
         <item name="menu_icon_home">@drawable/light_navigation_home</item>
         <item name="menu_icon_accept">@drawable/light_navigation_accept</item>
+        <item name="menu_icon_link">@drawable/light_navigation_link</item>
+        <item name="menu_icon_quote">@drawable/light_navigation_quote</item>
+    </style>
+    <!-- From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/styles_bbdarkstyle.xml -->
+    <style name="ProgressBar.Bbdarkstyle" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_horizontal_bbdarkstyle</item>
+    </style>
+
+    <style name="Theme.Bbdarkstyle" parent="@android:style/Theme.Holo">
+        <item name="android:actionBarItemBackground">@drawable/selectable_background_bbdarkstyle</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu.Bbdarkstyle</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Bbdarkstyle</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Bbdarkstyle</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.Bbdarkstyle</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.Bbdarkstyle</item>
+        <item name="android:actionModeBackground">@drawable/cab_background_top_bbdarkstyle</item>
+        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_bbdarkstyle</item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Bbdarkstyle</item>
+    </style>
+
+    <style name="Theme.Bbdarkstyle.Widget" parent="@android:style/Theme.Holo">
+        <item name="android:popupMenuStyle">@style/PopupMenu.Bbdarkstyle</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Bbdarkstyle</item>
     </style>
 
 </resources>

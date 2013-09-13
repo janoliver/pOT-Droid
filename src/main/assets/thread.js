@@ -49,7 +49,7 @@ $(document).ready(function() {
         });
     }
 
-    $('i.menu-icon').click(function() {
+    $('i.menu-icon').click(function(e) {
         var post_id = parseInt($(this).closest('section').attr('data-id'));
         api.openTopicMenu(post_id);
     });

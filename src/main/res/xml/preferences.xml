@@ -24,14 +24,14 @@
     <PreferenceCategory
             android:title="Style"
             android:key="pref_style_settings">
-        <ListPreference
+        <!--<ListPreference
                 android:key="pref_theme"
                 android:title="Theme"
                 android:summary="Erscheinungsbild der App"
                 android:dialogTitle="Theme"
                 android:entries="@array/pref_theme_entries"
                 android:entryValues="@array/pref_theme_values"
-                android:defaultValue="theme_dark"/>
+                android:defaultValue="theme_dark"/>-->
 
         <CheckBoxPreference
                 android:key="pref_show_benders"

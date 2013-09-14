@@ -1,7 +1,10 @@
 package com.mde.potdroid3.fragments;
 
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
+import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.Loader;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.BaseExpandableListAdapter;
@@ -11,6 +14,7 @@ import com.mde.potdroid3.BoardActivity;
 import com.mde.potdroid3.BookmarkActivity;
 import com.mde.potdroid3.R;
 import com.mde.potdroid3.SettingsActivity;
+import com.mde.potdroid3.helpers.Network;
 import com.mde.potdroid3.models.Board;
 import com.mde.potdroid3.models.Category;
 import com.mde.potdroid3.models.Forum;
@@ -18,11 +22,16 @@ import com.mde.potdroid3.parsers.ForumParser;
 
 import java.io.InputStream;
 
-public class ForumFragment extends BaseFragment {
+/**
+ * The Forum list fragment. It shows an ExpandableList with Categories as groups and
+ * boards as children. The loading of the xml is done via an AsyncTaskLoader which
+ * preserves data on configuration changes.
+ */
+public class ForumFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Forum> {
 
-    private Forum mForum = null;
-    private ForumListAdapter mListAdapter = null;
-    private ExpandableListView mListView = null;
+    private Forum mForum;
+    private ForumListAdapter mListAdapter;
+    private ExpandableListView mListView;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -44,6 +53,7 @@ public class ForumFragment extends BaseFragment {
         {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id)
             {
+                // go to a board
                 Intent intent = new Intent(getActivity(), BoardActivity.class);
                 intent.putExtra("board_id", mForum.getCategories().get(groupPosition).getBoards().get(childPosition).getId());
                 intent.putExtra("page", 1);
@@ -52,7 +62,8 @@ public class ForumFragment extends BaseFragment {
             }
         });
 
-        new BaseLoaderTask().execute((Void[]) null);
+        // load the content
+        startLoader(this);
 
     }
 
@@ -70,7 +81,8 @@ public class ForumFragment extends BaseFragment {
         Intent intent;
         switch (item.getItemId()) {
             case R.id.refresh:
-                new BaseLoaderTask().execute((Void[]) null);
+                // reload content
+                restartLoader(this);
                 return true;
             case R.id.bookmarks:
                 intent = new Intent(getActivity(), BookmarkActivity.class);
@@ -87,6 +99,29 @@ public class ForumFragment extends BaseFragment {
 
     protected int getLayout() {
         return R.layout.layout_expandablelist_container;
+    }
+
+    @Override
+    public Loader<Forum> onCreateLoader(int id, Bundle args) {
+        AsyncContentLoader l = new AsyncContentLoader(getActivity(), mNetwork);
+        showLoader();
+        return l;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Forum> loader, Forum data) {
+        hideLoader();
+        if(data != null) {
+            mForum = data;
+            mListAdapter.notifyDataSetChanged();
+        } else {
+            showError("Fehler beim Laden der Daten.");
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Forum> loader) {
+        hideLoader();
     }
 
     public class ForumListAdapter extends BaseExpandableListAdapter {
@@ -160,34 +195,25 @@ public class ForumFragment extends BaseFragment {
 
     }
 
+    static class AsyncContentLoader extends AsyncTaskLoader<Forum> {
+        private Network mNetwork;
 
-    class BaseLoaderTask extends AsyncTask<Void, Void, Forum> {
-
-        @Override
-        protected void onPreExecute() {
-            showLoader();
+        AsyncContentLoader(Context cx, Network network) {
+            super(cx);
+            mNetwork = network;
         }
 
         @Override
-        protected Forum doInBackground(Void... params) {
+        public Forum loadInBackground() {
             try {
                 InputStream xml = mNetwork.getDocument(Forum.Xml.URL);
                 ForumParser parser = new ForumParser();
                 return parser.parse(xml);
             } catch (Exception e) {
-                e.printStackTrace();
                 return null;
             }
         }
 
-        @Override
-        protected void onPostExecute(Forum forum) {
-            if(forum != null) {
-                mForum = forum;
-                mListAdapter.notifyDataSetChanged();
-            }
-            hideLoader();
-        }
     }
 
 }

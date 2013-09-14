@@ -8,11 +8,15 @@ public class BoardActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int bid = mExtras.getInt("board_id", 0);
-        int page = mExtras.getInt("page", 1);
 
-        getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, BoardFragment.newInstance(bid, page))
-                .commit();
+        if (savedInstanceState == null) {
+
+            int bid = mExtras.getInt("board_id", 0);
+            int page = mExtras.getInt("page", 1);
+
+            getFragmentManager().beginTransaction()
+                    .add(android.R.id.content, BoardFragment.newInstance(bid, page))
+                    .commit();
+        }
     }
 }

@@ -1,8 +1,11 @@
 package com.mde.potdroid3.fragments;
 
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
+import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.graphics.Paint;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.AdapterView;
@@ -13,13 +16,14 @@ import com.mde.potdroid3.ForumActivity;
 import com.mde.potdroid3.R;
 import com.mde.potdroid3.SettingsActivity;
 import com.mde.potdroid3.TopicActivity;
+import com.mde.potdroid3.helpers.Network;
 import com.mde.potdroid3.models.Board;
 import com.mde.potdroid3.models.Topic;
 import com.mde.potdroid3.parsers.BoardParser;
 
 import java.io.InputStream;
 
-public class BoardFragment extends BaseFragment {
+public class BoardFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Board>  {
 
     private Board mBoard = null;
     private BoardListAdapter mListAdapter = null;
@@ -60,7 +64,7 @@ public class BoardFragment extends BaseFragment {
             }
         });
 
-        new BaseLoaderTask().execute((Void[]) null);
+        startLoader(this);
 
     }
 
@@ -79,7 +83,7 @@ public class BoardFragment extends BaseFragment {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.refresh:
-                new BaseLoaderTask().execute((Void[]) null);
+                restartLoader(this);
                 return true;
             case R.id.bookmarks:
                 return true;
@@ -94,6 +98,31 @@ public class BoardFragment extends BaseFragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public Loader<Board> onCreateLoader(int id, Bundle args) {
+        int page = getArguments().getInt("page", 1);
+        int bid = getArguments().getInt("board_id", 0);
+        AsyncContentLoader l = new AsyncContentLoader(getActivity(), mNetwork, page, bid);
+        showLoader();
+        return l;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Board> loader, Board data) {
+        hideLoader();
+        if(data != null) {
+            mBoard = data;
+            mListAdapter.notifyDataSetChanged();
+        } else {
+            showError("Fehler beim Laden der Daten.");
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Board> loader) {
+        hideLoader();
     }
 
     protected int getLayout() {
@@ -146,37 +175,29 @@ public class BoardFragment extends BaseFragment {
         }
     }
 
-    class BaseLoaderTask extends AsyncTask<Void, Void, Board> {
+    static class AsyncContentLoader extends AsyncTaskLoader<Board> {
+        private Network mNetwork;
+        private Integer mPage;
+        private Integer mBoardId;
 
-        @Override
-        protected void onPreExecute() {
-            showLoader();
+        AsyncContentLoader(Context cx, Network network, int page, int board_id) {
+            super(cx);
+            mNetwork = network;
+            mPage = page;
+            mBoardId = board_id;
         }
 
         @Override
-        protected Board doInBackground(Void... params) {
-            int page = getArguments().getInt("page", 1);
-            int board_id = getArguments().getInt("board_id", 0);
-
+        public Board loadInBackground() {
             try {
-                InputStream xml = mNetwork.getDocument(Board.Xml.getUrl(board_id, page));
+                InputStream xml = mNetwork.getDocument(Board.Xml.getUrl(mBoardId, mPage));
                 BoardParser parser = new BoardParser();
                 return parser.parse(xml);
             } catch (Exception e) {
-                e.printStackTrace();
                 return null;
             }
         }
 
-        @Override
-        protected void onPostExecute(Board board) {
-            if(board != null) {
-                mBoard = board;
-                mListAdapter.notifyDataSetChanged();
-            }
-            hideLoader();
-        }
     }
-
 
 }

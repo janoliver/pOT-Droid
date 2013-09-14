@@ -8,8 +8,10 @@ public class BookmarkActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getFragmentManager().beginTransaction()
-                .replace(R.id.content, new BookmarkFragment())
-                .commit();
+        if (savedInstanceState == null) {
+            getFragmentManager()
+                    .beginTransaction().add(R.id.content, new BookmarkFragment())
+                    .commit();
+        }
     }
 }

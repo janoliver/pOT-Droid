@@ -1,6 +1,7 @@
 package com.mde.potdroid3.models;
 
 import android.net.Uri;
+import com.mde.potdroid3.helpers.Utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -254,6 +255,7 @@ public class Topic implements Serializable{
             } else {
                 b.appendQueryParameter("page", String.valueOf(page));
             }
+            Utils.log(b.build().toString());
 
             return b.build().toString();
         }

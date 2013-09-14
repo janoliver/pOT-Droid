@@ -54,7 +54,6 @@ public class SettingsWrapper {
 
     public Boolean downloadImages() {
         String lb = mSharedPreferences.getString(PREF_KEY_LOAD_IMAGES, "0");
-        Utils.log(lb);
         return !(lb.equals("0") || (lb.equals("1") && Network.getConnectionType(mContext) != Network.NETWORK_WIFI));
     }
 

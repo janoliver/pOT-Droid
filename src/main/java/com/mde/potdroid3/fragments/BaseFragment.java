@@ -1,6 +1,7 @@
 package com.mde.potdroid3.fragments;
 
 import android.app.Fragment;
+import android.app.LoaderManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -55,6 +56,20 @@ public abstract class BaseFragment extends Fragment {
     }
 
     abstract protected int getLayout();
+
+    /**
+     * Start the content loader
+     */
+    public void startLoader(LoaderManager.LoaderCallbacks l) {
+        getLoaderManager().initLoader(0, null, l).forceLoad();
+    }
+
+    /**
+     * Restart the content loader
+     */
+    public void restartLoader(LoaderManager.LoaderCallbacks l) {
+        getLoaderManager().restartLoader(0, null, l).forceLoad();
+    }
 
     /**
      * Shows a success message.

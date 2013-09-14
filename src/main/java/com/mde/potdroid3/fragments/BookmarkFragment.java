@@ -1,8 +1,11 @@
 package com.mde.potdroid3.fragments;
 
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
+import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.graphics.Paint;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.AdapterView;
@@ -13,17 +16,19 @@ import com.mde.potdroid3.ForumActivity;
 import com.mde.potdroid3.R;
 import com.mde.potdroid3.SettingsActivity;
 import com.mde.potdroid3.TopicActivity;
+import com.mde.potdroid3.helpers.Network;
 import com.mde.potdroid3.models.Bookmark;
 import com.mde.potdroid3.models.BookmarkList;
 import com.mde.potdroid3.parsers.BookmarkParser;
 
 import java.io.InputStream;
 
-public class BookmarkFragment extends BaseFragment {
+public class BookmarkFragment extends BaseFragment
+        implements LoaderManager.LoaderCallbacks<BookmarkList> {
 
-    private BookmarkList mBookmarkList = null;
-    private BookmarkListAdapter mListAdapter = null;
-    private ListView mListView = null;
+    private BookmarkList mBookmarkList;
+    private BookmarkListAdapter mListAdapter;
+    private ListView mListView;
 
     public static BookmarkFragment newInstance(int board_id, int page) {
         return new BookmarkFragment();
@@ -47,12 +52,12 @@ public class BookmarkFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), TopicActivity.class);
                 intent.putExtra("post_id", mBookmarkList.getBookmarks().get(position).getLastPost().getId());
-                intent.putExtra("page", 1);
+                intent.putExtra("thread_id", mBookmarkList.getBookmarks().get(position).getThread().getId());
                 startActivity(intent);
             }
         });
 
-        new BaseLoaderTask().execute((Void[]) null);
+        startLoader(this);
 
     }
 
@@ -71,7 +76,7 @@ public class BookmarkFragment extends BaseFragment {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.refresh:
-                new BaseLoaderTask().execute((Void[]) null);
+                restartLoader(this);
                 return true;
             case R.id.preferences:
                 intent = new Intent(getActivity(), SettingsActivity.class);
@@ -84,6 +89,29 @@ public class BookmarkFragment extends BaseFragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public Loader<BookmarkList> onCreateLoader(int id, Bundle args) {
+        AsyncContentLoader l = new AsyncContentLoader(getActivity(), mNetwork);
+        showLoader();
+        return l;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<BookmarkList> loader, BookmarkList data) {
+        hideLoader();
+        if(data != null) {
+            mBookmarkList = data;
+            mListAdapter.notifyDataSetChanged();
+        } else {
+            showError("Fehler beim Laden der Daten.");
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<BookmarkList> loader) {
+        hideLoader();
     }
 
     protected int getLayout() {
@@ -120,34 +148,25 @@ public class BookmarkFragment extends BaseFragment {
         }
     }
 
-    class BaseLoaderTask extends AsyncTask<Void, Void, BookmarkList> {
+    static class AsyncContentLoader extends AsyncTaskLoader<BookmarkList> {
+        private Network mNetwork;
 
-        @Override
-        protected void onPreExecute() {
-            showLoader();
+        AsyncContentLoader(Context cx, Network network) {
+            super(cx);
+            mNetwork = network;
         }
 
         @Override
-        protected BookmarkList doInBackground(Void... params) {
-
+        public BookmarkList loadInBackground() {
             try {
                 InputStream xml = mNetwork.getDocument(BookmarkList.Xml.getUrl());
                 BookmarkParser parser = new BookmarkParser();
                 return parser.parse(xml);
             } catch (Exception e) {
-                e.printStackTrace();
                 return null;
             }
         }
 
-        @Override
-        protected void onPostExecute(BookmarkList list) {
-            if(list != null) {
-                mBookmarkList = list;
-                mListAdapter.notifyDataSetChanged();
-            }
-            hideLoader();
-        }
     }
 
 

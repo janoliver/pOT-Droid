@@ -6,7 +6,7 @@
         android:gravity="center"
         android:id="@+id/loader"
         android:layout_alignParentTop="true"
-        android:background="#88000000">
+        android:background="#88ffffff">
 
     <RelativeLayout
             style="@style/GenericProgressBackground"

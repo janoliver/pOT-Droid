@@ -8,8 +8,10 @@ public class ForumActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getFragmentManager().beginTransaction()
-                .replace(R.id.content, new ForumFragment())
-                .commit();
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.content, new ForumFragment())
+                    .commit();
+        }
     }
 }

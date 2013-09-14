@@ -12,8 +12,10 @@ public class TopicActivity extends BaseActivity {
         int page = mExtras.getInt("page", 1);
         int pid = mExtras.getInt("post_id", 0);
 
-        getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, TopicFragment.newInstance(bid, page, pid))
-                .commit();
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.content, TopicFragment.newInstance(bid, page, pid))
+                    .commit();
+        }
     }
 }

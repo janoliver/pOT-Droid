@@ -1,8 +1,11 @@
 package com.mde.potdroid3.fragments;
 
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
+import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.*;
 import android.webkit.WebChromeClient;
@@ -11,17 +14,18 @@ import android.webkit.WebView;
 import com.mde.potdroid3.ForumActivity;
 import com.mde.potdroid3.R;
 import com.mde.potdroid3.SettingsActivity;
+import com.mde.potdroid3.helpers.Network;
 import com.mde.potdroid3.helpers.TopicBuilder;
 import com.mde.potdroid3.helpers.TopicJSInterface;
 import com.mde.potdroid3.models.Topic;
 import com.mde.potdroid3.parsers.TopicParser;
 
-import java.io.IOException;
 import java.io.InputStream;
 
-public class TopicFragment extends BaseFragment {
+public class TopicFragment extends BaseFragment
+        implements LoaderManager.LoaderCallbacks<TopicFragment.TopicHtmlContainer> {
 
-    private Topic mTopic = null;
+    private TopicHtmlContainer mTopicContainer;
     private WebView mWebView;
     private TopicJSInterface mJsInterface;
 
@@ -62,8 +66,36 @@ public class TopicFragment extends BaseFragment {
         mWebView.loadData("", "text/html", "utf-8");
         mWebView.setBackgroundColor(0x00000000);
 
-        new BaseLoaderTask().execute((Void[]) null);
+        startLoader(this);
 
+    }
+
+    @Override
+    public Loader<TopicHtmlContainer> onCreateLoader(int id, Bundle args) {
+        int page = getArguments().getInt("page", 1);
+        int tid = getArguments().getInt("thread_id", 0);
+        int pid = getArguments().getInt("post_id", 0);
+        AsyncContentLoader l = new AsyncContentLoader(getActivity(), mNetwork, page, tid, pid);
+        showLoader();
+        return l;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<TopicHtmlContainer> loader, TopicHtmlContainer data) {
+        hideLoader();
+
+        if(data != null) {
+            mTopicContainer = data;
+            mWebView.loadDataWithBaseURL("file:///android_asset/",
+                    mTopicContainer.getHtml(), "text/html", "UTF-8", null);
+        } else {
+            showError("Fehler beim Laden der Daten.");
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<TopicHtmlContainer> loader) {
+        hideLoader();
     }
 
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
@@ -78,26 +110,12 @@ public class TopicFragment extends BaseFragment {
         }
     }
 
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_topic, menu);
         //menu.setGroupVisible(R.id.loggedin, mObjectManager.isLoggedIn());
-    }
-
-    public void loadHtml() {
-        // generate topic html
-        TopicBuilder t = new TopicBuilder(getActivity());
-        String html = "Parse error";
-        try {
-            html = t.parse(mTopic);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        mWebView.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "UTF-8", null);
     }
 
     @Override
@@ -107,7 +125,7 @@ public class TopicFragment extends BaseFragment {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.refresh:
-                new BaseLoaderTask().execute((Void[]) null);
+                restartLoader(this);
                 return true;
             case R.id.bookmarks:
                 return true;
@@ -128,37 +146,60 @@ public class TopicFragment extends BaseFragment {
         return R.layout.layout_topic;
     }
 
-    class BaseLoaderTask extends AsyncTask<Void, Void, Topic> {
+    /**
+     * Container class so the html can be parsed by the loader. On orientation change,
+     * we therefore do not have to wait for the TopicParser.
+     */
+    static class TopicHtmlContainer {
+        private Topic mTopic;
+        private String mHtml;
 
-        @Override
-        protected void onPreExecute() {
-            showLoader();
+        public TopicHtmlContainer(Topic topic, String html) {
+            mTopic = topic;
+            mHtml = html;
+        }
+
+        public Topic getTopic() {
+            return mTopic;
+        }
+
+        public String getHtml() {
+            return mHtml;
+        }
+    }
+
+    static class AsyncContentLoader extends AsyncTaskLoader<TopicHtmlContainer> {
+        private Network mNetwork;
+        private Integer mPage;
+        private Integer mThreadId;
+        private Integer mPostId;
+        private Context mContext;
+
+        AsyncContentLoader(Context cx, Network network, int page, int thread_id, int post_id) {
+            super(cx);
+            mContext = cx;
+            mNetwork = network;
+            mPage = page;
+            mThreadId = thread_id;
+            mPostId = post_id;
         }
 
         @Override
-        protected Topic doInBackground(Void... params) {
-            int page = getArguments().getInt("page", 1);
-            int thread_id = getArguments().getInt("thread_id", 0);
-            int post_id = getArguments().getInt("post_id", 0);
-
+        public TopicHtmlContainer loadInBackground() {
             try {
-                InputStream xml = mNetwork.getDocument(Topic.Xml.getUrl(thread_id, page, post_id));
+                InputStream xml = mNetwork.getDocument(Topic.Xml.getUrl(mThreadId, mPage, mPostId));
                 TopicParser parser = new TopicParser();
-                return parser.parse(xml);
+
+                Topic t = parser.parse(xml);
+                TopicBuilder b = new TopicBuilder(mContext);
+
+                return new TopicHtmlContainer(t, b.parse(t));
+
             } catch (Exception e) {
-                e.printStackTrace();
                 return null;
             }
         }
 
-        @Override
-        protected void onPostExecute(Topic topic) {
-            if(topic != null) {
-                mTopic = topic;
-                loadHtml();
-            }
-            hideLoader();
-        }
     }
 
 

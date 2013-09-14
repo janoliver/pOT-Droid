@@ -9,9 +9,11 @@ public class SettingsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         // Display the fragment as the main content.
-        getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new SettingsFragment())
-                .commit();
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.content, new SettingsFragment())
+                    .commit();
+        }
     }
 
 

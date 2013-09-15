@@ -1,0 +1,110 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/sidebar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bbstyle_lightblue"
+        android:orientation="vertical">
+
+    <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/nav_buttons"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="48dip"
+                android:src="?attr/menu_icon_home"
+                android:id="@+id/button_home"
+                android:background="@drawable/sidebar_button_background"
+                android:textSize="14sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"/>
+
+        <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="48dip"
+                android:src="?attr/menu_icon_pm"
+                android:id="@+id/button_pm"
+                android:background="@drawable/sidebar_button_background"
+                android:layout_gravity="center_horizontal"
+                android:textSize="14sp"
+                android:layout_weight="1"/>
+
+        <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="48dip"
+                android:src="?attr/menu_icon_favorite"
+                android:id="@+id/button_bookmarks"
+                android:background="@drawable/sidebar_button_background"
+                android:layout_gravity="center_horizontal"
+                android:textSize="14sp"
+                android:layout_weight="1"/>
+
+        <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="48dip"
+                android:src="?attr/menu_icon_preferences"
+                android:id="@+id/button_preferences"
+                android:background="@drawable/sidebar_button_background"
+                android:layout_gravity="center_horizontal"
+                android:textSize="14sp"
+                android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/nav_buttons"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:id="@+id/refresh_bookmarks_icon"
+                android:src="?attr/menu_icon_refresh"
+                />
+
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bookmarks"
+                android:textAppearance="?android:attr/textAppearanceListItemSmall"
+                android:background="@drawable/sidebar_bookmarkbutton_background"
+                android:textColor="@color/button_text_color"
+                android:id="@+id/refresh_bookmarks"
+                android:paddingLeft="5dp"
+                android:gravity="left|center_vertical"
+                android:textAlignment="textStart"/>
+    </LinearLayout>
+
+    <View
+            android:id="@+id/separator"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#222E3A"/>
+
+    <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:choiceMode="singleChoice"
+            android:id="@+id/listview_bookmarks"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"/>
+    <TextView
+            android:id="@+id/empty_bookmarks_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dip"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:text="Keine ungelesenen Bookmarks"
+            android:visibility="gone"
+            />
+
+
+</LinearLayout>

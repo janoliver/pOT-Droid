@@ -16,6 +16,7 @@
     <attr name="menu_icon_preferences" format="reference" />
     <attr name="menu_icon_home" format="reference" />
     <attr name="menu_icon_favorite" format="reference" />
+    <attr name="menu_icon_pm" format="reference" />
     <attr name="menu_icon_refresh" format="reference" />
     <attr name="menu_icon_back" format="reference" />
     <attr name="menu_icon_forward" format="reference" />

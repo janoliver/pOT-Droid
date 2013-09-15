@@ -2,4 +2,6 @@
 <resources>
     <color name="white">#ffffff</color>
     <color name="black">#111111</color>
+    <color name="bbstyle_darkblue">#222E3A</color>
+    <color name="bbstyle_lightblue">#394E63</color>
 </resources>

@@ -25,6 +25,15 @@ public class BookmarkList implements Serializable {
         return mBookmarks;
     }
 
+    public ArrayList<Bookmark> getUnreadBookmarks() {
+        ArrayList<Bookmark> unread = new ArrayList<Bookmark>();
+        for(Bookmark b : mBookmarks) {
+            if(b.getNumberOfNewPosts() > 0)
+                unread.add(b);
+        }
+        return unread;
+    }
+
     public void setBookmarks(ArrayList<Bookmark> bookmarks) {
         mBookmarks = bookmarks;
     }

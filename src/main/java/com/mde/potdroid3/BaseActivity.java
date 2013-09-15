@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import com.mde.potdroid3.fragments.SidebarFragment;
 
 public class BaseActivity extends Activity {
 
@@ -23,6 +24,14 @@ public class BaseActivity extends Activity {
 
         setContentView(R.layout.layout_activity_single_fragment);
 
+        if (savedInstanceState == null) {
+
+            getFragmentManager().beginTransaction()
+                    .add(R.id.sidebar_container, SidebarFragment.newInstance())
+                    .commit();
+        }
+
     }
+
 }
 

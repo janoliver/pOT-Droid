@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:exitFadeDuration="@android:integer/config_mediumAnimTime">
+    <item
+            android:state_pressed="false"
+            android:state_focused="true"
+            android:drawable="@drawable/list_focused_bbdarkstyle"/>
+    <item
+            android:state_pressed="true"
+            android:drawable="@drawable/pressed_background_bbdarkstyle"/>
+    <item
+            android:drawable="@color/bbstyle_lightblue"/>
+</selector><!-- From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/drawable/sidebar_bookmarkbutton_background.xml -->

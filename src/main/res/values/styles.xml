@@ -20,6 +20,7 @@
         <item name="menu_icon_refresh">@drawable/light_navigation_refresh</item>
         <item name="menu_icon_favorite">@drawable/light_rating_favorite</item>
         <item name="menu_icon_home">@drawable/light_navigation_home</item>
+        <item name="menu_icon_pm">@drawable/light_navigation_pm</item>
         <item name="menu_icon_accept">@drawable/light_navigation_accept</item>
         <item name="menu_icon_link">@drawable/light_navigation_link</item>
         <item name="menu_icon_quote">@drawable/light_navigation_quote</item>
@@ -32,6 +33,7 @@
         <item name="menu_icon_forward">@drawable/dark_navigation_forward</item>
         <item name="menu_icon_refresh">@drawable/dark_navigation_refresh</item>
         <item name="menu_icon_favorite">@drawable/dark_rating_favorite</item>
+        <item name="menu_icon_pm">@drawable/dark_navigation_pm</item>
         <item name="menu_icon_home">@drawable/dark_navigation_home</item>
         <item name="menu_icon_accept">@drawable/dark_navigation_accept</item>
         <item name="menu_icon_link">@drawable/dark_navigation_link</item>

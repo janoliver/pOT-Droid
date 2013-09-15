@@ -138,7 +138,8 @@ public class BBCodeParser {
 
                     // this tag is not allowed anywhere in this branch,
                     // so we make it a string.
-                    if(!is_allowed_anywhere(current, tokens.get(0).mTag))
+                    if(!is_allowed_anywhere(current, tokens.get(0).mTag) &&
+                            current.mTag.mInvalidStartRecovery != BBCodeTag.RECOVERY_ADD)
                         recovery = BBCodeTag.RECOVERY_STRING;
                     else
                         recovery = current.mTag.mInvalidStartRecovery;
@@ -152,13 +153,11 @@ public class BBCodeParser {
                     // policy
                     switch (recovery) {
                         case BBCodeTag.RECOVERY_ADD:
-                            t = new Token(Token.TYPE_OPEN,
-                                    current.mTag.mInvalidRecoveryAddTag);
+                            t = new Token(Token.TYPE_OPEN, current.mTag.mInvalidRecoveryAddTag);
                             tokens.add(0, t);
                             break;
                         case BBCodeTag.RECOVERY_CLOSE:
-                            t = new Token(Token.TYPE_CLOSE,
-                                    current.mTag.mTag);
+                            t = new Token(Token.TYPE_CLOSE, current.mTag.mTag);
                             tokens.add(0, t);
                             break;
                         case BBCodeTag.RECOVERY_STRING:
@@ -241,15 +240,6 @@ public class BBCodeParser {
 
     public Node close(Node current) {
         return current.close();
-    }
-
-    public Node add_start(Node current, String tag) {
-
-        Node new_node = new Node(mTags.get(tag), null, "[" + tag + "]");
-
-        new_node.mParent = current;
-        current.mChildren.add(new_node);
-        return new_node;
     }
 
     public Node add_start(Node current, String tagStr, List<String> args, String raw)

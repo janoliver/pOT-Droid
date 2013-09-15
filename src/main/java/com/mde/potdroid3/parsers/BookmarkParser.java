@@ -10,27 +10,25 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class BookmarkParser extends DefaultHandler {
 
-    private BookmarkList mBookmarkList;
     private Bookmark mCurrentBookmark;
     private Topic mCurrentTopic;
     private Board mCurrentBoard;
 
-    public BookmarkParser() {
-        mBookmarkList = new BookmarkList();
-    }
-
-    public BookmarkList parse(InputStream instream) {
+    public BookmarksContainer parse(InputStream instream) {
         RootElement bookmarks = new RootElement(BookmarkList.Xml.BOOKMARKS_TAG);
+
+        final BookmarksContainer container = new BookmarksContainer();
 
         // find the board information
         bookmarks.setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
-                mBookmarkList.setNumberOfNewPosts(Integer.parseInt(attributes.getValue(BookmarkList.Xml.BOOKMARKS_ATTRIBUTE_COUNT)));
+                container.setNumberOfNewPosts(Integer.parseInt(attributes.getValue(BookmarkList.Xml.BOOKMARKS_ATTRIBUTE_COUNT)));
             }
         });
 
@@ -39,7 +37,7 @@ public class BookmarkParser extends DefaultHandler {
 
             @Override
             public void end() {
-                mBookmarkList.addBookmark(mCurrentBookmark);
+                container.addBookmark(mCurrentBookmark);
             }
 
             @Override
@@ -95,6 +93,27 @@ public class BookmarkParser extends DefaultHandler {
             return null;
         }
 
-        return mBookmarkList;
+        return container;
+    }
+
+    public static class BookmarksContainer {
+        private ArrayList<Bookmark> mBookmarks = new ArrayList<Bookmark>();
+        private Integer mNumberOfNewPosts;
+
+        public void setNumberOfNewPosts(int new_posts) {
+            mNumberOfNewPosts = new_posts;
+        }
+
+        public void addBookmark(Bookmark b) {
+            mBookmarks.add(b);
+        }
+
+        public ArrayList<Bookmark> getBookmarks() {
+            return mBookmarks;
+        }
+
+        public Integer getNumberOfNewPosts() {
+            return mNumberOfNewPosts;
+        }
     }
 }

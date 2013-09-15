@@ -86,15 +86,15 @@
             android:id="@+id/separator"
             android:layout_width="fill_parent"
             android:layout_height="2dp"
-            android:background="#222E3A"/>
+            android:background="@color/bbstyle_darkblue"/>
 
     <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:choiceMode="singleChoice"
             android:id="@+id/listview_bookmarks"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"/>
+            android:divider="@color/bbstyle_darkblue"
+            android:dividerHeight="1dp"/>
     <TextView
             android:id="@+id/empty_bookmarks_text"
             android:layout_width="match_parent"

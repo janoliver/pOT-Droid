@@ -25,14 +25,19 @@ public class Post implements Serializable {
     private static final long serialVersionUID = 1L;
     
     private Integer mId;
-    private Topic mTopic = null;
-    private Board mBoard = null;
-    private String mText = "";
+    private Topic mTopic;
+    private Board mBoard;
+    private String mText;
     private Date mDate;
-    private String mTitle = "";
-    private User mAuthor = null;
-    private Integer mEdited = 0;
-    private User mLastEditUser = null;
+    private String mTitle;
+    private User mAuthor;
+    private Integer mEdited;
+    private User mLastEditUser;
+    private Date mLastEditDate;
+    private Integer mIconId;
+    private String mIconFile;
+    public String mBookmarktoken;
+    public String mEdittoken;
 
     public Date getLastEditDate() {
         return mLastEditDate;
@@ -53,12 +58,6 @@ public class Post implements Serializable {
     public void setLastEditUser(User mLastEditUser) {
         this.mLastEditUser = mLastEditUser;
     }
-
-    private Date mLastEditDate = null;
-    private Integer mIconId = 0;
-    private String mIconFile = "";
-    public String mBookmarktoken = "";
-    public String mEdittoken = "";
 
     public Post(Integer id) {
         mId = id;
@@ -181,7 +180,7 @@ public class Post implements Serializable {
         public static String MESSAGE_TITLE_TAG = "title";
         public static String MESSAGE_CONTENT_TAG = "content";
         public static String MESSAGE_EDITED_TAG = "edited";
-        public static String MESSAGE_EDITED_ATTRIBUTE = "value";
+        public static String MESSAGE_EDITED_ATTRIBUTE = "count";
         public static String MESSAGE_LASTEDIT_TAG = "lastedit";
 
         public static String DATE_TAG = "date";

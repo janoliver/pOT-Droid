@@ -125,31 +125,47 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
-        public static final int menu_icon_forward=0x7f01000e;
+        public static final int menu_icon_ffwd=0x7f01000e;
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
-        public static final int menu_icon_home=0x7f01000f;
+        public static final int menu_icon_forward=0x7f01000f;
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
-        public static final int menu_icon_link=0x7f010010;
+        public static final int menu_icon_frwd=0x7f010010;
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
-        public static final int menu_icon_pm=0x7f010011;
+        public static final int menu_icon_fwd=0x7f010011;
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
-        public static final int menu_icon_preferences=0x7f010012;
+        public static final int menu_icon_home=0x7f010012;
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
-        public static final int menu_icon_quote=0x7f010013;
+        public static final int menu_icon_link=0x7f010013;
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
-        public static final int menu_icon_refresh=0x7f010014;
+        public static final int menu_icon_pm=0x7f010014;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int menu_icon_preferences=0x7f010015;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int menu_icon_quote=0x7f010016;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int menu_icon_refresh=0x7f010017;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int menu_icon_rwd=0x7f010018;
     }
     public static final class color {
         /**  From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/colors.xml 
@@ -188,53 +204,56 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int dark_content_edit=0x7f02000d;
         public static final int dark_navigation_accept=0x7f02000e;
         public static final int dark_navigation_back=0x7f02000f;
-        public static final int dark_navigation_forward=0x7f020010;
-        public static final int dark_navigation_home=0x7f020011;
-        public static final int dark_navigation_link=0x7f020012;
-        public static final int dark_navigation_pm=0x7f020013;
-        public static final int dark_navigation_quote=0x7f020014;
-        public static final int dark_navigation_refresh=0x7f020015;
-        public static final int dark_rating_favorite=0x7f020016;
-        public static final int dark_reply=0x7f020017;
-        public static final int ic_launcher=0x7f020018;
-        public static final int light_action_settings=0x7f020019;
-        public static final int light_content_edit=0x7f02001a;
-        public static final int light_navigation_accept=0x7f02001b;
-        public static final int light_navigation_back=0x7f02001c;
-        public static final int light_navigation_forward=0x7f02001d;
-        public static final int light_navigation_home=0x7f02001e;
-        public static final int light_navigation_link=0x7f02001f;
-        public static final int light_navigation_pm=0x7f020020;
-        public static final int light_navigation_quote=0x7f020021;
-        public static final int light_navigation_refresh=0x7f020022;
-        public static final int light_rating_favorite=0x7f020023;
-        public static final int light_reply=0x7f020024;
-        public static final int list_focused_bbdarkstyle=0x7f020025;
-        public static final int menu_dropdown_panel_bbdarkstyle=0x7f020026;
-        public static final int pressed_background_bbdarkstyle=0x7f020027;
-        public static final int progress_bg_bbdarkstyle=0x7f020028;
-        public static final int progress_horizontal_bbdarkstyle=0x7f020029;
-        public static final int progress_primary_bbdarkstyle=0x7f02002a;
-        public static final int progress_secondary_bbdarkstyle=0x7f02002b;
-        public static final int selectable_background_bbdarkstyle=0x7f02002c;
-        public static final int sidebar_bookmarkbutton_background=0x7f02002d;
-        public static final int sidebar_button_background=0x7f02002e;
-        public static final int spinner_ab_default_bbdarkstyle=0x7f02002f;
-        public static final int spinner_ab_disabled_bbdarkstyle=0x7f020030;
-        public static final int spinner_ab_focused_bbdarkstyle=0x7f020031;
-        public static final int spinner_ab_pressed_bbdarkstyle=0x7f020032;
-        public static final int spinner_background_ab_bbdarkstyle=0x7f020033;
-        public static final int tab_indicator_ab_bbdarkstyle=0x7f020034;
-        public static final int tab_selected_bbdarkstyle=0x7f020035;
-        public static final int tab_selected_focused_bbdarkstyle=0x7f020036;
-        public static final int tab_selected_pressed_bbdarkstyle=0x7f020037;
-        public static final int tab_unselected_bbdarkstyle=0x7f020038;
-        public static final int tab_unselected_focused_bbdarkstyle=0x7f020039;
-        public static final int tab_unselected_pressed_bbdarkstyle=0x7f02003a;
+        public static final int dark_navigation_ffwd=0x7f020010;
+        public static final int dark_navigation_forward=0x7f020011;
+        public static final int dark_navigation_frwd=0x7f020012;
+        public static final int dark_navigation_fwd=0x7f020013;
+        public static final int dark_navigation_home=0x7f020014;
+        public static final int dark_navigation_link=0x7f020015;
+        public static final int dark_navigation_pm=0x7f020016;
+        public static final int dark_navigation_quote=0x7f020017;
+        public static final int dark_navigation_refresh=0x7f020018;
+        public static final int dark_navigation_rwd=0x7f020019;
+        public static final int dark_rating_favorite=0x7f02001a;
+        public static final int dark_reply=0x7f02001b;
+        public static final int ic_launcher=0x7f02001c;
+        public static final int light_action_settings=0x7f02001d;
+        public static final int light_content_edit=0x7f02001e;
+        public static final int light_navigation_accept=0x7f02001f;
+        public static final int light_navigation_back=0x7f020020;
+        public static final int light_navigation_forward=0x7f020021;
+        public static final int light_navigation_home=0x7f020022;
+        public static final int light_navigation_link=0x7f020023;
+        public static final int light_navigation_pm=0x7f020024;
+        public static final int light_navigation_quote=0x7f020025;
+        public static final int light_navigation_refresh=0x7f020026;
+        public static final int light_rating_favorite=0x7f020027;
+        public static final int light_reply=0x7f020028;
+        public static final int list_focused_bbdarkstyle=0x7f020029;
+        public static final int menu_dropdown_panel_bbdarkstyle=0x7f02002a;
+        public static final int pressed_background_bbdarkstyle=0x7f02002b;
+        public static final int progress_bg_bbdarkstyle=0x7f02002c;
+        public static final int progress_horizontal_bbdarkstyle=0x7f02002d;
+        public static final int progress_primary_bbdarkstyle=0x7f02002e;
+        public static final int progress_secondary_bbdarkstyle=0x7f02002f;
+        public static final int selectable_background_bbdarkstyle=0x7f020030;
+        public static final int sidebar_bookmarkbutton_background=0x7f020031;
+        public static final int sidebar_button_background=0x7f020032;
+        public static final int spinner_ab_default_bbdarkstyle=0x7f020033;
+        public static final int spinner_ab_disabled_bbdarkstyle=0x7f020034;
+        public static final int spinner_ab_focused_bbdarkstyle=0x7f020035;
+        public static final int spinner_ab_pressed_bbdarkstyle=0x7f020036;
+        public static final int spinner_background_ab_bbdarkstyle=0x7f020037;
+        public static final int tab_indicator_ab_bbdarkstyle=0x7f020038;
+        public static final int tab_selected_bbdarkstyle=0x7f020039;
+        public static final int tab_selected_focused_bbdarkstyle=0x7f02003a;
+        public static final int tab_selected_pressed_bbdarkstyle=0x7f02003b;
+        public static final int tab_unselected_bbdarkstyle=0x7f02003c;
+        public static final int tab_unselected_focused_bbdarkstyle=0x7f02003d;
+        public static final int tab_unselected_pressed_bbdarkstyle=0x7f02003e;
     }
     public static final class id {
         public static final int RelativeLayout01=0x7f0c001f;
-        public static final int bookmarks=0x7f0c002c;
         public static final int button_bookmark=0x7f0c0007;
         public static final int button_bookmarks=0x7f0c0013;
         public static final int button_edit=0x7f0c0005;
@@ -249,30 +268,31 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int drawer_layout=0x7f0c000b;
         public static final int empty_bookmarks_text=0x7f0c0019;
         public static final int error_text=0x7f0c0009;
-        public static final int forumact=0x7f0c002a;
         public static final int layout_root=0x7f0c0000;
         public static final int list_content=0x7f0c000e;
         public static final int listview_bookmarks=0x7f0c0018;
         public static final int loader=0x7f0c0024;
         public static final int loader_img=0x7f0c000a;
         public static final int loader_text=0x7f0c0025;
-        public static final int loggedin=0x7f0c002b;
         public static final int login_progress=0x7f0c0004;
         public static final int msg_text=0x7f0c0028;
         public static final int msg_title=0x7f0c0027;
         public static final int name=0x7f0c001b;
         public static final int nav_buttons=0x7f0c0010;
+        public static final int nav_firstpage=0x7f0c0029;
+        public static final int nav_lastpage=0x7f0c002d;
+        public static final int nav_next=0x7f0c002c;
+        public static final int nav_previous=0x7f0c002a;
+        public static final int nav_refresh=0x7f0c002b;
         public static final int newposts=0x7f0c0020;
-        public static final int next=0x7f0c002f;
+        public static final int next=0x7f0c0030;
         public static final int notifications=0x7f0c0023;
         public static final int post_text=0x7f0c001e;
         public static final int post_title=0x7f0c001d;
-        public static final int preferences=0x7f0c0029;
-        public static final int previous=0x7f0c002d;
-        public static final int refresh=0x7f0c002e;
+        public static final int previous=0x7f0c002e;
+        public static final int refresh=0x7f0c002f;
         public static final int refresh_bookmarks=0x7f0c0016;
         public static final int refresh_bookmarks_icon=0x7f0c0015;
-        public static final int reply=0x7f0c0030;
         public static final int separator=0x7f0c0017;
         public static final int sidebar=0x7f0c000f;
         public static final int sidebar_container=0x7f0c000d;
@@ -350,12 +370,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         /**  From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/styles.xml 
          */
         public static final int PotDroidDark=0x7f0a0009;
-        public static final int PotDroidLight=0x7f0a000a;
         /**  From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/styles_bbdarkstyle.xml 
          */
-        public static final int ProgressBar_Bbdarkstyle=0x7f0a000b;
-        public static final int Theme_Bbdarkstyle=0x7f0a000c;
-        public static final int Theme_Bbdarkstyle_Widget=0x7f0a000d;
+        public static final int ProgressBar_Bbdarkstyle=0x7f0a000a;
+        public static final int Theme_Bbdarkstyle=0x7f0a000b;
+        public static final int Theme_Bbdarkstyle_Widget=0x7f0a000c;
     }
     public static final class xml {
         public static final int preferences=0x7f050000;

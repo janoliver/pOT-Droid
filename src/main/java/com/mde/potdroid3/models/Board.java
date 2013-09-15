@@ -13,14 +13,16 @@ public class Board implements Serializable {
     private static final long serialVersionUID = 7L;
     
     private Integer mId;
-    private Integer mNumberOfThreads = 0;
-    private Integer mNumberOfReplies = 0;
+    private Integer mNumberOfThreads;
+    private Integer mNumberOfReplies;
     private Integer mThreadsPerPage = 30;
-    private String  mName = "";
-    private String  mDescription = "";
+    private Integer mPage;
+    private Integer mOffset;
+    private String  mName;
+    private String  mDescription;
     private ArrayList<Topic> mTopics = new ArrayList<Topic>();
-    private Category mCategory = null;
-    private Post mLastPost = null;
+    private Category mCategory;
+    private Post mLastPost;
 
     public Board(Integer id) {
         mId = id;
@@ -30,6 +32,22 @@ public class Board implements Serializable {
 
     public void setId(int id) {
         mId = id;
+    }
+
+    public Integer getPage() {
+        return mPage;
+    }
+
+    public void setPage(Integer page) {
+        mPage = page;
+    }
+
+    public Integer getOffset() {
+        return mOffset;
+    }
+
+    public void setOffset(Integer offset) {
+        mOffset = offset;
     }
 
     public Integer getNumberOfThreads() {
@@ -108,13 +126,19 @@ public class Board implements Serializable {
         return mId;
     }
 
+    public Boolean isLastPage() {
+        return mPage == getNumberOfPages();
+    }
+
     public static class Xml {
         public static String TAG = "board";
         public static String DESCRIPTION_TAG = "description";
         public static String NAME_TAG = "name";
         public static String LASTPOST_TAG = "lastpost";
         public static String ID_ATTRIBUTE = "id";
+
         public static String THREADS_TAG = "threads";
+        public static String THREADS_ATTRIBUTE_PAGE = "page";
 
         public static String IN_CATEGORY_TAG = "in-category";
         public static String IN_CATEGORY_ID_ATTRIBUTE = "id";

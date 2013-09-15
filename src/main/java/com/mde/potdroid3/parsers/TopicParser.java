@@ -2,8 +2,10 @@ package com.mde.potdroid3.parsers;
 
 import android.sax.*;
 import android.util.Xml;
-import com.mde.potdroid3.helpers.Utils;
-import com.mde.potdroid3.models.*;
+import com.mde.potdroid3.models.Board;
+import com.mde.potdroid3.models.Post;
+import com.mde.potdroid3.models.Topic;
+import com.mde.potdroid3.models.User;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -151,7 +153,17 @@ public class TopicParser extends DefaultHandler {
             }
         });
 
-        Element post = thread.getChild(Topic.Xml.POSTS_TAG).getChild(Post.Xml.TAG);
+        Element posts = thread.requireChild(Topic.Xml.POSTS_TAG);
+        posts.setStartElementListener(new StartElementListener() {
+
+            @Override
+            public void start(Attributes attributes) {
+                mThread.setPage(Integer.parseInt(attributes.getValue(Topic.Xml.POSTS_ATTRIBUTE_PAGE)));
+                mThread.setOffset(Integer.parseInt(attributes.getValue(Topic.Xml.POSTS_ATTRIBUTE_OFFSET)));
+            }
+        });
+
+        Element post = posts.getChild(Post.Xml.TAG);
         post.setElementListener(new ElementListener() {
 
             @Override
@@ -230,14 +242,14 @@ public class TopicParser extends DefaultHandler {
 
             @Override
             public void end(String body) {
-                mThread.setTitle(body);
+                mCurrentPost.setTitle(body);
             }
         });
         message.requireChild(Post.Xml.MESSAGE_EDITED_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
-                mThread.setIsGlobal(Boolean.parseBoolean(attributes.getValue(Post.Xml.MESSAGE_EDITED_ATTRIBUTE)));
+                mCurrentPost.setEdited(Integer.parseInt(attributes.getValue(Post.Xml.MESSAGE_EDITED_ATTRIBUTE)));
             }
         });
 
@@ -266,10 +278,8 @@ public class TopicParser extends DefaultHandler {
         try {
             Xml.parse(instream, Xml.Encoding.UTF_8, thread.getContentHandler());
         } catch (IOException e) {
-            Utils.log(e.getMessage());
             return null;
         } catch (SAXException e) {
-            Utils.log(e.getMessage());
             return null;
         }
 

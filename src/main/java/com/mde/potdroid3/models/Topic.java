@@ -14,25 +14,27 @@ public class Topic implements Serializable{
     private static final long serialVersionUID = 2L;
     
     private Integer mId;
-    private Integer mNumberOfPosts = 0;
-    private Integer mNumberOfHits = 0;
-    private Integer mNumberOfPages = 0;
-    private Integer mPid = 0;
-    private Integer mLastPage = 1;
+    private Integer mNumberOfPosts;
+    private Integer mNumberOfHits;
+    private Integer mNumberOfPages;
+    private Integer mPage;
+    private Integer mOffset;
+    private Integer mPid;
     private Integer mPostsPerPage = 30;
-    private String mTitle = "";
-    private String mSubTitle = "";
-    private Board mBoard = null;
-    private User mAuthor = null;
-    private Boolean mIsImportant = false;
-    private Boolean mIsClosed = false;
-    private Boolean mIsAnnouncement = false;
-    private Boolean mIsGlobal = false;
-    private Boolean mIsSticky = false;
-    private String mNewreplytoken = "";
-    private Integer mLastFetchedPage = 0;
-    private Post mFirstPost = null;
+    private String mTitle;
+    private String mSubTitle;
+    private Board mBoard;
+    private User mAuthor;
+    private Boolean mIsImportant;
+    private Boolean mIsClosed;
+    private Boolean mIsAnnouncement;
+    private Boolean mIsGlobal;
+    private Boolean mIsSticky;
+    private String mNewreplytoken;
+    private Integer mLastFetchedPage;
+    private Post mFirstPost;
     private ArrayList<Post> mPosts = new ArrayList<Post>();
+    private String mHtmlCache;
 
     // constructor for TopicActivity
     public Topic(Integer id) {
@@ -53,6 +55,10 @@ public class Topic implements Serializable{
         mNumberOfPosts = numberOfPosts;
     }
 
+    public void setNumberOfPages(Integer numberOfPages) {
+        mNumberOfPages = numberOfPages;
+    }
+
     public Integer getNumberOfHits() {
         return mNumberOfHits;
     }
@@ -62,11 +68,25 @@ public class Topic implements Serializable{
     }
 
     public Integer getNumberOfPages() {
+        if(mNumberOfPages == null)
+            mNumberOfPages = mNumberOfPosts / mPostsPerPage + 1;
         return mNumberOfPages;
     }
 
-    public void setNumberOfPages(Integer numberOfPages) {
-        mNumberOfPages = numberOfPages;
+    public Integer getPage() {
+        return mPage;
+    }
+
+    public void setPage(Integer page) {
+        mPage = page;
+    }
+
+    public Integer getOffset() {
+        return mOffset;
+    }
+
+    public void setOffset(Integer offset) {
+        mOffset = offset;
     }
 
     public Integer getPid() {
@@ -75,14 +95,6 @@ public class Topic implements Serializable{
 
     public void setPid(Integer pid) {
         mPid = pid;
-    }
-
-    public Integer getLastPage() {
-        return mLastPage;
-    }
-
-    public void setLastPage(Integer lastPage) {
-        mLastPage = lastPage;
     }
 
     public Integer getPostsPerPage() {
@@ -205,6 +217,18 @@ public class Topic implements Serializable{
         return mId;
     }
 
+    public void setHtmlCache(String cache) {
+        mHtmlCache = cache;
+    }
+
+    public String getHtmlCache() {
+        return mHtmlCache;
+    }
+
+    public Boolean isLastPage() {
+        return mPage == getNumberOfPages();
+    }
+
     public static class Xml {
         public static String TAG = "thread";
         public static String SUBTITLE_TAG = "subtitle";
@@ -212,7 +236,10 @@ public class Topic implements Serializable{
         public static String FIRSTPOST_TAG = "lastpost";
         public static String ID_ATTRIBUTE = "id";
         public static String FLAGS_TAG = "flags";
+
         public static String POSTS_TAG = "posts";
+        public static String POSTS_ATTRIBUTE_PAGE = "page";
+        public static String POSTS_ATTRIBUTE_OFFSET = "offset";
 
         public static String IN_BOARD_TAG = "in-board";
         public static String IN_BOARD_ATTRIBUTE = "id";

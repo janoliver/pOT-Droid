@@ -12,16 +12,10 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import com.mde.potdroid3.ForumActivity;
 import com.mde.potdroid3.R;
-import com.mde.potdroid3.SettingsActivity;
 import com.mde.potdroid3.TopicActivity;
-import com.mde.potdroid3.helpers.Network;
 import com.mde.potdroid3.models.Bookmark;
 import com.mde.potdroid3.models.BookmarkList;
-import com.mde.potdroid3.parsers.BookmarkParser;
-
-import java.io.InputStream;
 
 public class BookmarkFragment extends BaseFragment
         implements LoaderManager.LoaderCallbacks<BookmarkList> {
@@ -78,14 +72,6 @@ public class BookmarkFragment extends BaseFragment
             case R.id.refresh:
                 restartLoader(this);
                 return true;
-            case R.id.preferences:
-                intent = new Intent(getActivity(), SettingsActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.forumact:
-                intent = new Intent(getActivity(), ForumActivity.class);
-                startActivity(intent);
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -93,7 +79,7 @@ public class BookmarkFragment extends BaseFragment
 
     @Override
     public Loader<BookmarkList> onCreateLoader(int id, Bundle args) {
-        AsyncContentLoader l = new AsyncContentLoader(getActivity(), mNetwork);
+        AsyncContentLoader l = new AsyncContentLoader(getActivity(), mBookmarkList);
         showLoader();
         return l;
     }
@@ -148,26 +134,25 @@ public class BookmarkFragment extends BaseFragment
         }
     }
 
-    static class AsyncContentLoader extends AsyncTaskLoader<BookmarkList> {
-        private Network mNetwork;
+    public static class AsyncContentLoader extends AsyncTaskLoader<BookmarkList> {
+        private BookmarkList mBookmarkList;
 
-        AsyncContentLoader(Context cx, Network network) {
+        AsyncContentLoader(Context cx, BookmarkList list) {
             super(cx);
-            mNetwork = network;
+            mBookmarkList = list;
         }
 
         @Override
         public BookmarkList loadInBackground() {
+
             try {
-                InputStream xml = mNetwork.getDocument(BookmarkList.Xml.getUrl());
-                BookmarkParser parser = new BookmarkParser();
-                return parser.parse(xml);
+                mBookmarkList.refresh();
+                return mBookmarkList;
             } catch (Exception e) {
+                e.printStackTrace();
                 return null;
             }
         }
 
     }
-
-
 }

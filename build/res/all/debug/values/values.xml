@@ -35,13 +35,17 @@
     <attr name="menu_icon_back" format="reference" />
     <attr name="menu_icon_edit" format="reference" />
     <attr name="menu_icon_favorite" format="reference" />
+    <attr name="menu_icon_ffwd" format="reference" />
     <attr name="menu_icon_forward" format="reference" />
+    <attr name="menu_icon_frwd" format="reference" />
+    <attr name="menu_icon_fwd" format="reference" />
     <attr name="menu_icon_home" format="reference" />
     <attr name="menu_icon_link" format="reference" />
     <attr name="menu_icon_pm" format="reference" />
     <attr name="menu_icon_preferences" format="reference" />
     <attr name="menu_icon_quote" format="reference" />
     <attr name="menu_icon_refresh" format="reference" />
+    <attr name="menu_icon_rwd" format="reference" />
     <!-- From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/colors.xml -->
     <color name="bbstyle_darkblue">#222E3A</color>
     <color name="bbstyle_lightblue">#394E63</color>
@@ -129,26 +133,16 @@
         <item name="menu_icon_back">@drawable/dark_navigation_back</item>
         <item name="menu_icon_forward">@drawable/dark_navigation_forward</item>
         <item name="menu_icon_refresh">@drawable/dark_navigation_refresh</item>
+        <item name="menu_icon_fwd">@drawable/dark_navigation_fwd</item>
+        <item name="menu_icon_ffwd">@drawable/dark_navigation_ffwd</item>
+        <item name="menu_icon_rwd">@drawable/dark_navigation_rwd</item>
+        <item name="menu_icon_frwd">@drawable/dark_navigation_frwd</item>
         <item name="menu_icon_favorite">@drawable/dark_rating_favorite</item>
         <item name="menu_icon_pm">@drawable/dark_navigation_pm</item>
         <item name="menu_icon_home">@drawable/dark_navigation_home</item>
         <item name="menu_icon_accept">@drawable/dark_navigation_accept</item>
         <item name="menu_icon_link">@drawable/dark_navigation_link</item>
         <item name="menu_icon_quote">@drawable/dark_navigation_quote</item>
-    </style>
-
-    <style name="PotDroidLight" parent="android:Theme.Holo.Light">
-        <item name="menu_icon_preferences">@drawable/light_action_settings</item>
-        <item name="menu_icon_edit">@drawable/light_content_edit</item>
-        <item name="menu_icon_back">@drawable/light_navigation_back</item>
-        <item name="menu_icon_forward">@drawable/light_navigation_forward</item>
-        <item name="menu_icon_refresh">@drawable/light_navigation_refresh</item>
-        <item name="menu_icon_favorite">@drawable/light_rating_favorite</item>
-        <item name="menu_icon_home">@drawable/light_navigation_home</item>
-        <item name="menu_icon_pm">@drawable/light_navigation_pm</item>
-        <item name="menu_icon_accept">@drawable/light_navigation_accept</item>
-        <item name="menu_icon_link">@drawable/light_navigation_link</item>
-        <item name="menu_icon_quote">@drawable/light_navigation_quote</item>
     </style>
     <!-- From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/styles_bbdarkstyle.xml -->
     <style name="ProgressBar.Bbdarkstyle" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">

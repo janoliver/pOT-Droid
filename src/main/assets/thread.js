@@ -18,6 +18,8 @@ $(document).ready(function() {
     // scroll to the last post, when there was one
     if(api.getScroll() > 0) {
         document.location.href = "#" + api.getScroll();
+        var before = $('a[name="' + api.getScroll() + '"]').parent().prevAll();
+        before.css({ opacity: 0.5 });
     }
 
     // manual image loader

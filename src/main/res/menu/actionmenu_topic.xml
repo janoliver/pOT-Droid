@@ -1,34 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/preferences"
-          android:title="Einstellungen"
-          android:icon="?attr/menu_icon_preferences"/>
-    <item android:id="@+id/forumact"
-          android:title="Forenübersicht"
-          android:icon="?attr/menu_icon_home"/>
-    <item android:id="@+id/previous"
+    <item android:id="@+id/nav_firstpage"
+          android:title="Erste Seite"
+          android:showAsAction="always"
+          android:icon="?attr/menu_icon_frwd"
+          android:enabled="false"/>
+    <item android:id="@+id/nav_previous"
           android:title="Seite zurück"
           android:showAsAction="always"
-          android:icon="?attr/menu_icon_back"/>
-
-    <group android:id="@+id/loggedin">
-        <item android:id="@+id/bookmarks"
-              android:title="Bookmarks"
-              android:icon="?attr/menu_icon_favorite"/>
-        <item android:id="@+id/reply"
-              android:title="Antworten"
-              android:icon="?attr/menu_icon_edit"
-              android:showAsAction="ifRoom"/>
-    </group>
-
-    <item android:id="@+id/refresh"
+          android:icon="?attr/menu_icon_rwd"
+          android:enabled="false"/>
+    <item android:id="@+id/nav_refresh"
           android:title="Aktualisieren"
           android:icon="?attr/menu_icon_refresh"
           android:showAsAction="ifRoom" />
-    <item android:id="@+id/next"
+    <item android:id="@+id/nav_next"
           android:title="Seite vor"
           android:showAsAction="always"
-          android:icon="?attr/menu_icon_forward"/>
-
+          android:icon="?attr/menu_icon_fwd"
+          android:enabled="false"/>
+    <item android:id="@+id/nav_lastpage"
+          android:title="Letzte Seite"
+          android:showAsAction="always"
+          android:icon="?attr/menu_icon_ffwd"
+          android:enabled="false"/>
 
 </menu>

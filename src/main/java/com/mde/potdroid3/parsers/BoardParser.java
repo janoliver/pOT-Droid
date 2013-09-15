@@ -70,7 +70,16 @@ public class BoardParser extends DefaultHandler {
             }
         });
 
-        Element thread = board.getChild(Board.Xml.THREADS_TAG).getChild(Topic.Xml.TAG);
+        Element threads = board.getChild(Board.Xml.THREADS_TAG);
+        threads.setStartElementListener(new StartElementListener() {
+
+            @Override
+            public void start(Attributes attributes) {
+                mBoard.setPage(Integer.parseInt(attributes.getValue(Board.Xml.THREADS_ATTRIBUTE_PAGE)));
+            }
+        });
+
+        Element thread = threads.getChild(Topic.Xml.TAG);
         thread.setElementListener(new ElementListener() {
 
             @Override

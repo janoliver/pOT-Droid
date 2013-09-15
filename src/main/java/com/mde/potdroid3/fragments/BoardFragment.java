@@ -7,14 +7,14 @@ import android.content.Intent;
 import android.content.Loader;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import com.mde.potdroid3.ForumActivity;
 import com.mde.potdroid3.R;
-import com.mde.potdroid3.SettingsActivity;
 import com.mde.potdroid3.TopicActivity;
 import com.mde.potdroid3.helpers.Network;
 import com.mde.potdroid3.models.Board;
@@ -73,7 +73,17 @@ public class BoardFragment extends BaseFragment implements LoaderManager.LoaderC
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_board, menu);
-        //menu.setGroupVisible(R.id.loggedin, mObjectManager.isLoggedIn());
+
+        if(mBoard != null && !mBoard.isLastPage()) {
+            menu.findItem(R.id.nav_lastpage).setEnabled(true);
+            menu.findItem(R.id.nav_next).setEnabled(true);
+        }
+
+        if(mBoard != null && mBoard.getPage() > 1) {
+            menu.findItem(R.id.nav_firstpage).setEnabled(true);
+            menu.findItem(R.id.nav_previous).setEnabled(true);
+        }
+
     }
 
     @Override
@@ -82,18 +92,20 @@ public class BoardFragment extends BaseFragment implements LoaderManager.LoaderC
 
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.refresh:
+            case R.id.nav_refresh:
                 restartLoader(this);
                 return true;
-            case R.id.bookmarks:
+            case R.id.nav_next:
+                goToNextPage();
                 return true;
-            case R.id.preferences:
-                intent = new Intent(getActivity(), SettingsActivity.class);
-                startActivity(intent);
+            case R.id.nav_previous:
+                goToPrevPage();
                 return true;
-            case R.id.forumact:
-                intent = new Intent(getActivity(), ForumActivity.class);
-                startActivity(intent);
+            case R.id.nav_firstpage:
+                goToFirstPage();
+                return true;
+            case R.id.nav_lastpage:
+                goToLastPage();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -115,10 +127,43 @@ public class BoardFragment extends BaseFragment implements LoaderManager.LoaderC
         if(data != null) {
             mBoard = data;
             mListAdapter.notifyDataSetChanged();
+
+            getActivity().invalidateOptionsMenu();
+
+            Spanned subtitleText = Html.fromHtml("Seite <b>" + mBoard.getPage()
+                    + "</b> von <b>" + mBoard.getNumberOfPages() + "</b>");
+
+            getActivity().getActionBar().setTitle(mBoard.getName());
+            getActivity().getActionBar().setSubtitle(subtitleText);
         } else {
             showError("Fehler beim Laden der Daten.");
         }
     }
+
+    public void goToNextPage() {
+        // whether there is a next page was checked in onCreateOptionsMenu
+        getArguments().putInt("page", mBoard.getPage()+1);
+        restartLoader(this);
+    }
+
+    public void goToPrevPage() {
+        // whether there is a previous page was checked in onCreateOptionsMenu
+        getArguments().putInt("page", mBoard.getPage()-1);
+        restartLoader(this);
+    }
+
+    public void goToFirstPage() {
+        // whether there is a previous page was checked in onCreateOptionsMenu
+        getArguments().putInt("page", 1);
+        restartLoader(this);
+    }
+
+    public void goToLastPage() {
+        // whether there is a previous page was checked in onCreateOptionsMenu
+        getArguments().putInt("page", mBoard.getNumberOfPages());
+        restartLoader(this);
+    }
+
 
     @Override
     public void onLoaderReset(Loader<Board> loader) {

@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/preferences"
-          android:title="Einstellungen"
-          android:icon="?attr/menu_icon_preferences"/>
-    <item android:id="@+id/forumact"
-          android:title="Forenübersicht"
-          android:icon="?attr/menu_icon_home"/>
     <item android:id="@+id/previous"
           android:title="Seite zurück"
           android:showAsAction="always"

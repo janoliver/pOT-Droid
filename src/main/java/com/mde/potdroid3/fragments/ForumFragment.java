@@ -11,9 +11,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import com.mde.potdroid3.BoardActivity;
-import com.mde.potdroid3.BookmarkActivity;
 import com.mde.potdroid3.R;
-import com.mde.potdroid3.SettingsActivity;
 import com.mde.potdroid3.helpers.Network;
 import com.mde.potdroid3.models.Board;
 import com.mde.potdroid3.models.Category;
@@ -83,14 +81,6 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
             case R.id.refresh:
                 // reload content
                 restartLoader(this);
-                return true;
-            case R.id.bookmarks:
-                intent = new Intent(getActivity(), BookmarkActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.preferences:
-                intent = new Intent(getActivity(), SettingsActivity.class);
-                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

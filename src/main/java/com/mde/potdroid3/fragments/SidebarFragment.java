@@ -2,8 +2,6 @@ package com.mde.potdroid3.fragments;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
-import android.content.AsyncTaskLoader;
-import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.graphics.Paint;
@@ -18,9 +16,6 @@ import com.mde.potdroid3.*;
 import com.mde.potdroid3.helpers.Network;
 import com.mde.potdroid3.models.Bookmark;
 import com.mde.potdroid3.models.BookmarkList;
-import com.mde.potdroid3.parsers.BookmarkParser;
-
-import java.io.InputStream;
 
 public class SidebarFragment extends Fragment implements LoaderManager.LoaderCallbacks<BookmarkList> {
 
@@ -41,6 +36,7 @@ public class SidebarFragment extends Fragment implements LoaderManager.LoaderCal
                              Bundle savedInstanceState) {
         mInflater = inflater;
         mNetwork = new Network(getActivity());
+        mBookmarkList = new BookmarkList(getActivity());
         return inflater.inflate(R.layout.layout_sidebar, container, false);
     }
 
@@ -127,7 +123,7 @@ public class SidebarFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public Loader<BookmarkList> onCreateLoader(int id, Bundle args) {
         showBookmarkLoadingAnimation();
-        return new AsyncContentLoader(getActivity(), mNetwork);
+        return new BookmarkFragment.AsyncContentLoader(getActivity(), mBookmarkList);
     }
 
     @Override
@@ -189,32 +185,6 @@ public class SidebarFragment extends Fragment implements LoaderManager.LoaderCal
 
             return row;
         }
-    }
-
-    static class AsyncContentLoader extends AsyncTaskLoader<BookmarkList> {
-        private Network mNetwork;
-
-        AsyncContentLoader(Context cx, Network network) {
-            super(cx);
-            mNetwork = network;
-        }
-
-
-
-        @Override
-        public BookmarkList loadInBackground() {
-
-            try {
-                InputStream xml = mNetwork.getDocument(BookmarkList.Xml.getUrl());
-                BookmarkParser parser = new BookmarkParser();
-
-                return parser.parse(xml);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
     }
 
 

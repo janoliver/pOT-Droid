@@ -7,13 +7,13 @@ import android.content.Intent;
 import android.content.Loader;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.*;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import com.mde.potdroid3.ForumActivity;
 import com.mde.potdroid3.R;
-import com.mde.potdroid3.SettingsActivity;
 import com.mde.potdroid3.helpers.Network;
 import com.mde.potdroid3.helpers.TopicBuilder;
 import com.mde.potdroid3.helpers.TopicJSInterface;
@@ -23,9 +23,9 @@ import com.mde.potdroid3.parsers.TopicParser;
 import java.io.InputStream;
 
 public class TopicFragment extends BaseFragment
-        implements LoaderManager.LoaderCallbacks<TopicFragment.TopicHtmlContainer> {
+        implements LoaderManager.LoaderCallbacks<Topic> {
 
-    private TopicHtmlContainer mTopicContainer;
+    private Topic mTopic;
     private WebView mWebView;
     private TopicJSInterface mJsInterface;
 
@@ -55,6 +55,10 @@ public class TopicFragment extends BaseFragment
         mWebView = (WebView)getView().findViewById(R.id.topic_webview);
         mJsInterface = new TopicJSInterface(mWebView, getActivity());
 
+        // if there is a post_id from the bookmarks call, we set it as the currently
+        // visible post.
+        mJsInterface.registerScroll(getArguments().getInt("post_id", 0));
+
         registerForContextMenu(mWebView);
 
         mWebView.getSettings().setJavaScriptEnabled(true);
@@ -71,7 +75,7 @@ public class TopicFragment extends BaseFragment
     }
 
     @Override
-    public Loader<TopicHtmlContainer> onCreateLoader(int id, Bundle args) {
+    public Loader<Topic> onCreateLoader(int id, Bundle args) {
         int page = getArguments().getInt("page", 1);
         int tid = getArguments().getInt("thread_id", 0);
         int pid = getArguments().getInt("post_id", 0);
@@ -81,21 +85,63 @@ public class TopicFragment extends BaseFragment
     }
 
     @Override
-    public void onLoadFinished(Loader<TopicHtmlContainer> loader, TopicHtmlContainer data) {
+    public void onLoadFinished(Loader<Topic> loader, Topic data) {
         hideLoader();
 
+        // hide some buttons
+
         if(data != null) {
-            mTopicContainer = data;
+            mTopic = data;
             mWebView.loadDataWithBaseURL("file:///android_asset/",
-                    mTopicContainer.getHtml(), "text/html", "UTF-8", null);
+                    mTopic.getHtmlCache(), "text/html", "UTF-8", null);
+
+            getActivity().invalidateOptionsMenu();
+
+            Spanned subtitleText = Html.fromHtml("Seite <b>" + mTopic.getPage()
+                    + "</b> von <b>" + mTopic.getNumberOfPages() + "</b>");
+
+            getActivity().getActionBar().setTitle(mTopic.getTitle());
+            getActivity().getActionBar().setSubtitle(subtitleText);
         } else {
             showError("Fehler beim Laden der Daten.");
         }
     }
 
     @Override
-    public void onLoaderReset(Loader<TopicHtmlContainer> loader) {
+    public void onLoaderReset(Loader<Topic> loader) {
         hideLoader();
+    }
+
+    public void goToNextPage() {
+        // whether there is a next page was checked in onCreateOptionsMenu
+        getArguments().putInt("page", mTopic.getPage()+1);
+        getArguments().remove("post_id");
+        mJsInterface.registerScroll(0);
+        restartLoader(this);
+    }
+
+    public void goToPrevPage() {
+        // whether there is a previous page was checked in onCreateOptionsMenu
+        getArguments().putInt("page", mTopic.getPage()-1);
+        getArguments().remove("post_id");
+        mJsInterface.registerScroll(0);
+        restartLoader(this);
+    }
+
+    public void goToFirstPage() {
+        // whether there is a previous page was checked in onCreateOptionsMenu
+        getArguments().putInt("page", 1);
+        getArguments().remove("post_id");
+        mJsInterface.registerScroll(0);
+        restartLoader(this);
+    }
+
+    public void goToLastPage() {
+        // whether there is a previous page was checked in onCreateOptionsMenu
+        getArguments().putInt("page", mTopic.getNumberOfPages());
+        getArguments().remove("post_id");
+        mJsInterface.registerScroll(0);
+        restartLoader(this);
     }
 
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
@@ -115,7 +161,17 @@ public class TopicFragment extends BaseFragment
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_topic, menu);
-        //menu.setGroupVisible(R.id.loggedin, mObjectManager.isLoggedIn());
+
+        if(mTopic != null && !mTopic.isLastPage()) {
+            menu.findItem(R.id.nav_lastpage).setEnabled(true);
+            menu.findItem(R.id.nav_next).setEnabled(true);
+        }
+
+        if(mTopic != null && mTopic.getPage() > 1) {
+            menu.findItem(R.id.nav_firstpage).setEnabled(true);
+            menu.findItem(R.id.nav_previous).setEnabled(true);
+        }
+
     }
 
     @Override
@@ -124,18 +180,20 @@ public class TopicFragment extends BaseFragment
 
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.refresh:
+            case R.id.nav_refresh:
                 restartLoader(this);
                 return true;
-            case R.id.bookmarks:
+            case R.id.nav_next:
+                goToNextPage();
                 return true;
-            case R.id.preferences:
-                intent = new Intent(getActivity(), SettingsActivity.class);
-                startActivity(intent);
+            case R.id.nav_previous:
+                goToPrevPage();
                 return true;
-            case R.id.forumact:
-                intent = new Intent(getActivity(), ForumActivity.class);
-                startActivity(intent);
+            case R.id.nav_firstpage:
+                goToFirstPage();
+                return true;
+            case R.id.nav_lastpage:
+                goToLastPage();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -146,29 +204,7 @@ public class TopicFragment extends BaseFragment
         return R.layout.layout_topic;
     }
 
-    /**
-     * Container class so the html can be parsed by the loader. On orientation change,
-     * we therefore do not have to wait for the TopicParser.
-     */
-    static class TopicHtmlContainer {
-        private Topic mTopic;
-        private String mHtml;
-
-        public TopicHtmlContainer(Topic topic, String html) {
-            mTopic = topic;
-            mHtml = html;
-        }
-
-        public Topic getTopic() {
-            return mTopic;
-        }
-
-        public String getHtml() {
-            return mHtml;
-        }
-    }
-
-    static class AsyncContentLoader extends AsyncTaskLoader<TopicHtmlContainer> {
+    static class AsyncContentLoader extends AsyncTaskLoader<Topic> {
         private Network mNetwork;
         private Integer mPage;
         private Integer mThreadId;
@@ -185,15 +221,16 @@ public class TopicFragment extends BaseFragment
         }
 
         @Override
-        public TopicHtmlContainer loadInBackground() {
+        public Topic loadInBackground() {
             try {
                 InputStream xml = mNetwork.getDocument(Topic.Xml.getUrl(mThreadId, mPage, mPostId));
                 TopicParser parser = new TopicParser();
 
                 Topic t = parser.parse(xml);
                 TopicBuilder b = new TopicBuilder(mContext);
+                t.setHtmlCache(b.parse(t));
 
-                return new TopicHtmlContainer(t, b.parse(t));
+                return t;
 
             } catch (Exception e) {
                 return null;

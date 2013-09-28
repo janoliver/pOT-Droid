@@ -1,5 +1,6 @@
 package com.mde.potdroid3.fragments;
 
+import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
@@ -22,12 +23,13 @@ import com.mde.potdroid3.parsers.TopicParser;
 
 import java.io.InputStream;
 
-public class TopicFragment extends BaseFragment
+public class TopicFragment extends PaginateFragment
         implements LoaderManager.LoaderCallbacks<Topic> {
 
     private Topic mTopic;
     private WebView mWebView;
     private TopicJSInterface mJsInterface;
+    private OnContentLoadedListener mCallback;
 
     public static TopicFragment newInstance(int thread_id, int page, int post_id) {
         TopicFragment f = new TopicFragment();
@@ -40,12 +42,6 @@ public class TopicFragment extends BaseFragment
         f.setArguments(args);
 
         return f;
-    }
-
-    @Override
-    public void onCreate (Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -75,33 +71,56 @@ public class TopicFragment extends BaseFragment
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnContentLoadedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnContentLoadedListener");
+        }
+    }
+
+    @Override
     public Loader<Topic> onCreateLoader(int id, Bundle args) {
         int page = getArguments().getInt("page", 1);
         int tid = getArguments().getInt("thread_id", 0);
         int pid = getArguments().getInt("post_id", 0);
         AsyncContentLoader l = new AsyncContentLoader(getActivity(), mNetwork, page, tid, pid);
-        showLoader();
+        showLoadingAnimation();
+
         return l;
     }
 
     @Override
     public void onLoadFinished(Loader<Topic> loader, Topic data) {
-        hideLoader();
-
-        // hide some buttons
+        hideLoadingAnimation();
 
         if(data != null) {
+
+            // update the topic data
             mTopic = data;
-            mWebView.loadDataWithBaseURL("file:///android_asset/",
-                    mTopic.getHtmlCache(), "text/html", "UTF-8", null);
+
+            // update html
+            mWebView.loadDataWithBaseURL("file:///android_asset/", mTopic.getHtmlCache(),
+                    "text/html", "UTF-8", null);
+
+            // set title and subtitle of the ActionBar and reload the OptionsMenu
+            Spanned subtitleText = Html.fromHtml("Seite <b>"
+                    + mTopic.getPage()
+                    + "</b> von <b>"
+                    + mTopic.getNumberOfPages()
+                    + "</b>");
 
             getActivity().invalidateOptionsMenu();
-
-            Spanned subtitleText = Html.fromHtml("Seite <b>" + mTopic.getPage()
-                    + "</b> von <b>" + mTopic.getNumberOfPages() + "</b>");
-
             getActivity().getActionBar().setTitle(mTopic.getTitle());
             getActivity().getActionBar().setSubtitle(subtitleText);
+
+            // call the onLoaded function
+            mCallback.onContentLoaded();
+
         } else {
             showError("Fehler beim Laden der Daten.");
         }
@@ -109,7 +128,7 @@ public class TopicFragment extends BaseFragment
 
     @Override
     public void onLoaderReset(Loader<Topic> loader) {
-        hideLoader();
+        hideLoadingAnimation();
     }
 
     public void goToNextPage() {
@@ -136,6 +155,16 @@ public class TopicFragment extends BaseFragment
         restartLoader(this);
     }
 
+    @Override
+    public boolean isLastPage() {
+        return mTopic == null || mTopic.isLastPage();
+    }
+
+    @Override
+    public boolean isFirstPage() {
+        return mTopic == null || mTopic.getPage() == 1;
+    }
+
     public void goToLastPage() {
         // whether there is a previous page was checked in onCreateOptionsMenu
         getArguments().putInt("page", mTopic.getNumberOfPages());
@@ -144,7 +173,10 @@ public class TopicFragment extends BaseFragment
         restartLoader(this);
     }
 
+    @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        // long touch is only resolved if it happened on an image. If so, we
+        // offer to open the image with an image application
         WebView.HitTestResult hitTestResult = mWebView.getHitTestResult();
         if (hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE ||
             hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
@@ -157,24 +189,6 @@ public class TopicFragment extends BaseFragment
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-        inflater.inflate(R.menu.actionmenu_topic, menu);
-
-        if(mTopic != null && !mTopic.isLastPage()) {
-            menu.findItem(R.id.nav_lastpage).setEnabled(true);
-            menu.findItem(R.id.nav_next).setEnabled(true);
-        }
-
-        if(mTopic != null && mTopic.getPage() > 1) {
-            menu.findItem(R.id.nav_firstpage).setEnabled(true);
-            menu.findItem(R.id.nav_previous).setEnabled(true);
-        }
-
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
 
@@ -183,27 +197,28 @@ public class TopicFragment extends BaseFragment
             case R.id.nav_refresh:
                 restartLoader(this);
                 return true;
-            case R.id.nav_next:
-                goToNextPage();
-                return true;
-            case R.id.nav_previous:
-                goToPrevPage();
-                return true;
-            case R.id.nav_firstpage:
-                goToFirstPage();
-                return true;
-            case R.id.nav_lastpage:
-                goToLastPage();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+
     protected int getLayout() {
         return R.layout.layout_topic;
     }
 
+    /**
+     * The Activity must implement this listener. It will get informed
+     * when the topic is finished loading, so it can trigger the refresh
+     * of the BookmarksList in the sidebar.
+     */
+    public interface OnContentLoadedListener {
+        public void onContentLoaded();
+    }
+
+    /**
+     * Takes care of loading the topic XML asynchroneously.
+     */
     static class AsyncContentLoader extends AsyncTaskLoader<Topic> {
         private Network mNetwork;
         private Integer mPage;
@@ -238,6 +253,5 @@ public class TopicFragment extends BaseFragment
         }
 
     }
-
 
 }

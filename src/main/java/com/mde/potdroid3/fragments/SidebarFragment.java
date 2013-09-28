@@ -1,43 +1,36 @@
 package com.mde.potdroid3.fragments;
 
-import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.mde.potdroid3.*;
-import com.mde.potdroid3.helpers.Network;
 import com.mde.potdroid3.models.Bookmark;
 import com.mde.potdroid3.models.BookmarkList;
 
-public class SidebarFragment extends Fragment implements LoaderManager.LoaderCallbacks<BookmarkList> {
+public class SidebarFragment extends BaseFragment
+        implements LoaderManager.LoaderCallbacks<BookmarkList>, DrawerLayout.DrawerListener {
 
     private BookmarkList mBookmarkList;
     private BookmarkListAdapter mListAdapter;
     private ListView mListView;
-    protected LayoutInflater mInflater;
-    protected Network mNetwork;
     protected ImageView mBookmarkLoadingIcon;
     protected Button mBookmarkRefreshButton;
+    private Boolean mDirty = true;
 
     public static SidebarFragment newInstance() {
         return new SidebarFragment();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        mInflater = inflater;
-        mNetwork = new Network(getActivity());
-        mBookmarkList = new BookmarkList(getActivity());
-        return inflater.inflate(R.layout.layout_sidebar, container, false);
+    protected int getLayout() {
+        return R.layout.layout_sidebar;
     }
 
     @Override
@@ -45,6 +38,7 @@ public class SidebarFragment extends Fragment implements LoaderManager.LoaderCal
         super.onActivityCreated(savedInstanceState);
 
         mBookmarkLoadingIcon = (ImageView)getView().findViewById(R.id.refresh_bookmarks_icon);
+        mBookmarkList = new BookmarkList(getActivity());
 
         mListAdapter = new BookmarkListAdapter();
         mListView = (ListView)getView().findViewById(R.id.listview_bookmarks);
@@ -104,9 +98,6 @@ public class SidebarFragment extends Fragment implements LoaderManager.LoaderCal
         });
 
 
-
-        startLoader(this);
-
     }
 
     public void showBookmarkLoadingAnimation() {
@@ -120,8 +111,13 @@ public class SidebarFragment extends Fragment implements LoaderManager.LoaderCal
         mBookmarkLoadingIcon.clearAnimation();
     }
 
+    public void refreshBookmarks() {
+        restartLoader(this);
+    }
+
     @Override
     public Loader<BookmarkList> onCreateLoader(int id, Bundle args) {
+        mDirty = false;
         showBookmarkLoadingAnimation();
         return new BookmarkFragment.AsyncContentLoader(getActivity(), mBookmarkList);
     }
@@ -136,23 +132,29 @@ public class SidebarFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     @Override
-    public void onLoaderReset(Loader<BookmarkList> loader) {
-        // empty
+    public void onLoaderReset(Loader<BookmarkList> loader) {}
+
+    @Override
+    public void onDrawerSlide(View view, float v) {}
+
+    @Override
+    public void onDrawerOpened(View view) {
+        if(mDirty)
+            refreshBookmarks();
     }
 
-    /**
-     * Start the content loader
-     */
-    public void startLoader(LoaderManager.LoaderCallbacks l) {
-        getLoaderManager().initLoader(0, null, l).forceLoad();
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mListAdapter.notifyDataSetChanged();
     }
 
-    /**
-     * Restart the content loader
-     */
-    public void restartLoader(LoaderManager.LoaderCallbacks l) {
-        getLoaderManager().restartLoader(0, null, l).forceLoad();
-    }
+    @Override
+    public void onDrawerClosed(View view) {}
+
+    @Override
+    public void onDrawerStateChanged(int i) {}
 
     private class BookmarkListAdapter extends BaseAdapter {
 

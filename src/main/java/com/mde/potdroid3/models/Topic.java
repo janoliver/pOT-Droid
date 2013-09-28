@@ -276,7 +276,9 @@ public class Topic implements Serializable{
         public static String getUrl(int tid, int page, int pid) {
             Uri.Builder b = Uri.parse(URL).buildUpon();
 
+            b.appendQueryParameter("update_bookmark", String.valueOf(1));
             b.appendQueryParameter("TID", String.valueOf(tid));
+
             if(pid > 0) {
                 b.appendQueryParameter("PID", String.valueOf(pid));
             } else {

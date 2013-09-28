@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Window;
 import com.mde.potdroid3.fragments.SidebarFragment;
 
 public class BaseActivity extends Activity {
 
     protected SharedPreferences mSettings;
     protected Bundle mExtras;
+    protected SidebarFragment mSidebar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,19 +21,27 @@ public class BaseActivity extends Activity {
         mSettings = PreferenceManager.getDefaultSharedPreferences(this);
         mExtras = getIntent().getExtras();
 
-//        String theme = mSettings.getString("theme", Utils.THEME_LIGHT);
-//        if(theme == Utils.THEME_LIGHT)   this.setTheme(R.style.PotDroidLight);
-//        if(theme == Utils.THEME_DARK)    this.setTheme(R.style.PotDroidDark);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-        setContentView(R.layout.layout_activity_single_fragment);
+        setContentView(getLayout());
+
+        mSidebar = (SidebarFragment)getFragmentManager().findFragmentByTag("sidebar");
+        if(mSidebar == null)
+            mSidebar = SidebarFragment.newInstance();
+
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout.setDrawerListener(mSidebar);
 
         if (savedInstanceState == null) {
-
             getFragmentManager().beginTransaction()
-                    .add(R.id.sidebar_container, SidebarFragment.newInstance())
+                    .add(R.id.sidebar_container, mSidebar, "sidebar")
                     .commit();
         }
 
+    }
+
+    protected int getLayout() {
+        return R.layout.layout_activity_single_fragment;
     }
 
 }

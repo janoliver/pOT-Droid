@@ -80,13 +80,13 @@ public class BookmarkFragment extends BaseFragment
     @Override
     public Loader<BookmarkList> onCreateLoader(int id, Bundle args) {
         AsyncContentLoader l = new AsyncContentLoader(getActivity(), mBookmarkList);
-        showLoader();
+        showLoadingAnimation();
         return l;
     }
 
     @Override
     public void onLoadFinished(Loader<BookmarkList> loader, BookmarkList data) {
-        hideLoader();
+        hideLoadingAnimation();
         if(data != null) {
             mBookmarkList = data;
             mListAdapter.notifyDataSetChanged();
@@ -97,11 +97,11 @@ public class BookmarkFragment extends BaseFragment
 
     @Override
     public void onLoaderReset(Loader<BookmarkList> loader) {
-        hideLoader();
+        hideLoadingAnimation();
     }
 
     protected int getLayout() {
-        return R.layout.layout_list_container;
+        return R.layout.layout_board;
     }
 
     private class BookmarkListAdapter extends BaseAdapter {

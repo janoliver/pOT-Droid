@@ -172,14 +172,16 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
          */
         public static final int bbstyle_darkblue=0x7f070000;
         public static final int bbstyle_lightblue=0x7f070001;
-        public static final int black=0x7f070002;
-        public static final int button_text_color=0x7f070005;
+        public static final int bbstyle_middleblue=0x7f070002;
+        public static final int black=0x7f070003;
+        public static final int darkgrey=0x7f070004;
+        public static final int grey=0x7f070005;
         /**  From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/colors_bbdarkstyle.xml 
          */
-        public static final int pressed_bbdarkstyle=0x7f070003;
+        public static final int pressed_bbdarkstyle=0x7f070006;
         /**  From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/colors.xml 
          */
-        public static final int white=0x7f070004;
+        public static final int white=0x7f070007;
     }
     public static final class dimen {
         /**  From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/dimens.xml 
@@ -255,77 +257,71 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     public static final class id {
         public static final int RelativeLayout01=0x7f0c001f;
         public static final int button_bookmark=0x7f0c0007;
-        public static final int button_bookmarks=0x7f0c0013;
+        public static final int button_bookmarks=0x7f0c0012;
         public static final int button_edit=0x7f0c0005;
-        public static final int button_home=0x7f0c0011;
+        public static final int button_home=0x7f0c0010;
         public static final int button_link=0x7f0c0008;
-        public static final int button_pm=0x7f0c0012;
-        public static final int button_preferences=0x7f0c0014;
+        public static final int button_pm=0x7f0c0011;
+        public static final int button_preferences=0x7f0c0013;
         public static final int button_quote=0x7f0c0006;
-        public static final int container=0x7f0c0026;
-        public static final int content=0x7f0c000c;
-        public static final int description=0x7f0c001c;
-        public static final int drawer_layout=0x7f0c000b;
-        public static final int empty_bookmarks_text=0x7f0c0019;
-        public static final int error_text=0x7f0c0009;
+        public static final int container=0x7f0c0022;
+        public static final int content=0x7f0c000a;
+        public static final int description=0x7f0c0025;
+        public static final int drawer_layout=0x7f0c0009;
+        public static final int empty_bookmarks_text=0x7f0c0018;
+        public static final int last_post=0x7f0c001c;
         public static final int layout_root=0x7f0c0000;
-        public static final int list_content=0x7f0c000e;
-        public static final int listview_bookmarks=0x7f0c0018;
-        public static final int loader=0x7f0c0024;
-        public static final int loader_img=0x7f0c000a;
-        public static final int loader_text=0x7f0c0025;
+        public static final int list_content=0x7f0c000d;
+        public static final int listview_bookmarks=0x7f0c0017;
         public static final int login_progress=0x7f0c0004;
-        public static final int msg_text=0x7f0c0028;
-        public static final int msg_title=0x7f0c0027;
-        public static final int name=0x7f0c001b;
-        public static final int nav_buttons=0x7f0c0010;
+        public static final int name=0x7f0c0020;
+        public static final int nav_buttons=0x7f0c000f;
         public static final int nav_firstpage=0x7f0c0029;
         public static final int nav_lastpage=0x7f0c002d;
         public static final int nav_next=0x7f0c002c;
         public static final int nav_previous=0x7f0c002a;
         public static final int nav_refresh=0x7f0c002b;
-        public static final int newposts=0x7f0c0020;
-        public static final int next=0x7f0c0030;
-        public static final int notifications=0x7f0c0023;
+        public static final int newposts=0x7f0c0021;
+        public static final int next=0x7f0c0028;
         public static final int post_text=0x7f0c001e;
         public static final int post_title=0x7f0c001d;
-        public static final int previous=0x7f0c002e;
-        public static final int refresh=0x7f0c002f;
-        public static final int refresh_bookmarks=0x7f0c0016;
-        public static final int refresh_bookmarks_icon=0x7f0c0015;
-        public static final int separator=0x7f0c0017;
-        public static final int sidebar=0x7f0c000f;
-        public static final int sidebar_container=0x7f0c000d;
-        public static final int subtitle=0x7f0c0022;
+        public static final int previous=0x7f0c0026;
+        public static final int refresh=0x7f0c0027;
+        public static final int refresh_bookmarks=0x7f0c0015;
+        public static final int refresh_bookmarks_icon=0x7f0c0014;
+        public static final int separator=0x7f0c0016;
+        public static final int sidebar=0x7f0c000e;
+        public static final int sidebar_container=0x7f0c000b;
+        public static final int sidebar_container_right=0x7f0c000c;
+        public static final int subtitle=0x7f0c0024;
         public static final int text=0x7f0c0001;
-        public static final int title=0x7f0c0021;
-        public static final int topic_webview=0x7f0c001a;
+        public static final int text_description=0x7f0c001b;
+        public static final int text_name=0x7f0c001a;
+        public static final int title=0x7f0c0023;
+        public static final int topic_webview=0x7f0c0019;
         public static final int user_name=0x7f0c0002;
         public static final int user_password=0x7f0c0003;
     }
     public static final class layout {
         public static final int dialog_login=0x7f030000;
         public static final int dialog_post_actions=0x7f030001;
-        public static final int error=0x7f030002;
-        public static final int layout_activity_single_fragment=0x7f030003;
-        public static final int layout_expandablelist_container=0x7f030004;
-        public static final int layout_list_container=0x7f030005;
+        public static final int layout_activity_single_fragment=0x7f030002;
+        public static final int layout_activity_single_fragment_rl=0x7f030003;
+        public static final int layout_board=0x7f030004;
+        public static final int layout_forum=0x7f030005;
         public static final int layout_sidebar=0x7f030006;
-        public static final int layout_topic=0x7f030007;
-        public static final int listitem_category=0x7f030008;
-        public static final int listitem_forum=0x7f030009;
-        public static final int listitem_post=0x7f03000a;
-        public static final int listitem_sidebar_bookmark=0x7f03000b;
-        public static final int listitem_thread=0x7f03000c;
-        public static final int notification_container=0x7f03000d;
-        public static final int notification_loader=0x7f03000e;
-        public static final int notification_message=0x7f03000f;
+        public static final int layout_sidebar_form=0x7f030007;
+        public static final int layout_topic=0x7f030008;
+        public static final int listitem_category=0x7f030009;
+        public static final int listitem_forum=0x7f03000a;
+        public static final int listitem_post=0x7f03000b;
+        public static final int listitem_sidebar_bookmark=0x7f03000c;
+        public static final int listitem_thread=0x7f03000d;
     }
     public static final class menu {
-        public static final int actionmenu_board=0x7f0b0000;
-        public static final int actionmenu_bookmarks=0x7f0b0001;
-        public static final int actionmenu_forum=0x7f0b0002;
-        public static final int actionmenu_topic=0x7f0b0003;
+        public static final int actionmenu_bookmarks=0x7f0b0000;
+        public static final int actionmenu_forum=0x7f0b0001;
+        public static final int actionmenu_paginate=0x7f0b0002;
     }
     public static final class string {
         /**  From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/strings.xml 

@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.*;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -19,6 +21,8 @@ import com.mde.potdroid3.models.Forum;
 import com.mde.potdroid3.parsers.ForumParser;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  * The Forum list fragment. It shows an ExpandableList with Categories as groups and
@@ -88,19 +92,19 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
     }
 
     protected int getLayout() {
-        return R.layout.layout_expandablelist_container;
+        return R.layout.layout_forum;
     }
 
     @Override
     public Loader<Forum> onCreateLoader(int id, Bundle args) {
         AsyncContentLoader l = new AsyncContentLoader(getActivity(), mNetwork);
-        showLoader();
+        showLoadingAnimation();
         return l;
     }
 
     @Override
     public void onLoadFinished(Loader<Forum> loader, Forum data) {
-        hideLoader();
+        hideLoadingAnimation();
         if(data != null) {
             mForum = data;
             mListAdapter.notifyDataSetChanged();
@@ -111,7 +115,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoaderReset(Loader<Forum> loader) {
-        hideLoader();
+        hideLoadingAnimation();
     }
 
     public class ForumListAdapter extends BaseExpandableListAdapter {
@@ -134,13 +138,23 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
                                  View convertView, ViewGroup parent) {
             View row = mInflater.inflate(R.layout.listitem_forum, null);
 
-            TextView name = (TextView) row.findViewById(R.id.name);
-            TextView descr = (TextView) row.findViewById(R.id.description);
+            TextView name = (TextView) row.findViewById(R.id.text_name);
+            TextView descr = (TextView) row.findViewById(R.id.text_description);
+            TextView lastpost = (TextView) row.findViewById(R.id.last_post);
 
             Board b = (Board)getChild(groupPosition, childPosition);
 
             name.setText(b.getName());
             descr.setText(b.getDescription());
+
+            SimpleDateFormat f_date = new SimpleDateFormat("dd.MM.yy", Locale.GERMAN);
+            SimpleDateFormat f_time = new SimpleDateFormat("HH:mm", Locale.GERMAN);
+            Spanned lastpost_text = Html.fromHtml("Letzter Beitrag von <b>"
+                    + b.getLastPost().getAuthor().getNick()
+                    + "</b> am <b>" + f_date.format(b.getLastPost().getDate())
+                    + "</b> um <b>" + f_time.format(b.getLastPost().getDate())
+                    + "</b> Uhr");
+            lastpost.setText(lastpost_text);
 
             return (row);
 
@@ -164,8 +178,8 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
                                  ViewGroup parent) {
             View row = mInflater.inflate(R.layout.listitem_category, null);
 
-            TextView name = (TextView) row.findViewById(R.id.name);
-            TextView descr = (TextView) row.findViewById(R.id.description);
+            TextView name = (TextView) row.findViewById(R.id.text_name);
+            TextView descr = (TextView) row.findViewById(R.id.text_description);
 
             Category cat = (Category)getGroup(groupPosition);
 

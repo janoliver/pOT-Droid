@@ -23,7 +23,8 @@ import com.mde.potdroid3.parsers.BoardParser;
 
 import java.io.InputStream;
 
-public class BoardFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Board>  {
+public class BoardFragment extends PaginateFragment
+        implements LoaderManager.LoaderCallbacks<Board>  {
 
     private Board mBoard = null;
     private BoardListAdapter mListAdapter = null;
@@ -39,13 +40,6 @@ public class BoardFragment extends BaseFragment implements LoaderManager.LoaderC
         f.setArguments(args);
 
         return f;
-    }
-
-    @Override
-    public void onCreate (Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -69,24 +63,6 @@ public class BoardFragment extends BaseFragment implements LoaderManager.LoaderC
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-        inflater.inflate(R.menu.actionmenu_board, menu);
-
-        if(mBoard != null && !mBoard.isLastPage()) {
-            menu.findItem(R.id.nav_lastpage).setEnabled(true);
-            menu.findItem(R.id.nav_next).setEnabled(true);
-        }
-
-        if(mBoard != null && mBoard.getPage() > 1) {
-            menu.findItem(R.id.nav_firstpage).setEnabled(true);
-            menu.findItem(R.id.nav_previous).setEnabled(true);
-        }
-
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
 
@@ -94,18 +70,6 @@ public class BoardFragment extends BaseFragment implements LoaderManager.LoaderC
         switch (item.getItemId()) {
             case R.id.nav_refresh:
                 restartLoader(this);
-                return true;
-            case R.id.nav_next:
-                goToNextPage();
-                return true;
-            case R.id.nav_previous:
-                goToPrevPage();
-                return true;
-            case R.id.nav_firstpage:
-                goToFirstPage();
-                return true;
-            case R.id.nav_lastpage:
-                goToLastPage();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -117,13 +81,13 @@ public class BoardFragment extends BaseFragment implements LoaderManager.LoaderC
         int page = getArguments().getInt("page", 1);
         int bid = getArguments().getInt("board_id", 0);
         AsyncContentLoader l = new AsyncContentLoader(getActivity(), mNetwork, page, bid);
-        showLoader();
+        showLoadingAnimation();
         return l;
     }
 
     @Override
     public void onLoadFinished(Loader<Board> loader, Board data) {
-        hideLoader();
+        hideLoadingAnimation();
         if(data != null) {
             mBoard = data;
             mListAdapter.notifyDataSetChanged();
@@ -138,6 +102,16 @@ public class BoardFragment extends BaseFragment implements LoaderManager.LoaderC
         } else {
             showError("Fehler beim Laden der Daten.");
         }
+    }
+
+    @Override
+    public boolean isLastPage() {
+        return mBoard == null || mBoard.isLastPage();
+    }
+
+    @Override
+    public boolean isFirstPage() {
+        return mBoard == null || mBoard.getPage() == 1;
     }
 
     public void goToNextPage() {
@@ -164,14 +138,13 @@ public class BoardFragment extends BaseFragment implements LoaderManager.LoaderC
         restartLoader(this);
     }
 
-
     @Override
     public void onLoaderReset(Loader<Board> loader) {
-        hideLoader();
+        hideLoadingAnimation();
     }
 
     protected int getLayout() {
-        return R.layout.layout_list_container;
+        return R.layout.layout_board;
     }
 
     private class BoardListAdapter extends BaseAdapter {
@@ -205,16 +178,22 @@ public class BoardFragment extends BaseFragment implements LoaderManager.LoaderC
             subtitle.setText(t.getSubTitle());
 
             // last post information
-            //TextView lastpost = (TextView) row.findViewById(R.id.lastpost);
-            //Spanned content = Html.fromHtml("<b>" + t.getNumberOfPosts() + "</b> Posts auf <b>" + t.getLastPage() + "</b> Seiten");
-            //lastpost.setText(content);
+            TextView lastpost = (TextView) row.findViewById(R.id.description);
+            Spanned content = Html.fromHtml("<b>" + t.getNumberOfPosts() + "</b> Posts auf <b>" + t.getNumberOfPages() + "</b> Seiten");
+            lastpost.setText(content);
 
-            //TextView important = (TextView) row.findViewById(R.id.important);
-            /*if (t.isImportant()) {
-                important.setVisibility(View.GONE);
-            } else if(t.isSticky()) {
-                important.setBackgroundResource(R.color.darkred);
-            }*/
+            // all important topics get a different background.
+            // the padding stuff is apparently an android bug...
+            // see http://stackoverflow.com/questions/5890379
+            if(t.isSticky() || t.isImportant() || t.isAnnouncement() || t.isGlobal()) {
+                View v = row.findViewById(R.id.container);
+                int bottom = v.getPaddingBottom();
+                int top = v.getPaddingTop();
+                int right = v.getPaddingRight();
+                int left = v.getPaddingLeft();
+                v.setBackgroundResource(R.drawable.sidebar_button_background);
+                v.setPadding(left, top, right, bottom);
+            }
 
             return row;
         }

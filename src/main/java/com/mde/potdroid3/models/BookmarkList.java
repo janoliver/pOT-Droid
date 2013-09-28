@@ -16,7 +16,6 @@ public class BookmarkList implements Serializable {
 
     private static final long serialVersionUID = 8L;
 
-    private ArrayList<Bookmark> mBookmarks = new ArrayList<Bookmark>();
     private Integer mNumberOfNewPosts;
     private Context mContext;
     protected BookmarkDatabase mBookmarkDatabase;
@@ -36,24 +35,16 @@ public class BookmarkList implements Serializable {
     }
 
     public ArrayList<Bookmark> getBookmarks() {
-        return mBookmarks;
+        return mBookmarkDatabase.getBookmarkArray();
     }
 
     public ArrayList<Bookmark> getUnreadBookmarks() {
         ArrayList<Bookmark> unread = new ArrayList<Bookmark>();
-        for(Bookmark b : mBookmarks) {
+        for(Bookmark b : getBookmarks()) {
             if(b.getNumberOfNewPosts() > 0)
                 unread.add(b);
         }
         return unread;
-    }
-
-    public void setBookmarks(ArrayList<Bookmark> bookmarks) {
-        mBookmarks = bookmarks;
-    }
-
-    public void addBookmark(Bookmark bookmark) {
-        mBookmarks.add(bookmark);
     }
 
     public void refresh() throws Network.NoConnectionException {
@@ -62,10 +53,10 @@ public class BookmarkList implements Serializable {
         BookmarkParser parser = new BookmarkParser();
 
         BookmarkParser.BookmarksContainer c = parser.parse(xml);
-        mBookmarks = c.getBookmarks();
-        mNumberOfNewPosts = c.getNumberOfNewPosts();
+        ArrayList<Bookmark> bookmarks = c.getBookmarks();
 
-        mBookmarkDatabase.refresh(this);
+        mNumberOfNewPosts = c.getNumberOfNewPosts();
+        mBookmarkDatabase.refresh(bookmarks);
     }
 
     public static class Xml {

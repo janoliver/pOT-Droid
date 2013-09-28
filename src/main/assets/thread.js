@@ -10,11 +10,6 @@ $(document).ready(function() {
         });
     }
 
-    // register waypoints while scrolling over them
-    $("header").waypoint(function() {
-        api.registerScroll(parseInt($(this).parent().attr("data-id"),10));
-    });
-
     // scroll to the last post, when there was one
     if(api.getScroll() > 0) {
         document.location.href = "#" + api.getScroll();
@@ -55,6 +50,13 @@ $(document).ready(function() {
         var post_id = parseInt($(this).closest('section').attr('data-id'));
         api.openTopicMenu(post_id);
     });
+
+    // register waypoints while scrolling over them
+    // should be the last thing executed!
+    $("header").waypoint(function() {
+        api.registerScroll(parseInt($(this).parent().attr("data-id"),10));
+    });
+
 });
 
 function replaceImage(icon) {

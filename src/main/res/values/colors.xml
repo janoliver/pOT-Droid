@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="white">#ffffff</color>
+    <color name="grey">#aaaaaa</color>
+    <color name="darkgrey">#888888</color>
     <color name="black">#111111</color>
     <color name="bbstyle_darkblue">#222E3A</color>
     <color name="bbstyle_lightblue">#394E63</color>
+    <color name="bbstyle_middleblue">#ff414f5c</color>
 </resources>

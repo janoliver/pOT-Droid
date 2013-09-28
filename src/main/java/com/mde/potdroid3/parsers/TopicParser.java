@@ -121,35 +121,35 @@ public class TopicParser extends DefaultHandler {
 
             @Override
             public void start(Attributes attributes) {
-                mThread.setIsClosed(Boolean.parseBoolean(attributes.getValue(Topic.Xml.IS_CLOSED_ATTRIBUTE)));
+                mThread.setIsClosed(attributes.getValue(Topic.Xml.IS_CLOSED_ATTRIBUTE).equals("1"));
             }
         });
         flags.requireChild(Topic.Xml.IS_STICKY_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
-                mThread.setIsSticky(Boolean.parseBoolean(attributes.getValue(Topic.Xml.IS_STICKY_ATTRIBUTE)));
+                mThread.setIsSticky(attributes.getValue(Topic.Xml.IS_STICKY_ATTRIBUTE).equals("1"));
             }
         });
         flags.requireChild(Topic.Xml.IS_ANNOUNCEMENT_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
-                mThread.setIsAnnouncement(Boolean.parseBoolean(attributes.getValue(Topic.Xml.IS_ANNOUNCEMENT_ATTRIBUTE)));
+                mThread.setIsAnnouncement(attributes.getValue(Topic.Xml.IS_ANNOUNCEMENT_ATTRIBUTE).equals("1"));
             }
         });
         flags.requireChild(Topic.Xml.IS_IMPORTANT_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
-                mThread.setIsImportant(Boolean.parseBoolean(attributes.getValue(Topic.Xml.IS_IMPORTANT_ATTRIBUTE)));
+                mThread.setIsImportant(attributes.getValue(Topic.Xml.IS_IMPORTANT_ATTRIBUTE).equals("1"));
             }
         });
         flags.requireChild(Topic.Xml.IS_GLOBAL_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
-                mThread.setIsGlobal(Boolean.parseBoolean(attributes.getValue(Topic.Xml.IS_GLOBAL_ATTRIBUTE)));
+                mThread.setIsGlobal(attributes.getValue(Topic.Xml.IS_GLOBAL_ATTRIBUTE).equals("1"));
             }
         });
 

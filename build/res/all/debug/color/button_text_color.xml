@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- disabled state -->
-    <item android:state_enabled="false" android:color="@color/bbstyle_darkblue" />
-    <item android:color="@color/white"/>
-</selector><!-- From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/color/button_text_color.xml -->

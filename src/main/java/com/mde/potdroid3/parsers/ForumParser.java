@@ -104,7 +104,7 @@ public class ForumParser extends DefaultHandler {
 
             @Override
             public void end() {
-                mCurrentBoard.setLastPost(mCurrentPost);
+                //mCurrentBoard.setLastPost(mCurrentPost);
             }
 
             @Override
@@ -139,6 +139,7 @@ public class ForumParser extends DefaultHandler {
             public void end(String body) {
                 mCurrentThread.setTitle(body);
                 mCurrentPost.setTopic(mCurrentThread);
+                mCurrentBoard.setLastPost(mCurrentPost);
             }
 
             @Override

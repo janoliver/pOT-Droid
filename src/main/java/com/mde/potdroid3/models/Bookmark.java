@@ -10,10 +10,10 @@ public class Bookmark implements Serializable {
     private static final long serialVersionUID = 6L;
     
     private Integer mId;
-    private Integer mNumberOfNewPosts = 0;
-    private Post mLastPost = null;
-    private Topic mThread = null;
-    private String  mRemovetoken = "";
+    private Integer mNumberOfNewPosts;
+    private Post mLastPost;
+    private Topic mThread;
+    private String  mRemovetoken;
 
     public Bookmark(Integer id) {
         mId = id;

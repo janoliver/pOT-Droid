@@ -75,7 +75,7 @@
                 android:text="Bookmarks"
                 android:textAppearance="?android:attr/textAppearanceListItemSmall"
                 android:background="@drawable/sidebar_bookmarkbutton_background"
-                android:textColor="@color/button_text_color"
+                android:textColor="@color/white"
                 android:id="@+id/refresh_bookmarks"
                 android:paddingLeft="5dp"
                 android:gravity="left|center_vertical"

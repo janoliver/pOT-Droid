@@ -49,7 +49,10 @@
     <!-- From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/colors.xml -->
     <color name="bbstyle_darkblue">#222E3A</color>
     <color name="bbstyle_lightblue">#394E63</color>
+    <color name="bbstyle_middleblue">#ff414f5c</color>
     <color name="black">#111111</color>
+    <color name="darkgrey">#888888</color>
+    <color name="grey">#aaaaaa</color>
     <!-- From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/colors_bbdarkstyle.xml -->
     <color name="pressed_bbdarkstyle">#CC81A9D2</color>
     <!-- From: file:/home/oli/Workspace/Projekte/pOT-Droid3.2/pOT-Droid3Project/pOT-Droid3/src/main/res/values/colors.xml -->

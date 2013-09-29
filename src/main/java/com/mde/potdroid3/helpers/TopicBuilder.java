@@ -267,7 +267,11 @@ public class TopicBuilder {
         a.registerTag(new SimpleTag("img", "image", "string") {
             @Override
             public String html(String content, List<String> args) {
-                return "<div class=\"img\" data-src=\"" + content + "\"><i class=\"icon-picture\"></i></div>";
+                String extension = content.substring(content.length() - 3).toLowerCase();
+                String icon = "icon-picture";
+                if(extension.equals("gif"))
+                    icon = "icon-film";
+                return "<div class=\"img\" data-src=\"" + content + "\"><i class=\"" + icon + "\"></i></div>";
             }
         });
 

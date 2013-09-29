@@ -35,8 +35,6 @@ $(document).ready(function() {
         if(api.getScroll() > 0) {
             var self = $('a[name="' + api.getScroll() + '"]').parent().find('div.img i');
             var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.img i');
-            //var before = $('a[name="' + api.getScroll() + '"]').parent().prevAll().find('div.img i');
-            //all = $.merge($.merge(self,after), before);
             all = $.merge(self,after);
         } else {
             all = $('div.img i');

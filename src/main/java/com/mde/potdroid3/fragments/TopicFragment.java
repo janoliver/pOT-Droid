@@ -1,11 +1,10 @@
 package com.mde.potdroid3.fragments;
 
-import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.LoaderManager;
-import android.content.AsyncTaskLoader;
-import android.content.Context;
-import android.content.Intent;
-import android.content.Loader;
+import android.content.*;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -14,10 +13,13 @@ import android.view.*;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ImageButton;
+import com.mde.potdroid3.BaseActivity;
 import com.mde.potdroid3.R;
 import com.mde.potdroid3.helpers.Network;
 import com.mde.potdroid3.helpers.TopicBuilder;
 import com.mde.potdroid3.helpers.TopicJSInterface;
+import com.mde.potdroid3.models.Post;
 import com.mde.potdroid3.models.Topic;
 import com.mde.potdroid3.parsers.TopicParser;
 
@@ -29,7 +31,7 @@ public class TopicFragment extends PaginateFragment
     private Topic mTopic;
     private WebView mWebView;
     private TopicJSInterface mJsInterface;
-    private OnContentLoadedListener mCallback;
+    private BaseActivity mActivity;
 
     public static TopicFragment newInstance(int thread_id, int page, int post_id) {
         TopicFragment f = new TopicFragment();
@@ -48,8 +50,10 @@ public class TopicFragment extends PaginateFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        mActivity = (BaseActivity) getActivity();
+
         mWebView = (WebView)getView().findViewById(R.id.topic_webview);
-        mJsInterface = new TopicJSInterface(mWebView, getActivity());
+        mJsInterface = new TopicJSInterface(mWebView, getActivity(), this);
 
         // if there is a post_id from the bookmarks call, we set it as the currently
         // visible post.
@@ -68,19 +72,6 @@ public class TopicFragment extends PaginateFragment
 
         startLoader(this);
 
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallback = (OnContentLoadedListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnContentLoadedListener");
-        }
     }
 
     @Override
@@ -119,7 +110,10 @@ public class TopicFragment extends PaginateFragment
             getActivity().getActionBar().setSubtitle(subtitleText);
 
             // call the onLoaded function
-            mCallback.onContentLoaded();
+            mActivity.getSidebar().refreshBookmarks();
+
+            // populate right sidebar
+            mActivity.getRightSidebar().setIsNewPost(mTopic.getId(), mTopic.getNewreplytoken());
 
         } else {
             showError("Fehler beim Laden der Daten.");
@@ -129,6 +123,23 @@ public class TopicFragment extends PaginateFragment
     @Override
     public void onLoaderReset(Loader<Topic> loader) {
         hideLoadingAnimation();
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        // only show the paginate buttons if there are before or after the current
+        if(!isLastPage()) {
+            menu.findItem(R.id.nav_next).setIcon(R.drawable.dark_navigation_fwd).setEnabled(true);
+            menu.findItem(R.id.nav_lastpage).setIcon(R.drawable.dark_navigation_ffwd).setEnabled(true);
+        }
+
+        if(!isFirstPage()) {
+            menu.findItem(R.id.nav_firstpage).setIcon(R.drawable.dark_navigation_frwd).setEnabled(true);
+            menu.findItem(R.id.nav_previous).setIcon(R.drawable.dark_navigation_rwd).setEnabled(true);
+        }
+
     }
 
     public void goToNextPage() {
@@ -188,6 +199,11 @@ public class TopicFragment extends PaginateFragment
         }
     }
 
+    public void showPostDialog(int post_id) {
+        PostDialogFragment menu = new PostDialogFragment(post_id);
+        menu.show(mActivity.getFragmentManager(), "postmenu");
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
@@ -205,15 +221,6 @@ public class TopicFragment extends PaginateFragment
 
     protected int getLayout() {
         return R.layout.layout_topic;
-    }
-
-    /**
-     * The Activity must implement this listener. It will get informed
-     * when the topic is finished loading, so it can trigger the refresh
-     * of the BookmarksList in the sidebar.
-     */
-    public interface OnContentLoadedListener {
-        public void onContentLoaded();
     }
 
     /**
@@ -252,6 +259,54 @@ public class TopicFragment extends PaginateFragment
             }
         }
 
+    }
+
+    public class PostDialogFragment extends DialogFragment {
+        private Integer mPostId;
+
+        PostDialogFragment(int post_id) {
+            super();
+
+            mPostId = post_id;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            View dialog_view = inflater.inflate(R.layout.dialog_post_actions, null);
+            builder.setView(dialog_view)
+                    .setTitle("Post Aktionen")
+                    .setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
+
+            // Create the AlertDialog object and return it
+            final Dialog d = builder.create();
+
+            ImageButton quote_button = (ImageButton) dialog_view.findViewById(R.id.button_quote);
+            quote_button.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    BaseActivity a = (BaseActivity)getActivity();
+                    Post p = mTopic.getPostById(mPostId);
+
+                    String text = text = "[quote=" + mTopic.getId() + "," + p.getId() + ",\""
+                            + p.getAuthor().getNick() + "\"][b]\n" + p.getText() + "\n[/b][/quote]";
+
+                    a.getRightSidebar().appendText(text);
+                    a.openRightSidebar();
+
+                    d.cancel();
+                }
+            });
+
+            return d;
+        }
     }
 
 }

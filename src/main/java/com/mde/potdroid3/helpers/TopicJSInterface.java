@@ -1,15 +1,9 @@
 package com.mde.potdroid3.helpers;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
-import com.mde.potdroid3.R;
+import com.mde.potdroid3.fragments.TopicFragment;
 import com.mde.potdroid3.models.User;
 
 public class TopicJSInterface {
@@ -18,13 +12,15 @@ public class TopicJSInterface {
     private Activity mActivity;
     private Integer mCurrentVisiblePost;
     private SettingsWrapper mSettings;
+    private TopicFragment mTopicFragment;
 
-    public TopicJSInterface(WebView wv, Activity cx) {
+    public TopicJSInterface(WebView wv, Activity cx, TopicFragment fragment) {
         mWebView = wv;
         mActivity = cx;
         mBenderHandler = new BenderHandler(mActivity);
         mCurrentVisiblePost = 0;
         mSettings = new SettingsWrapper(cx);
+        mTopicFragment = fragment;
     }
 
     @JavascriptInterface
@@ -63,8 +59,7 @@ public class TopicJSInterface {
 
     @JavascriptInterface
     public void openTopicMenu(int post_id) {
-        PostDialogFragment menu = new PostDialogFragment(post_id);
-        menu.show(mActivity.getFragmentManager(), "postmenu");
+        mTopicFragment.showPostDialog(post_id);
     }
 
     public class JSInterfaceListener {
@@ -83,31 +78,6 @@ public class TopicJSInterface {
                 }
             });
 
-        }
-    }
-
-    public class PostDialogFragment extends DialogFragment {
-        private Integer mPostId;
-
-        PostDialogFragment(int post_id) {
-            super();
-
-            mPostId = post_id;
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            LayoutInflater inflater = getActivity().getLayoutInflater();
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setView(inflater.inflate(R.layout.dialog_post_actions, null))
-                   .setTitle("Post Aktionen")
-                   .setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
-                       public void onClick(DialogInterface dialog, int id) {
-                           // User cancelled the dialog
-                       }
-                   });
-            // Create the AlertDialog object and return it
-            return builder.create();
         }
     }
 

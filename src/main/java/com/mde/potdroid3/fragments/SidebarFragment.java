@@ -5,23 +5,20 @@ import android.content.Intent;
 import android.content.Loader;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.mde.potdroid3.*;
 import com.mde.potdroid3.models.Bookmark;
 import com.mde.potdroid3.models.BookmarkList;
 
 public class SidebarFragment extends BaseFragment
-        implements LoaderManager.LoaderCallbacks<BookmarkList>, DrawerLayout.DrawerListener {
+        implements LoaderManager.LoaderCallbacks<BookmarkList> {
 
     private BookmarkList mBookmarkList;
     private BookmarkListAdapter mListAdapter;
     private ListView mListView;
-    protected ImageView mBookmarkLoadingIcon;
     protected Button mBookmarkRefreshButton;
     private Boolean mDirty = true;
 
@@ -33,17 +30,21 @@ public class SidebarFragment extends BaseFragment
         return R.layout.layout_sidebar;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        mBookmarkLoadingIcon = (ImageView)getView().findViewById(R.id.refresh_bookmarks_icon);
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        this.setRetainInstance(true);
         mBookmarkList = new BookmarkList(getActivity());
 
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
+        View v = super.onCreateView(inflater, container, saved);
+
         mListAdapter = new BookmarkListAdapter();
-        mListView = (ListView)getView().findViewById(R.id.listview_bookmarks);
+        mListView = (ListView)v.findViewById(R.id.listview_bookmarks);
         mListView.setAdapter(mListAdapter);
-        mListView.setEmptyView(getView().findViewById(R.id.empty_bookmarks_text));
+        mListView.setEmptyView(v.findViewById(R.id.empty_bookmarks_text));
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), TopicActivity.class);
@@ -53,7 +54,7 @@ public class SidebarFragment extends BaseFragment
             }
         });
 
-        mBookmarkRefreshButton = (Button) getView().findViewById(R.id.refresh_bookmarks);
+        mBookmarkRefreshButton = (Button) v.findViewById(R.id.refresh_bookmarks);
         mBookmarkRefreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,7 +63,7 @@ public class SidebarFragment extends BaseFragment
             }
         });
 
-        ImageButton home = (ImageButton) getView().findViewById(R.id.button_home);
+        ImageButton home = (ImageButton) v.findViewById(R.id.button_home);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +72,7 @@ public class SidebarFragment extends BaseFragment
             }
         });
 
-        ImageButton preferences = (ImageButton) getView().findViewById(R.id.button_preferences);
+        ImageButton preferences = (ImageButton) v.findViewById(R.id.button_preferences);
         preferences.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +81,7 @@ public class SidebarFragment extends BaseFragment
             }
         });
 
-        ImageButton bookmarks = (ImageButton) getView().findViewById(R.id.button_bookmarks);
+        ImageButton bookmarks = (ImageButton) v.findViewById(R.id.button_bookmarks);
         bookmarks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,7 +90,7 @@ public class SidebarFragment extends BaseFragment
             }
         });
 
-        ImageButton pm = (ImageButton) getView().findViewById(R.id.button_pm);
+        ImageButton pm = (ImageButton) v.findViewById(R.id.button_pm);
         pm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,18 +98,22 @@ public class SidebarFragment extends BaseFragment
             }
         });
 
+        return v;
 
     }
 
-    public void showBookmarkLoadingAnimation() {
+    @Override
+    public void showLoadingAnimation() {
         mBookmarkRefreshButton.setEnabled(false);
-        Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.clockwise_rotation);
-        mBookmarkLoadingIcon.startAnimation(rotation);
+        getView().findViewById(R.id.separator).setVisibility(View.GONE);
+        getView().findViewById(R.id.update_progress).setVisibility(View.VISIBLE);
     }
 
-    public void hideBookmarkLoadingAnimation() {
+    @Override
+    public void hideLoadingAnimation() {
         mBookmarkRefreshButton.setEnabled(true);
-        mBookmarkLoadingIcon.clearAnimation();
+        getView().findViewById(R.id.separator).setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.update_progress).setVisibility(View.GONE);
     }
 
     public void refreshBookmarks() {
@@ -118,13 +123,13 @@ public class SidebarFragment extends BaseFragment
     @Override
     public Loader<BookmarkList> onCreateLoader(int id, Bundle args) {
         mDirty = false;
-        showBookmarkLoadingAnimation();
+        showLoadingAnimation();
         return new BookmarkFragment.AsyncContentLoader(getActivity(), mBookmarkList);
     }
 
     @Override
     public void onLoadFinished(Loader<BookmarkList> loader, BookmarkList data) {
-        hideBookmarkLoadingAnimation();
+        hideLoadingAnimation();
         if(data != null) {
             mBookmarkList = data;
             mListAdapter.notifyDataSetChanged();
@@ -134,13 +139,12 @@ public class SidebarFragment extends BaseFragment
     @Override
     public void onLoaderReset(Loader<BookmarkList> loader) {}
 
-    @Override
-    public void onDrawerSlide(View view, float v) {}
+    public boolean isDirty() {
+        return mDirty;
+    }
 
-    @Override
-    public void onDrawerOpened(View view) {
-        if(mDirty)
-            refreshBookmarks();
+    public void setDirty(boolean dirty) {
+        mDirty = dirty;
     }
 
     @Override
@@ -149,12 +153,6 @@ public class SidebarFragment extends BaseFragment
 
         mListAdapter.notifyDataSetChanged();
     }
-
-    @Override
-    public void onDrawerClosed(View view) {}
-
-    @Override
-    public void onDrawerStateChanged(int i) {}
 
     private class BookmarkListAdapter extends BaseAdapter {
 

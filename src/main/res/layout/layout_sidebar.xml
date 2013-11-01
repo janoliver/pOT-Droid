@@ -55,36 +55,33 @@
 
     </LinearLayout>
 
-    <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/nav_buttons"
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bookmarks"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:background="@drawable/sidebar_bookmarkbutton_background"
+            android:textColor="@color/white"
+            android:id="@+id/refresh_bookmarks"
+            android:paddingLeft="5dp"
+            android:gravity="left|center_vertical"
+            android:textAlignment="textStart"/>
+
+    <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:id="@+id/refresh_bookmarks_icon"
-                android:src="?attr/menu_icon_refresh"
-                />
-
-        <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Bookmarks"
-                android:textAppearance="?android:attr/textAppearanceListItemSmall"
-                android:background="@drawable/sidebar_bookmarkbutton_background"
-                android:textColor="@color/white"
-                android:id="@+id/refresh_bookmarks"
-                android:paddingLeft="5dp"
-                android:gravity="left|center_vertical"
-                android:textAlignment="textStart"/>
-    </LinearLayout>
+            android:id="@+id/update_progress"
+            android:indeterminateOnly="true"
+            android:layout_marginBottom="-8dp"
+            android:layout_marginTop="-4dp"
+            android:visibility="gone"/>
 
     <View
             android:id="@+id/separator"
             android:layout_width="fill_parent"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="2dp"
             android:layout_height="2dp"
             android:background="@color/bbstyle_darkblue"/>
 

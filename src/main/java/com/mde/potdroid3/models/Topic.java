@@ -229,6 +229,14 @@ public class Topic implements Serializable{
         return mPage == getNumberOfPages();
     }
 
+    public Post getPostById(int id) {
+        for(Post p : mPosts)
+            if(p.getId() == id)
+                return p;
+
+        return null;
+    }
+
     public static class Xml {
         public static String TAG = "thread";
         public static String SUBTITLE_TAG = "subtitle";

@@ -26,24 +26,32 @@ public class BookmarkDatabase {
 
     public void refresh(ArrayList<Bookmark> list) {
         // clear db
-        mDatabase.delete(BOOKMARKS_TABLE_NAME, null, null);
+        try {
+            mDatabase.beginTransaction();
+            mDatabase.delete(BOOKMARKS_TABLE_NAME, null, null);
 
-        // refresh database
-        ContentValues values = new ContentValues();
-        for(Bookmark bm : list) {
-            values.clear();
-            values.put("id", bm.getId());
-            values.put("remove_token", bm.getRemovetoken());
-            values.put("number_new_posts", bm.getNumberOfNewPosts());
-            values.put("thread_id", bm.getThread().getId());
-            values.put("thread_title", bm.getThread().getTitle());
-            values.put("thread_closed", bm.getThread().isClosed());
-            values.put("thread_pages", bm.getThread().getNumberOfPages());
-            values.put("board_id", bm.getThread().getBoard().getId());
-            values.put("board_name", bm.getThread().getBoard().getName());
-            values.put("post_id", bm.getLastPost().getId());
 
-            mDatabase.insert(BOOKMARKS_TABLE_NAME, null, values);
+            // refresh database
+            ContentValues values = new ContentValues();
+            for(Bookmark bm : list) {
+                values.clear();
+                values.put("id", bm.getId());
+                values.put("remove_token", bm.getRemovetoken());
+                values.put("number_new_posts", bm.getNumberOfNewPosts());
+                values.put("thread_id", bm.getThread().getId());
+                values.put("thread_title", bm.getThread().getTitle());
+                values.put("thread_closed", bm.getThread().isClosed());
+                values.put("thread_pages", bm.getThread().getNumberOfPages());
+                values.put("board_id", bm.getThread().getBoard().getId());
+                values.put("board_name", bm.getThread().getBoard().getName());
+                values.put("post_id", bm.getLastPost().getId());
+
+                mDatabase.insert(BOOKMARKS_TABLE_NAME, null, values);
+            }
+
+            mDatabase.setTransactionSuccessful();
+        } finally {
+            mDatabase.endTransaction();
         }
     }
 

@@ -14,7 +14,7 @@ import com.mde.potdroid3.models.Bookmark;
 import com.mde.potdroid3.models.BookmarkList;
 
 public class SidebarFragment extends BaseFragment
-        implements LoaderManager.LoaderCallbacks<BookmarkList> {
+        implements LoaderManager.LoaderCallbacks<Boolean> {
 
     private BookmarkList mBookmarkList;
     private BookmarkListAdapter mListAdapter;
@@ -31,6 +31,7 @@ public class SidebarFragment extends BaseFragment
         return R.layout.layout_sidebar;
     }
 
+    @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -38,6 +39,7 @@ public class SidebarFragment extends BaseFragment
         mBookmarkList = new BookmarkList(getActivity());
     }
 
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = super.onCreateView(inflater, container, saved);
 
@@ -121,7 +123,7 @@ public class SidebarFragment extends BaseFragment
     }
 
     @Override
-    public Loader<BookmarkList> onCreateLoader(int id, Bundle args) {
+    public Loader<Boolean> onCreateLoader(int id, Bundle args) {
         mDirty = false;
         showLoadingAnimation();
         mLoader = new BookmarkFragment.AsyncContentLoader(getActivity(), mBookmarkList);
@@ -129,16 +131,15 @@ public class SidebarFragment extends BaseFragment
     }
 
     @Override
-    public void onLoadFinished(Loader<BookmarkList> loader, BookmarkList data) {
+    public void onLoadFinished(Loader<Boolean> loader, Boolean success) {
         hideLoadingAnimation();
-        if(data != null) {
-            mBookmarkList = data;
+        if(success) {
             mListAdapter.notifyDataSetChanged();
         }
     }
 
     @Override
-    public void onLoaderReset(Loader<BookmarkList> loader) {}
+    public void onLoaderReset(Loader<Boolean> loader) {}
 
     public boolean isDirty() {
         return mDirty;

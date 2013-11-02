@@ -7,18 +7,18 @@ import android.content.Intent;
 import android.content.Loader;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.*;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import com.mde.potdroid3.R;
 import com.mde.potdroid3.TopicActivity;
+import com.mde.potdroid3.helpers.Utils;
 import com.mde.potdroid3.models.Bookmark;
 import com.mde.potdroid3.models.BookmarkList;
 
 public class BookmarkFragment extends BaseFragment
-        implements LoaderManager.LoaderCallbacks<BookmarkList> {
+        implements LoaderManager.LoaderCallbacks<Boolean> {
 
     private BookmarkList mBookmarkList;
     private BookmarkListAdapter mListAdapter;
@@ -33,14 +33,17 @@ public class BookmarkFragment extends BaseFragment
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
+        setRetainInstance(true);
+
+        mBookmarkList = new BookmarkList(getActivity());
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
+        View v = super.onCreateView(inflater, container, saved);
 
         mListAdapter = new BookmarkListAdapter();
-        mListView = (ListView)getView().findViewById(R.id.list_content);
+        mListView = (ListView)v.findViewById(R.id.list_content);
         mListView.setAdapter(mListAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -51,8 +54,18 @@ public class BookmarkFragment extends BaseFragment
             }
         });
 
-        startLoader(this);
+        registerForContextMenu(mListView);
 
+        return v;
+
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState)
+    {
+        super.onActivityCreated(savedInstanceState);
+
+        startLoader(this);
     }
 
     @Override
@@ -60,7 +73,6 @@ public class BookmarkFragment extends BaseFragment
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_bookmarks, menu);
-        //menu.setGroupVisible(R.id.loggedin, mObjectManager.isLoggedIn());
     }
 
     @Override
@@ -78,17 +90,54 @@ public class BookmarkFragment extends BaseFragment
     }
 
     @Override
-    public Loader<BookmarkList> onCreateLoader(int id, Bundle args) {
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.contextmenu_bookmark, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.delete:
+                Bookmark b = mBookmarkList.getBookmarks().get((int) info.id);
+                final String url = Utils.ASYNC_URL + "remove-bookmark.php?BMID=" + b.getId()
+                        + "&token=" + b.getRemovetoken();
+                new Thread(new Runnable() {
+                    public void run() {
+                        mNetwork.callPage(url);
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(getActivity(), "Bookmark entfernt.",
+                                        Toast.LENGTH_SHORT).show();
+
+                                restartLoader(BookmarkFragment.this);
+                            }
+                        });
+
+                    }
+                }).start();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    @Override
+    public Loader<Boolean> onCreateLoader(int id, Bundle args) {
         AsyncContentLoader l = new AsyncContentLoader(getActivity(), mBookmarkList);
         showLoadingAnimation();
         return l;
     }
 
     @Override
-    public void onLoadFinished(Loader<BookmarkList> loader, BookmarkList data) {
+    public void onLoadFinished(Loader<Boolean> loader, Boolean success) {
         hideLoadingAnimation();
-        if(data != null) {
-            mBookmarkList = data;
+        if(success) {
             mListAdapter.notifyDataSetChanged();
         } else {
             showError("Fehler beim Laden der Daten.");
@@ -96,7 +145,7 @@ public class BookmarkFragment extends BaseFragment
     }
 
     @Override
-    public void onLoaderReset(Loader<BookmarkList> loader) {
+    public void onLoaderReset(Loader<Boolean> loader) {
         hideLoadingAnimation();
     }
 
@@ -121,8 +170,13 @@ public class BookmarkFragment extends BaseFragment
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-            View row = mInflater.inflate(R.layout.listitem_thread, null);
+            View row = mInflater.inflate(R.layout.listitem_bookmark, null);
             Bookmark b = (Bookmark)getItem(position);
+
+            if(b.getNumberOfNewPosts() > 0)
+                row.findViewById(R.id.container).setBackgroundColor(
+                        getResources().getColor(R.color.bbstyle_darkblue)
+                );
 
             // set the name, striked if closed
             TextView title = (TextView) row.findViewById(R.id.title);
@@ -130,11 +184,19 @@ public class BookmarkFragment extends BaseFragment
             if(b.getThread().isClosed())
                 title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
+            TextView board = (TextView) row.findViewById(R.id.board);
+            board.setText(b.getThread().getBoard().getName());
+
+            TextView description = (TextView) row.findViewById(R.id.description);
+            Spanned content = Html.fromHtml("<b>" + b.getNumberOfNewPosts() + "</b> neue Post. <b>"
+                    + b.getThread().getNumberOfPages() + "</b> Seiten");
+            description.setText(content);
+
             return row;
         }
     }
 
-    public static class AsyncContentLoader extends AsyncTaskLoader<BookmarkList> {
+    public static class AsyncContentLoader extends AsyncTaskLoader<Boolean> {
         private BookmarkList mBookmarkList;
 
         AsyncContentLoader(Context cx, BookmarkList list) {
@@ -143,14 +205,15 @@ public class BookmarkFragment extends BaseFragment
         }
 
         @Override
-        public BookmarkList loadInBackground() {
+        public Boolean loadInBackground() {
 
             try {
                 mBookmarkList.refresh();
-                return mBookmarkList;
+
+                return true;
             } catch (Exception e) {
                 e.printStackTrace();
-                return null;
+                return false;
             }
         }
 

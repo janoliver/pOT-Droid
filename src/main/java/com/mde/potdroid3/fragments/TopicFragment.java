@@ -293,6 +293,9 @@ public class TopicFragment extends PaginateFragment
                     BaseActivity a = (BaseActivity)getActivity();
                     Post p = mTopic.getPostById(mPostId);
 
+                    if(mTopic.isClosed())
+                        Toast.makeText(a, "Vorsicht, Topic geschlossen!", Toast.LENGTH_LONG).show();
+
                     String text = "[quote=" + mTopic.getId() + "," + p.getId() + ",\""
                             + p.getAuthor().getNick() + "\"][b]\n" + p.getText() + "\n[/b][/quote]";
 

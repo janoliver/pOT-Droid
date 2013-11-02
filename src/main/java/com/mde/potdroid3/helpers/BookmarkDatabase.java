@@ -30,7 +30,6 @@ public class BookmarkDatabase {
             mDatabase.beginTransaction();
             mDatabase.delete(BOOKMARKS_TABLE_NAME, null, null);
 
-
             // refresh database
             ContentValues values = new ContentValues();
             for(Bookmark bm : list) {
@@ -59,7 +58,8 @@ public class BookmarkDatabase {
 
         ArrayList<Bookmark> ret = new ArrayList<Bookmark>();
 
-        Cursor c = mDatabase.query(BOOKMARKS_TABLE_NAME, null, null, null, null, null, null);
+        Cursor c = mDatabase.query(BOOKMARKS_TABLE_NAME, null, null, null, null, null,
+                "board_id, thread_title");
         c.moveToFirst();
         while (!c.isAfterLast()) {
 

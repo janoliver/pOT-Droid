@@ -80,6 +80,10 @@ public class BaseActivity extends Activity implements DrawerLayout.DrawerListene
         mDrawerLayout.openDrawer(Gravity.RIGHT);
     }
 
+    public void closeRightSidebar() {
+        mDrawerLayout.closeDrawer(Gravity.RIGHT);
+    }
+
     public void openLeftSidebar() {
         mDrawerLayout.openDrawer(Gravity.RIGHT);
     }
@@ -89,9 +93,7 @@ public class BaseActivity extends Activity implements DrawerLayout.DrawerListene
     }
 
     @Override
-    public void onDrawerSlide(View view, float v) {
-
-    }
+    public void onDrawerSlide(View view, float v) {}
 
     @Override
     public void onDrawerOpened(View view) {

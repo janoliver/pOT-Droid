@@ -10,6 +10,7 @@ import java.io.*;
 public class Utils {
 
     public static final String LOGIN_URL = "http://login.mods.de/";
+    public static final String ASYNC_URL = "http://forum.mods.de/bb/async/";
     public static final String BASE_URL = "http://forum.mods.de/bb/";
     public static final String BOARD_URL_POST = "http://forum.mods.de/bb/newreply.php";
     public static final String BOARD_URL_EDITPOST = "http://forum.mods.de/bb/editreply.php";

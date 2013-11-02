@@ -59,6 +59,9 @@ abstract public class PaginateFragment extends BaseFragment {
             case R.id.nav_lastpage:
                 goToLastPage();
                 return true;
+            case R.id.nav_refresh:
+                refreshPage();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -75,4 +78,6 @@ abstract public class PaginateFragment extends BaseFragment {
     public abstract boolean isLastPage();
 
     public abstract boolean isFirstPage();
+
+    public abstract void refreshPage();
 }

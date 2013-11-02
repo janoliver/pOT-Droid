@@ -89,6 +89,10 @@ public class SettingsWrapper {
         editor.commit();
     }
 
+    public int getUserId() {
+        return mSharedPreferences.getInt(PREF_KEY_USERID, 0);
+    }
+
     public Boolean hasLoginCookie() {
         return mSharedPreferences.contains(PREF_KEY_COOKIE_NAME);
     }

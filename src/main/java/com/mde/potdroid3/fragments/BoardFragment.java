@@ -63,20 +63,6 @@ public class BoardFragment extends PaginateFragment
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
-
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.nav_refresh:
-                restartLoader(this);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
     public Loader<Board> onCreateLoader(int id, Bundle args) {
         int page = getArguments().getInt("page", 1);
         int bid = getArguments().getInt("board_id", 0);
@@ -135,6 +121,11 @@ public class BoardFragment extends PaginateFragment
     public void goToLastPage() {
         // whether there is a previous page was checked in onCreateOptionsMenu
         getArguments().putInt("page", mBoard.getNumberOfPages());
+        restartLoader(this);
+    }
+
+    @Override
+    public void refreshPage() {
         restartLoader(this);
     }
 

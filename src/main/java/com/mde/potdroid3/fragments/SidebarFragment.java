@@ -21,6 +21,7 @@ public class SidebarFragment extends BaseFragment
     private ListView mListView;
     protected Button mBookmarkRefreshButton;
     private Boolean mDirty = true;
+    private BookmarkFragment.AsyncContentLoader mLoader;
 
     public static SidebarFragment newInstance() {
         return new SidebarFragment();
@@ -35,7 +36,6 @@ public class SidebarFragment extends BaseFragment
         super.onCreate(savedInstanceState);
         this.setRetainInstance(true);
         mBookmarkList = new BookmarkList(getActivity());
-
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
@@ -124,7 +124,8 @@ public class SidebarFragment extends BaseFragment
     public Loader<BookmarkList> onCreateLoader(int id, Bundle args) {
         mDirty = false;
         showLoadingAnimation();
-        return new BookmarkFragment.AsyncContentLoader(getActivity(), mBookmarkList);
+        mLoader = new BookmarkFragment.AsyncContentLoader(getActivity(), mBookmarkList);
+        return mLoader;
     }
 
     @Override
@@ -150,7 +151,7 @@ public class SidebarFragment extends BaseFragment
     @Override
     public void onResume() {
         super.onResume();
-
+        hideLoadingAnimation();
         mListAdapter.notifyDataSetChanged();
     }
 

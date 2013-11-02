@@ -9,16 +9,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.*;
+import android.view.ContextMenu;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageButton;
+import android.widget.Toast;
 import com.mde.potdroid3.BaseActivity;
 import com.mde.potdroid3.R;
-import com.mde.potdroid3.helpers.Network;
-import com.mde.potdroid3.helpers.TopicBuilder;
-import com.mde.potdroid3.helpers.TopicJSInterface;
+import com.mde.potdroid3.helpers.*;
 import com.mde.potdroid3.models.Post;
 import com.mde.potdroid3.models.Topic;
 import com.mde.potdroid3.parsers.TopicParser;
@@ -176,11 +178,24 @@ public class TopicFragment extends PaginateFragment
         return mTopic == null || mTopic.getPage() == 1;
     }
 
+    @Override
+    public void refreshPage() {
+        restartLoader(this);
+    }
+
     public void goToLastPage() {
         // whether there is a previous page was checked in onCreateOptionsMenu
         getArguments().putInt("page", mTopic.getNumberOfPages());
         getArguments().remove("post_id");
         mJsInterface.registerScroll(0);
+        restartLoader(this);
+    }
+
+    public void goToLastPost(int pid) {
+        // whether there is a previous page was checked in onCreateOptionsMenu
+        getArguments().putInt("post_id", pid);
+        getArguments().remove("page");
+        mJsInterface.registerScroll(pid);
         restartLoader(this);
     }
 
@@ -203,21 +218,6 @@ public class TopicFragment extends PaginateFragment
         PostDialogFragment menu = new PostDialogFragment(post_id);
         menu.show(mActivity.getFragmentManager(), "postmenu");
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
-
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.nav_refresh:
-                restartLoader(this);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
 
     protected int getLayout() {
         return R.layout.layout_topic;
@@ -278,9 +278,7 @@ public class TopicFragment extends PaginateFragment
             builder.setView(dialog_view)
                     .setTitle("Post Aktionen")
                     .setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // User cancelled the dialog
-                        }
+                        public void onClick(DialogInterface dialog, int id) {}
                     });
 
             // Create the AlertDialog object and return it
@@ -295,13 +293,89 @@ public class TopicFragment extends PaginateFragment
                     BaseActivity a = (BaseActivity)getActivity();
                     Post p = mTopic.getPostById(mPostId);
 
-                    String text = text = "[quote=" + mTopic.getId() + "," + p.getId() + ",\""
+                    String text = "[quote=" + mTopic.getId() + "," + p.getId() + ",\""
                             + p.getAuthor().getNick() + "\"][b]\n" + p.getText() + "\n[/b][/quote]";
 
                     a.getRightSidebar().appendText(text);
                     a.openRightSidebar();
 
                     d.cancel();
+                }
+            });
+
+            ImageButton edit_button = (ImageButton) dialog_view.findViewById(R.id.button_edit);
+            edit_button.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    BaseActivity a = (BaseActivity)getActivity();
+                    Post p = mTopic.getPostById(mPostId);
+
+                    SettingsWrapper settings = new SettingsWrapper(a);
+
+                    if(p.getAuthor().getId() == settings.getUserId()) {
+
+                        String text = p.getText();
+                        a.getRightSidebar().setIsEditPost(mTopic.getId(), p.getId(), p.getEdittoken());
+                        a.getRightSidebar().appendText(text);
+                        a.openRightSidebar();
+
+                        d.cancel();
+
+                    } else {
+                        Toast.makeText(a, "Nicht dein Post!", Toast.LENGTH_LONG).show();
+                    }
+
+                }
+            });
+
+            ImageButton bookmark_button = (ImageButton) dialog_view.findViewById(R.id.button_bookmark);
+            bookmark_button.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    BaseActivity a = (BaseActivity)getActivity();
+                    Post p = mTopic.getPostById(mPostId);
+
+                    final String url = Utils.ASYNC_URL + "set-bookmark.php?PID=" + p.getId()
+                            + "&token=" + p.getBookmarktoken();
+                    new Thread(new Runnable() {
+                        public void run() {
+                            mNetwork.callPage(url);
+
+                            getActivity().runOnUiThread(new Runnable() {
+                                public void run() {
+                                    Toast.makeText(getActivity(), "Bookmark hinzugefügt.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                            d.cancel();
+                        }
+                    }).start();
+
+                }
+            });
+
+            ImageButton url_button = (ImageButton) dialog_view.findViewById(R.id.button_link);
+            url_button.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    BaseActivity a = (BaseActivity)getActivity();
+                    Post p = mTopic.getPostById(mPostId);
+
+                    String url = Utils.BASE_URL + "thread.php?PID=" + p.getId()
+                            + "&TID=" + mTopic.getId() + "#reply_" + p.getId();
+
+                    d.cancel();
+
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
                 }
             });
 

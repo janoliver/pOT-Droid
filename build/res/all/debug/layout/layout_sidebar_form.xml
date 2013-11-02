@@ -83,7 +83,7 @@
             android:layout_marginRight="5pt"
             android:hint="Text"
             android:textColor="@color/bbstyle_darkblue"
-            android:scrollbars="vertical"
+            android:scrollbars="vertical|horizontal"
             android:gravity="top"
             android:textSize="16sp"/>
 

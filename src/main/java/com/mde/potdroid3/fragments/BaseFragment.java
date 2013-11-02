@@ -37,7 +37,21 @@ public abstract class BaseFragment extends Fragment {
      * Start the content loader
      */
     public void startLoader(LoaderManager.LoaderCallbacks l) {
-        getLoaderManager().initLoader(0, null, l).forceLoad();
+        startLoader(l, null);
+    }
+
+    /**
+     * Start the content loader providing arguments
+     */
+    public void startLoader(LoaderManager.LoaderCallbacks l, Bundle args) {
+        getLoaderManager().restartLoader(0, args, l).forceLoad();
+    }
+
+    /**
+     * Start the content loader providing arguments
+     */
+    public void stopLoader() {
+        getLoaderManager().destroyLoader(0);
     }
 
     /**

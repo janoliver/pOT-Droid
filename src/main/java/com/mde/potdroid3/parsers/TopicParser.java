@@ -205,6 +205,13 @@ public class TopicParser extends DefaultHandler {
                 mCurrentPost.setBookmarktoken(attributes.getValue(Post.Xml.TOKEN_SETBOOKMARK_ATTRIBUTE));
             }
         });
+        post.getChild(Post.Xml.TOKEN_EDITREPLY_TAG).setStartElementListener(new StartElementListener() {
+
+            @Override
+            public void start(Attributes attributes) {
+                mCurrentPost.setEdittoken(attributes.getValue(Post.Xml.TOKEN_EDITREPLY_ATTRIBUTE));
+            }
+        });
         post.requireChild(User.Xml.AVATAR_TAG).setTextElementListener(new TextElementListener() {
 
             @Override

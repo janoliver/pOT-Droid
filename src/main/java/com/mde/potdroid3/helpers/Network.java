@@ -172,17 +172,36 @@ public class Network {
     }
 
     /**
-     * Sends a Post request to the website.
+     * Sends a Post request to the website and return the PID of the new/edited post.
      */
-    public Boolean sendPost(String url, List<NameValuePair> params) {
+    public int sendPost(String url, List<NameValuePair> params) {
         HttpPost httppost = new HttpPost(url);
         try {
             httppost.setEntity(new UrlEncodedFormEntity(params, Utils.DEFAULT_ENCODING));
-            mHttpClient.execute(httppost);
-            return true;
+            HttpResponse response = mHttpClient.execute(httppost);
+
+            // find out the PID of the new post
+            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity()
+                    .getContent(), Utils.DEFAULT_ENCODING));
+
+            // fetch the result of the http request and save it as a string
+            String line;
+            StringBuilder sb = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+            String input = sb.toString();
+
+            Pattern pattern = Pattern.compile("thread.php\\?TID=([0-9]+)&temp=[0-9]+&PID=([0-9]+)");
+            Matcher m = pattern.matcher(input);
+
+            if (m.find())
+                return Integer.parseInt(m.group(2));
+
+            return 0;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return 0;
         }
 
     }

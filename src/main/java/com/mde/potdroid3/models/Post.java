@@ -192,6 +192,9 @@ public class Post implements Serializable {
         public static String TOKEN_SETBOOKMARK_TAG = "token-setbookmark";
         public static String TOKEN_SETBOOKMARK_ATTRIBUTE = "value";
 
+        public static String TOKEN_EDITREPLY_TAG = "token-editreply";
+        public static String TOKEN_EDITREPLY_ATTRIBUTE = "value";
+
 
     }
 

@@ -19,62 +19,62 @@
 
 <resources>
 
-    <style name="Theme.Bbdarkstyle" parent="@android:style/Theme.Holo">
-        <item name="android:actionBarItemBackground">@drawable/selectable_background_bbdarkstyle</item>
-        <item name="android:popupMenuStyle">@style/PopupMenu.Bbdarkstyle</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Bbdarkstyle</item>
-        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Bbdarkstyle</item>
-        <item name="android:actionDropDownStyle">@style/DropDownNav.Bbdarkstyle</item>
-        <item name="android:actionBarStyle">@style/ActionBar.Solid.Bbdarkstyle</item>
-        <item name="android:actionModeBackground">@drawable/cab_background_top_bbdarkstyle</item>
-        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_bbdarkstyle</item>
-        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Bbdarkstyle</item>
+    <style name="Theme.Bbdarkstyle" parent="@style/Theme.AppCompat">
+        <item name="actionBarItemBackground">@drawable/selectable_background_bbdarkstyle</item>
+        <item name="popupMenuStyle">@style/PopupMenu.Bbdarkstyle</item>
+        <item name="dropDownListViewStyle">@style/DropDownListView.Bbdarkstyle</item>
+        <item name="actionBarTabStyle">@style/ActionBarTabStyle.Bbdarkstyle</item>
+        <item name="actionDropDownStyle">@style/DropDownNav.Bbdarkstyle</item>
+        <item name="actionBarStyle">@style/ActionBar.Solid.Bbdarkstyle</item>
+        <item name="actionModeBackground">@drawable/cab_background_top_bbdarkstyle</item>
+        <item name="actionModeSplitBackground">@drawable/cab_background_bottom_bbdarkstyle</item>
+        <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Bbdarkstyle</item>
+
         
-        
     </style>
 
-    <style name="ActionBar.Solid.Bbdarkstyle" parent="@android:style/Widget.Holo.ActionBar.Solid">
-        <item name="android:background">@drawable/ab_background_textured_bbdarkstyle</item>
-        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_bbdarkstyle</item>
-        <item name="android:backgroundSplit">@drawable/ab_background_textured_bbdarkstyle</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Bbdarkstyle</item>
+    <style name="ActionBar.Solid.Bbdarkstyle" parent="@style/Widget.AppCompat.ActionBar.Solid">
+        <item name="background">@drawable/ab_solid_bbdarkstyle</item>
+        <item name="backgroundStacked">@drawable/ab_stacked_solid_bbdarkstyle</item>
+        <item name="backgroundSplit">@drawable/ab_bottom_solid_bbdarkstyle</item>
+        <item name="progressBarStyle">@style/ProgressBar.Bbdarkstyle</item>
     </style>
 
-    <style name="ActionBar.Transparent.Bbdarkstyle" parent="@android:style/Widget.Holo.ActionBar">
-        <item name="android:background">@drawable/ab_transparent_bbdarkstyle</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Bbdarkstyle</item>
+    <style name="ActionBar.Transparent.Bbdarkstyle" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="background">@drawable/ab_transparent_bbdarkstyle</item>
+        <item name="progressBarStyle">@style/ProgressBar.Bbdarkstyle</item>
     </style>
-
-    <style name="PopupMenu.Bbdarkstyle" parent="@android:style/Widget.Holo.ListPopupWindow">
+	
+    <style name="PopupMenu.Bbdarkstyle" parent="@style/Widget.AppCompat.PopupMenu">	
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_bbdarkstyle</item>	
     </style>
-
-    <style name="DropDownListView.Bbdarkstyle" parent="@android:style/Widget.Holo.ListView.DropDown">
+	
+    <style name="DropDownListView.Bbdarkstyle" parent="@style/Widget.AppCompat.ListView.DropDown">
         <item name="android:listSelector">@drawable/selectable_background_bbdarkstyle</item>
     </style>
 
-    <style name="ActionBarTabStyle.Bbdarkstyle" parent="@android:style/Widget.Holo.ActionBar.TabView">
+    <style name="ActionBarTabStyle.Bbdarkstyle" parent="@style/Widget.AppCompat.ActionBar.TabView">
         <item name="android:background">@drawable/tab_indicator_ab_bbdarkstyle</item>
     </style>
-
-    <style name="DropDownNav.Bbdarkstyle" parent="@android:style/Widget.Holo.Spinner">
+	
+    <style name="DropDownNav.Bbdarkstyle" parent="@style/Widget.AppCompat.Spinner.DropDown.ActionBar">
         <item name="android:background">@drawable/spinner_background_ab_bbdarkstyle</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_bbdarkstyle</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_bbdarkstyle</item>
     </style>
     
-    <style name="ProgressBar.Bbdarkstyle" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
+    <style name="ProgressBar.Bbdarkstyle" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_bbdarkstyle</item>
     </style>
     
-    <style name="ActionButton.CloseMode.Bbdarkstyle" parent="@android:style/Widget.Holo.ActionButton.CloseMode">
+    <style name="ActionButton.CloseMode.Bbdarkstyle" parent="@style/Widget.AppCompat.ActionButton.CloseMode">
         <item name="android:background">@drawable/btn_cab_done_bbdarkstyle</item>
     </style>
-
+    
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Bbdarkstyle.Widget" parent="@android:style/Theme.Holo">
-        <item name="android:popupMenuStyle">@style/PopupMenu.Bbdarkstyle</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Bbdarkstyle</item>
+    <style name="Theme.Bbdarkstyle.Widget" parent="@style/Theme.AppCompat">
+        <item name="popupMenuStyle">@style/PopupMenu.Bbdarkstyle</item>
+        <item name="dropDownListViewStyle">@style/DropDownListView.Bbdarkstyle</item>
     </style>
 
 </resources>

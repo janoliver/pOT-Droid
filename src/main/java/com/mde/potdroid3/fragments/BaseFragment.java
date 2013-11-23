@@ -1,8 +1,10 @@
 package com.mde.potdroid3.fragments;
 
-import android.app.Fragment;
-import android.app.LoaderManager;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +23,7 @@ public abstract class BaseFragment extends Fragment {
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mNetwork = new Network(getActivity());
+        mNetwork = new Network(getSupportActivity());
     }
 
     @Override
@@ -65,21 +67,29 @@ public abstract class BaseFragment extends Fragment {
      * Shows a "loading" message with a small loading animation
      */
     public void showLoadingAnimation() {
-        getActivity().setProgressBarIndeterminateVisibility(true);
+        getSupportActivity().setProgressBarIndeterminateVisibility(true);
     }
 
     /**
      * Hides the loading message
      */
     public void hideLoadingAnimation() {
-        getActivity().setProgressBarIndeterminateVisibility(false);
+        getSupportActivity().setProgressBarIndeterminateVisibility(false);
     }
 
     /**
      * Display an error
      */
     public void showError(String error) {
-        Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
+        Toast.makeText(getSupportActivity(), error, Toast.LENGTH_LONG).show();
+    }
+
+    public ActionBarActivity getSupportActivity() {
+        return (ActionBarActivity)super.getActivity();
+    }
+
+    public ActionBar getActionbar() {
+        return getSupportActivity().getSupportActionBar();
     }
 
 }

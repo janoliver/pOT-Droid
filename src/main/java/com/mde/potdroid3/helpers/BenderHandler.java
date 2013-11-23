@@ -24,7 +24,11 @@ public class BenderHandler {
     public BenderHandler(Context cx) {
         mContext = cx;
         mSettings = new SettingsWrapper(cx);
-        mRoot = new File(mContext.getExternalFilesDir(null), "avatars/");
+        File ext_root = Environment.getExternalStorageDirectory();
+        Utils.log("Android/data/" + mContext.getPackageName() + "/avatars/");
+
+        mRoot = new File(ext_root, "Android/data/" + mContext.getPackageName() + "/avatars/");
+        Utils.log(mRoot.getPath());
     }
 
     private boolean isWritable() {

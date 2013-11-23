@@ -3,7 +3,7 @@
             mavenCentral()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:0.6.+'
+            classpath 'com.android.tools.build:gradle:0.6.3'
         }
     }
 
@@ -14,17 +14,18 @@
     }
 
     dependencies {
-        compile 'com.android.support:support-v4:18.0.+'
+        compile 'com.android.support:support-v4:19.+'
+        compile 'com.android.support:appcompat-v7:19.0.+'
         compile 'com.samskivert:jmustache:1.8@jar'
     }
 
     android {
-        compileSdkVersion 18
-        buildToolsVersion "18.0.1"
+        compileSdkVersion 19
+        buildToolsVersion "19"
 
         defaultConfig {
-            minSdkVersion 14
-            targetSdkVersion 18
+            minSdkVersion 7
+            targetSdkVersion 19
         }
     }
 

@@ -1,15 +1,17 @@
 package com.mde.potdroid3.fragments;
 
-import android.app.LoaderManager;
-import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
-import android.content.Loader;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -43,30 +45,36 @@ public class BoardFragment extends PaginateFragment
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
+        View v = super.onCreateView(inflater, container, saved);
 
         mListAdapter = new BoardListAdapter();
-        mListView = (ListView)getView().findViewById(R.id.list_content);
+        mListView = (ListView)v.findViewById(R.id.list_content);
         mListView.setAdapter(mListAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), TopicActivity.class);
+                Intent intent = new Intent(getSupportActivity(), TopicActivity.class);
                 intent.putExtra("thread_id", mBoard.getTopics().get(position).getId());
                 intent.putExtra("page", 1);
                 startActivity(intent);
             }
         });
 
-        startLoader(this);
+        return v;
+    }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        startLoader(this);
     }
 
     @Override
     public Loader<Board> onCreateLoader(int id, Bundle args) {
         int page = getArguments().getInt("page", 1);
         int bid = getArguments().getInt("board_id", 0);
-        AsyncContentLoader l = new AsyncContentLoader(getActivity(), mNetwork, page, bid);
+        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), mNetwork, page, bid);
         showLoadingAnimation();
         return l;
     }
@@ -78,13 +86,13 @@ public class BoardFragment extends PaginateFragment
             mBoard = data;
             mListAdapter.notifyDataSetChanged();
 
-            getActivity().invalidateOptionsMenu();
+            getSupportActivity().supportInvalidateOptionsMenu();
 
             Spanned subtitleText = Html.fromHtml("Seite <b>" + mBoard.getPage()
                     + "</b> von <b>" + mBoard.getNumberOfPages() + "</b>");
 
-            getActivity().getActionBar().setTitle(mBoard.getName());
-            getActivity().getActionBar().setSubtitle(subtitleText);
+            getActionbar().setTitle(mBoard.getName());
+            getActionbar().setSubtitle(subtitleText);
         } else {
             showError("Fehler beim Laden der Daten.");
         }

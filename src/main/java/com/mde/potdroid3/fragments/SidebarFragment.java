@@ -1,10 +1,10 @@
 package com.mde.potdroid3.fragments;
 
-import android.app.LoaderManager;
 import android.content.Intent;
-import android.content.Loader;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +36,7 @@ public class SidebarFragment extends BaseFragment
     {
         super.onCreate(savedInstanceState);
         this.setRetainInstance(true);
-        mBookmarkList = new BookmarkList(getActivity());
+        mBookmarkList = new BookmarkList(getSupportActivity());
     }
 
     @Override
@@ -49,7 +49,7 @@ public class SidebarFragment extends BaseFragment
         mListView.setEmptyView(v.findViewById(R.id.empty_bookmarks_text));
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), TopicActivity.class);
+                Intent intent = new Intent(getSupportActivity(), TopicActivity.class);
                 intent.putExtra("post_id", mBookmarkList.getUnreadBookmarks().get(position).getLastPost().getId());
                 intent.putExtra("thread_id", mBookmarkList.getUnreadBookmarks().get(position).getThread().getId());
                 startActivity(intent);
@@ -69,7 +69,7 @@ public class SidebarFragment extends BaseFragment
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ForumActivity.class);
+                Intent intent = new Intent(getSupportActivity(), ForumActivity.class);
                 startActivity(intent);
             }
         });
@@ -78,7 +78,7 @@ public class SidebarFragment extends BaseFragment
         preferences.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                Intent intent = new Intent(getSupportActivity(), SettingsActivity.class);
                 startActivity(intent);
             }
         });
@@ -87,7 +87,7 @@ public class SidebarFragment extends BaseFragment
         bookmarks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), BookmarkActivity.class);
+                Intent intent = new Intent(getSupportActivity(), BookmarkActivity.class);
                 startActivity(intent);
             }
         });
@@ -96,7 +96,8 @@ public class SidebarFragment extends BaseFragment
         pm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // go to foren overview
+                Intent intent = new Intent(getSupportActivity(), MessageActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -126,7 +127,7 @@ public class SidebarFragment extends BaseFragment
     public Loader<Boolean> onCreateLoader(int id, Bundle args) {
         mDirty = false;
         showLoadingAnimation();
-        mLoader = new BookmarkFragment.AsyncContentLoader(getActivity(), mBookmarkList);
+        mLoader = new BookmarkFragment.AsyncContentLoader(getSupportActivity(), mBookmarkList);
         return mLoader;
     }
 

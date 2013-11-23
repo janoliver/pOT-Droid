@@ -1,11 +1,11 @@
 package com.mde.potdroid3.fragments;
 
-import android.app.LoaderManager;
-import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
-import android.content.Loader;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
@@ -56,7 +56,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id)
             {
                 // go to a board
-                Intent intent = new Intent(getActivity(), BoardActivity.class);
+                Intent intent = new Intent(getSupportActivity(), BoardActivity.class);
                 intent.putExtra("board_id", mForum.getCategories().get(groupPosition).getBoards().get(childPosition).getId());
                 intent.putExtra("page", 1);
                 startActivity(intent);
@@ -97,7 +97,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
     @Override
     public Loader<Forum> onCreateLoader(int id, Bundle args) {
-        AsyncContentLoader l = new AsyncContentLoader(getActivity(), mNetwork);
+        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), mNetwork);
         showLoadingAnimation();
         return l;
     }

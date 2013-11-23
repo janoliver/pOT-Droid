@@ -16,12 +16,12 @@ public class TopicActivity extends BaseActivity implements FormFragment.FormList
         int page = mExtras.getInt("page", 1);
         int pid = mExtras.getInt("post_id", 0);
 
-        mTopicFragment = (TopicFragment)getFragmentManager().findFragmentByTag("topic");
+        mTopicFragment = (TopicFragment)getSupportFragmentManager().findFragmentByTag("topic");
         if(mTopicFragment == null)
             mTopicFragment = TopicFragment.newInstance(bid, page, pid);
 
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .add(R.id.content, mTopicFragment, "topic")
                     .commit();
         }

@@ -13,7 +13,7 @@ public class BoardActivity extends BaseActivity {
             int bid = mExtras.getInt("board_id", 0);
             int page = mExtras.getInt("page", 1);
 
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .add(R.id.content, BoardFragment.newInstance(bid, page))
                     .commit();
         }

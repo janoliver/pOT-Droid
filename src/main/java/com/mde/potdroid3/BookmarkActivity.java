@@ -9,7 +9,7 @@ public class BookmarkActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
-            getFragmentManager()
+            getSupportFragmentManager()
                     .beginTransaction().add(R.id.content, new BookmarkFragment())
                     .commit();
         }

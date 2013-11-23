@@ -10,7 +10,7 @@ public class ForumActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .add(R.id.content, new ForumFragment())
                     .commit();
         }

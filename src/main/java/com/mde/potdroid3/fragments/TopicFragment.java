@@ -2,11 +2,15 @@ package com.mde.potdroid3.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.LoaderManager;
-import android.content.*;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.ContextMenu;
@@ -52,10 +56,10 @@ public class TopicFragment extends PaginateFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mActivity = (BaseActivity) getActivity();
+        mActivity = (BaseActivity) getSupportActivity();
 
         mWebView = (WebView)getView().findViewById(R.id.topic_webview);
-        mJsInterface = new TopicJSInterface(mWebView, getActivity(), this);
+        mJsInterface = new TopicJSInterface(mWebView, getSupportActivity(), this);
 
         // if there is a post_id from the bookmarks call, we set it as the currently
         // visible post.
@@ -81,7 +85,7 @@ public class TopicFragment extends PaginateFragment
         int page = getArguments().getInt("page", 1);
         int tid = getArguments().getInt("thread_id", 0);
         int pid = getArguments().getInt("post_id", 0);
-        AsyncContentLoader l = new AsyncContentLoader(getActivity(), mNetwork, page, tid, pid);
+        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), mNetwork, page, tid, pid);
         showLoadingAnimation();
 
         return l;
@@ -107,9 +111,9 @@ public class TopicFragment extends PaginateFragment
                     + mTopic.getNumberOfPages()
                     + "</b>");
 
-            getActivity().invalidateOptionsMenu();
-            getActivity().getActionBar().setTitle(mTopic.getTitle());
-            getActivity().getActionBar().setSubtitle(subtitleText);
+            getSupportActivity().invalidateOptionsMenu();
+            getSupportActivity().getActionBar().setTitle(mTopic.getTitle());
+            getSupportActivity().getActionBar().setSubtitle(subtitleText);
 
             // call the onLoaded function
             mActivity.getSidebar().refreshBookmarks();
@@ -216,7 +220,7 @@ public class TopicFragment extends PaginateFragment
 
     public void showPostDialog(int post_id) {
         PostDialogFragment menu = new PostDialogFragment(post_id);
-        menu.show(mActivity.getFragmentManager(), "postmenu");
+        menu.show(mActivity.getSupportFragmentManager(), "postmenu");
     }
 
     protected int getLayout() {
@@ -272,8 +276,8 @@ public class TopicFragment extends PaginateFragment
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            LayoutInflater inflater = getActivity().getLayoutInflater();
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            LayoutInflater inflater = getSupportActivity().getLayoutInflater();
+            AlertDialog.Builder builder = new AlertDialog.Builder(getSupportActivity());
             View dialog_view = inflater.inflate(R.layout.dialog_post_actions, null);
             builder.setView(dialog_view)
                     .setTitle("Post Aktionen")
@@ -290,7 +294,7 @@ public class TopicFragment extends PaginateFragment
                 @Override
                 public void onClick(View v)
                 {
-                    BaseActivity a = (BaseActivity)getActivity();
+                    BaseActivity a = (BaseActivity)getSupportActivity();
                     Post p = mTopic.getPostById(mPostId);
 
                     if(mTopic.isClosed())
@@ -312,7 +316,7 @@ public class TopicFragment extends PaginateFragment
                 @Override
                 public void onClick(View v)
                 {
-                    BaseActivity a = (BaseActivity)getActivity();
+                    BaseActivity a = (BaseActivity)getSupportActivity();
                     Post p = mTopic.getPostById(mPostId);
 
                     SettingsWrapper settings = new SettingsWrapper(a);
@@ -339,7 +343,7 @@ public class TopicFragment extends PaginateFragment
                 @Override
                 public void onClick(View v)
                 {
-                    BaseActivity a = (BaseActivity)getActivity();
+                    BaseActivity a = (BaseActivity)getSupportActivity();
                     Post p = mTopic.getPostById(mPostId);
 
                     final String url = Utils.ASYNC_URL + "set-bookmark.php?PID=" + p.getId()
@@ -348,9 +352,9 @@ public class TopicFragment extends PaginateFragment
                         public void run() {
                             mNetwork.callPage(url);
 
-                            getActivity().runOnUiThread(new Runnable() {
+                            getSupportActivity().runOnUiThread(new Runnable() {
                                 public void run() {
-                                    Toast.makeText(getActivity(), "Bookmark hinzugefügt.",
+                                    Toast.makeText(getSupportActivity(), "Bookmark hinzugefügt.",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -368,7 +372,7 @@ public class TopicFragment extends PaginateFragment
                 @Override
                 public void onClick(View v)
                 {
-                    BaseActivity a = (BaseActivity)getActivity();
+                    BaseActivity a = (BaseActivity)getSupportActivity();
                     Post p = mTopic.getPostById(mPostId);
 
                     String url = Utils.BASE_URL + "thread.php?PID=" + p.getId()

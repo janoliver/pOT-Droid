@@ -12,8 +12,8 @@
 
 
     <uses-sdk
-            android:minSdkVersion="14"
-            android:targetSdkVersion="18"/>
+            android:minSdkVersion="7"
+            android:targetSdkVersion="19"/>
 
     <application
             android:allowBackup="true"
@@ -42,6 +42,10 @@
 
         <activity
                 android:name=".TopicActivity"
+                android:exported="false"/>
+
+        <activity
+                android:name=".MessageActivity"
                 android:exported="false"/>
 
         <activity android:name=".SettingsActivity"/>

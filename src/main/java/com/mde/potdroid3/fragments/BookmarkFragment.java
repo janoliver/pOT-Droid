@@ -1,12 +1,12 @@
 package com.mde.potdroid3.fragments;
 
-import android.app.LoaderManager;
-import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
-import android.content.Loader;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
@@ -35,7 +35,7 @@ public class BookmarkFragment extends BaseFragment
         setHasOptionsMenu(true);
         setRetainInstance(true);
 
-        mBookmarkList = new BookmarkList(getActivity());
+        mBookmarkList = new BookmarkList(getSupportActivity());
     }
 
     @Override
@@ -47,7 +47,7 @@ public class BookmarkFragment extends BaseFragment
         mListView.setAdapter(mListAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), TopicActivity.class);
+                Intent intent = new Intent(getSupportActivity(), TopicActivity.class);
                 intent.putExtra("post_id", mBookmarkList.getBookmarks().get(position).getLastPost().getId());
                 intent.putExtra("thread_id", mBookmarkList.getBookmarks().get(position).getThread().getId());
                 startActivity(intent);
@@ -93,7 +93,7 @@ public class BookmarkFragment extends BaseFragment
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getActivity().getMenuInflater();
+        MenuInflater inflater = getSupportActivity().getMenuInflater();
         inflater.inflate(R.menu.contextmenu_bookmark, menu);
     }
 
@@ -110,9 +110,9 @@ public class BookmarkFragment extends BaseFragment
                     public void run() {
                         mNetwork.callPage(url);
 
-                        getActivity().runOnUiThread(new Runnable() {
+                        getSupportActivity().runOnUiThread(new Runnable() {
                             public void run() {
-                                Toast.makeText(getActivity(), "Bookmark entfernt.",
+                                Toast.makeText(getSupportActivity(), "Bookmark entfernt.",
                                         Toast.LENGTH_SHORT).show();
 
                                 restartLoader(BookmarkFragment.this);
@@ -129,7 +129,7 @@ public class BookmarkFragment extends BaseFragment
 
     @Override
     public Loader<Boolean> onCreateLoader(int id, Bundle args) {
-        AsyncContentLoader l = new AsyncContentLoader(getActivity(), mBookmarkList);
+        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), mBookmarkList);
         showLoadingAnimation();
         return l;
     }

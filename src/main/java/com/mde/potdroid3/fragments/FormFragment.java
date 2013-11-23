@@ -1,11 +1,11 @@
 package com.mde.potdroid3.fragments;
 
 import android.app.Activity;
-import android.app.LoaderManager;
-import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.content.Loader;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +76,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
                 args.putInt("tid", mTopicId);
                 args.putString("token", mToken);
                 args.putString("text", mEditText.getText().toString());
-                args.putString("title", mTitle.getText().toString());
+                args.putString("title", mEditTitle.getText().toString());
 
                 startLoader(FormFragment.this, args);
             }
@@ -125,7 +125,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
     @Override
     public Loader<Integer> onCreateLoader(int i, Bundle args) {
-        AsyncPostSubmitter l = new AsyncPostSubmitter(getActivity(), mNetwork, args);
+        AsyncPostSubmitter l = new AsyncPostSubmitter(getSupportActivity(), mNetwork, args);
         showLoadingAnimation();
 
         return l;
@@ -152,7 +152,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
     }
 
     public void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(
+        InputMethodManager imm = (InputMethodManager)getSupportActivity().getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mEditText.getWindowToken(),
                 InputMethodManager.HIDE_IMPLICIT_ONLY);

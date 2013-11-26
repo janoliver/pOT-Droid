@@ -96,7 +96,7 @@ public class SidebarFragment extends BaseFragment
         pm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getSupportActivity(), MessageActivity.class);
+                Intent intent = new Intent(getSupportActivity(), MessageListActivity.class);
                 startActivity(intent);
             }
         });

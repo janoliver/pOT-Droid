@@ -45,6 +45,10 @@
                 android:exported="false"/>
 
         <activity
+                android:name=".MessageListActivity"
+                android:exported="false"/>
+
+        <activity
                 android:name=".MessageActivity"
                 android:exported="false"/>
 

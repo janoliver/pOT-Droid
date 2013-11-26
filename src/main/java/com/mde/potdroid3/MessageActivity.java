@@ -1,55 +1,42 @@
 package com.mde.potdroid3;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
-import com.mde.potdroid3.fragments.MessageListFragment;
-import com.mde.potdroid3.models.MessageList;
+import com.mde.potdroid3.fragments.FormFragment;
+import com.mde.potdroid3.fragments.MessageFragment;
 
-public class MessageActivity extends BaseActivity implements ActionBar.TabListener {
-    private MessageListFragment mMessageList;
-    private ActionBar mActionBar;
+public class MessageActivity extends BaseActivity implements FormFragment.FormListener
+{
+    private MessageFragment mMessageFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mActionBar = getSupportActionBar();
-        mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        int mid = mExtras.getInt("message_id", 0);
 
-        mActionBar.addTab(
-                mActionBar.newTab().setText("Posteingang").setTag(MessageList.TAG_INBOX).setTabListener(this)
-        );
-        mActionBar.addTab(
-                mActionBar.newTab().setText("Postausgang").setTag(MessageList.TAG_OUTBOX).setTabListener(this)
-        );
-
-        mMessageList = (MessageListFragment)getSupportFragmentManager().findFragmentByTag(MessageList.TAG_INBOX);
-        if(mMessageList == null)
-            mMessageList = MessageListFragment.newInstance(MessageList.TAG_INBOX);
+        mMessageFragment = (MessageFragment)getSupportFragmentManager().findFragmentByTag("message");
+        if(mMessageFragment == null)
+            mMessageFragment = MessageFragment.newInstance(mid);
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction().add(R.id.content, mMessageList, MessageList.TAG_INBOX)
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.content, mMessageFragment, "message")
                     .commit();
         }
     }
 
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-        MessageListFragment fr = (MessageListFragment)getSupportFragmentManager()
-                .findFragmentByTag((String)tab.getTag());
-        if(fr == null)
-            fr = MessageListFragment.newInstance((String)tab.getTag());
-
-        ft.replace(R.id.content, fr, (String) tab.getTag());
+    @Override
+    protected int getLayout() {
+        return R.layout.layout_activity_single_fragment_rl;
     }
 
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-        // hide the given tab
+    @Override
+    public void onSuccessReply(int pid) {
+        closeRightSidebar();
     }
 
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-        // probably ignore this event
+    @Override
+    public void onSuccessEdit() {
+        closeRightSidebar();
     }
-
 }

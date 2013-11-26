@@ -1,6 +1,7 @@
 package com.mde.potdroid3.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.mde.potdroid3.MessageActivity;
 import com.mde.potdroid3.R;
 import com.mde.potdroid3.helpers.Network;
 import com.mde.potdroid3.models.Message;
@@ -62,7 +64,9 @@ public class MessageListFragment extends BaseFragment
         mListView.setAdapter(mListAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // go to message
+                Intent intent = new Intent(getSupportActivity(), MessageActivity.class);
+                intent.putExtra("message_id", mMessageList.getMessages().get(position).getId());
+                startActivity(intent);
             }
         });
 

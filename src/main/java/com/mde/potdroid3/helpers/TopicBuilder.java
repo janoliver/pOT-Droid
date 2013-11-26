@@ -132,7 +132,7 @@ public class TopicBuilder {
         }
     }
 
-    private static BBCodeParser getBBCodeParserInstance() {
+    public static BBCodeParser getBBCodeParserInstance() {
         BBCodeParser a = new BBCodeParser();
 
 

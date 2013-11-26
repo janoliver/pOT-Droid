@@ -13,6 +13,7 @@ public class Message {
     private String mText;
     private Date mDate;
     private User mFrom;
+    private Boolean mOutgoing;
     private Boolean mUnread;
     private Boolean mSystem;
 
@@ -60,8 +61,16 @@ public class Message {
         return mUnread;
     }
 
+    public Boolean isOutgoing() {
+        return mOutgoing;
+    }
+
     public Boolean isSystem() {
         return mSystem;
+    }
+
+    public void setOutgoing(Boolean out) {
+        mOutgoing = out;
     }
 
     public void setUnread(Boolean unread) {
@@ -70,6 +79,14 @@ public class Message {
 
     public void setSystem(Boolean system) {
         mSystem = system;
+    }
+
+    public static class Html {
+        public static final String URL = "http://forum.mods.de/bb/pm/?a=2&mid=";
+
+        public static String getUrl(Integer message_id) {
+            return URL + message_id.toString();
+        }
     }
 
 }

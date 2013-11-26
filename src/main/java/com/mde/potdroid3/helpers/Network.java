@@ -211,28 +211,16 @@ public class Network {
      * result as a string
      */
     public String callPage(String url) {
-        HttpGet req = new HttpGet(url);
-        req.addHeader("Accept-Encoding", "gzip");
-
-        HttpResponse response;
         try {
-            response = mHttpClient.execute(req);
-
-            // get the content input stream and take care of gzip encoding
-            InputStream instream   = response.getEntity().getContent();
-            Header contentEncoding = response.getFirstHeader("Content-Encoding");
-            if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
-                instream = new GZIPInputStream(instream);
-            }
+            InputStream instream = getDocument(url);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(instream, Utils.DEFAULT_ENCODING));
             String line;
             StringBuilder sb = new StringBuilder();
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null)
                 sb.append(line).append("\n");
-            }
-            String input = sb.toString();
-            return input;
+
+            return sb.toString();
         } catch (Exception e) {
             return "";
         }

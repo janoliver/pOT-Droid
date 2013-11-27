@@ -77,7 +77,7 @@ public class Network {
         params.put("login_password", password);
         params.put("login_lifetime", COOKIE_LIFETIME);
 
-        post(LOGIN_URL, params, new AsyncHttpResponseHandler() {
+        mHttpClient.post(LOGIN_URL, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Pattern pattern = Pattern.compile("http://forum.mods.de/SSO.php\\?UID=([0-9]+)[^']*");

@@ -45,8 +45,6 @@ public class BookmarkList implements Serializable {
     }
 
     public void refresh(ArrayList<Bookmark> bookmarks, Integer numberOfNewPosts) {
-
-
         mNumberOfNewPosts = numberOfNewPosts;
         mBookmarkDatabase.refresh(bookmarks);
     }

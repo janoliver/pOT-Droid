@@ -137,6 +137,7 @@ public class SidebarFragment extends BaseFragment
                                BookmarkParser.BookmarksContainer success) {
         hideLoadingAnimation();
         if(success != null) {
+            mBookmarkList.refresh(success.getBookmarks(), success.getNumberOfNewPosts());
             mListAdapter.notifyDataSetChanged();
         }
     }

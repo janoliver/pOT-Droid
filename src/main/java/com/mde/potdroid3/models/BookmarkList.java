@@ -2,10 +2,7 @@ package com.mde.potdroid3.models;
 
 import android.content.Context;
 import com.mde.potdroid3.helpers.BookmarkDatabase;
-import com.mde.potdroid3.helpers.Network;
-import com.mde.potdroid3.parsers.BookmarkParser;
 
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -47,15 +44,10 @@ public class BookmarkList implements Serializable {
         return unread;
     }
 
-    public void refresh() throws Network.NoConnectionException {
-        Network n = new Network(mContext);
-        InputStream xml = n.getDocument(Xml.getUrl());
-        BookmarkParser parser = new BookmarkParser();
+    public void refresh(ArrayList<Bookmark> bookmarks, Integer numberOfNewPosts) {
 
-        BookmarkParser.BookmarksContainer c = parser.parse(xml);
-        ArrayList<Bookmark> bookmarks = c.getBookmarks();
 
-        mNumberOfNewPosts = c.getNumberOfNewPosts();
+        mNumberOfNewPosts = numberOfNewPosts;
         mBookmarkDatabase.refresh(bookmarks);
     }
 
@@ -66,7 +58,7 @@ public class BookmarkList implements Serializable {
         public static String BOOKMARKS_ATTRIBUTE_NEW = "newposts";
         public static String BOOKMARKS_ATTRIBUTE_COUNT = "count";
 
-        public static String URL = "http://forum.mods.de/bb/xml/bookmarks.php";
+        public static String URL = "xml/bookmarks.php";
 
         public static String getUrl() {
             return Xml.URL;

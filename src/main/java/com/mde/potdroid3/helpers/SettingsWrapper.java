@@ -49,12 +49,14 @@ public class SettingsWrapper {
 
     public Boolean downloadBenders() {
         String lb = mSharedPreferences.getString(PREF_KEY_LOAD_BENDERS, "0");
-        return !(lb.equals("0") || (lb.equals("1") && Network.getConnectionType(mContext) != Network.NETWORK_WIFI));
+        return !(lb.equals("0") || (lb.equals("1") &&
+                Network.getConnectionType(mContext) != Network.NETWORK_WIFI));
     }
 
     public Boolean downloadImages() {
         String lb = mSharedPreferences.getString(PREF_KEY_LOAD_IMAGES, "0");
-        return !(lb.equals("0") || (lb.equals("1") && Network.getConnectionType(mContext) != Network.NETWORK_WIFI));
+        return !(lb.equals("0") || (lb.equals("1") &&
+                Network.getConnectionType(mContext) != Network.NETWORK_WIFI));
     }
 
     public void setUsername(String username) {

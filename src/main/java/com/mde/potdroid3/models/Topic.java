@@ -279,7 +279,7 @@ public class Topic implements Serializable{
         public static String TOKEN_NEWREPLY_TAG = "token-newreply";
         public static String TOKEN_NEWREPLY_ATTRIBUTE = "value";
 
-        public static String URL = "http://forum.mods.de/bb/xml/thread.php";
+        public static String URL = "xml/thread.php";
 
         public static String getUrl(int tid, int page, int pid) {
             Uri.Builder b = Uri.parse(URL).buildUpon();

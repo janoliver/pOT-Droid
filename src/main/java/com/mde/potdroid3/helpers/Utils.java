@@ -9,18 +9,6 @@ import java.io.*;
  */
 public class Utils {
 
-    public static final String LOGIN_URL = "http://login.mods.de/";
-    public static final String ASYNC_URL = "http://forum.mods.de/bb/async/";
-    public static final String BASE_URL = "http://forum.mods.de/bb/";
-    public static final String PM_INBOX_URL = "http://forum.mods.de/bb/pm/?a=0&cid=1";
-    public static final String PM_OUTBOX_URL = "http://forum.mods.de/bb/pm/?a=0&cid=2";
-    public static final String PM_MESSAGE_URL = "http://forum.mods.de/bb/pm/?a=2&mid=";
-
-    public static final String BOARD_URL_POST = "http://forum.mods.de/bb/newreply.php";
-    public static final String BOARD_URL_EDITPOST = "http://forum.mods.de/bb/editreply.php";
-    public static final String DEFAULT_ENCODING = "ISO-8859-15";
-    public static final String COOKIE_LIFETIME = "31536000";
-
     public static final String LOG_TAG = "pOT Droid";
 
     public static String inputStreamToString(InputStream in) throws IOException {

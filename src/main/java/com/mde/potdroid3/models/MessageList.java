@@ -41,8 +41,8 @@ public class MessageList {
 
 
     public static class Html {
-        public static final String INBOX_URL = "http://forum.mods.de/bb/pm/?a=0&cid=1";
-        public static final String OUTBOX_URL = "http://forum.mods.de/bb/pm/?a=0&cid=2";
+        public static final String INBOX_URL = "pm/?a=0&cid=1";
+        public static final String OUTBOX_URL = "pm/?a=0&cid=2";
 
         public static String getUrl(String mode) {
             if(mode.equals(MessageList.TAG_INBOX))

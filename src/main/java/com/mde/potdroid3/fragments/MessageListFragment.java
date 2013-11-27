@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
@@ -17,12 +16,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.mde.potdroid3.MessageActivity;
 import com.mde.potdroid3.R;
-import com.mde.potdroid3.helpers.Network;
+import com.mde.potdroid3.helpers.AsyncHTTPLoader;
 import com.mde.potdroid3.models.Message;
 import com.mde.potdroid3.models.MessageList;
 import com.mde.potdroid3.parsers.MessageListParser;
 
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 
 /**
@@ -84,7 +82,7 @@ public class MessageListFragment extends BaseFragment
     public Loader<MessageList> onCreateLoader(int id, Bundle args) {
         int page = getArguments().getInt("page", 1);
         int bid = getArguments().getInt("board_id", 0);
-        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), mNetwork, mMode);
+        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), mMode);
         showLoadingAnimation();
         return l;
     }
@@ -160,27 +158,20 @@ public class MessageListFragment extends BaseFragment
         }
     }
 
-    static class AsyncContentLoader extends AsyncTaskLoader<MessageList> {
-        private Network mNetwork;
-        private String mMode;
-
-        AsyncContentLoader(Context cx, Network network, String mode) {
-            super(cx);
-            mNetwork = network;
-            mMode = mode;
+    static class AsyncContentLoader extends AsyncHTTPLoader<MessageList> {
+        AsyncContentLoader(Context cx, String mode) {
+            super(cx, MessageList.Html.getUrl(mode), GET, null, "ISO-8859-15");
         }
 
         @Override
-        public MessageList loadInBackground() {
+        public MessageList parseResponse(String response) {
             try {
-                InputStream html = mNetwork.getDocument(MessageList.Html.getUrl(mMode));
                 MessageListParser parser = new MessageListParser();
-                return parser.parse(html);
+                return parser.parse(response);
             } catch (Exception e) {
-                e.printStackTrace();
                 return null;
             }
         }
-
     }
+
 }

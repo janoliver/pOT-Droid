@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import com.mde.potdroid3.helpers.Network;
 
 /**
  * This class provides some methods to show Notifications on top of the fragment.
@@ -17,13 +16,10 @@ import com.mde.potdroid3.helpers.Network;
 public abstract class BaseFragment extends Fragment {
 
     protected LayoutInflater mInflater;
-    protected Network mNetwork = null;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mNetwork = new Network(getSupportActivity());
     }
 
     @Override

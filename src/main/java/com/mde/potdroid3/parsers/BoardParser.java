@@ -8,9 +8,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 public class BoardParser extends DefaultHandler {
 
     private Post mCurrentPost;
@@ -22,7 +19,7 @@ public class BoardParser extends DefaultHandler {
         mBoard = new Board();
     }
 
-    public Board parse(InputStream instream) {
+    public Board parse(String input) {
         RootElement board = new RootElement(Board.Xml.TAG);
 
         // find the board information
@@ -203,10 +200,7 @@ public class BoardParser extends DefaultHandler {
         });
 
         try {
-            Xml.parse(instream, Xml.Encoding.UTF_8, board.getContentHandler());
-        } catch (IOException e) {
-            Utils.log(e.getMessage());
-            return null;
+            Xml.parse(input, board.getContentHandler());
         } catch (SAXException e) {
             Utils.log(e.getMessage());
             return null;

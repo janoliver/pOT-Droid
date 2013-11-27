@@ -12,9 +12,10 @@ import android.widget.*;
 import com.mde.potdroid3.*;
 import com.mde.potdroid3.models.Bookmark;
 import com.mde.potdroid3.models.BookmarkList;
+import com.mde.potdroid3.parsers.BookmarkParser;
 
 public class SidebarFragment extends BaseFragment
-        implements LoaderManager.LoaderCallbacks<Boolean> {
+        implements LoaderManager.LoaderCallbacks<BookmarkParser.BookmarksContainer> {
 
     private BookmarkList mBookmarkList;
     private BookmarkListAdapter mListAdapter;
@@ -124,29 +125,30 @@ public class SidebarFragment extends BaseFragment
     }
 
     @Override
-    public Loader<Boolean> onCreateLoader(int id, Bundle args) {
+    public Loader<BookmarkParser.BookmarksContainer> onCreateLoader(int id, Bundle args) {
         mDirty = false;
         showLoadingAnimation();
-        mLoader = new BookmarkFragment.AsyncContentLoader(getSupportActivity(), mBookmarkList);
+        mLoader = new BookmarkFragment.AsyncContentLoader(getSupportActivity());
         return mLoader;
     }
 
     @Override
-    public void onLoadFinished(Loader<Boolean> loader, Boolean success) {
+    public void onLoadFinished(Loader<BookmarkParser.BookmarksContainer> loader,
+                               BookmarkParser.BookmarksContainer success) {
         hideLoadingAnimation();
-        if(success) {
+        if(success != null) {
             mListAdapter.notifyDataSetChanged();
         }
     }
 
     @Override
-    public void onLoaderReset(Loader<Boolean> loader) {}
+    public void onLoaderReset(Loader<BookmarkParser.BookmarksContainer> loader) {}
 
-    public boolean isDirty() {
+    public Boolean isDirty() {
         return mDirty;
     }
 
-    public void setDirty(boolean dirty) {
+    public void setDirty(Boolean dirty) {
         mDirty = dirty;
     }
 

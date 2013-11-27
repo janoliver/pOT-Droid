@@ -3,7 +3,6 @@ package com.mde.potdroid3.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -12,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.mde.potdroid3.BaseActivity;
 import com.mde.potdroid3.R;
-import com.mde.potdroid3.helpers.Network;
+import com.mde.potdroid3.helpers.AsyncHTTPLoader;
 import com.mde.potdroid3.models.Message;
 import com.mde.potdroid3.parsers.MessageParser;
 
@@ -59,7 +58,7 @@ public class MessageFragment extends BaseFragment
     @Override
     public Loader<Message> onCreateLoader(int id, Bundle args) {
         int mid = getArguments().getInt("message_id", 0);
-        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), mNetwork, mid);
+        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), mid);
         showLoadingAnimation();
 
         return l;
@@ -98,33 +97,24 @@ public class MessageFragment extends BaseFragment
         return R.layout.layout_topic;
     }
 
-    /**
-     * Takes care of loading the topic XML asynchroneously.
-     */
-    static class AsyncContentLoader extends AsyncTaskLoader<Message> {
-        private Network mNetwork;
+    static class AsyncContentLoader extends AsyncHTTPLoader<Message> {
         private Integer mMessageId;
-        private Context mContext;
 
-        AsyncContentLoader(Context cx, Network network, int message_id) {
-            super(cx);
-            mContext = cx;
-            mNetwork = network;
+        AsyncContentLoader(Context cx, Integer message_id) {
+            super(cx, Message.Html.getUrl(message_id), GET, null, "ISO-8859-15");
+
             mMessageId = message_id;
         }
 
         @Override
-        public Message loadInBackground() {
+        public Message parseResponse(String response) {
             try {
-                String html = mNetwork.callPage(Message.Html.getUrl(mMessageId));
                 MessageParser parser = new MessageParser();
-                return parser.parse(html, mMessageId);
+                return parser.parse(response, mMessageId);
             } catch (Exception e) {
-                e.printStackTrace();
                 return null;
             }
         }
-
     }
 
 }

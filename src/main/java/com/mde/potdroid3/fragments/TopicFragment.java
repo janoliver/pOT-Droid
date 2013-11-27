@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
@@ -22,14 +21,14 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.Toast;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.mde.potdroid3.BaseActivity;
 import com.mde.potdroid3.R;
 import com.mde.potdroid3.helpers.*;
 import com.mde.potdroid3.models.Post;
 import com.mde.potdroid3.models.Topic;
 import com.mde.potdroid3.parsers.TopicParser;
-
-import java.io.InputStream;
+import org.apache.http.Header;
 
 public class TopicFragment extends PaginateFragment
         implements LoaderManager.LoaderCallbacks<Topic> {
@@ -85,7 +84,7 @@ public class TopicFragment extends PaginateFragment
         int page = getArguments().getInt("page", 1);
         int tid = getArguments().getInt("thread_id", 0);
         int pid = getArguments().getInt("post_id", 0);
-        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), mNetwork, page, tid, pid);
+        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), page, tid, pid);
         showLoadingAnimation();
 
         return l;
@@ -227,42 +226,25 @@ public class TopicFragment extends PaginateFragment
         return R.layout.layout_topic;
     }
 
-    /**
-     * Takes care of loading the topic XML asynchroneously.
-     */
-    static class AsyncContentLoader extends AsyncTaskLoader<Topic> {
-        private Network mNetwork;
-        private Integer mPage;
-        private Integer mThreadId;
-        private Integer mPostId;
-        private Context mContext;
-
-        AsyncContentLoader(Context cx, Network network, int page, int thread_id, int post_id) {
-            super(cx);
-            mContext = cx;
-            mNetwork = network;
-            mPage = page;
-            mThreadId = thread_id;
-            mPostId = post_id;
+    static class AsyncContentLoader extends AsyncHTTPLoader<Topic> {
+        AsyncContentLoader(Context cx, int page, int thread_id, int post_id) {
+            super(cx, Topic.Xml.getUrl(thread_id, page, post_id));
         }
 
         @Override
-        public Topic loadInBackground() {
+        public Topic parseResponse(String response) {
             try {
-                InputStream xml = mNetwork.getDocument(Topic.Xml.getUrl(mThreadId, mPage, mPostId));
                 TopicParser parser = new TopicParser();
+                Topic t = parser.parse(response);
 
-                Topic t = parser.parse(xml);
-                TopicBuilder b = new TopicBuilder(mContext);
+                TopicBuilder b = new TopicBuilder(getContext());
                 t.setHtmlCache(b.parse(t));
 
                 return t;
-
             } catch (Exception e) {
                 return null;
             }
         }
-
     }
 
     public class PostDialogFragment extends DialogFragment {
@@ -346,22 +328,18 @@ public class TopicFragment extends PaginateFragment
                     BaseActivity a = (BaseActivity)getSupportActivity();
                     Post p = mTopic.getPostById(mPostId);
 
-                    final String url = Utils.ASYNC_URL + "set-bookmark.php?PID=" + p.getId()
+                    final String url = "set-bookmark.php?PID=" + p.getId()
                             + "&token=" + p.getBookmarktoken();
-                    new Thread(new Runnable() {
-                        public void run() {
-                            mNetwork.callPage(url);
 
-                            getSupportActivity().runOnUiThread(new Runnable() {
-                                public void run() {
-                                    Toast.makeText(getSupportActivity(), "Bookmark hinzugefügt.",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
+                    Network network = new Network(getActivity());
+                    network.get(url, null, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            Toast.makeText(getSupportActivity(), "Bookmark hinzugefügt.",
+                                    Toast.LENGTH_SHORT).show();
                             d.cancel();
                         }
-                    }).start();
+                    });
 
                 }
             });
@@ -375,7 +353,7 @@ public class TopicFragment extends PaginateFragment
                     BaseActivity a = (BaseActivity)getSupportActivity();
                     Post p = mTopic.getPostById(mPostId);
 
-                    String url = Utils.BASE_URL + "thread.php?PID=" + p.getId()
+                    String url = Network.BASE_URL + "thread.php?PID=" + p.getId()
                             + "&TID=" + mTopic.getId() + "#reply_" + p.getId();
 
                     d.cancel();

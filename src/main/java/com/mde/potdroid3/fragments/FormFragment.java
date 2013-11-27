@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +12,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import com.loopj.android.http.RequestParams;
 import com.mde.potdroid3.R;
+import com.mde.potdroid3.helpers.AsyncHTTPLoader;
 import com.mde.potdroid3.helpers.Network;
-import com.mde.potdroid3.helpers.Utils;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FormFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Integer> {
 
@@ -31,6 +29,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
     private int mPostId;
     private String mToken;
     private int mMode;
+    private Network mNetwork;
 
     FormListener mCallback;
 
@@ -94,6 +93,8 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         mEditText = (EditText) v.findViewById(R.id.edit_content);
         mEditTitle = (EditText) v.findViewById(R.id.edit_title);
 
+        mNetwork = new Network(getActivity());
+
         return v;
     }
 
@@ -125,7 +126,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
     @Override
     public Loader<Integer> onCreateLoader(int i, Bundle args) {
-        AsyncPostSubmitter l = new AsyncPostSubmitter(getSupportActivity(), mNetwork, args);
+        AsyncPostSubmitter l = new AsyncPostSubmitter(getSupportActivity(), args);
         showLoadingAnimation();
 
         return l;
@@ -173,64 +174,46 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         getView().findViewById(R.id.send_progress).setVisibility(View.INVISIBLE);
     }
 
-    /**
-     * Takes care of loading the topic XML asynchroneously.
-     */
-    static class AsyncPostSubmitter extends AsyncTaskLoader<Integer> {
-        private Network mNetwork;
-        private int mTopicId;
-        private int mPostId;
-        private String mToken;
-        private String mText;
-        private String mTitle;
-        private int mMode;
-        private Context mContext;
+    static class AsyncPostSubmitter extends AsyncHTTPLoader<Integer> {
+        AsyncPostSubmitter(Context cx, Bundle args) {
+            super(cx, Network.BOARD_URL_POST, AsyncHTTPLoader.POST);
 
-        AsyncPostSubmitter(Context cx, Network network, Bundle args) {
-            super(cx);
-            mContext = cx;
-            mNetwork = network;
+            Integer mode = args.getInt("mode");
 
-            mMode = args.getInt("mode");
-            mTopicId = args.getInt("tid");
-            mPostId = args.getInt("pid");
-            mToken = args.getString("token");
-            mText = args.getString("text");
-            mTitle = args.getString("title");
+            RequestParams r = new RequestParams();
+
+            r.add("message", args.getString("text"));
+            r.add("submit", "Eintragen");
+            r.add("TID", "" + args.getInt("tid"));
+            r.add("token", args.getString("token"));
+
+            if(mode == MODE_EDIT) {
+                r.add("PID", "" + args.getInt("pid"));
+                r.add("edit_title", args.getString("title"));
+                setUrl(Network.BOARD_URL_EDITPOST);
+            } else if(mode == MODE_REPLY) {
+                r.add("SID", "");
+                r.add("PID", "");
+                r.add("post_title", args.getString("title"));
+                setUrl(Network.BOARD_URL_POST);
+            }
+
+            setParams(r);
+
         }
 
         @Override
-        public Integer loadInBackground() {
-            try {
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+        public Integer parseResponse(String response) {
+            Pattern pattern = Pattern.compile("thread.php\\?TID=([0-9]+)&temp=[0-9]+&PID=([0-9]+)");
+            Matcher m = pattern.matcher(response);
 
-                nameValuePairs.add(new BasicNameValuePair("message", mText));
-                nameValuePairs.add(new BasicNameValuePair("submit", "Eintragen"));
-                nameValuePairs.add(new BasicNameValuePair("TID", "" + mTopicId));
-                nameValuePairs.add(new BasicNameValuePair("token", mToken));
-
-                if(mMode == MODE_EDIT) {
-                    nameValuePairs.add(new BasicNameValuePair("PID", "" + mPostId));
-                    nameValuePairs.add(new BasicNameValuePair("edit_title", mTitle));
-                    //nameValuePairs.add(new BasicNameValuePair("edit_icon", mIconId));
-
-                    return mNetwork.sendPost(Utils.BOARD_URL_EDITPOST, nameValuePairs);
-                } else if(mMode == MODE_REPLY) {
-                    nameValuePairs.add(new BasicNameValuePair("SID", ""));
-                    nameValuePairs.add(new BasicNameValuePair("PID", ""));
-                    nameValuePairs.add(new BasicNameValuePair("post_title", mTitle));
-                    //nameValuePairs.add(new BasicNameValuePair("post_icon", mIconId));
-
-                    return mNetwork.sendPost(Utils.BOARD_URL_POST, nameValuePairs);
-                } else {
-                    return 0;
-                }
-
-            } catch (Exception e) {
+            if (m.find()) {
+                return Integer.parseInt(m.group(2));
+            } else {
                 return 0;
             }
         }
-
     }
+
 
 }

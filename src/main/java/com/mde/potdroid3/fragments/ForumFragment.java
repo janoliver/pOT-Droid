@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
@@ -14,13 +13,12 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 import com.mde.potdroid3.BoardActivity;
 import com.mde.potdroid3.R;
-import com.mde.potdroid3.helpers.Network;
+import com.mde.potdroid3.helpers.AsyncHTTPLoader;
 import com.mde.potdroid3.models.Board;
 import com.mde.potdroid3.models.Category;
 import com.mde.potdroid3.models.Forum;
 import com.mde.potdroid3.parsers.ForumParser;
 
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -97,7 +95,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
     @Override
     public Loader<Forum> onCreateLoader(int id, Bundle args) {
-        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), mNetwork);
+        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity());
         showLoadingAnimation();
         return l;
     }
@@ -199,25 +197,20 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
     }
 
-    static class AsyncContentLoader extends AsyncTaskLoader<Forum> {
-        private Network mNetwork;
-
-        AsyncContentLoader(Context cx, Network network) {
-            super(cx);
-            mNetwork = network;
+    static class AsyncContentLoader extends AsyncHTTPLoader<Forum> {
+        AsyncContentLoader(Context cx) {
+            super(cx, Forum.Xml.URL);
         }
 
         @Override
-        public Forum loadInBackground() {
+        public Forum parseResponse(String response) {
             try {
-                InputStream xml = mNetwork.getDocument(Forum.Xml.URL);
                 ForumParser parser = new ForumParser();
-                return parser.parse(xml);
+                return parser.parse(response);
             } catch (Exception e) {
                 return null;
             }
         }
-
     }
 
 }

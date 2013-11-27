@@ -1,14 +1,10 @@
 package com.mde.potdroid3.parsers;
 
-import com.mde.potdroid3.helpers.Utils;
 import com.mde.potdroid3.models.Message;
 import com.mde.potdroid3.models.MessageList;
 import com.mde.potdroid3.models.User;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,16 +25,10 @@ public class MessageListParser {
         mMessageList = new MessageList();
     }
 
-    public MessageList parse(InputStream html) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(html, Utils.DEFAULT_ENCODING));
-        String line = null;
+    public MessageList parse(String html) throws IOException {
+        Matcher m = mMessagePaggern.matcher(html);
 
-        while((line = in.readLine()) != null) {
-
-            Matcher m = mMessagePaggern.matcher(line);
-
-            if(!m.find())
-                continue;
+        while(m.find()) {
 
             Message message = new Message();
             message.setId(Integer.parseInt(m.group(1)));

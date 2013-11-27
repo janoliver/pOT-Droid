@@ -8,9 +8,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 public class ForumParser extends DefaultHandler {
 
     private Category mCurrentCategory;
@@ -24,7 +21,7 @@ public class ForumParser extends DefaultHandler {
         mForum = new Forum();
     }
 
-    public Forum parse(InputStream instream) {
+    public Forum parse(String input) {
         RootElement categories = new RootElement(Forum.Xml.TAG);
 
         Element category = categories.getChild(Category.Xml.TAG);
@@ -150,10 +147,7 @@ public class ForumParser extends DefaultHandler {
 
 
         try {
-            Xml.parse(instream, Xml.Encoding.UTF_8, categories.getContentHandler());
-        } catch (IOException e) {
-            Utils.log(e.getMessage());
-            return null;
+            Xml.parse(input, categories.getContentHandler());
         } catch (SAXException e) {
             Utils.log(e.getMessage());
             return null;

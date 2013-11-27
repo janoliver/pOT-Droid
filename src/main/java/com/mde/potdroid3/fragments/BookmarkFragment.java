@@ -5,20 +5,23 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
 import android.widget.*;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.mde.potdroid3.R;
 import com.mde.potdroid3.TopicActivity;
-import com.mde.potdroid3.helpers.Utils;
+import com.mde.potdroid3.helpers.AsyncHTTPLoader;
+import com.mde.potdroid3.helpers.Network;
 import com.mde.potdroid3.models.Bookmark;
 import com.mde.potdroid3.models.BookmarkList;
+import com.mde.potdroid3.parsers.BookmarkParser;
+import org.apache.http.Header;
 
 public class BookmarkFragment extends BaseFragment
-        implements LoaderManager.LoaderCallbacks<Boolean> {
+        implements LoaderManager.LoaderCallbacks<BookmarkParser.BookmarksContainer> {
 
     private BookmarkList mBookmarkList;
     private BookmarkListAdapter mListAdapter;
@@ -104,23 +107,20 @@ public class BookmarkFragment extends BaseFragment
         switch (item.getItemId()) {
             case R.id.delete:
                 Bookmark b = mBookmarkList.getBookmarks().get((int) info.id);
-                final String url = Utils.ASYNC_URL + "remove-bookmark.php?BMID=" + b.getId()
+                final String url = "async/remove-bookmark.php?BMID=" + b.getId()
                         + "&token=" + b.getRemovetoken();
-                new Thread(new Runnable() {
-                    public void run() {
-                        mNetwork.callPage(url);
 
-                        getSupportActivity().runOnUiThread(new Runnable() {
-                            public void run() {
-                                Toast.makeText(getSupportActivity(), "Bookmark entfernt.",
-                                        Toast.LENGTH_SHORT).show();
+                Network network = new Network(getActivity());
+                network.get(url, null, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        Toast.makeText(getSupportActivity(), "Bookmark entfernt.",
+                                Toast.LENGTH_SHORT).show();
 
-                                restartLoader(BookmarkFragment.this);
-                            }
-                        });
-
+                        restartLoader(BookmarkFragment.this);
                     }
-                }).start();
+                });
+
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -128,16 +128,18 @@ public class BookmarkFragment extends BaseFragment
     }
 
     @Override
-    public Loader<Boolean> onCreateLoader(int id, Bundle args) {
-        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), mBookmarkList);
+    public Loader<BookmarkParser.BookmarksContainer> onCreateLoader(int id, Bundle args) {
+        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity());
         showLoadingAnimation();
         return l;
     }
 
     @Override
-    public void onLoadFinished(Loader<Boolean> loader, Boolean success) {
+    public void onLoadFinished(Loader<BookmarkParser.BookmarksContainer> loader,
+                               BookmarkParser.BookmarksContainer success) {
         hideLoadingAnimation();
-        if(success) {
+        if(success != null) {
+            mBookmarkList.refresh(success.getBookmarks(), success.getNumberOfNewPosts());
             mListAdapter.notifyDataSetChanged();
         } else {
             showError("Fehler beim Laden der Daten.");
@@ -145,7 +147,7 @@ public class BookmarkFragment extends BaseFragment
     }
 
     @Override
-    public void onLoaderReset(Loader<Boolean> loader) {
+    public void onLoaderReset(Loader<BookmarkParser.BookmarksContainer> loader) {
         hideLoadingAnimation();
     }
 
@@ -196,26 +198,20 @@ public class BookmarkFragment extends BaseFragment
         }
     }
 
-    public static class AsyncContentLoader extends AsyncTaskLoader<Boolean> {
-        private BookmarkList mBookmarkList;
-
-        AsyncContentLoader(Context cx, BookmarkList list) {
-            super(cx);
-            mBookmarkList = list;
+    static class AsyncContentLoader extends AsyncHTTPLoader<BookmarkParser.BookmarksContainer> {
+        AsyncContentLoader(Context cx) {
+            super(cx, BookmarkList.Xml.getUrl());
         }
 
         @Override
-        public Boolean loadInBackground() {
-
+        public BookmarkParser.BookmarksContainer parseResponse(String response) {
             try {
-                mBookmarkList.refresh();
-
-                return true;
+                BookmarkParser parser = new BookmarkParser();
+                return parser.parse(response);
             } catch (Exception e) {
-                e.printStackTrace();
-                return false;
+                return null;
             }
         }
-
     }
+
 }

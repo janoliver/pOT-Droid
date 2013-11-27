@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
@@ -18,12 +17,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.mde.potdroid3.R;
 import com.mde.potdroid3.TopicActivity;
-import com.mde.potdroid3.helpers.Network;
+import com.mde.potdroid3.helpers.AsyncHTTPLoader;
 import com.mde.potdroid3.models.Board;
 import com.mde.potdroid3.models.Topic;
 import com.mde.potdroid3.parsers.BoardParser;
-
-import java.io.InputStream;
 
 public class BoardFragment extends PaginateFragment
         implements LoaderManager.LoaderCallbacks<Board>  {
@@ -74,8 +71,7 @@ public class BoardFragment extends PaginateFragment
     public Loader<Board> onCreateLoader(int id, Bundle args) {
         int page = getArguments().getInt("page", 1);
         int bid = getArguments().getInt("board_id", 0);
-        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), mNetwork, page, bid);
-        showLoadingAnimation();
+        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), page, bid);
         return l;
     }
 
@@ -198,29 +194,20 @@ public class BoardFragment extends PaginateFragment
         }
     }
 
-    static class AsyncContentLoader extends AsyncTaskLoader<Board> {
-        private Network mNetwork;
-        private Integer mPage;
-        private Integer mBoardId;
-
-        AsyncContentLoader(Context cx, Network network, int page, int board_id) {
-            super(cx);
-            mNetwork = network;
-            mPage = page;
-            mBoardId = board_id;
+    static class AsyncContentLoader extends AsyncHTTPLoader<Board> {
+        AsyncContentLoader(Context cx, int page, int board_id) {
+            super(cx, Board.Xml.getUrl(board_id, page));
         }
 
         @Override
-        public Board loadInBackground() {
+        public Board parseResponse(String response) {
             try {
-                InputStream xml = mNetwork.getDocument(Board.Xml.getUrl(mBoardId, mPage));
                 BoardParser parser = new BoardParser();
-                return parser.parse(xml);
+                return parser.parse(response);
             } catch (Exception e) {
                 return null;
             }
         }
-
     }
 
 }

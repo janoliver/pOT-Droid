@@ -10,9 +10,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 /**
  * Created by oli on 6/2/13.
  */
@@ -26,7 +23,7 @@ public class TopicParser extends DefaultHandler {
         mThread = new Topic();
     }
 
-    public Topic parse(InputStream instream) {
+    public Topic parse(String input) {
         RootElement thread = new RootElement(Topic.Xml.TAG);
 
         // find the thread information
@@ -283,9 +280,7 @@ public class TopicParser extends DefaultHandler {
         });
 
         try {
-            Xml.parse(instream, Xml.Encoding.UTF_8, thread.getContentHandler());
-        } catch (IOException e) {
-            return null;
+            Xml.parse(input, thread.getContentHandler());
         } catch (SAXException e) {
             return null;
         }

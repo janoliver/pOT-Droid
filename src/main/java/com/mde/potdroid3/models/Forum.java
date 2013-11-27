@@ -37,6 +37,6 @@ public class Forum implements Serializable {
 
     public static class Xml {
         public static String TAG = "categories";
-        public static String URL = "http://forum.mods.de/bb/xml/boards.php";
+        public static String URL = "xml/boards.php";
     }
 }

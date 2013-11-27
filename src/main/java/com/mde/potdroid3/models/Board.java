@@ -149,7 +149,7 @@ public class Board implements Serializable {
         public static String NUMBER_OF_REPLIES_TAG = "number-of-replies";
         public static String NUMBER_OF_REPLIES_ATTRIBUTE = "value";
 
-        public static String URL = "http://forum.mods.de/bb/xml/board.php";
+        public static String URL = "xml/board.php";
 
         public static String getUrl(int bid, int page) {
             Uri.Builder b = Uri.parse(URL).buildUpon();

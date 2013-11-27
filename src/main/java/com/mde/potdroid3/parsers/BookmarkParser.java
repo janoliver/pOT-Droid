@@ -8,8 +8,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 public class BookmarkParser extends DefaultHandler {
@@ -18,7 +16,7 @@ public class BookmarkParser extends DefaultHandler {
     private Topic mCurrentTopic;
     private Board mCurrentBoard;
 
-    public BookmarksContainer parse(InputStream instream) {
+    public BookmarksContainer parse(String input) {
         RootElement bookmarks = new RootElement(BookmarkList.Xml.BOOKMARKS_TAG);
 
         final BookmarksContainer container = new BookmarksContainer();
@@ -84,10 +82,7 @@ public class BookmarkParser extends DefaultHandler {
         });
 
         try {
-            Xml.parse(instream, Xml.Encoding.UTF_8, bookmarks.getContentHandler());
-        } catch (IOException e) {
-            Utils.log(e.getMessage());
-            return null;
+            Xml.parse(input, bookmarks.getContentHandler());
         } catch (SAXException e) {
             Utils.log(e.getMessage());
             return null;

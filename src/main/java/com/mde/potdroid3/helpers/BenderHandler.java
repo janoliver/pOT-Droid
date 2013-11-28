@@ -27,7 +27,7 @@ public class BenderHandler {
         File ext_root = Environment.getExternalStorageDirectory();
         Utils.log("Android/data/" + mContext.getPackageName() + "/avatars/");
 
-        mRoot = new File(ext_root, "Android/data/" + mContext.getPackageName() + "/avatars/");
+        mRoot = new File(cx.getExternalFilesDir(null) + "/avatars/");
         Utils.log(mRoot.getPath());
     }
 
@@ -81,6 +81,7 @@ public class BenderHandler {
 
             try {
                 mRoot.mkdirs();
+
                 String[] parts = u.getAvatarFile().split("/");
                 parts[parts.length-1] = URLEncoder.encode(parts[parts.length-1], "UTF-8").replace("+", "%20");
                 String url = Network.BASE_URL + TextUtils.join("/",parts);

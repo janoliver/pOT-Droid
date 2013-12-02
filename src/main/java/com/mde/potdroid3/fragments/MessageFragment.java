@@ -4,14 +4,17 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import com.mde.potdroid3.BaseActivity;
 import com.mde.potdroid3.R;
 import com.mde.potdroid3.helpers.AsyncHttpLoader;
+import com.mde.potdroid3.helpers.BenderJSInterface;
+import com.mde.potdroid3.helpers.MessageBuilder;
 import com.mde.potdroid3.models.Message;
 import com.mde.potdroid3.parsers.MessageParser;
 
@@ -20,10 +23,8 @@ public class MessageFragment extends BaseFragment
 
     private Message mMessage;
     private BaseActivity mActivity;
-
-    private TextView mFromView;
-    private TextView mTitleView;
-    private TextView mTextView;
+    private WebView mWebView;
+    private BenderJSInterface mJsInterface;
 
     public static MessageFragment newInstance(int message_id) {
         MessageFragment f = new MessageFragment();
@@ -36,23 +37,32 @@ public class MessageFragment extends BaseFragment
         return f;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mActivity = (BaseActivity) getSupportActivity();
-        startLoader(this);
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = super.onCreateView(inflater, container, saved);
-
-        mFromView = (TextView)v.findViewById(R.id.text_from);
-        mTitleView = (TextView)v.findViewById(R.id.text_title);
-        mTextView = (TextView)v.findViewById(R.id.text_text);
-
+        mWebView = (WebView)v.findViewById(R.id.message_webview);
         return v;
+    }
+
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        mActivity = (BaseActivity) getSupportActivity();
+
+        mJsInterface = new BenderJSInterface(mWebView, getSupportActivity());
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setDomStorageEnabled(true);
+        mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        mWebView.getSettings().setAllowFileAccess(true);
+        mWebView.addJavascriptInterface(mJsInterface, "api");
+        mWebView.setWebChromeClient(new WebChromeClient());
+        mWebView.loadData("", "text/html", "utf-8");
+        mWebView.setBackgroundColor(0x00000000);
+
+        // load the content
+        startLoader(this);
+
     }
 
     @Override
@@ -73,12 +83,11 @@ public class MessageFragment extends BaseFragment
             // update the topic data
             mMessage = data;
 
+            mWebView.loadDataWithBaseURL("file:///android_asset/", mMessage.getHtmlCache(),
+                    "text/html", "UTF-8", null);
+
             mActivity.getActionBar().setTitle(mMessage.getTitle());
             //getSupportActivity().getActionBar().setSubtitle(subtitleText);
-
-            mFromView.setText(mMessage.getFrom().getNick());
-            mTitleView.setText(mMessage.getTitle());
-            mTextView.setText(Html.fromHtml(mMessage.getText()));
 
             // populate right sidebar
             //mActivity.getRightSidebar().setIsNewMessage(mMessage.getId());
@@ -94,7 +103,7 @@ public class MessageFragment extends BaseFragment
     }
 
     protected int getLayout() {
-        return R.layout.layout_topic;
+        return R.layout.layout_message;
     }
 
     static class AsyncContentLoader extends AsyncHttpLoader<Message> {
@@ -110,7 +119,10 @@ public class MessageFragment extends BaseFragment
         public Message processNetworkResponse(String response) {
             try {
                 MessageParser parser = new MessageParser();
-                return parser.parse(response, mMessageId);
+                Message m = parser.parse(response, mMessageId);
+                MessageBuilder b = new MessageBuilder(getContext());
+                m.setHtmlCache(b.parse(m));
+                return m;
             } catch (Exception e) {
                 return null;
             }

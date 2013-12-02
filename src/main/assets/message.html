@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <script type="text/javascript" src="jquery.js"></script>
+        <script type="text/javascript" src="message.js"></script>
+        <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" type="text/css" />
+        <link rel="stylesheet" href="thread.css" type="text/css" />
+    </head>
+    <body>
+        <section
+                data-id="{{id}}"
+                data-user="{{author}}"
+                data-user-id="{{authorId}}"
+                data-user-avatar="{{avatar}}"
+                data-user-avatar-id="{{avatarId}}"
+                data-user-avatar-path="{{avatarPath}}">
+            <header>
+                <div class="author">
+                    <div class="bender"></div>
+                    {{author}}
+                </div>
+                <div class="date">{{date}}</div>
+                <div class="title">{{title}}</div>
+            </header>
+            <article><div>{{&text}}</div></article>
+        </section>
+    </body>
+</html>

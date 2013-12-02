@@ -40,7 +40,7 @@ public class BenderHandler {
         return false;
     }
 
-    public String getAvatar(User u, TopicJSInterface.JSInterfaceListener listener) {
+    public String getAvatar(User u, BenderJSInterface.JSInterfaceListener listener) {
 
         File avatar = u.getAvatarLocalFile(mContext);
         String avatar_url = u.getAvatarLocalFileUrl(mContext);

@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  */
 public class MessageParser {
     private Message mMessage;
-    private Pattern mMessagePattern = Pattern.compile("Betreff</td> <td class='hh'><b>([^<]+)</td>.*<td class='h'>(Absender|Empf&auml;nger)</td> <td class='hh'>.*<a href='http://my.mods.de/([0-9]+)' target='_blank'.*?>([^<]+)</a>.*Gesendet</td> <td class='hh'><b>([0-9:\\. ]+)</td>.*<td colspan='2' class='b'>(.+)</td> </tr> <tr> <td colspan='2' class='h'></td> </tr>.*</table>", Pattern.DOTALL | Pattern.MULTILINE);
+    private Pattern mMessagePattern = Pattern.compile("Betreff</td> <td class='hh'><b>([^<]+)</td>.*<td class='h'>(Absender|Empf&auml;nger)</td> <td class='hh'>.*<a href='http://my.mods.de/([0-9]+)' target='_blank'.*?>([^<]+?)</a>.*Gesendet</td> <td class='hh'><b>([0-9:\\. ]+)</td>.*<td colspan='2' class='b'>(.+)</td> </tr>  <tr> <td colspan='2' class='h'></td> </tr>.*</table>", Pattern.DOTALL | Pattern.MULTILINE);
 
     public MessageParser() {
         mMessage = new Message();
@@ -25,11 +25,12 @@ public class MessageParser {
 
     public Message parse(String html, Integer message_id) throws IOException {
 
-        Utils.log(html.substring(html.length()-100));
-
         Matcher m = mMessagePattern.matcher(html);
 
         if (m.find()) {
+
+            for(int i = 0; i < 7; ++i)
+                Utils.log("group " + i + ": " + m.group(i));
 
             User from = new User(Integer.parseInt(m.group(3)));
             from.setNick(m.group(4));

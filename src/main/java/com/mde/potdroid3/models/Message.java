@@ -16,6 +16,7 @@ public class Message {
     private Boolean mOutgoing;
     private Boolean mUnread;
     private Boolean mSystem;
+    private String mHtmlCache;
 
     public Integer getId() {
         return mId;
@@ -68,6 +69,15 @@ public class Message {
     public Boolean isSystem() {
         return mSystem;
     }
+
+    public void setHtmlCache(String cache) {
+        mHtmlCache = cache;
+    }
+
+    public String getHtmlCache() {
+        return mHtmlCache;
+    }
+
 
     public void setOutgoing(Boolean out) {
         mOutgoing = out;

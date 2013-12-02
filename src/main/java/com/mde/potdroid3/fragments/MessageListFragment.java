@@ -16,7 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.mde.potdroid3.MessageActivity;
 import com.mde.potdroid3.R;
-import com.mde.potdroid3.helpers.AsyncHTTPLoader;
+import com.mde.potdroid3.helpers.AsyncHttpLoader;
 import com.mde.potdroid3.models.Message;
 import com.mde.potdroid3.models.MessageList;
 import com.mde.potdroid3.parsers.MessageListParser;
@@ -158,13 +158,13 @@ public class MessageListFragment extends BaseFragment
         }
     }
 
-    static class AsyncContentLoader extends AsyncHTTPLoader<MessageList> {
+    static class AsyncContentLoader extends AsyncHttpLoader<MessageList> {
         AsyncContentLoader(Context cx, String mode) {
             super(cx, MessageList.Html.getUrl(mode), GET, null, "ISO-8859-15");
         }
 
         @Override
-        public MessageList parseResponse(String response) {
+        public MessageList processNetworkResponse(String response) {
             try {
                 MessageListParser parser = new MessageListParser();
                 return parser.parse(response);

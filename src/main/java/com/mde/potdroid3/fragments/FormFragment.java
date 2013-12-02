@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import com.loopj.android.http.RequestParams;
 import com.mde.potdroid3.R;
-import com.mde.potdroid3.helpers.AsyncHTTPLoader;
+import com.mde.potdroid3.helpers.AsyncHttpLoader;
 import com.mde.potdroid3.helpers.Network;
 
 import java.util.regex.Matcher;
@@ -174,9 +174,9 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         getView().findViewById(R.id.send_progress).setVisibility(View.INVISIBLE);
     }
 
-    static class AsyncPostSubmitter extends AsyncHTTPLoader<Integer> {
+    static class AsyncPostSubmitter extends AsyncHttpLoader<Integer> {
         AsyncPostSubmitter(Context cx, Bundle args) {
-            super(cx, Network.BOARD_URL_POST, AsyncHTTPLoader.POST);
+            super(cx, Network.BOARD_URL_POST, AsyncHttpLoader.POST);
 
             Integer mode = args.getInt("mode");
 
@@ -203,7 +203,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         }
 
         @Override
-        public Integer parseResponse(String response) {
+        public Integer processNetworkResponse(String response) {
             Pattern pattern = Pattern.compile("thread.php\\?TID=([0-9]+)&temp=[0-9]+&PID=([0-9]+)");
             Matcher m = pattern.matcher(response);
 

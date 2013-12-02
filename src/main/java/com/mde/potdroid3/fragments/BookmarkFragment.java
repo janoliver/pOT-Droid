@@ -13,7 +13,7 @@ import android.widget.*;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.mde.potdroid3.R;
 import com.mde.potdroid3.TopicActivity;
-import com.mde.potdroid3.helpers.AsyncHTTPLoader;
+import com.mde.potdroid3.helpers.AsyncHttpLoader;
 import com.mde.potdroid3.helpers.Network;
 import com.mde.potdroid3.models.Bookmark;
 import com.mde.potdroid3.models.BookmarkList;
@@ -198,13 +198,13 @@ public class BookmarkFragment extends BaseFragment
         }
     }
 
-    static class AsyncContentLoader extends AsyncHTTPLoader<BookmarkParser.BookmarksContainer> {
+    static class AsyncContentLoader extends AsyncHttpLoader<BookmarkParser.BookmarksContainer> {
         AsyncContentLoader(Context cx) {
             super(cx, BookmarkList.Xml.getUrl());
         }
 
         @Override
-        public BookmarkParser.BookmarksContainer parseResponse(String response) {
+        public BookmarkParser.BookmarksContainer processNetworkResponse(String response) {
             try {
                 BookmarkParser parser = new BookmarkParser();
                 return parser.parse(response);

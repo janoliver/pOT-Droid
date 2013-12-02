@@ -60,6 +60,10 @@ public class Network {
         mHttpClient.post(getAbsoluteUrl(url), params, responseHandler);
     }
 
+    public void cancelLoad() {
+        mHttpClient.cancelRequests(mContext, true);
+    }
+
     // login
     public void login(String username, String password, final LoginCallback callback) {
 

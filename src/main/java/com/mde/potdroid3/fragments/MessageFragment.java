@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.mde.potdroid3.BaseActivity;
 import com.mde.potdroid3.R;
-import com.mde.potdroid3.helpers.AsyncHTTPLoader;
+import com.mde.potdroid3.helpers.AsyncHttpLoader;
 import com.mde.potdroid3.models.Message;
 import com.mde.potdroid3.parsers.MessageParser;
 
@@ -97,7 +97,7 @@ public class MessageFragment extends BaseFragment
         return R.layout.layout_topic;
     }
 
-    static class AsyncContentLoader extends AsyncHTTPLoader<Message> {
+    static class AsyncContentLoader extends AsyncHttpLoader<Message> {
         private Integer mMessageId;
 
         AsyncContentLoader(Context cx, Integer message_id) {
@@ -107,7 +107,7 @@ public class MessageFragment extends BaseFragment
         }
 
         @Override
-        public Message parseResponse(String response) {
+        public Message processNetworkResponse(String response) {
             try {
                 MessageParser parser = new MessageParser();
                 return parser.parse(response, mMessageId);

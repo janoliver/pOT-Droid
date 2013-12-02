@@ -226,13 +226,13 @@ public class TopicFragment extends PaginateFragment
         return R.layout.layout_topic;
     }
 
-    static class AsyncContentLoader extends AsyncHTTPLoader<Topic> {
+    static class AsyncContentLoader extends AsyncHttpLoader<Topic> {
         AsyncContentLoader(Context cx, int page, int thread_id, int post_id) {
             super(cx, Topic.Xml.getUrl(thread_id, page, post_id));
         }
 
         @Override
-        public Topic parseResponse(String response) {
+        public Topic processNetworkResponse(String response) {
             try {
                 TopicParser parser = new TopicParser();
                 Topic t = parser.parse(response);

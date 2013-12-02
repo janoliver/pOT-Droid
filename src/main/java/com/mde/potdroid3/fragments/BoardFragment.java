@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.mde.potdroid3.R;
 import com.mde.potdroid3.TopicActivity;
-import com.mde.potdroid3.helpers.AsyncHTTPLoader;
+import com.mde.potdroid3.helpers.AsyncHttpLoader;
 import com.mde.potdroid3.models.Board;
 import com.mde.potdroid3.models.Topic;
 import com.mde.potdroid3.parsers.BoardParser;
@@ -194,13 +194,13 @@ public class BoardFragment extends PaginateFragment
         }
     }
 
-    static class AsyncContentLoader extends AsyncHTTPLoader<Board> {
+    static class AsyncContentLoader extends AsyncHttpLoader<Board> {
         AsyncContentLoader(Context cx, int page, int board_id) {
             super(cx, Board.Xml.getUrl(board_id, page));
         }
 
         @Override
-        public Board parseResponse(String response) {
+        public Board processNetworkResponse(String response) {
             try {
                 BoardParser parser = new BoardParser();
                 return parser.parse(response);
@@ -208,6 +208,7 @@ public class BoardFragment extends PaginateFragment
                 return null;
             }
         }
+
     }
 
 }

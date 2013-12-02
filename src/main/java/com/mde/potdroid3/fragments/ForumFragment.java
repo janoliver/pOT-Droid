@@ -13,7 +13,7 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 import com.mde.potdroid3.BoardActivity;
 import com.mde.potdroid3.R;
-import com.mde.potdroid3.helpers.AsyncHTTPLoader;
+import com.mde.potdroid3.helpers.AsyncHttpLoader;
 import com.mde.potdroid3.models.Board;
 import com.mde.potdroid3.models.Category;
 import com.mde.potdroid3.models.Forum;
@@ -197,13 +197,13 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
     }
 
-    static class AsyncContentLoader extends AsyncHTTPLoader<Forum> {
+    static class AsyncContentLoader extends AsyncHttpLoader<Forum> {
         AsyncContentLoader(Context cx) {
             super(cx, Forum.Xml.URL);
         }
 
         @Override
-        public Forum parseResponse(String response) {
+        public Forum processNetworkResponse(String response) {
             try {
                 ForumParser parser = new ForumParser();
                 return parser.parse(response);

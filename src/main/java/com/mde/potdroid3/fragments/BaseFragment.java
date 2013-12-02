@@ -16,6 +16,7 @@ import android.widget.Toast;
 public abstract class BaseFragment extends Fragment {
 
     protected LayoutInflater mInflater;
+    protected static final int CONTENT_LOADER_ID = 0;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -42,21 +43,21 @@ public abstract class BaseFragment extends Fragment {
      * Start the content loader providing arguments
      */
     public void startLoader(LoaderManager.LoaderCallbacks l, Bundle args) {
-        getLoaderManager().restartLoader(0, args, l).forceLoad();
+        getLoaderManager().initLoader(CONTENT_LOADER_ID, args, l);
     }
 
     /**
      * Start the content loader providing arguments
      */
     public void stopLoader() {
-        getLoaderManager().destroyLoader(0);
+        getLoaderManager().destroyLoader(CONTENT_LOADER_ID);
     }
 
     /**
      * Restart the content loader
      */
     public void restartLoader(LoaderManager.LoaderCallbacks l) {
-        getLoaderManager().restartLoader(0, null, l).forceLoad();
+        getLoaderManager().restartLoader(CONTENT_LOADER_ID, null, l);
     }
 
     /**

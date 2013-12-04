@@ -1,6 +1,7 @@
 package com.mde.potdroid3;
 
 import android.os.Bundle;
+import android.widget.Toast;
 import com.mde.potdroid3.fragments.FormFragment;
 import com.mde.potdroid3.fragments.MessageFragment;
 
@@ -23,6 +24,7 @@ public class MessageActivity extends BaseActivity implements FormFragment.FormLi
                     .add(R.id.content, mMessageFragment, "message")
                     .commit();
         }
+
     }
 
     @Override
@@ -31,12 +33,15 @@ public class MessageActivity extends BaseActivity implements FormFragment.FormLi
     }
 
     @Override
-    public void onSuccessReply(int pid) {
+    public void onSuccess(Bundle result) {
         closeRightSidebar();
+        Toast.makeText(this, "Erfolgreich gesendet", Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void onSuccessEdit() {
-        closeRightSidebar();
+    public void onFailure(Bundle result) {
+        Toast.makeText(this, "Fehlgeschlagen", Toast.LENGTH_LONG).show();
     }
+
+
 }

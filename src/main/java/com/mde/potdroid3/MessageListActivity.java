@@ -3,10 +3,15 @@ package com.mde.potdroid3;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
+import android.widget.Toast;
+import com.mde.potdroid3.fragments.FormFragment;
 import com.mde.potdroid3.fragments.MessageListFragment;
 import com.mde.potdroid3.models.MessageList;
 
-public class MessageListActivity extends BaseActivity implements ActionBar.TabListener {
+public class MessageListActivity extends BaseActivity
+        implements ActionBar.TabListener, FormFragment.FormListener
+{
+
     private MessageListFragment mMessageList;
     private ActionBar mActionBar;
 
@@ -35,6 +40,11 @@ public class MessageListActivity extends BaseActivity implements ActionBar.TabLi
         }
     }
 
+    @Override
+    protected int getLayout() {
+        return R.layout.layout_activity_single_fragment_rl;
+    }
+
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
         MessageListFragment fr = (MessageListFragment)getSupportFragmentManager()
                 .findFragmentByTag((String)tab.getTag());
@@ -52,4 +62,14 @@ public class MessageListActivity extends BaseActivity implements ActionBar.TabLi
         // probably ignore this event
     }
 
+    @Override
+    public void onSuccess(Bundle result) {
+        closeRightSidebar();
+        Toast.makeText(this, "Erfolgreich gesendet", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onFailure(Bundle result) {
+        Toast.makeText(this, "Fehlgeschlagen", Toast.LENGTH_LONG).show();
+    }
 }

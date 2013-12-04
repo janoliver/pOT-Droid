@@ -90,7 +90,7 @@ public class MessageFragment extends BaseFragment
             //getSupportActivity().getActionBar().setSubtitle(subtitleText);
 
             // populate right sidebar
-            //mActivity.getRightSidebar().setIsNewMessage(mMessage.getId());
+            mActivity.getRightSidebar().setIsMessage(mMessage);
 
         } else {
             showError("Fehler beim Laden der Daten.");

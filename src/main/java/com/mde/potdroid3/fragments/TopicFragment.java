@@ -118,7 +118,7 @@ public class TopicFragment extends PaginateFragment
             mActivity.getSidebar().refreshBookmarks();
 
             // populate right sidebar
-            mActivity.getRightSidebar().setIsNewPost(mTopic.getId(), mTopic.getNewreplytoken());
+            mActivity.getRightSidebar().setIsNewPost(mTopic);
 
         } else {
             showError("Fehler beim Laden der Daten.");
@@ -305,9 +305,8 @@ public class TopicFragment extends PaginateFragment
 
                     if(p.getAuthor().getId() == settings.getUserId()) {
 
-                        String text = p.getText();
-                        a.getRightSidebar().setIsEditPost(mTopic.getId(), p.getId(), p.getEdittoken());
-                        a.getRightSidebar().appendText(text);
+                        a.getRightSidebar().setIsEditPost(mTopic, p);
+                        a.getRightSidebar().appendText(p.getText());
                         a.openRightSidebar();
 
                         d.cancel();

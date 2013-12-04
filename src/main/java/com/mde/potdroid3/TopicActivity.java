@@ -1,6 +1,7 @@
 package com.mde.potdroid3;
 
 import android.os.Bundle;
+import android.widget.Toast;
 import com.mde.potdroid3.fragments.FormFragment;
 import com.mde.potdroid3.fragments.TopicFragment;
 
@@ -33,14 +34,17 @@ public class TopicActivity extends BaseActivity implements FormFragment.FormList
     }
 
     @Override
-    public void onSuccessReply(int pid) {
+    public void onSuccess(Bundle result) {
         closeRightSidebar();
-        mTopicFragment.goToLastPost(pid);
+
+        if(result.getInt("mode") == FormFragment.MODE_EDIT)
+            mTopicFragment.refreshPage();
+        else
+            mTopicFragment.goToLastPost(result.getInt("post_id"));
     }
 
     @Override
-    public void onSuccessEdit() {
-        closeRightSidebar();
-        mTopicFragment.refreshPage();
+    public void onFailure(Bundle result) {
+        Toast.makeText(this, "Fehlgeschlagen", Toast.LENGTH_LONG).show();
     }
 }

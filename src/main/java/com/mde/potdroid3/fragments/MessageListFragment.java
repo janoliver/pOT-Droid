@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.mde.potdroid3.BaseActivity;
 import com.mde.potdroid3.MessageActivity;
 import com.mde.potdroid3.R;
 import com.mde.potdroid3.helpers.AsyncHttpLoader;
@@ -33,6 +34,7 @@ public class MessageListFragment extends BaseFragment
     private MessageList mMessageList = null;
     private MessageListAdapter mListAdapter = null;
     private ListView mListView = null;
+    private BaseActivity mActivity;
 
     public static MessageListFragment newInstance(String mode) {
         MessageListFragment f = new MessageListFragment();
@@ -75,6 +77,8 @@ public class MessageListFragment extends BaseFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        mActivity = (BaseActivity) getSupportActivity();
+        mActivity.getRightSidebar().setIsMessage(null);
         startLoader(this);
     }
 

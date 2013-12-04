@@ -93,6 +93,7 @@ public class Message {
 
     public static class Html {
         public static final String URL = "pm/?a=2&mid=";
+        public static final String SEND_URL = "pm/?a=6";
 
         public static String getUrl(Integer message_id) {
             return URL + message_id.toString();

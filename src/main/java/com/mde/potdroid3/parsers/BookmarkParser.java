@@ -2,7 +2,6 @@ package com.mde.potdroid3.parsers;
 
 import android.sax.*;
 import android.util.Xml;
-import com.mde.potdroid3.helpers.Utils;
 import com.mde.potdroid3.models.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -84,7 +83,6 @@ public class BookmarkParser extends DefaultHandler {
         try {
             Xml.parse(input, bookmarks.getContentHandler());
         } catch (SAXException e) {
-            Utils.log(e.getMessage());
             return null;
         }
 

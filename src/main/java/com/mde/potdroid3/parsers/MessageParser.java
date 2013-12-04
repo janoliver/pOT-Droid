@@ -1,6 +1,5 @@
 package com.mde.potdroid3.parsers;
 
-import com.mde.potdroid3.helpers.Utils;
 import com.mde.potdroid3.models.Message;
 import com.mde.potdroid3.models.User;
 
@@ -28,9 +27,6 @@ public class MessageParser {
         Matcher m = mMessagePattern.matcher(html);
 
         if (m.find()) {
-
-            for(int i = 0; i < 7; ++i)
-                Utils.log("group " + i + ": " + m.group(i));
 
             User from = new User(Integer.parseInt(m.group(3)));
             from.setNick(m.group(4));

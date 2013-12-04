@@ -25,10 +25,8 @@ public class BenderHandler {
         mContext = cx;
         mSettings = new SettingsWrapper(cx);
         File ext_root = Environment.getExternalStorageDirectory();
-        Utils.log("Android/data/" + mContext.getPackageName() + "/avatars/");
 
         mRoot = new File(cx.getExternalFilesDir(null) + "/avatars/");
-        Utils.log(mRoot.getPath());
     }
 
     private boolean isWritable() {

@@ -21,9 +21,9 @@ public class Network {
 
     public static final String BASE_URL = "http://forum.mods.de/bb/";
     public static final String LOGIN_URL = "http://login.mods.de/";
-    public static final String BOARD_URL_POST = BASE_URL + "newreply.php";
-    public static final String BOARD_URL_EDITPOST = BASE_URL + "editreply.php";
-    public static final String ASYNC_URL = BASE_URL + "async/";
+    public static final String BOARD_URL_POST = "newreply.php";
+    public static final String BOARD_URL_EDITPOST = "editreply.php";
+    public static final String ASYNC_URL = "async/";
 
     public static final String UAGENT_BASE = "Apache-HttpClient/potdroid";
     public static final String UAGENT_TAIL = "potdroid";

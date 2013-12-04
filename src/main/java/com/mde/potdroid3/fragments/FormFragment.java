@@ -171,6 +171,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
     @Override
     public void hideLoadingAnimation() {
+        // @TODO Crash, when the fragment is already detached.
         getView().findViewById(R.id.send_progress).setVisibility(View.INVISIBLE);
     }
 

@@ -26,6 +26,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_SHOW_BENDERS = "pref_show_benders";
     public static final String PREF_KEY_LOAD_BENDERS = "pref_load_benders";
     public static final String PREF_KEY_LOAD_IMAGES = "pref_load_images";
+    public static final String PREF_KEY_POLL_MESSAGES = "pref_message_polling_interval";
 
     private SharedPreferences mSharedPreferences;
     private Context mContext;
@@ -37,6 +38,10 @@ public class SettingsWrapper {
 
     public Boolean showBenders() {
         return mSharedPreferences.getBoolean(PREF_KEY_SHOW_BENDERS, true);
+    }
+
+    public Integer pollMessagesInterval() {
+        return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_POLL_MESSAGES, "0"));
     }
 
     public String loadBenders() {

@@ -22,5 +22,8 @@
     <string name="pref_state_notloggedin">Nicht eingeloggt!</string>
     <string name="pref_state_loggedin">Eingeloggt als:</string>
     <string name="subtitle_settings">Settings</string>
+    <string name="pref_state_messages_poll">Es wird nach PMs gecheckt.</string>
+    <string name="pref_state_messages_nopoll">Es wird nicht nach PMs gecheckt.</string>
+
 
 </resources>

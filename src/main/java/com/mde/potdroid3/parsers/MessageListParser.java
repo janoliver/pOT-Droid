@@ -28,6 +28,8 @@ public class MessageListParser {
     public MessageList parse(String html) throws IOException {
         Matcher m = mMessagePaggern.matcher(html);
 
+        int n_unread = 0;
+
         while(m.find()) {
 
             Message message = new Message();
@@ -50,7 +52,12 @@ public class MessageListParser {
             } catch (ParseException e) {}
 
             mMessageList.addMessage(message);
+
+            if(message.isUnread())
+                n_unread++;
         }
+
+        mMessageList.setNumberOfUnreadMessages(n_unread);
 
         return mMessageList;
     }

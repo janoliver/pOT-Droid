@@ -24,14 +24,6 @@
     <PreferenceCategory
             android:title="Style"
             android:key="pref_style_settings">
-        <!--<ListPreference
-                android:key="pref_theme"
-                android:title="Theme"
-                android:summary="Erscheinungsbild der App"
-                android:dialogTitle="Theme"
-                android:entries="@array/pref_theme_entries"
-                android:entryValues="@array/pref_theme_values"
-                android:defaultValue="theme_dark"/>-->
 
         <CheckBoxPreference
                 android:key="pref_show_benders"
@@ -52,5 +44,18 @@
                 android:defaultValue="0"
                 android:entries="@array/load_images"
                 android:entryValues="@array/load_images_values" />
+    </PreferenceCategory>
+    <PreferenceCategory
+            android:title="Polling"
+            android:key="pref_style_settings">
+
+        <ListPreference
+                android:title="Nach neuen PMs pollen"
+                android:key="pref_message_polling_interval"
+                android:summary="Wie häufig nach neuen PMs geschaut wird."
+                android:entries="@array/pref_poll_messages_entries"
+                android:entryValues="@array/pref_poll_messages_values"
+                android:defaultValue="0"/>
+
     </PreferenceCategory>
 </PreferenceScreen>

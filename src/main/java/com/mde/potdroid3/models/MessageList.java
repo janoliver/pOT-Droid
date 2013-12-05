@@ -9,18 +9,13 @@ public class MessageList {
     private static final long serialVersionUID = 10L;
 
     private Integer mNumberOfUnreadMessages;
-    private Integer mNumberOfMessages;
     private ArrayList<Message> mMessages = new ArrayList<Message>();
 
     public static final String TAG_INBOX = "inbox";
     public static final String TAG_OUTBOX = "outbox";
 
     public Integer getNumberOfMessages() {
-        return mNumberOfMessages;
-    }
-
-    public void setNumberOfMessages(Integer numberOfMessages) {
-        this.mNumberOfMessages = numberOfMessages;
+        return mMessages.size();
     }
 
     public ArrayList<Message> getMessages() {
@@ -39,6 +34,13 @@ public class MessageList {
         mNumberOfUnreadMessages = numberOfUnreadMessages;
     }
 
+    public ArrayList<Message> getUnreadMessages() {
+        ArrayList<Message> ret = new ArrayList<Message>();
+        for(Message m: getMessages())
+            if(m.isUnread())
+                ret.add(m);
+        return ret;
+    }
 
     public static class Html {
         public static final String INBOX_URL = "pm/?a=0&cid=1";

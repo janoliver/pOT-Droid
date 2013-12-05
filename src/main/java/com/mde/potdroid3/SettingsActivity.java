@@ -1,5 +1,6 @@
 package com.mde.potdroid3;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -7,8 +8,11 @@ import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import com.mde.potdroid3.helpers.SettingsWrapper;
+import com.mde.potdroid3.services.MessagePollingService;
 import com.mde.potdroid3.views.LoginDialog;
 import com.mde.potdroid3.views.LogoutDialog;
+
+import java.util.Arrays;
 
 public class SettingsActivity extends PreferenceActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -20,6 +24,7 @@ public class SettingsActivity extends PreferenceActivity
     private CheckBoxPreference mShowBendersPreference;
     private ListPreference mLoadBendersPreference;
     private ListPreference mLoadImagesPreference;
+    private ListPreference mPollMessagesPreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,7 @@ public class SettingsActivity extends PreferenceActivity
         mShowBendersPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(SettingsWrapper.PREF_KEY_SHOW_BENDERS);
         mLoadBendersPreference = (ListPreference) getPreferenceScreen().findPreference(SettingsWrapper.PREF_KEY_LOAD_BENDERS);
         mLoadImagesPreference = (ListPreference) getPreferenceScreen().findPreference(SettingsWrapper.PREF_KEY_LOAD_IMAGES);
+        mPollMessagesPreference = (ListPreference) getPreferenceScreen().findPreference(SettingsWrapper.PREF_KEY_POLL_MESSAGES);
 
         //@TODO: Reload on theme change...
     }
@@ -51,6 +57,7 @@ public class SettingsActivity extends PreferenceActivity
         setPreferenceDescription(SettingsWrapper.PREF_KEY_SHOW_BENDERS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_BENDERS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_IMAGES);
+        setPreferenceDescription(SettingsWrapper.PREF_KEY_POLL_MESSAGES);
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
@@ -98,6 +105,22 @@ public class SettingsActivity extends PreferenceActivity
                 mLoadBendersPreference.setSummary(getString(R.string.pref_state_benders_wifi));
             if(mSettings.loadBenders().equals("2"))
                 mLoadBendersPreference.setSummary(getString(R.string.pref_state_benders_always));
+        } else if (key.equals(SettingsWrapper.PREF_KEY_POLL_MESSAGES)) {
+            Intent pollServiceIntent = new Intent(SettingsActivity.this,
+                    MessagePollingService.class);
+
+            if(mSettings.pollMessagesInterval() == 0) {
+                stopService(pollServiceIntent);
+            } else {
+                startService(pollServiceIntent);
+            }
+
+            String[] values = getResources().getStringArray(R.array.pref_poll_messages_values);
+            String[] entries = getResources().getStringArray(R.array.pref_poll_messages_entries);
+
+            int index = Arrays.asList(values).indexOf(mSettings.pollMessagesInterval() + "");
+            mPollMessagesPreference.setSummary(entries[index]);
+
         }
     }
 

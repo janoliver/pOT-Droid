@@ -85,6 +85,8 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
                 stringResult = new String(responseBody, mEncoding);
             } catch (UnsupportedEncodingException e) {
                 stringResult = new String(responseBody);
+            } catch (NullPointerException e) {
+                stringResult = "";
             }
 
             AsyncHttpLoader.this.onNetworkFailure(statusCode, headers, stringResult, error);

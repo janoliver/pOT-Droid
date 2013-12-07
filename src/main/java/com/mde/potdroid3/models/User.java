@@ -1,8 +1,5 @@
 package com.mde.potdroid3.models;
 
-import android.content.Context;
-
-import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -13,10 +10,10 @@ public class User implements Serializable {
     private static final long serialVersionUID = 3L;
 
     private Integer mId;
-    private String  mNick   = ""; 
-    private String  mAvatarFile = "";
-    private Integer mAvatarId = 0;
-    private Integer mGroup  = 0;
+    private String  mNick;
+    private String  mAvatarFile;
+    private Integer mAvatarId;
+    private Integer mGroup;
 
     public User(Integer id) {
         mId = id; 
@@ -32,17 +29,6 @@ public class User implements Serializable {
 
     public String getAvatarFile() {
         return mAvatarFile;
-    }
-
-    public String getAvatarLocalFileUrl(Context cx) {
-        return "file://" +  getAvatarLocalFile(cx).getAbsolutePath();
-    }
-
-    public File getAvatarLocalFile(Context cx) {
-        String[] parts = this.getAvatarFile().split("\\.");
-        String filename = this.getAvatarId() + "." + parts[parts.length-1];
-        File root = new File(cx.getExternalFilesDir(null), "avatars/");
-        return new File(root, filename);
     }
 
     public void setAvatarFile(String avatar) {

@@ -2,6 +2,8 @@ package com.mde.potdroid3.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -10,18 +12,18 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import com.mde.potdroid3.BaseActivity;
 import com.mde.potdroid3.MessageActivity;
 import com.mde.potdroid3.R;
 import com.mde.potdroid3.helpers.AsyncHttpLoader;
+import com.mde.potdroid3.helpers.BenderHandler;
+import com.mde.potdroid3.helpers.Utils;
 import com.mde.potdroid3.models.Message;
 import com.mde.potdroid3.models.MessageList;
 import com.mde.potdroid3.parsers.MessageListParser;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 /**
@@ -35,6 +37,7 @@ public class MessageListFragment extends BaseFragment
     private MessageListAdapter mListAdapter = null;
     private ListView mListView = null;
     private BaseActivity mActivity;
+    private BenderHandler mBenderHandler;
 
     public static MessageListFragment newInstance(String mode) {
         MessageListFragment f = new MessageListFragment();
@@ -79,6 +82,7 @@ public class MessageListFragment extends BaseFragment
 
         mActivity = (BaseActivity) getSupportActivity();
         mActivity.getRightSidebar().setIsMessage(null);
+        mBenderHandler = new BenderHandler(mActivity);
         startLoader(this);
     }
 
@@ -143,8 +147,8 @@ public class MessageListFragment extends BaseFragment
             String author = m.isSystem() ? "System" : m.getFrom().getNick();
 
             TextView description = (TextView) row.findViewById(R.id.description);
-            Spanned content = Html.fromHtml("von <b>" + author
-                    + "</b>, " + mMode == MessageList.TAG_INBOX ? "erhalten" : "gesendet"
+            Spanned content = Html.fromHtml("von <b>" + author + "</b>, "
+                    + (mMode == MessageList.TAG_INBOX ? "erhalten" : "gesendet")
                     + ": " + new SimpleDateFormat("HH:mm dd.MM.yyyy").format(m.getDate()));
             description.setText(content);
 
@@ -156,6 +160,34 @@ public class MessageListFragment extends BaseFragment
                 int left = v.getPaddingLeft();
                 v.setBackgroundResource(R.drawable.sidebar_button_background);
                 v.setPadding(left, top, right, bottom);
+            }
+
+            // bender
+            final ImageView bender_img = (ImageView) row.findViewById(R.id.bender);
+
+            if(!m.isSystem()) {
+
+                try {
+                    Drawable d = Utils.getDrawableFromAsset(mActivity, "images/placeholder_bender.png");
+                    bender_img.setImageDrawable(d);
+                } catch (IOException e) {
+                    bender_img.setVisibility(View.GONE);
+                }
+
+                mBenderHandler.getAvatar(m.getFrom(), new BenderHandler.BenderListener() {
+                    @Override
+                    public void onSuccess(String path) {
+                        bender_img.setImageURI(Uri.parse(path));
+
+                    }
+
+                    @Override
+                    public void onFailure() {
+
+                    }
+                });
+            } else {
+                bender_img.setVisibility(View.GONE);
             }
 
             return row;

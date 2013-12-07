@@ -69,8 +69,7 @@ function replaceImage(icon) {
 }
 
 // load the bender of user_id
-function loadBender(user_id) {
+function loadBender(user_id, path) {
     var el = $("section[data-user-id='"+user_id+"']");
-    el.find("div.bender")
-      .css("background-image","url("+el.attr("data-user-avatar-path")+")");
+    el.find("div.bender").css("background-image","url("+path+")");
 }

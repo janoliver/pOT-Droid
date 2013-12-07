@@ -1,5 +1,8 @@
 package com.mde.potdroid3.helpers;
 
+import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import java.io.*;
@@ -61,4 +64,11 @@ public class Utils {
         }
         catch(Exception ex){}
     }
+
+    public static Drawable getDrawableFromAsset(Context cx, String strName) throws IOException {
+        AssetManager assetManager = cx.getAssets();
+        InputStream istr = assetManager.open(strName);
+        return Drawable.createFromStream(istr, null);
+    }
+
 }

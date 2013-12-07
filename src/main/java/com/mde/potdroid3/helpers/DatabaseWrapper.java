@@ -8,23 +8,25 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.mde.potdroid3.models.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by oli on 9/15/13.
  */
-public class BookmarkDatabase {
+public class DatabaseWrapper {
     public static final String DATABASE_NAME = "potdroid";
     public static final String BOOKMARKS_TABLE_NAME = "bookmarks";
+    public static final String BENDER_TABLE_NAME = "benders";
     private SQLiteDatabase mDatabase;
     private Context mContext;
 
-    public BookmarkDatabase(Context cx) {
+    public DatabaseWrapper(Context cx) {
         mContext = cx;
         BookmarkDatabaseOpenHelper helper = new BookmarkDatabaseOpenHelper(mContext);
         mDatabase = helper.getWritableDatabase();
     }
 
-    public void refresh(ArrayList<Bookmark> list) {
+    public void refreshBookmarks(ArrayList<Bookmark> list) {
         // clear db
         try {
             mDatabase.beginTransaction();
@@ -54,7 +56,7 @@ public class BookmarkDatabase {
         }
     }
 
-    public ArrayList<Bookmark> getBookmarkArray() {
+    public ArrayList<Bookmark> getBookmarks() {
 
         ArrayList<Bookmark> ret = new ArrayList<Bookmark>();
 
@@ -90,18 +92,40 @@ public class BookmarkDatabase {
         return ret;
     }
 
+    public void updateBender(int id, int user_id, String filename, Date last_seen) {
+        ContentValues values = new ContentValues();
+        values.put("id", id);
+        values.put("user_id", user_id);
+        values.put("bender_filename", filename);
+        values.put("last_seen", last_seen.getTime() * 1000.);
+        mDatabase.replace(BENDER_TABLE_NAME, null, values);
+    }
+
     public boolean isBookmark(Topic t) {
         Cursor result = mDatabase.query( BOOKMARKS_TABLE_NAME, new String[]{"id"},
                 "thread_id=?", new String[]{t.getId().toString()}, null, null, null);
         return result.getCount() > 0;
     }
 
+    public Boolean setCurrentBenderInformation(User u) {
+        Cursor c = mDatabase.query(BENDER_TABLE_NAME, new String[] {"id", "bender_filename"},
+                "user_id = ?", new String[] {u.getId().toString()}, null, null, "last_seen desc");
+
+        if(c.getCount() == 0)
+            return false;
+
+        c.moveToFirst();
+        u.setAvatarId(c.getInt(c.getColumnIndex("id")));
+        u.setAvatarFile(c.getString(c.getColumnIndex("bender_filename")));
+        return true;
+    }
+
     public static class BookmarkDatabaseOpenHelper extends SQLiteOpenHelper {
 
-        private static final int DATABASE_VERSION = 2;
+        private static final int DATABASE_VERSION = 4;
 
         private static final String BOOKMARKS_TABLE_CREATE =
-                "CREATE TABLE " + BookmarkDatabase.BOOKMARKS_TABLE_NAME + " (" +
+                "CREATE TABLE IF NOT EXISTS " + DatabaseWrapper.BOOKMARKS_TABLE_NAME + " (" +
                         "id INTEGER  PRIMARY KEY, " +
                         "number_new_posts INTEGER, " +
                         "thread_id INTEGER, " +
@@ -113,18 +137,27 @@ public class BookmarkDatabase {
                         "remove_token TEXT, " +
                         "post_id INTEGER);";
 
+        private static final String BENDER_TABLE_CREATE =
+                "CREATE TABLE IF NOT EXISTS " + DatabaseWrapper.BENDER_TABLE_NAME + " (" +
+                        "id INTEGER PRIMARY KEY, " +
+                        "user_id INTEGER, " +
+                        "bender_filename TEXT, " +
+                        "last_seen INTEGER);";
+
         BookmarkDatabaseOpenHelper(Context context) {
-            super(context, BookmarkDatabase.DATABASE_NAME, null, DATABASE_VERSION);
+            super(context, DatabaseWrapper.DATABASE_NAME, null, DATABASE_VERSION);
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(BOOKMARKS_TABLE_CREATE);
+            db.execSQL(BENDER_TABLE_CREATE);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            return;
+            db.execSQL(BOOKMARKS_TABLE_CREATE);
+            db.execSQL(BENDER_TABLE_CREATE);
         }
     }
 }

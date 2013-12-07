@@ -1,7 +1,7 @@
 package com.mde.potdroid3.models;
 
 import android.content.Context;
-import com.mde.potdroid3.helpers.BookmarkDatabase;
+import com.mde.potdroid3.helpers.DatabaseWrapper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,12 +15,12 @@ public class BookmarkList implements Serializable {
 
     private Integer mNumberOfNewPosts;
     private Context mContext;
-    protected BookmarkDatabase mBookmarkDatabase;
+    protected DatabaseWrapper mBookmarkDatabase;
 
     public BookmarkList(Context cx) {
         mContext = cx;
 
-        mBookmarkDatabase = new BookmarkDatabase(mContext);
+        mBookmarkDatabase = new DatabaseWrapper(mContext);
     }
 
     public Integer getNumberOfNewPosts() {
@@ -32,7 +32,7 @@ public class BookmarkList implements Serializable {
     }
 
     public ArrayList<Bookmark> getBookmarks() {
-        return mBookmarkDatabase.getBookmarkArray();
+        return mBookmarkDatabase.getBookmarks();
     }
 
     public ArrayList<Bookmark> getUnreadBookmarks() {
@@ -46,7 +46,7 @@ public class BookmarkList implements Serializable {
 
     public void refresh(ArrayList<Bookmark> bookmarks, Integer numberOfNewPosts) {
         mNumberOfNewPosts = numberOfNewPosts;
-        mBookmarkDatabase.refresh(bookmarks);
+        mBookmarkDatabase.refreshBookmarks(bookmarks);
     }
 
     public static class Xml {

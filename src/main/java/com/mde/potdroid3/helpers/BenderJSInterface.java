@@ -29,31 +29,27 @@ public class BenderJSInterface {
     }
 
     @JavascriptInterface
-    public String getBenderUrl(int user_id, String avatar_file, int avatar_id) {
+    public void getBenderUrl(final int user_id, String avatar_file, int avatar_id) {
+
+        // this is needed, because we want to load asynchroneously.
         User u = new User(user_id);
         u.setAvatarFile(avatar_file);
         u.setAvatarId(avatar_id);
 
-        return mBenderHandler.getAvatar(u, new JSInterfaceListener(mWebView, mActivity));
-    }
+        mBenderHandler.getAvatar(u, new BenderHandler.BenderListener() {
+            @Override
+            public void onSuccess(final String path) {
+                mActivity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        mWebView.loadUrl("javascript:loadBender(" + user_id + ", '" + path + "');");
+                    }
+                });
 
-    public class JSInterfaceListener {
-        protected WebView mWebView;
-        protected Activity mContext;
+            }
 
-        public JSInterfaceListener(WebView wv, Activity cx) {
-            mWebView = wv;
-            mContext = cx;
-        }
-
-        public void updateBender(final int user_id) {
-            mContext.runOnUiThread(new Runnable() {
-                public void run() {
-                    mWebView.loadUrl("javascript:loadBender(" + user_id + ");");
-                }
-            });
-
-        }
+            @Override
+            public void onFailure() {}
+        });
     }
 
 }

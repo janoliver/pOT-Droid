@@ -108,10 +108,6 @@ public class TopicBuilder {
             return mPost.getAuthor().getAvatarId();
         }
 
-        public String getAvatarPath() {
-            return mPost.getAuthor().getAvatarLocalFileUrl(mContext);
-        }
-
         public String getDate() {
             return mPost.getDate().toString();
         }

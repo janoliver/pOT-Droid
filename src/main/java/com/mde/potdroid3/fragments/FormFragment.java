@@ -277,7 +277,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         protected int mMode;
 
         AsyncPostSubmitter(Context cx, Bundle args) {
-            super(cx, Network.BOARD_URL_POST, AsyncHttpLoader.POST);
+            super(cx, Network.BOARD_URL_POST, AsyncHttpLoader.POST, null, "ISO-8859-15");
 
             mMode = args.getInt("mode");
 

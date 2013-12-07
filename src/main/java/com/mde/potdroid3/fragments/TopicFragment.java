@@ -110,9 +110,9 @@ public class TopicFragment extends PaginateFragment
                     + mTopic.getNumberOfPages()
                     + "</b>");
 
-            getSupportActivity().invalidateOptionsMenu();
-            getSupportActivity().getActionBar().setTitle(mTopic.getTitle());
-            getSupportActivity().getActionBar().setSubtitle(subtitleText);
+            getSupportActivity().supportInvalidateOptionsMenu();
+            getActionbar().setTitle(mTopic.getTitle());
+            getActionbar().setSubtitle(subtitleText);
 
             // call the onLoaded function
             mActivity.getSidebar().refreshBookmarks();

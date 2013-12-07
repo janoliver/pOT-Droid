@@ -103,7 +103,7 @@ public class MessageListFragment extends BaseFragment
             mListAdapter.notifyDataSetChanged();
 
             getSupportActivity().supportInvalidateOptionsMenu();
-            //getActionbar().setTitle(mMessageList.getName());
+            getActionbar().setTitle("PM-Nachrichten");
         } else {
             showError("Fehler beim Laden der Daten.");
         }

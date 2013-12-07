@@ -19,13 +19,10 @@ import java.util.Date;
  */
 public class BenderHandler
 {
-    protected static final String BENDER_STORAGE_DIR = "/avatars";
+    protected static final String BENDER_STORAGE_DIR = "/files/avatars";
 
     // the context
     private Context mContext;
-
-    // the directory of the bender storage
-    private File mBenderDirectory;
 
     // access to the app settings
     private SettingsWrapper mSettings;
@@ -36,7 +33,6 @@ public class BenderHandler
     public BenderHandler(Context cx) {
         mContext = cx;
         mSettings = new SettingsWrapper(cx);
-        mBenderDirectory = new File(cx.getExternalFilesDir(null) + BENDER_STORAGE_DIR);
         mDatabase = new DatabaseWrapper(cx);
     }
 
@@ -110,7 +106,7 @@ public class BenderHandler
             @Override
             public void onSuccess(byte[] fileData) {
                 try {
-                    mBenderDirectory.mkdirs();
+                    getBenderStorageDir().mkdirs();
 
                     FileOutputStream fos = new FileOutputStream(getAvatarFile(user));
                     fos.write(fileData);
@@ -156,9 +152,8 @@ public class BenderHandler
 
         String[] parts = user.getAvatarFile().split("\\.");
         String filename = user.getAvatarId() + "." + parts[parts.length-1];
-        File root = new File(mContext.getExternalFilesDir(null), "avatars/");
 
-        return new File(root, filename);
+        return new File(getBenderStorageDir(), filename);
     }
 
     /**
@@ -179,5 +174,15 @@ public class BenderHandler
     public interface BenderListener {
         public abstract void onSuccess(String path);
         public abstract void onFailure();
+    }
+
+    /**
+     * Return a File object pointing to the bender storage dir.
+     * Compatible with API < 8
+     * @return File object
+     */
+    public File getBenderStorageDir() {
+        File ext_root = Environment.getExternalStorageDirectory();
+        return new File(ext_root, "Android/data/" + mContext.getPackageName() + BENDER_STORAGE_DIR);
     }
 }

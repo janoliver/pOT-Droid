@@ -62,6 +62,8 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
             }
         });
 
+        getActionbar().setTitle("Forenübersicht");
+
         // load the content
         startLoader(this);
 

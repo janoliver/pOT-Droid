@@ -59,6 +59,8 @@ public class BookmarkFragment extends BaseFragment
 
         registerForContextMenu(mListView);
 
+        getActionbar().setTitle("Bookmarks");
+
         return v;
 
     }
@@ -141,6 +143,7 @@ public class BookmarkFragment extends BaseFragment
         if(success != null) {
             mBookmarkList.refresh(success.getBookmarks(), success.getNumberOfNewPosts());
             mListAdapter.notifyDataSetChanged();
+            getActionbar().setSubtitle(success.getNumberOfNewPosts() + " ungelesene Nachrichten.");
         } else {
             showError("Fehler beim Laden der Daten.");
         }

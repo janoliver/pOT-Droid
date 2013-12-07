@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,8 @@ public class MessageFragment extends BaseFragment
         mWebView.loadData("", "text/html", "utf-8");
         mWebView.setBackgroundColor(0x00000000);
 
+        getActionbar().setTitle("Lade Nachricht");
+
         // load the content
         startLoader(this);
 
@@ -86,8 +89,9 @@ public class MessageFragment extends BaseFragment
             mWebView.loadDataWithBaseURL("file:///android_asset/", mMessage.getHtmlCache(),
                     "text/html", "UTF-8", null);
 
-            mActivity.getActionBar().setTitle(mMessage.getTitle());
-            //getSupportActivity().getActionBar().setSubtitle(subtitleText);
+            getActionbar().setTitle(mMessage.getTitle());
+            getActionbar().setSubtitle(Html.fromHtml((mMessage.isOutgoing() ? "an" : "von")
+                + " <b>" + mMessage.getFrom().getNick() + "</b>"));
 
             // populate right sidebar
             mActivity.getRightSidebar().setIsMessage(mMessage);

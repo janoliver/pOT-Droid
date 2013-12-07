@@ -73,6 +73,9 @@ public class MessageListFragment extends BaseFragment
             }
         });
 
+        getActionbar().setTitle("PM Nachrichten");
+        getActionbar().setSubtitle(mMode == "inbox" ? "Posteingang" : "Postausgang");
+
         return v;
     }
 
@@ -103,7 +106,6 @@ public class MessageListFragment extends BaseFragment
             mListAdapter.notifyDataSetChanged();
 
             getSupportActivity().supportInvalidateOptionsMenu();
-            getActionbar().setTitle("PM-Nachrichten");
         } else {
             showError("Fehler beim Laden der Daten.");
         }

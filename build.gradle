@@ -1,32 +1,32 @@
-    buildscript {
-        repositories {
-            mavenCentral()
-        }
-        dependencies {
-            classpath 'com.android.tools.build:gradle:0.6.3'
-        }
-    }
-
-    apply plugin: 'android'
-
+buildscript {
     repositories {
         mavenCentral()
     }
-
     dependencies {
-        compile 'com.android.support:support-v4:19.+'
-        compile 'com.android.support:appcompat-v7:19.0.+'
-        compile 'com.samskivert:jmustache:1.8@jar'
-        compile 'com.loopj.android:android-async-http:1.4.4'
+        classpath 'com.android.tools.build:gradle:0.6.3'
     }
+}
 
-    android {
-        compileSdkVersion 19
-        buildToolsVersion "19"
+apply plugin: 'android'
 
-        defaultConfig {
-            minSdkVersion 7
-            targetSdkVersion 19
-        }
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:19.+'
+    compile 'com.android.support:appcompat-v7:19.0.+'
+    compile 'com.samskivert:jmustache:1.8@jar'
+    compile 'com.loopj.android:android-async-http:1.4.4'
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion '19'
+
+    defaultConfig {
+        minSdkVersion 7
+        targetSdkVersion 19
     }
+}
 

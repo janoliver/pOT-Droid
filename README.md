@@ -10,6 +10,12 @@ auf den Code für einfachere Zusammenarbeit.
 pOT Droid ist eine Android (2.1+) Applikation, die das surfen im mods.de Forum
 auf Android Handys erleichtert und beschleunigt.
 
+## Version 3
+
+Seit einigen Monaten arbeite ich an einer kompletten Neuimplementierung der App. Diese ist in
+großen Teilen fertig und benutzbar. Sobald ein Beta Status erreicht ist, wird das auf der
+Google+ Seite bekannt gegeben.
+
 ## Features
 
 * Browsen der mods.de Foren mit oder ohne User account

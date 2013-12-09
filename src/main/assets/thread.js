@@ -19,7 +19,17 @@ $(document).ready(function() {
 
     // manual image loader
     $("div.img i").click(function() {
-        replaceImage($(this));
+        replaceImage($(this), "");
+    });
+
+    // manual image with link loader
+    $("div.img-link i.link").click(function() {
+        api.openUrl($(this).parent().attr('data-href'));
+    });
+
+    // manual image with link loader
+    $("div.img-link i.img").click(function() {
+        replaceImage($(this), $(this).parent().attr('data-href'));
     });
 
     $("div.spoiler i").click(function() {
@@ -40,7 +50,7 @@ $(document).ready(function() {
             all = $('div.img i');
         }
         all.each(function() {
-            replaceImage($(this));
+            replaceImage($(this), "");
         });
     }
 
@@ -57,15 +67,20 @@ $(document).ready(function() {
 
 });
 
-function replaceImage(icon) {
-    icon.attr('class', "icon-spinner spin");
+function replaceImage(icon, link_target) {
+    icon.attr('class', "fa fa-spinner spin");
     var el = icon.parent();
     var src = el.attr('data-src');
     var img = $('<img/>').attr('src',src).attr('alt',src);
     img.load(function() {
-        el.replaceWith(img);
-    });
+        if(link_target === "") {
+            el.replaceWith(img);
+        } else {
+            var a = $("<a/>").attr("href", link_target).append(img);
+            el.replaceWith(a);
+        }
 
+    });
 }
 
 // load the bender of user_id

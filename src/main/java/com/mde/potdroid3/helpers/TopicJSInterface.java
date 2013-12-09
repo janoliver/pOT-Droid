@@ -1,6 +1,8 @@
 package com.mde.potdroid3.helpers;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import com.mde.potdroid3.fragments.TopicFragment;
@@ -34,6 +36,14 @@ public class TopicJSInterface extends BenderJSInterface {
     @JavascriptInterface
     public void openTopicMenu(int post_id) {
         mTopicFragment.showPostDialog(post_id);
+    }
+
+    @JavascriptInterface
+    public void openUrl(String url) {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        Utils.log(url);
+        mActivity.startActivity(i);
     }
 
 }

@@ -8,6 +8,8 @@ import com.samskivert.mustache.Mustache;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by oli on 8/10/13.
@@ -205,7 +207,7 @@ public class TopicBuilder {
         a.registerTag(new SimpleTag("spoiler", "spoiler") {
             @Override
             public String html(String content, List<String> args) {
-                return "<div class=\"spoiler\"><i class=\"icon-warning-sign\"></i><div>" + content + "</div></div>";
+                return "<div class=\"spoiler\"><i class=\"fa fa-warning\"></i><div>" + content + "</div></div>";
             }
         });
 
@@ -248,10 +250,27 @@ public class TopicBuilder {
         a.registerTag(new BBCodeParser.BBCodeTag("url", "link", inLinks) {
             @Override
             public String html(String content, List<String> args) {
-                String description = content;
+
+                String url = content;
+
+                Pattern image_link = Pattern.compile("^<div class=\"img\" data-src=\"(.*?)\"><i class=\".*?\"></i></div>$");
+                Matcher m = image_link.matcher(content);
+
+                if (m.find() && args.size() > 0) {
+                    Utils.log("found url link");
+                    String extension = m.group(1).substring(m.group(1).length() - 3).toLowerCase();
+                    String icon = "fa-picture-o";
+                    if(extension.equals("gif"))
+                        icon = "fa-film";
+                    return "<div class=\"img-link\" data-src=\"" + m.group(1) + "\" data-href=\"" + args.get(0) + "\">"
+                            +"<i class=\"link fa fa-external-link-square\"></i>"
+                            +"<i class=\"img fa " + icon + "\"></i>"
+                            +"</div>";
+                }
+
                 if(args.size() > 0)
-                    description = args.get(0);
-                return "<a href=\"" + description + "\">" + content + "</a>";
+                    url = args.get(0);
+                return "<a href=\"" + url + "\">" + content + "</a>";
             }
         });
 
@@ -270,10 +289,10 @@ public class TopicBuilder {
             @Override
             public String html(String content, List<String> args) {
                 String extension = content.substring(content.length() - 3).toLowerCase();
-                String icon = "icon-picture";
+                String icon = "fa-picture";
                 if(extension.equals("gif"))
-                    icon = "icon-film";
-                return "<div class=\"img\" data-src=\"" + content + "\"><i class=\"" + icon + "\"></i></div>";
+                    icon = "fa-film";
+                return "<div class=\"img\" data-src=\"" + content + "\"><i class=\"fa " + icon + "\"></i></div>";
             }
         });
 

@@ -104,13 +104,16 @@ article div blockquote div.content {
 }
 
 div.img i,
-div.spoiler i {
+div.spoiler i,
+div.img-link i {
     font-size:2.3em;
     color:#000;
+    padding:0 5px;
 }
 
 div.img,
-div.spoiler {
+div.spoiler,
+div.img-link {
     border:1px solid #000;
     background: rgba(9,24,39,0.6);
     padding:.2em;

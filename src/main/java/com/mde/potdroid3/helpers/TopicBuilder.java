@@ -96,6 +96,12 @@ public class TopicBuilder {
             return mPost.getAuthor().getNick();
         }
 
+        public String getIcon() {
+            if(mPost.getIconId() != null)
+                return "<img src=\"thread-icons/icon" + mPost.getIconId() + ".png\" />";
+            return "";
+        }
+
         public Integer getAuthorId() {
             return mPost.getAuthor().getId();
         }

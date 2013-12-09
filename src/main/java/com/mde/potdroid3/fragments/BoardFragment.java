@@ -3,24 +3,26 @@ package com.mde.potdroid3.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import com.mde.potdroid3.R;
 import com.mde.potdroid3.TopicActivity;
 import com.mde.potdroid3.helpers.AsyncHttpLoader;
+import com.mde.potdroid3.helpers.Utils;
 import com.mde.potdroid3.models.Board;
 import com.mde.potdroid3.models.Topic;
 import com.mde.potdroid3.parsers.BoardParser;
+
+import java.io.IOException;
 
 public class BoardFragment extends PaginateFragment
         implements LoaderManager.LoaderCallbacks<Board>  {
@@ -28,6 +30,7 @@ public class BoardFragment extends PaginateFragment
     private Board mBoard = null;
     private BoardListAdapter mListAdapter = null;
     private ListView mListView = null;
+    private DisplayMetrics mDisplayMetrics;
 
     public static BoardFragment newInstance(int board_id, int page) {
         BoardFragment f = new BoardFragment();
@@ -56,6 +59,9 @@ public class BoardFragment extends PaginateFragment
                 startActivity(intent);
             }
         });
+
+        mDisplayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
 
         return v;
     }
@@ -174,8 +180,20 @@ public class BoardFragment extends PaginateFragment
 
             // last post information
             TextView lastpost = (TextView) row.findViewById(R.id.description);
-            Spanned content = Html.fromHtml("<b>" + t.getNumberOfPosts() + "</b> Posts auf <b>" + t.getNumberOfPages() + "</b> Seiten");
+            Spanned content = Html.fromHtml("<b>" + t.getNumberOfPosts() + "</b> Posts auf <b>" +
+                    t.getNumberOfPages() + "</b> Seiten");
             lastpost.setText(content);
+
+            // icon
+            ImageView icon = (ImageView) row.findViewById(R.id.icon);
+            try {
+                Drawable d = Utils.getDrawableFromAsset(getActivity(),
+                        "thread-icons/icon"+ t.getIconId() +".png");
+                d.setBounds(0,0,13*(int)mDisplayMetrics.density,13*(int)mDisplayMetrics.density);
+                title.setCompoundDrawables(d, null, null, null);
+            } catch (IOException e) {
+                //icon.setVisibility(View.GONE);
+            }
 
             // all important topics get a different background.
             // the padding stuff is apparently an android bug...
@@ -188,6 +206,14 @@ public class BoardFragment extends PaginateFragment
                 int left = v.getPaddingLeft();
                 v.setBackgroundResource(R.drawable.sidebar_button_background);
                 v.setPadding(left, top, right, bottom);
+            }
+
+            if(!t.isSticky()) {
+                row.findViewById(R.id.icon_pinned).setVisibility(View.INVISIBLE);
+            }
+
+            if(!t.isClosed()) {
+                row.findViewById(R.id.icon_locked).setVisibility(View.INVISIBLE);
             }
 
             return row;

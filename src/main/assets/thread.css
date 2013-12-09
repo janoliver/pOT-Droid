@@ -49,11 +49,18 @@ header div.date {
 header i.menu-icon {
     font-size:2em;
     color:#394E63;
-    float:right;
-    display:block;
     width:1em;
     height:1em;
     text-align:center;
+}
+
+header .icons {
+    float:right;
+    text-align:right;
+}
+
+header .icons img {
+    margin-top:5px;
 }
 
 article {

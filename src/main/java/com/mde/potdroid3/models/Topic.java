@@ -108,6 +108,14 @@ public class Topic implements Serializable{
         return mFirstPost;
     }
 
+    public Integer getIconId() {
+        return mFirstPost.getIconId();
+    }
+
+    public String getIconFile() {
+        return mFirstPost.getIconFile();
+    }
+
     public void setPostsPerPage(Integer postsPerPage) {
         mPostsPerPage = postsPerPage;
     }
@@ -240,7 +248,7 @@ public class Topic implements Serializable{
         public static String TAG = "thread";
         public static String SUBTITLE_TAG = "subtitle";
         public static String TITLE_TAG = "title";
-        public static String FIRSTPOST_TAG = "lastpost";
+        public static String FIRSTPOST_TAG = "firstpost";
         public static String ID_ATTRIBUTE = "id";
         public static String FLAGS_TAG = "flags";
 

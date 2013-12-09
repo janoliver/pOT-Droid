@@ -242,6 +242,7 @@ public class TopicFragment extends PaginateFragment
 
                 return t;
             } catch (Exception e) {
+                e.printStackTrace();
                 return null;
             }
         }

@@ -146,6 +146,18 @@ public class BoardParser extends DefaultHandler {
                 mCurrentPost.setDateFromTimestamp(Integer.parseInt(attributes.getValue(Post.Xml.DATE_TIMESTAMP_ATTRIBUTE)));
             }
         });
+        first_post.getChild(Post.Xml.ICON_TAG).setTextElementListener(new TextElementListener() {
+
+            @Override
+            public void start(Attributes attributes) {
+                mCurrentPost.setIconId(Integer.parseInt(attributes.getValue(Post.Xml.ICON_ATTRIBUTE)));
+            }
+
+            @Override
+            public void end(String body) {
+                mCurrentPost.setIconFile(body);
+            }
+        });
         first_post.requireChild(User.Xml.TAG).setTextElementListener(new TextElementListener() {
 
             @Override

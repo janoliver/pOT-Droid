@@ -26,4 +26,6 @@
     <string name="pref_state_messages_nopoll">Es wird nicht nach PMs gecheckt.</string>
     <string name="pref_state_debug_active">Debug modus ist aktiv.</string>
     <string name="pref_state_debug_inactive">Debug modus ist nicht aktiv.</string>
+    <string name="pref_state_vibrate_active">Vibration aktiv.</string>
+    <string name="pref_state_vibrate_inactive">Vibration nicht aktiv.</string>
 </resources>

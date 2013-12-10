@@ -57,6 +57,15 @@
                 android:entryValues="@array/pref_poll_messages_values"
                 android:defaultValue="0"/>
 
+        <RingtonePreference
+                android:key="pref_notification_sound"
+                android:ringtoneType="notification"
+                android:summary="Benachrichtigungston bei ungelesener PM"
+                android:title="Benachrichtigungston" />
+
+        <CheckBoxPreference
+                android:key="pref_notification_vibrate"
+                android:title="Vibrieren bei Benachrichtigung" />
     </PreferenceCategory>
 
     <PreferenceCategory

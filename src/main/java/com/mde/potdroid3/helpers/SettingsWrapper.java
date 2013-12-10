@@ -3,6 +3,7 @@ package com.mde.potdroid3.helpers;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.cookie.BasicClientCookie;
 
@@ -28,6 +29,8 @@ public class SettingsWrapper {
     public static final String PREF_KEY_LOAD_BENDERS = "pref_load_benders";
     public static final String PREF_KEY_LOAD_IMAGES = "pref_load_images";
     public static final String PREF_KEY_POLL_MESSAGES = "pref_message_polling_interval";
+    public static final String PREF_KEY_NOTIFICATION_VIBRATE = "pref_notification_vibrate";
+    public static final String PREF_KEY_NOTIFICATION_SOUND = "pref_notification_sound";
 
     private SharedPreferences mSharedPreferences;
     private Context mContext;
@@ -77,6 +80,15 @@ public class SettingsWrapper {
 
     public Boolean isDebug() {
         return mSharedPreferences.getBoolean(PREF_KEY_DEBUG, false);
+    }
+
+    public Boolean isNotificationVibrate() {
+        return mSharedPreferences.getBoolean(PREF_KEY_NOTIFICATION_VIBRATE, false);
+    }
+
+    public String getNotificationSoundURI() {
+        return mSharedPreferences.getString(PREF_KEY_NOTIFICATION_SOUND,
+                Settings.System.DEFAULT_NOTIFICATION_URI.toString());
     }
 
     public String getUsername() {

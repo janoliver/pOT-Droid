@@ -26,6 +26,7 @@ public class SettingsActivity extends PreferenceActivity
     private ListPreference mLoadImagesPreference;
     private ListPreference mPollMessagesPreference;
     private CheckBoxPreference mDebugPreference;
+    private CheckBoxPreference mVibratePreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class SettingsActivity extends PreferenceActivity
         mLoadImagesPreference = (ListPreference) getPreferenceScreen().findPreference(SettingsWrapper.PREF_KEY_LOAD_IMAGES);
         mPollMessagesPreference = (ListPreference) getPreferenceScreen().findPreference(SettingsWrapper.PREF_KEY_POLL_MESSAGES);
         mDebugPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(SettingsWrapper.PREF_KEY_DEBUG);
+        mVibratePreference = (CheckBoxPreference) getPreferenceScreen().findPreference(SettingsWrapper.PREF_KEY_NOTIFICATION_VIBRATE);
 
         //@TODO: Reload on theme change...
     }
@@ -61,6 +63,7 @@ public class SettingsActivity extends PreferenceActivity
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_IMAGES);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_POLL_MESSAGES);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_DEBUG);
+        setPreferenceDescription(SettingsWrapper.PREF_KEY_NOTIFICATION_VIBRATE);
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
@@ -129,6 +132,11 @@ public class SettingsActivity extends PreferenceActivity
                     mSettings.isDebug() ?
                             getString(R.string.pref_state_debug_active) :
                             getString(R.string.pref_state_debug_inactive));
+        } else if (key.equals(SettingsWrapper.PREF_KEY_NOTIFICATION_VIBRATE)) {
+            mVibratePreference.setSummary(
+                    mSettings.isNotificationVibrate() ?
+                            getString(R.string.pref_state_vibrate_active) :
+                            getString(R.string.pref_state_vibrate_inactive));
         }
     }
 

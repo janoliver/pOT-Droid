@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
@@ -78,6 +79,14 @@ public class MessagePollingAlarm extends BroadcastReceiver
         );
         builder.setContentTitle(list.getNumberOfUnreadMessages() + " neue PMs!");
         builder.setAutoCancel(true);
+        builder.setOnlyAlertOnce(true);
+
+        // sound and vibrate
+        SettingsWrapper settings = new SettingsWrapper(context);
+        if(settings.isNotificationVibrate())
+            builder.setVibrate(new long[] {0, 500});
+
+        builder.setSound(Uri.parse(settings.getNotificationSoundURI()));
 
         // prepare the intent
         Intent messageIntent;

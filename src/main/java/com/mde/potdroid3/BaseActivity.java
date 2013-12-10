@@ -1,8 +1,6 @@
 package com.mde.potdroid3;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
@@ -10,10 +8,12 @@ import android.view.View;
 import android.view.Window;
 import com.mde.potdroid3.fragments.FormFragment;
 import com.mde.potdroid3.fragments.SidebarFragment;
+import com.mde.potdroid3.helpers.CustomExceptionHandler;
+import com.mde.potdroid3.helpers.SettingsWrapper;
 
 public class BaseActivity extends ActionBarActivity implements DrawerLayout.DrawerListener {
 
-    protected SharedPreferences mSettings;
+    protected SettingsWrapper mSettings;
     protected Bundle mExtras;
     protected SidebarFragment mSidebar;
     protected FormFragment mRightSidebar;
@@ -26,8 +26,15 @@ public class BaseActivity extends ActionBarActivity implements DrawerLayout.Draw
 
         super.onCreate(savedInstanceState);
 
-        mSettings = PreferenceManager.getDefaultSharedPreferences(this);
+        mSettings = new SettingsWrapper(this);
         mExtras = getIntent().getExtras();
+
+        // debug mode
+        if(mSettings.isDebug()) {
+            if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+                Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler());
+            }
+        }
 
         setContentView(getLayout());
 

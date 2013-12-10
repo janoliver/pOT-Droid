@@ -58,4 +58,15 @@
                 android:defaultValue="0"/>
 
     </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="System"
+            android:key="pref_system_settings">
+
+        <CheckBoxPreference
+                android:key="pref_debug_mode"
+                android:title="Debug Modus" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

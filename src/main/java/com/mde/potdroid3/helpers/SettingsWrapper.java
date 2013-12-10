@@ -24,6 +24,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_COOKIE_PATH = "cookie_path";
     public static final String PREF_KEY_COOKIE_URL = "cookie_url";
     public static final String PREF_KEY_SHOW_BENDERS = "pref_show_benders";
+    public static final String PREF_KEY_DEBUG = "pref_debug_mode";
     public static final String PREF_KEY_LOAD_BENDERS = "pref_load_benders";
     public static final String PREF_KEY_LOAD_IMAGES = "pref_load_images";
     public static final String PREF_KEY_POLL_MESSAGES = "pref_message_polling_interval";
@@ -72,6 +73,10 @@ public class SettingsWrapper {
 
     public Boolean hasUsername() {
         return mSharedPreferences.contains(PREF_KEY_USERNAME);
+    }
+
+    public Boolean isDebug() {
+        return mSharedPreferences.getBoolean(PREF_KEY_DEBUG, false);
     }
 
     public String getUsername() {

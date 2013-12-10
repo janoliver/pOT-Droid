@@ -1,10 +1,12 @@
 package com.mde.potdroid3;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import com.mde.potdroid3.helpers.SettingsWrapper;
@@ -12,21 +14,10 @@ import com.mde.potdroid3.services.MessagePollingService;
 import com.mde.potdroid3.views.LoginDialog;
 import com.mde.potdroid3.views.LogoutDialog;
 
-import java.util.Arrays;
-
 public class SettingsActivity extends PreferenceActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private SettingsWrapper mSettings;
-
-    private LoginDialog mLoginPreference;
-    private LogoutDialog mLogoutPreference;
-    private CheckBoxPreference mShowBendersPreference;
-    private ListPreference mLoadBendersPreference;
-    private ListPreference mLoadImagesPreference;
-    private ListPreference mPollMessagesPreference;
-    private CheckBoxPreference mDebugPreference;
-    private CheckBoxPreference mVibratePreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,23 +25,8 @@ public class SettingsActivity extends PreferenceActivity
 
         mSettings = new SettingsWrapper(this);
 
-        // set a subtitle
-        getActionBar().setSubtitle(getString(R.string.subtitle_settings));
-
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
-
-        // store preferences
-        mLoginPreference = (LoginDialog) getPreferenceScreen().findPreference(SettingsWrapper.PREF_KEY_LOGIN);
-        mLogoutPreference = (LogoutDialog) getPreferenceScreen().findPreference(SettingsWrapper.PREF_KEY_LOGOUT);
-        mShowBendersPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(SettingsWrapper.PREF_KEY_SHOW_BENDERS);
-        mLoadBendersPreference = (ListPreference) getPreferenceScreen().findPreference(SettingsWrapper.PREF_KEY_LOAD_BENDERS);
-        mLoadImagesPreference = (ListPreference) getPreferenceScreen().findPreference(SettingsWrapper.PREF_KEY_LOAD_IMAGES);
-        mPollMessagesPreference = (ListPreference) getPreferenceScreen().findPreference(SettingsWrapper.PREF_KEY_POLL_MESSAGES);
-        mDebugPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(SettingsWrapper.PREF_KEY_DEBUG);
-        mVibratePreference = (CheckBoxPreference) getPreferenceScreen().findPreference(SettingsWrapper.PREF_KEY_NOTIFICATION_VIBRATE);
-
-        //@TODO: Reload on theme change...
     }
 
     @Override
@@ -58,12 +34,9 @@ public class SettingsActivity extends PreferenceActivity
         super.onResume();
 
         setPreferenceDescription(SettingsWrapper.PREF_KEY_USERNAME);
-        setPreferenceDescription(SettingsWrapper.PREF_KEY_SHOW_BENDERS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_BENDERS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_IMAGES);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_POLL_MESSAGES);
-        setPreferenceDescription(SettingsWrapper.PREF_KEY_DEBUG);
-        setPreferenceDescription(SettingsWrapper.PREF_KEY_NOTIFICATION_VIBRATE);
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
@@ -83,61 +56,46 @@ public class SettingsActivity extends PreferenceActivity
     }
 
     private void setPreferenceDescription(String key) {
-        if (key.equals(SettingsWrapper.PREF_KEY_USERNAME)) {
-            if(mSettings.hasUsername()) {
-                mLoginPreference.setSummary(getString(R.string.pref_state_loggedin)
-                        + mSettings.getUsername());
-                mLogoutPreference.setEnabled(true);
-            } else {
-                mLoginPreference.setSummary(getString(R.string.pref_state_notloggedin));
-                mLogoutPreference.setEnabled(false);
-            }
-        } else if (key.equals(SettingsWrapper.PREF_KEY_SHOW_BENDERS)) {
-            mShowBendersPreference.setSummary(
-                    mSettings.showBenders() ?
-                            getString(R.string.pref_state_benders_shown) :
-                            getString(R.string.pref_state_benders_notshown));
-        } else if (key.equals(SettingsWrapper.PREF_KEY_LOAD_IMAGES)) {
-            if(mSettings.loadImages().equals("0"))
-                mLoadImagesPreference.setSummary(getString(R.string.pref_state_images_never));
-            if(mSettings.loadImages().equals("1"))
-                mLoadImagesPreference.setSummary(getString(R.string.pref_state_images_wifi));
-            if(mSettings.loadImages().equals("2"))
-                mLoadImagesPreference.setSummary(getString(R.string.pref_state_images_always));
-        } else if (key.equals(SettingsWrapper.PREF_KEY_LOAD_BENDERS)) {
-            if(mSettings.loadBenders().equals("0"))
-                mLoadBendersPreference.setSummary(getString(R.string.pref_state_benders_never));
-            if(mSettings.loadBenders().equals("1"))
-                mLoadBendersPreference.setSummary(getString(R.string.pref_state_benders_wifi));
-            if(mSettings.loadBenders().equals("2"))
-                mLoadBendersPreference.setSummary(getString(R.string.pref_state_benders_always));
-        } else if (key.equals(SettingsWrapper.PREF_KEY_POLL_MESSAGES)) {
-            Intent pollServiceIntent = new Intent(SettingsActivity.this,
-                    MessagePollingService.class);
-
-            if(mSettings.pollMessagesInterval() == 0) {
-                stopService(pollServiceIntent);
-            } else {
-                startService(pollServiceIntent);
-            }
-
-            String[] values = getResources().getStringArray(R.array.pref_poll_messages_values);
-            String[] entries = getResources().getStringArray(R.array.pref_poll_messages_entries);
-
-            int index = Arrays.asList(values).indexOf(mSettings.pollMessagesInterval() + "");
-            mPollMessagesPreference.setSummary(entries[index]);
-
-        } else if (key.equals(SettingsWrapper.PREF_KEY_DEBUG)) {
-            mDebugPreference.setSummary(
-                    mSettings.isDebug() ?
-                            getString(R.string.pref_state_debug_active) :
-                            getString(R.string.pref_state_debug_inactive));
-        } else if (key.equals(SettingsWrapper.PREF_KEY_NOTIFICATION_VIBRATE)) {
-            mVibratePreference.setSummary(
-                    mSettings.isNotificationVibrate() ?
-                            getString(R.string.pref_state_vibrate_active) :
-                            getString(R.string.pref_state_vibrate_inactive));
+        Preference preference = findPreference(key);
+        if (preference instanceof ListPreference) {
+            ListPreference listPref = (ListPreference) preference;
+            preference.setSummary(listPref.getEntry());
         }
+
+        if (key.equals(SettingsWrapper.PREF_KEY_USERNAME)) {
+
+            LoginDialog loginPreference = (LoginDialog) findPreference(SettingsWrapper.PREF_KEY_LOGIN);
+            LogoutDialog logoutPreference = (LogoutDialog) findPreference(SettingsWrapper.PREF_KEY_LOGOUT);
+
+            if(mSettings.hasUsername()) {
+                loginPreference.setSummary(getString(R.string.pref_state_loggedin)
+                        + mSettings.getUsername());
+                logoutPreference.setEnabled(true);
+            } else {
+                loginPreference.setSummary(getString(R.string.pref_state_notloggedin));
+                logoutPreference.setEnabled(false);
+            }
+        } else if (key.equals(SettingsWrapper.PREF_KEY_POLL_MESSAGES)) {
+
+            Intent pollServiceIntent = new Intent(SettingsActivity.this, MessagePollingService.class);
+            if(mSettings.pollMessagesInterval() == 0) {
+                if(isMyServiceRunning())
+                    stopService(pollServiceIntent);
+            } else {
+                if(!isMyServiceRunning())
+                    startService(pollServiceIntent);
+            }
+        }
+    }
+
+    private boolean isMyServiceRunning() {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (MessagePollingService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

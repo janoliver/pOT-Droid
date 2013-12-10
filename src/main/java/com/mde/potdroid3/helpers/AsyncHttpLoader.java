@@ -42,6 +42,9 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
     // the data cache
     protected E mData;
 
+    // the process response task container
+    protected ResponseTask mCurrentTask;
+
     /**
      * This is the respoonse handler of the asynchroneous network call, from the
      * android-async-http library.
@@ -111,7 +114,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
     /**
      * This AsyncTask calls the processNetworkResponse in a separate thread.
      */
-    private AsyncTask<String, Void, E> mProcessResponseTask = new AsyncTask<String, Void, E>() {
+    protected class ResponseTask extends AsyncTask<String, Void, E> {
 
         @Override
         protected void onPreExecute() {
@@ -212,7 +215,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
      * @param response The response string
      */
     protected void processResponse(String response) {
-        mProcessResponseTask.execute(response);
+        new ResponseTask().execute(response);
     }
 
     /**
@@ -241,7 +244,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
         super.onStopLoading();
 
         mNetwork.cancelLoad();
-        mProcessResponseTask.cancel(true);
+        //mProcessResponseTask.cancel(true);
     }
 
     /**

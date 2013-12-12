@@ -43,14 +43,20 @@ $(document).ready(function() {
     if(api.isLoadImages()) {
         var all = [];
         if(api.getScroll() > 0) {
-            var self = $('a[name="' + api.getScroll() + '"]').parent().find('div.img i');
-            var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.img i');
-            all = $.merge(self,after);
+            var self = $('a[name="' + api.getScroll() + '"]').parent().find('div.img i, div.img-link i.img');
+            var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.img i, div.img-link i.img');
+            all = $.merge(self, after);
         } else {
-            all = $('div.img i');
+            all = $('div.img i, div.img-link i.img');
         }
         all.each(function() {
-            replaceImage($(this), "");
+            var href = $(this).parent().attr("data-href");
+            if(typeof href === "undefined") {
+                replaceImage($(this), "");
+            } else {
+                replaceImage($(this), href);
+            }
+
         });
     }
 

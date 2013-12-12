@@ -54,6 +54,10 @@ header i.menu-icon {
     text-align:center;
 }
 
+header i.menu-icon:active {
+    color:#ffffff;
+}
+
 header .icons {
     float:right;
     text-align:right;
@@ -109,6 +113,12 @@ div.img-link i {
     font-size:2.3em;
     color:#000;
     padding:0 5px;
+}
+
+div.img i:active,
+div.spoiler i:active,
+div.img-link i:active {
+    color:#fff;
 }
 
 div.img,

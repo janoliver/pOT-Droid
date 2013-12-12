@@ -289,7 +289,7 @@ public class TopicBuilder {
             @Override
             public String html(String content, List<String> args) {
                 String extension = content.substring(content.length() - 3).toLowerCase();
-                String icon = "fa-picture";
+                String icon = "fa-picture-o";
                 if(extension.equals("gif"))
                     icon = "fa-film";
                 return "<div class=\"img\" data-src=\"" + content + "\"><i class=\"fa " + icon + "\"></i></div>";

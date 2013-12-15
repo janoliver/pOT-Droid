@@ -79,6 +79,7 @@ public class LoginDialog extends DialogPreference  {
                         Toast.makeText(mContext, mContext.getString(R.string.login_success),
                                 Toast.LENGTH_LONG).show();
                         mSettingsWrapper.setUsername(user_name);
+                        getDialog().dismiss();
                     }
 
                     @Override

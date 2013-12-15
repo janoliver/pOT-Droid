@@ -47,4 +47,5 @@ public class TopicActivity extends BaseActivity implements FormFragment.FormList
     public void onFailure(Bundle result) {
         Toast.makeText(this, "Fehlgeschlagen", Toast.LENGTH_LONG).show();
     }
+
 }

@@ -12,13 +12,10 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.ContextMenu;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.View;
-import android.webkit.WebChromeClient;
+import android.view.*;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -37,6 +34,7 @@ public class TopicFragment extends PaginateFragment
     private WebView mWebView;
     private TopicJSInterface mJsInterface;
     private BaseActivity mActivity;
+    private FrameLayout mWebContainer;
 
     public static TopicFragment newInstance(int thread_id, int page, int post_id) {
         TopicFragment f = new TopicFragment();
@@ -54,29 +52,53 @@ public class TopicFragment extends PaginateFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        startLoader(this);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
+        View v = super.onCreateView(inflater, container, saved);
 
         mActivity = (BaseActivity) getSupportActivity();
+        mWebContainer = (FrameLayout) v.findViewById(R.id.web_container);
 
-        mWebView = (WebView)getView().findViewById(R.id.topic_webview);
-        mJsInterface = new TopicJSInterface(mWebView, getSupportActivity(), this);
+        return v;
+    }
 
-        // if there is a post_id from the bookmarks call, we set it as the currently
-        // visible post.
-        mJsInterface.registerScroll(getArguments().getInt("post_id", 0));
+    @Override
+    public void onResume() {
+        super.onResume();
 
-        registerForContextMenu(mWebView);
-
+        mWebView = new WebView(mActivity);
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setDomStorageEnabled(true);
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         mWebView.getSettings().setAllowFileAccess(true);
-        mWebView.addJavascriptInterface(mJsInterface, "api");
-        mWebView.setWebChromeClient(new WebChromeClient());
-        mWebView.loadData("", "text/html", "utf-8");
         mWebView.setBackgroundColor(0x00000000);
 
-        startLoader(this);
+        mJsInterface = new TopicJSInterface(mWebView, getSupportActivity(), this);
+        mWebView.addJavascriptInterface(mJsInterface, "api");
+        mJsInterface.registerScroll(getArguments().getInt("post_id", 0));
 
+        registerForContextMenu(mWebView);
+        mWebContainer.addView(mWebView);
+
+        if(mTopic != null) {
+            mWebView.loadDataWithBaseURL("file:///android_asset/", mTopic.getHtmlCache(),
+                    "text/html", "UTF-8", null);
+        } else {
+            mWebView.loadData("", "text/html", "utf-8");
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        mWebView.destroy();
+        mWebView = null;
+
+        mWebContainer.removeAllViews();
     }
 
     @Override

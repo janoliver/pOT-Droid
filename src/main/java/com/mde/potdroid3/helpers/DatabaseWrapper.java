@@ -62,33 +62,37 @@ public class DatabaseWrapper {
 
         Cursor c = mDatabase.query(BOOKMARKS_TABLE_NAME, null, null, null, null, null,
                 "board_id, thread_title");
-        c.moveToFirst();
-        while (!c.isAfterLast()) {
 
-            Bookmark b = new Bookmark(c.getInt(c.getColumnIndex("id")));
-            b.setRemovetoken(c.getString(c.getColumnIndex("remove_token")));
-            b.setNumberOfNewPosts(c.getInt(c.getColumnIndex("number_new_posts")));
+        try {
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
 
-            Board board = new Board(c.getInt(c.getColumnIndex("board_id")));
-            board.setName(c.getString(c.getColumnIndex("board_name")));
+                Bookmark b = new Bookmark(c.getInt(c.getColumnIndex("id")));
+                b.setRemovetoken(c.getString(c.getColumnIndex("remove_token")));
+                b.setNumberOfNewPosts(c.getInt(c.getColumnIndex("number_new_posts")));
 
-            Topic thread = new Topic(c.getInt(c.getColumnIndex("thread_id")));
-            thread.setTitle(c.getString(c.getColumnIndex("thread_title")));
-            thread.setIsClosed(c.getInt(c.getColumnIndex("thread_closed")) == 1);
-            thread.setNumberOfPages(c.getInt(c.getColumnIndex("thread_pages")));
+                Board board = new Board(c.getInt(c.getColumnIndex("board_id")));
+                board.setName(c.getString(c.getColumnIndex("board_name")));
 
-            Post post = new Post(c.getInt(c.getColumnIndex("post_id")));
+                Topic thread = new Topic(c.getInt(c.getColumnIndex("thread_id")));
+                thread.setTitle(c.getString(c.getColumnIndex("thread_title")));
+                thread.setIsClosed(c.getInt(c.getColumnIndex("thread_closed")) == 1);
+                thread.setNumberOfPages(c.getInt(c.getColumnIndex("thread_pages")));
 
-            post.setTopic(thread);
-            thread.setBoard(board);
-            b.setThread(thread);
-            b.setLastPost(post);
+                Post post = new Post(c.getInt(c.getColumnIndex("post_id")));
 
-            ret.add(b);
-            c.moveToNext();
+                post.setTopic(thread);
+                thread.setBoard(board);
+                b.setThread(thread);
+                b.setLastPost(post);
+
+                ret.add(b);
+                c.moveToNext();
+            }
+        } finally {
+            c.close();
         }
 
-        c.close();
         return ret;
     }
 
@@ -104,20 +108,34 @@ public class DatabaseWrapper {
     public boolean isBookmark(Topic t) {
         Cursor result = mDatabase.query( BOOKMARKS_TABLE_NAME, new String[]{"id"},
                 "thread_id=?", new String[]{t.getId().toString()}, null, null, null);
-        return result.getCount() > 0;
+
+        Boolean is_bookmark = false;
+        try {
+            is_bookmark = result.getCount() > 0;
+        } finally {
+            result.close();
+        }
+
+        return is_bookmark;
     }
 
     public Boolean setCurrentBenderInformation(User u) {
         Cursor c = mDatabase.query(BENDER_TABLE_NAME, new String[] {"id", "bender_filename"},
                 "user_id = ?", new String[] {u.getId().toString()}, null, null, "last_seen desc");
 
-        if(c.getCount() == 0)
-            return false;
+        Boolean success = false;
+        try {
+            if(c.getCount() > 0) {
+                c.moveToFirst();
+                u.setAvatarId(c.getInt(c.getColumnIndex("id")));
+                u.setAvatarFile(c.getString(c.getColumnIndex("bender_filename")));
+                success = true;
+            }
+        } finally {
+            c.close();
+        }
 
-        c.moveToFirst();
-        u.setAvatarId(c.getInt(c.getColumnIndex("id")));
-        u.setAvatarFile(c.getString(c.getColumnIndex("bender_filename")));
-        return true;
+        return success;
     }
 
     public static class BookmarkDatabaseOpenHelper extends SQLiteOpenHelper {

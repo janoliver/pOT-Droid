@@ -20,16 +20,24 @@
             <a name="{{id}}"></a>
             <header>
                 <div class="icons">
-                    <i class="menu-icon fa fa-list"></i><br />{{&icon}}
+                    <i class="menu-icon fa fa-list portrait"></i>
+                    <i class="menu-edit fa fa-pencil landscape"></i>
+                    <i class="menu-quote fa fa-quote-left landscape"></i>
+                    <i class="menu-bookmark fa fa-heart landscape"></i>
+                    <i class="menu-link fa fa-external-link landscape"></i>
                 </div>
-                <div class="author">
-                    <div class="bender"></div>
-                    {{author}}
-                </div>
+
+                <div class="bender portrait"></div>
+                <div class="author">{{author}}</div>
+                {{&icon}}
                 <div class="date">{{date}}</div>
-                <div class="title">{{title}}</div>
+                <div class="title">&nbsp;{{title}}</div>
             </header>
-            <article><div>{{&text}}</div></article>
+            <article>
+                <div class="bender landscape"></div>
+                <div>{{&text}}</div>
+                <br style="clear:both" />
+            </article>
         </section>
         {{/posts}}
     </body>

@@ -8,7 +8,7 @@ body {
 
 section {
     background:#394E63;
-    margin:1em .4em;
+    margin:15px 10px;
     border-bottom:2px solid #2E3E4F;
     border-radius: 4px;
 }
@@ -16,19 +16,28 @@ section {
 header {
     background-color:#091827;
     font-weight:bold;
-    padding:.5em;
-    height:3.4em;
+    padding:5px;
+    border-top-radius: 4px;
+    border-top:2px solid #091827;
 }
 
-header div.bender {
+div.bender {
     display:block;
     background-image:url(images/placeholder_bender.png);
     background-position:top left;
     background-size:contain;
     background-repeat:no-repeat;
-    height:3.2em;
-    width:3.2em;
     float:left;
+}
+
+header div.bender {
+    height:30px;
+    width:30px;
+}
+
+article div.bender {
+    width:80px;
+    height:80px;
 }
 
 header div.author {
@@ -41,20 +50,28 @@ header div.title {
     font-size:0.8em;
 }
 
+header img.posticon {
+    float:left;
+    display:block;
+    padding-right:5px;
+}
+
 header div.date {
     color:#aaa;
     font-size:0.8em;
+    padding-right:5px;
 }
 
-header i.menu-icon {
-    font-size:2em;
+header i {
+    font-size:1.5em;
     color:#394E63;
     width:1em;
     height:1em;
     text-align:center;
+    padding-left:10px;
 }
 
-header i.menu-icon:active {
+header i:active {
     color:#ffffff;
 }
 
@@ -63,16 +80,11 @@ header .icons {
     text-align:right;
 }
 
-header .icons img {
-    margin-top:5px;
-}
-
 article {
-    padding:.3em;
+    padding:5px;
 }
 
 article > div {
-    width:100%;
     overflow:auto;
     font-size:0.9em;
 }
@@ -89,18 +101,18 @@ article div blockquote {
     background:rgba(9, 24, 39, 0.35);
     border:1px solid rgba(9, 24, 39, 0.35);
     display:block;
-    margin:.3em;
+    margin:0;
 }
 
 article div blockquote div.author {
     background:rgba(9, 24, 39, 0.35);
     font-weight:bold;
-    padding:.3em;
+    padding:5px;
     color:#fff;
 }
 
 article div blockquote div.content {
-    padding:.3em;
+    padding:5px;
 }
 
 .strike {
@@ -110,7 +122,7 @@ article div blockquote div.content {
 div.img i,
 div.spoiler i,
 div.img-link i {
-    font-size:2.3em;
+    font-size:2em;
     color:#000;
     padding:0 5px;
 }
@@ -126,9 +138,11 @@ div.spoiler,
 div.img-link {
     border:1px solid #000;
     background: rgba(9,24,39,0.6);
-    padding:.2em;
+    padding:3px;
     text-align:center;
-    margin:.2em;
+    margin:0 5px 5px 0;
+    display:inline-block;
+    width: 100px;
 }
 
 div.spoiler div {
@@ -157,4 +171,13 @@ article div table tr td {
     -webkit-animation-iteration-count: infinite;
     -webkit-animation-timing-function: linear;
     -webkit-animation-duration: 1s;
+}
+
+@media (orientation: portrait) {
+    div.landscape, i.landscape { display: none; }
+}
+
+@media (orientation: landscape) {
+    div.portrait, i.portrait { display: none; }
+    header div.date { float:left; }
 }

@@ -23,6 +23,7 @@ import com.mde.potdroid3.models.Topic;
 import com.mde.potdroid3.parsers.BoardParser;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 public class BoardFragment extends PaginateFragment
         implements LoaderManager.LoaderCallbacks<Board>  {
@@ -77,8 +78,8 @@ public class BoardFragment extends PaginateFragment
     public Loader<Board> onCreateLoader(int id, Bundle args) {
         int page = getArguments().getInt("page", 1);
         int bid = getArguments().getInt("board_id", 0);
-        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), page, bid);
-        return l;
+        showLoadingAnimation();
+        return new AsyncContentLoader(getSupportActivity(), page, bid);
     }
 
     @Override
@@ -178,11 +179,16 @@ public class BoardFragment extends PaginateFragment
             TextView subtitle = (TextView) row.findViewById(R.id.subtitle);
             subtitle.setText(t.getSubTitle());
 
-            // last post information
-            TextView lastpost = (TextView) row.findViewById(R.id.description);
-            Spanned content = Html.fromHtml("<b>" + t.getNumberOfPosts() + "</b> Posts auf <b>" +
+            // pages information
+            TextView pages = (TextView) row.findViewById(R.id.pages);
+            Spanned content = Html.fromHtml("<b>" + (t.getNumberOfPosts()+1) + "</b> Posts, <b>" +
                     t.getNumberOfPages() + "</b> Seiten");
-            lastpost.setText(content);
+            pages.setText(content);
+
+            // date
+            TextView date = (TextView) row.findViewById(R.id.date);
+            String ds = new SimpleDateFormat("dd.MM.yyyy, HH:mm").format(t.getFirstPost().getDate());
+            date.setText(ds);
 
             // icon
             ImageView icon = (ImageView) row.findViewById(R.id.icon);

@@ -148,7 +148,7 @@ public class MessageListFragment extends BaseFragment
             // last post information
             String author = m.isSystem() ? "System" : m.getFrom().getNick();
 
-            TextView description = (TextView) row.findViewById(R.id.description);
+            TextView description = (TextView) row.findViewById(R.id.pages);
             Spanned content = Html.fromHtml("von <b>" + author + "</b>, "
                     + (mMode == MessageList.TAG_INBOX ? "erhalten" : "gesendet")
                     + ": " + new SimpleDateFormat("HH:mm dd.MM.yyyy").format(m.getDate()));

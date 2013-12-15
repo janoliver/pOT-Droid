@@ -39,10 +39,29 @@ public class TopicJSInterface extends BenderJSInterface {
     }
 
     @JavascriptInterface
+    public void editPost(int post_id) {
+        mTopicFragment.editPost(post_id);
+    }
+
+    @JavascriptInterface
+    public void quotePost(int post_id) {
+        mTopicFragment.quotePost(post_id);
+    }
+
+    @JavascriptInterface
+    public void linkPost(int post_id) {
+        mTopicFragment.linkPost(post_id, null);
+    }
+
+    @JavascriptInterface
+    public void bookmarkPost(int post_id) {
+        mTopicFragment.bookmarkPost(post_id, null);
+    }
+
+    @JavascriptInterface
     public void openUrl(String url) {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
-        Utils.log(url);
         mActivity.startActivity(i);
     }
 

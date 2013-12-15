@@ -100,7 +100,7 @@ public class TopicBuilder {
 
         public String getIcon() {
             if(mPost.getIconId() != null)
-                return "<img src=\"thread-icons/icon" + mPost.getIconId() + ".png\" />";
+                return "<img class=\"posticon\" src=\"thread-icons/icon" + mPost.getIconId() + ".png\" />";
             return "";
         }
 

@@ -192,7 +192,7 @@ public class BookmarkFragment extends BaseFragment
             TextView board = (TextView) row.findViewById(R.id.board);
             board.setText(b.getThread().getBoard().getName());
 
-            TextView description = (TextView) row.findViewById(R.id.description);
+            TextView description = (TextView) row.findViewById(R.id.pages);
             Spanned content = Html.fromHtml("<b>" + b.getNumberOfNewPosts() + "</b> neue Post. <b>"
                     + b.getThread().getNumberOfPages() + "</b> Seiten");
             description.setText(content);

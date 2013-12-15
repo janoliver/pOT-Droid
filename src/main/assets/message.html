@@ -14,14 +14,15 @@
                 data-user="{{author}}"
                 data-user-id="{{authorId}}">
             <header>
-                <div class="author">
-                    <div class="bender"></div>
-                    {{author}}
-                </div>
+                <div class="bender portrait"></div>
+                <div class="author">{{author}}</div>
                 <div class="date">{{date}}</div>
                 <div class="title">{{title}}</div>
             </header>
-            <article><div>{{&text}}</div></article>
+            <article>
+                <div class="bender landscape"></div>
+                <div>{{&text}}</div>
+            </article>
         </section>
     </body>
 </html>

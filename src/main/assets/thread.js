@@ -65,6 +65,26 @@ $(document).ready(function() {
         api.openTopicMenu(post_id);
     });
 
+    $('i.menu-edit').click(function(e) {
+        var post_id = parseInt($(this).closest('section').attr('data-id'));
+        api.editPost(post_id);
+    });
+
+    $('i.menu-quote').click(function(e) {
+        var post_id = parseInt($(this).closest('section').attr('data-id'));
+        api.quotePost(post_id);
+    });
+
+    $('i.menu-bookmark').click(function(e) {
+        var post_id = parseInt($(this).closest('section').attr('data-id'));
+        api.bookmarkPost(post_id);
+    });
+
+    $('i.menu-link').click(function(e) {
+        var post_id = parseInt($(this).closest('section').attr('data-id'));
+        api.linkPost(post_id);
+    });
+
     // register waypoints while scrolling over them
     // should be the last thing executed!
     $("header").waypoint(function() {

@@ -27,8 +27,8 @@ import com.mde.potdroid3.models.Topic;
 import com.mde.potdroid3.parsers.TopicParser;
 import org.apache.http.Header;
 
-public class TopicFragment extends PaginateFragment
-        implements LoaderManager.LoaderCallbacks<Topic> {
+public class TopicFragment extends PaginateFragment implements LoaderManager.LoaderCallbacks<Topic>
+{
 
     private Topic mTopic;
     private WebView mWebView;
@@ -106,10 +106,10 @@ public class TopicFragment extends PaginateFragment
         int page = getArguments().getInt("page", 1);
         int tid = getArguments().getInt("thread_id", 0);
         int pid = getArguments().getInt("post_id", 0);
-        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), page, tid, pid);
+
         showLoadingAnimation();
 
-        return l;
+        return new AsyncContentLoader(getSupportActivity(), page, tid, pid);
     }
 
     @Override
@@ -270,6 +270,85 @@ public class TopicFragment extends PaginateFragment
         }
     }
 
+    public void quotePost(final int id) {
+
+        mActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                Post p = mTopic.getPostById(id);
+
+                if(mTopic.isClosed())
+                    Toast.makeText(mActivity, "Vorsicht, Topic geschlossen!", Toast.LENGTH_LONG).show();
+
+                String text = "[quote=" + mTopic.getId() + "," + p.getId() + ",\""
+                        + p.getAuthor().getNick() + "\"][b]\n" + p.getText() + "\n[/b][/quote]";
+
+                mActivity.getRightSidebar().appendText(text);
+                mActivity.openRightSidebar();
+            }
+        });
+
+    }
+
+    public void editPost(final int id) {
+        mActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                Post p = mTopic.getPostById(id);
+
+                SettingsWrapper settings = new SettingsWrapper(mActivity);
+
+                if(p.getAuthor().getId() == settings.getUserId()) {
+
+                    mActivity.getRightSidebar().setIsEditPost(mTopic, p);
+                    mActivity.getRightSidebar().appendText(p.getText());
+                    mActivity.openRightSidebar();
+                } else {
+                    Toast.makeText(mActivity, "Nicht dein Post!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    public void bookmarkPost(final int id, final Dialog d) {
+        mActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                Post p = mTopic.getPostById(id);
+
+                final String url = "set-bookmark.php?PID=" + p.getId()
+                        + "&token=" + p.getBookmarktoken();
+
+                Network network = new Network(getActivity());
+                network.get(url, null, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        Toast.makeText(getSupportActivity(), "Bookmark hinzugefügt.",
+                                Toast.LENGTH_SHORT).show();
+                        if(d != null)
+                            d.cancel();
+                    }
+                });
+            }
+        });
+
+    }
+
+    public void linkPost(final int id, final Dialog d) {
+        mActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                Post p = mTopic.getPostById(id);
+
+                String url = Network.BASE_URL + "thread.php?PID=" + p.getId()
+                        + "&TID=" + mTopic.getId() + "#reply_" + p.getId();
+                if(d != null)
+                    d.cancel();
+
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
+
+    }
+
     public class PostDialogFragment extends DialogFragment {
         private Integer mPostId;
 
@@ -299,18 +378,7 @@ public class TopicFragment extends PaginateFragment
                 @Override
                 public void onClick(View v)
                 {
-                    BaseActivity a = (BaseActivity)getSupportActivity();
-                    Post p = mTopic.getPostById(mPostId);
-
-                    if(mTopic.isClosed())
-                        Toast.makeText(a, "Vorsicht, Topic geschlossen!", Toast.LENGTH_LONG).show();
-
-                    String text = "[quote=" + mTopic.getId() + "," + p.getId() + ",\""
-                            + p.getAuthor().getNick() + "\"][b]\n" + p.getText() + "\n[/b][/quote]";
-
-                    a.getRightSidebar().appendText(text);
-                    a.openRightSidebar();
-
+                    quotePost(mPostId);
                     d.cancel();
                 }
             });
@@ -321,23 +389,8 @@ public class TopicFragment extends PaginateFragment
                 @Override
                 public void onClick(View v)
                 {
-                    BaseActivity a = (BaseActivity)getSupportActivity();
-                    Post p = mTopic.getPostById(mPostId);
-
-                    SettingsWrapper settings = new SettingsWrapper(a);
-
-                    if(p.getAuthor().getId() == settings.getUserId()) {
-
-                        a.getRightSidebar().setIsEditPost(mTopic, p);
-                        a.getRightSidebar().appendText(p.getText());
-                        a.openRightSidebar();
-
-                        d.cancel();
-
-                    } else {
-                        Toast.makeText(a, "Nicht dein Post!", Toast.LENGTH_LONG).show();
-                    }
-
+                    editPost(mPostId);
+                    d.cancel();
                 }
             });
 
@@ -347,22 +400,7 @@ public class TopicFragment extends PaginateFragment
                 @Override
                 public void onClick(View v)
                 {
-                    BaseActivity a = (BaseActivity)getSupportActivity();
-                    Post p = mTopic.getPostById(mPostId);
-
-                    final String url = "set-bookmark.php?PID=" + p.getId()
-                            + "&token=" + p.getBookmarktoken();
-
-                    Network network = new Network(getActivity());
-                    network.get(url, null, new AsyncHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            Toast.makeText(getSupportActivity(), "Bookmark hinzugefügt.",
-                                    Toast.LENGTH_SHORT).show();
-                            d.cancel();
-                        }
-                    });
-
+                    bookmarkPost(mPostId, d);
                 }
             });
 
@@ -372,17 +410,7 @@ public class TopicFragment extends PaginateFragment
                 @Override
                 public void onClick(View v)
                 {
-                    BaseActivity a = (BaseActivity)getSupportActivity();
-                    Post p = mTopic.getPostById(mPostId);
-
-                    String url = Network.BASE_URL + "thread.php?PID=" + p.getId()
-                            + "&TID=" + mTopic.getId() + "#reply_" + p.getId();
-
-                    d.cancel();
-
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(url));
-                    startActivity(i);
+                    linkPost(mPostId, d);
                 }
             });
 

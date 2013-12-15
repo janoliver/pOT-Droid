@@ -41,8 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:maxLines="2"
-            android:lines="2"
+            android:singleLine="true"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/pages"
             android:layout_below="@+id/title"
@@ -54,7 +53,7 @@
             android:id="@+id/pages"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_toLeftOf="@+id/date"
             android:layout_below="@+id/title"
             android:textSize="12sp"
             android:textColor="@color/darkgrey"/>
@@ -64,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/pages"
+            android:layout_below="@+id/title"
             android:textSize="12sp"
             android:textColor="@color/darkgrey"/>
 

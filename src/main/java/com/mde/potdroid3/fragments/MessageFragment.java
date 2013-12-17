@@ -60,9 +60,10 @@ public class MessageFragment extends BaseFragment
         mWebView.loadData("", "text/html", "utf-8");
         mWebView.setBackgroundColor(0x00000000);
 
-        // 2.3.3 has a bug that prevents adding JS interfaces.
+        // 2.3 has a bug that prevents adding JS interfaces.
         // see here: http://code.google.com/p/android/issues/detail?id=12987
-        if (android.os.Build.VERSION.SDK_INT != android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.GINGERBREAD ||
+            android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
             mWebView.addJavascriptInterface(mJsInterface, "api");
         }
 

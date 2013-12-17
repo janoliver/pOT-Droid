@@ -77,9 +77,10 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
         mJsInterface = new TopicJSInterface(mWebView, getSupportActivity(), this);
 
-        // 2.3.3 has a bug that prevents adding JS interfaces.
+        // 2.3 has a bug that prevents adding JS interfaces.
         // see here: http://code.google.com/p/android/issues/detail?id=12987
-        if (android.os.Build.VERSION.SDK_INT != android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.GINGERBREAD ||
+            android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
             mWebView.addJavascriptInterface(mJsInterface, "api");
         }
 

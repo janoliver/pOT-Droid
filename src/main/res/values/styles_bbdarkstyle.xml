@@ -77,4 +77,13 @@
         <item name="dropDownListViewStyle">@style/DropDownListView.Bbdarkstyle</item>
     </style>
 
+    <style name="Holo.ProgressBar.Horizontal" parent="@android:Widget.ProgressBar.Horizontal">
+        <item name="android:indeterminateDrawable">@drawable/progress_indeterminate_horizontal_holo</item>
+        <item name="android:maxHeight">16dip</item>
+        <item name="android:minHeight">16dip</item>
+        <item name="android:layout_marginTop">-6dip</item>
+        <item name="android:layout_marginBottom">-5dip</item>
+        <item name="android:progressDrawable">@drawable/progress_horizontal_bbdarkstyle</item>
+    </style>
+
 </resources>

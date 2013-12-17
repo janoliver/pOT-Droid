@@ -58,29 +58,31 @@
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bookmarks"
-            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:text="BOOKMARKS"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="15dp"
+            android:textSize="14sp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:background="@drawable/sidebar_bookmarkbutton_background"
             android:textColor="@color/white"
             android:id="@+id/refresh_bookmarks"
-            android:paddingLeft="5dp"
             android:gravity="left|center_vertical"
             android:textAlignment="textStart"/>
 
     <ProgressBar
-            style="?android:attr/progressBarStyleHorizontal"
+            style="@style/Holo.ProgressBar.Horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/update_progress"
             android:indeterminateOnly="true"
-            android:layout_marginBottom="-8dp"
-            android:layout_marginTop="-4dp"
             android:visibility="gone"/>
 
     <View
             android:id="@+id/separator"
             android:layout_width="fill_parent"
-            android:layout_marginTop="1dp"
+            android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
             android:layout_height="2dp"
             android:background="@color/bbstyle_darkblue"/>

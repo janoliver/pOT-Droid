@@ -23,6 +23,7 @@ import com.mde.potdroid3.models.Topic;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -189,10 +190,9 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
             String line;
             StringBuilder content = new StringBuilder();
 
-            //@TODO Date formatting
+            String ds = new SimpleDateFormat("dd. MMMM yyyy, HH:mm").format(message.getDate());
             content.append("\n\n------------------------\n");
-            content.append(message.getFrom().getNick() +
-                    " schrieb am " + message.getDate().toString() + ":\n");
+            content.append(message.getFrom().getNick() + " schrieb am " + ds + ":\n");
             try {
                 while((line = bufReader.readLine()) != null ) {
                     content.append("> " + line + "\n");
@@ -269,8 +269,11 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
     @Override
     public void hideLoadingAnimation() {
-        // @TODO Crash, when the fragment is already detached.
-        getView().findViewById(R.id.send_progress).setVisibility(View.INVISIBLE);
+        try {
+            getView().findViewById(R.id.send_progress).setVisibility(View.INVISIBLE);
+        } catch(NullPointerException e) {
+            // the view was already detached. Never mind...
+        }
     }
 
     static class AsyncPostSubmitter extends AsyncHttpLoader<Bundle> {

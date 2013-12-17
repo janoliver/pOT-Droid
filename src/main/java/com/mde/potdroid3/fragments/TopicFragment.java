@@ -76,7 +76,13 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         mWebView.setBackgroundColor(0x00000000);
 
         mJsInterface = new TopicJSInterface(mWebView, getSupportActivity(), this);
-        mWebView.addJavascriptInterface(mJsInterface, "api");
+
+        // 2.3.3 has a bug that prevents adding JS interfaces.
+        // see here: http://code.google.com/p/android/issues/detail?id=12987
+        if (android.os.Build.VERSION.SDK_INT != android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+            mWebView.addJavascriptInterface(mJsInterface, "api");
+        }
+
         mJsInterface.registerScroll(getArguments().getInt("post_id", 0));
 
         registerForContextMenu(mWebView);
@@ -88,6 +94,8 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         } else {
             mWebView.loadData("", "text/html", "utf-8");
         }
+
+        Utils.log("onResume finished");
     }
 
     @Override
@@ -98,6 +106,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         mWebView = null;
 
         mWebContainer.removeAllViews();
+        Utils.log("onPause finished");
     }
 
     @Override

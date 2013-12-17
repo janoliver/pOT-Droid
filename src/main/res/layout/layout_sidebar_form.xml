@@ -48,13 +48,11 @@
     </LinearLayout>
 
     <ProgressBar
-            style="?android:attr/progressBarStyleHorizontal"
+            style="@style/Holo.ProgressBar.Horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/send_progress"
             android:indeterminateOnly="true"
-            android:layout_marginBottom="-8dp"
-            android:layout_marginTop="-4dp"
             android:visibility="invisible"/>
 
     <EditText

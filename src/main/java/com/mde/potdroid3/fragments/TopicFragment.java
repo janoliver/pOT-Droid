@@ -29,7 +29,6 @@ import org.apache.http.Header;
 
 public class TopicFragment extends PaginateFragment implements LoaderManager.LoaderCallbacks<Topic>
 {
-
     private Topic mTopic;
     private WebView mWebView;
     private TopicJSInterface mJsInterface;

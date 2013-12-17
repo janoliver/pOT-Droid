@@ -22,7 +22,7 @@ header {
 }
 
 div.bender {
-    display:block;
+    display:none;
     background-image:url(images/placeholder_bender.png);
     background-position:top left;
     background-size:contain;
@@ -31,8 +31,8 @@ div.bender {
 }
 
 header div.bender {
-    height:30px;
-    width:30px;
+    height:50px;
+    width:50px;
 }
 
 article div.bender {
@@ -140,9 +140,7 @@ div.img-link {
     background: rgba(9,24,39,0.6);
     padding:3px;
     text-align:center;
-    margin:0 5px 5px 0;
-    display:inline-block;
-    width: 100px;
+    margin:5px;
 }
 
 div.spoiler div {
@@ -175,9 +173,11 @@ article div table tr td {
 
 @media (orientation: portrait) {
     div.landscape, i.landscape { display: none; }
+    div.bender.portrait { display: block; }
 }
 
 @media (orientation: landscape) {
     div.portrait, i.portrait { display: none; }
     header div.date { float:left; }
+    div.bender.landscape { display: block; }
 }

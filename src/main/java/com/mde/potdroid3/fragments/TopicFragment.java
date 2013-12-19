@@ -73,6 +73,8 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         mWebView.getSettings().setDomStorageEnabled(true);
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         mWebView.getSettings().setAllowFileAccess(true);
+        mWebView.getSettings().setUseWideViewPort(true);
+        mWebView.getSettings().setLoadWithOverviewMode(true);
         mWebView.setBackgroundColor(0x00000000);
 
         mJsInterface = new TopicJSInterface(mWebView, getSupportActivity(), this);

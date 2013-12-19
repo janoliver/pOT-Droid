@@ -91,6 +91,7 @@ $(document).ready(function() {
         api.registerScroll(parseInt($(this).parent().attr("data-id"),10));
     });
 
+    console.log($(window).width()+" width");
 });
 
 function replaceImage(icon, link_target) {

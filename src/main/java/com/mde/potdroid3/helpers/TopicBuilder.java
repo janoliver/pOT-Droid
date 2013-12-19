@@ -257,7 +257,6 @@ public class TopicBuilder {
                 Matcher m = image_link.matcher(content);
 
                 if (m.find() && args.size() > 0) {
-                    Utils.log("found url link");
                     String extension = m.group(1).substring(m.group(1).length() - 3).toLowerCase();
                     String icon = "fa-picture-o";
                     if(extension.equals("gif"))

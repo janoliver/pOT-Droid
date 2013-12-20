@@ -3,7 +3,7 @@
     <PreferenceCategory
             android:title="Account"
             android:key="pref_account_settings">
-        <com.mde.potdroid3.views.LoginDialog
+        <com.mde.potdroid.views.LoginDialog
                 android:key="pref_login"
                 android:dialogIcon="@android:drawable/ic_dialog_alert"
                 android:title="Login"
@@ -11,7 +11,7 @@
                 android:dialogMessage="Blablabla"
                 android:positiveButtonText="Login"
                 android:negativeButtonText="Abbrechen"/>
-        <com.mde.potdroid3.views.LogoutDialog
+        <com.mde.potdroid.views.LogoutDialog
                 android:key="pref_logout"
                 android:dialogIcon="@android:drawable/ic_dialog_alert"
                 android:title="Logout"

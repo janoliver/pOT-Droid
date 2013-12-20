@@ -1,0 +1,142 @@
+package com.mde.potdroid.fragments;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+import android.text.Html;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import com.mde.potdroid.BaseActivity;
+import com.mde.potdroid.R;
+import com.mde.potdroid.helpers.AsyncHttpLoader;
+import com.mde.potdroid.helpers.BenderJSInterface;
+import com.mde.potdroid.helpers.MessageBuilder;
+import com.mde.potdroid.models.Message;
+import com.mde.potdroid.parsers.MessageParser;
+
+public class MessageFragment extends BaseFragment
+        implements LoaderManager.LoaderCallbacks<Message> {
+
+    private Message mMessage;
+    private BaseActivity mActivity;
+    private WebView mWebView;
+    private BenderJSInterface mJsInterface;
+
+    public static MessageFragment newInstance(int message_id) {
+        MessageFragment f = new MessageFragment();
+
+        // Supply index input as an argument.
+        Bundle args = new Bundle();
+        args.putInt("message_id", message_id);
+        f.setArguments(args);
+
+        return f;
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
+        View v = super.onCreateView(inflater, container, saved);
+        mWebView = (WebView)v.findViewById(R.id.message_webview);
+        return v;
+    }
+
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        mActivity = (BaseActivity) getSupportActivity();
+
+        mJsInterface = new BenderJSInterface(mWebView, getSupportActivity());
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setDomStorageEnabled(true);
+        mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        mWebView.getSettings().setAllowFileAccess(true);
+        mWebView.setWebChromeClient(new WebChromeClient());
+        mWebView.loadData("", "text/html", "utf-8");
+        mWebView.setBackgroundColor(0x00000000);
+
+        // 2.3 has a bug that prevents adding JS interfaces.
+        // see here: http://code.google.com/p/android/issues/detail?id=12987
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.GINGERBREAD ||
+            android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+            mWebView.addJavascriptInterface(mJsInterface, "api");
+        }
+
+        getActionbar().setTitle("Lade Nachricht");
+
+        // load the content
+        startLoader(this);
+
+    }
+
+    @Override
+    public Loader<Message> onCreateLoader(int id, Bundle args) {
+        int mid = getArguments().getInt("message_id", 0);
+        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), mid);
+        showLoadingAnimation();
+
+        return l;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Message> loader, Message data) {
+        hideLoadingAnimation();
+
+        if(data != null) {
+
+            // update the topic data
+            mMessage = data;
+
+            mWebView.loadDataWithBaseURL("file:///android_asset/", mMessage.getHtmlCache(),
+                    "text/html", "UTF-8", null);
+
+            getActionbar().setTitle(mMessage.getTitle());
+            getActionbar().setSubtitle(Html.fromHtml((mMessage.isOutgoing() ? "an" : "von")
+                + " <b>" + mMessage.getFrom().getNick() + "</b>"));
+
+            // populate right sidebar
+            mActivity.getRightSidebar().setIsMessage(mMessage);
+
+        } else {
+            showError("Fehler beim Laden der Daten.");
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Message> loader) {
+        hideLoadingAnimation();
+    }
+
+    protected int getLayout() {
+        return R.layout.layout_message;
+    }
+
+    static class AsyncContentLoader extends AsyncHttpLoader<Message> {
+        private Integer mMessageId;
+
+        AsyncContentLoader(Context cx, Integer message_id) {
+            super(cx, Message.Html.getUrl(message_id), GET, null, "ISO-8859-15");
+
+            mMessageId = message_id;
+        }
+
+        @Override
+        public Message processNetworkResponse(String response) {
+            try {
+                MessageParser parser = new MessageParser();
+                Message m = parser.parse(response, mMessageId);
+                MessageBuilder b = new MessageBuilder(getContext());
+                m.setHtmlCache(b.parse(m));
+                return m;
+            } catch (Exception e) {
+                return null;
+            }
+        }
+    }
+
+}

@@ -1,5 +1,7 @@
 package com.mde.potdroid3;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 import com.mde.potdroid3.fragments.FormFragment;
@@ -13,13 +15,36 @@ public class TopicActivity extends BaseActivity implements FormFragment.FormList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int bid = mExtras.getInt("thread_id", 0);
-        int page = mExtras.getInt("page", 1);
-        int pid = mExtras.getInt("post_id", 0);
+        Integer tid = 0;
+        Integer page = 1;
+        Integer pid = 0;
+
+        // check, if the activity was opened from externally
+        Intent intent = getIntent();
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+
+            Uri u = intent.getData();
+
+            if(u.getQueryParameter("TID") != null)
+                tid = Integer.parseInt(u.getQueryParameter("TID"));
+
+            if(u.getQueryParameter("PID") != null)
+                pid = Integer.parseInt(u.getQueryParameter("PID"));
+
+            if(u.getQueryParameter("page") != null)
+                page = Integer.parseInt(u.getQueryParameter("page"));
+
+        } else {
+
+            tid = mExtras.getInt("thread_id", 0);
+            page = mExtras.getInt("page", 1);
+            pid = mExtras.getInt("post_id", 0);
+
+        }
 
         mTopicFragment = (TopicFragment)getSupportFragmentManager().findFragmentByTag("topic");
         if(mTopicFragment == null)
-            mTopicFragment = TopicFragment.newInstance(bid, page, pid);
+            mTopicFragment = TopicFragment.newInstance(tid, page, pid);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()

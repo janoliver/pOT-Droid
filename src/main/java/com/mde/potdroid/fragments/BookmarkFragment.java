@@ -15,24 +15,36 @@ import com.mde.potdroid.R;
 import com.mde.potdroid.TopicActivity;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
 import com.mde.potdroid.helpers.Network;
+import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.BookmarkList;
 import com.mde.potdroid.parsers.BookmarkParser;
 import org.apache.http.Header;
 
+/**
+ * The fragment that displays the list of bookmarks
+ */
 public class BookmarkFragment extends BaseFragment
-        implements LoaderManager.LoaderCallbacks<BookmarkParser.BookmarksContainer> {
+        implements LoaderManager.LoaderCallbacks<BookmarkParser.BookmarksContainer>
+{
 
+    // the bookmark list, Listview and adapter
     private BookmarkList mBookmarkList;
     private BookmarkListAdapter mListAdapter;
     private ListView mListView;
 
-    public static BookmarkFragment newInstance(int board_id, int page) {
+    /**
+     * Return new instance of BookmarkFragment. Although this fragment has no parameters,
+     * We provide this method for consistency.
+     *
+     * @return Bookmarkfragment
+     */
+    public static BookmarkFragment newInstance() {
         return new BookmarkFragment();
     }
 
     @Override
-    public void onCreate (Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
@@ -43,31 +55,32 @@ public class BookmarkFragment extends BaseFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
-        View v = super.onCreateView(inflater, container, saved);
+        View v = inflater.inflate(R.layout.layout_board, container, false);
 
         mListAdapter = new BookmarkListAdapter();
-        mListView = (ListView)v.findViewById(R.id.list_content);
+        mListView = (ListView) v.findViewById(R.id.list_content);
         mListView.setAdapter(mListAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getSupportActivity(), TopicActivity.class);
-                intent.putExtra("post_id", mBookmarkList.getBookmarks().get(position).getLastPost().getId());
-                intent.putExtra("thread_id", mBookmarkList.getBookmarks().get(position).getThread().getId());
+                intent.putExtra(TopicFragment.ARG_POST_ID, mBookmarkList.getBookmarks()
+                        .get(position).getLastPost().getId());
+                intent.putExtra(TopicFragment.ARG_TOPIC_ID, mBookmarkList.getBookmarks()
+                        .get(position).getThread().getId());
                 startActivity(intent);
             }
         });
 
         registerForContextMenu(mListView);
 
-        getActionbar().setTitle("Bookmarks");
+        getActionbar().setTitle(R.string.bookmarks);
 
         return v;
 
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         startLoader(this);
@@ -82,9 +95,6 @@ public class BookmarkFragment extends BaseFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
-
-        // Handle item selection
         switch (item.getItemId()) {
             case R.id.refresh:
                 restartLoader(this);
@@ -106,19 +116,22 @@ public class BookmarkFragment extends BaseFragment
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
         switch (item.getItemId()) {
+            // so far, one can only delete a bookmark through the context menu
             case R.id.delete:
                 Bookmark b = mBookmarkList.getBookmarks().get((int) info.id);
-                final String url = "async/remove-bookmark.php?BMID=" + b.getId()
-                        + "&token=" + b.getRemovetoken();
+                final String url = Network.getAsyncUrl(
+                        "remove-bookmark.php?BMID=" + b.getId() + "&token=" + b.getRemovetoken());
+
+                showLoadingAnimation();
 
                 Network network = new Network(getActivity());
                 network.get(url, null, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        Toast.makeText(getSupportActivity(), "Bookmark entfernt.",
-                                Toast.LENGTH_SHORT).show();
-
+                        Utils.toast(getSupportActivity(), getString(R.string.removed_bookmark));
+                        hideLoadingAnimation();
                         restartLoader(BookmarkFragment.this);
                     }
                 });
@@ -140,12 +153,17 @@ public class BookmarkFragment extends BaseFragment
     public void onLoadFinished(Loader<BookmarkParser.BookmarksContainer> loader,
                                BookmarkParser.BookmarksContainer success) {
         hideLoadingAnimation();
-        if(success != null) {
+
+        if (success != null) {
+
             mBookmarkList.refresh(success.getBookmarks(), success.getNumberOfNewPosts());
             mListAdapter.notifyDataSetChanged();
-            getActionbar().setSubtitle(success.getNumberOfNewPosts() + " ungelesene Nachrichten.");
+            String subtitle = String.format(getString(R.string.x_unread_posts),
+                    success.getNumberOfNewPosts());
+            getActionbar().setSubtitle(subtitle);
+
         } else {
-            showError("Fehler beim Laden der Daten.");
+            showError(getString(R.string.loading_error));
         }
     }
 
@@ -154,14 +172,10 @@ public class BookmarkFragment extends BaseFragment
         hideLoadingAnimation();
     }
 
-    protected int getLayout() {
-        return R.layout.layout_board;
-    }
-
     private class BookmarkListAdapter extends BaseAdapter {
 
         public int getCount() {
-            if(mBookmarkList == null)
+            if (mBookmarkList == null)
                 return 0;
             return mBookmarkList.getBookmarks().size();
         }
@@ -175,27 +189,33 @@ public class BookmarkFragment extends BaseFragment
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-            View row = mInflater.inflate(R.layout.listitem_bookmark, null);
-            Bookmark b = (Bookmark)getItem(position);
+            View row = getInflater().inflate(R.layout.listitem_bookmark, null);
+            Bookmark b = (Bookmark) getItem(position);
 
-            if(b.getNumberOfNewPosts() > 0)
-                row.findViewById(R.id.container).setBackgroundColor(
-                        getResources().getColor(R.color.bbstyle_darkblue)
-                );
+            // change the background color, if the bookmark has unread posts
+            if (b.getNumberOfNewPosts() > 0) {
+                View v = row.findViewById(R.id.container);
+                v.setBackgroundResource(R.drawable.sidebar_button_background);
+                v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), v.getPaddingBottom());
+            }
 
             // set the name, striked if closed
             TextView title = (TextView) row.findViewById(R.id.title);
             title.setText(b.getThread().getTitle());
-            if(b.getThread().isClosed())
+            if (b.getThread().isClosed())
                 title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
+            // set the name of the board
             TextView board = (TextView) row.findViewById(R.id.board);
             board.setText(b.getThread().getBoard().getName());
 
+            // display the number of new posts
+            Spanned description_content = Html.fromHtml(String.format(getString(
+                    R.string.new_posts_description),
+                    b.getNumberOfNewPosts(), b.getThread().getNumberOfPages()));
+
             TextView description = (TextView) row.findViewById(R.id.pages);
-            Spanned content = Html.fromHtml("<b>" + b.getNumberOfNewPosts() + "</b> neue Post. <b>"
-                    + b.getThread().getNumberOfPages() + "</b> Seiten");
-            description.setText(content);
+            description.setText(description_content);
 
             return row;
         }

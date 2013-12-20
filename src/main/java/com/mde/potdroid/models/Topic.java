@@ -51,7 +51,7 @@ public class Topic implements Serializable{
     }
 
     public void setNumberOfPosts(Integer numberOfPosts) {
-        mNumberOfPosts = numberOfPosts;
+        mNumberOfPosts = numberOfPosts + 1;
     }
 
     public void setNumberOfPages(Integer numberOfPages) {

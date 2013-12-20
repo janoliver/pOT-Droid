@@ -50,7 +50,7 @@ public class TopicJSInterface extends BenderJSInterface {
 
     @JavascriptInterface
     public void linkPost(int post_id) {
-        mTopicFragment.linkPost(post_id, null);
+        mTopicFragment.linkPost(post_id);
     }
 
     @JavascriptInterface

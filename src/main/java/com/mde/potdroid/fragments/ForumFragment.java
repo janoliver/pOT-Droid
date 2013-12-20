@@ -20,18 +20,17 @@ import com.mde.potdroid.models.Forum;
 import com.mde.potdroid.parsers.ForumParser;
 
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 /**
  * The Forum list fragment. It shows an ExpandableList with Categories as groups and
  * boards as children. The loading of the xml is done via an AsyncTaskLoader which
  * preserves data on configuration changes.
  */
-public class ForumFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Forum> {
+public class ForumFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Forum>
+{
 
     private Forum mForum;
     private ForumListAdapter mListAdapter;
-    private ExpandableListView mListView;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -40,33 +39,40 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
         setHasOptionsMenu(true);
     }
 
+
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
+        View v = inflater.inflate(R.layout.layout_forum, container, false);
 
         mListAdapter = new ForumListAdapter();
-        mListView = (ExpandableListView)getView().findViewById(R.id.list_content);
+        ExpandableListView mListView = (ExpandableListView) v.findViewById(R.id.list_content);
 
         mListView.setGroupIndicator(null);
         mListView.setAdapter(mListAdapter);
-        mListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener()
-        {
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id)
-            {
+        mListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 // go to a board
                 Intent intent = new Intent(getSupportActivity(), BoardActivity.class);
-                intent.putExtra("board_id", mForum.getCategories().get(groupPosition).getBoards().get(childPosition).getId());
-                intent.putExtra("page", 1);
+                intent.putExtra(BoardFragment.ARG_ID, mForum.getCategories()
+                        .get(groupPosition).getBoards().get(childPosition).getId());
+                intent.putExtra(BoardFragment.ARG_PAGE, 1);
                 startActivity(intent);
                 return true;
             }
         });
 
-        getActionbar().setTitle("Forenübersicht");
+        getActionbar().setTitle(R.string.forum_title);
+
+        return v;
+
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         // load the content
         startLoader(this);
-
     }
 
     @Override
@@ -74,13 +80,11 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_forum, menu);
-        //menu.setGroupVisible(R.id.loggedin, mObjectManager.isLoggedIn());
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        Intent intent;
+
         switch (item.getItemId()) {
             case R.id.refresh:
                 // reload content
@@ -89,10 +93,6 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    protected int getLayout() {
-        return R.layout.layout_forum;
     }
 
     @Override
@@ -109,7 +109,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
             mForum = data;
             mListAdapter.notifyDataSetChanged();
         } else {
-            showError("Fehler beim Laden der Daten.");
+            showError(getString(R.string.loading_error));
         }
     }
 
@@ -136,24 +136,20 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
                                  View convertView, ViewGroup parent) {
-            View row = mInflater.inflate(R.layout.listitem_forum, null);
-
-            TextView name = (TextView) row.findViewById(R.id.text_name);
-            TextView descr = (TextView) row.findViewById(R.id.text_description);
-            TextView lastpost = (TextView) row.findViewById(R.id.last_post);
+            View row = getInflater().inflate(R.layout.listitem_forum, null);
 
             Board b = (Board)getChild(groupPosition, childPosition);
 
+            TextView name = (TextView) row.findViewById(R.id.text_name);
             name.setText(b.getName());
+
+            TextView descr = (TextView) row.findViewById(R.id.text_description);
             descr.setText(b.getDescription());
 
-            SimpleDateFormat f_date = new SimpleDateFormat("dd.MM.yy", Locale.GERMAN);
-            SimpleDateFormat f_time = new SimpleDateFormat("HH:mm", Locale.GERMAN);
-            Spanned lastpost_text = Html.fromHtml("Letzter Beitrag von <b>"
-                    + b.getLastPost().getAuthor().getNick()
-                    + "</b> am <b>" + f_date.format(b.getLastPost().getDate())
-                    + "</b> um <b>" + f_time.format(b.getLastPost().getDate())
-                    + "</b> Uhr");
+            TextView lastpost = (TextView) row.findViewById(R.id.last_post);
+            String time = new SimpleDateFormat(getString(R.string.standard_time_format)).format(b.getLastPost().getDate());
+            Spanned lastpost_text = Html.fromHtml(String.format(
+                    getString(R.string.last_post, b.getLastPost().getAuthor().getNick(), time)));
             lastpost.setText(lastpost_text);
 
             return (row);
@@ -176,14 +172,14 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
                                  ViewGroup parent) {
-            View row = mInflater.inflate(R.layout.listitem_category, null);
-
-            TextView name = (TextView) row.findViewById(R.id.text_name);
-            TextView descr = (TextView) row.findViewById(R.id.text_description);
+            View row = getInflater().inflate(R.layout.listitem_category, null);
 
             Category cat = (Category)getGroup(groupPosition);
 
+            TextView name = (TextView) row.findViewById(R.id.text_name);
             name.setText(cat.getName());
+
+            TextView descr = (TextView) row.findViewById(R.id.text_description);
             descr.setText(cat.getDescription());
 
             return (row);
@@ -210,6 +206,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
                 ForumParser parser = new ForumParser();
                 return parser.parse(response);
             } catch (Exception e) {
+                e.printStackTrace();
                 return null;
             }
         }

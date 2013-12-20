@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +27,14 @@ public class Utils {
         AssetManager assetManager = cx.getAssets();
         InputStream istr = assetManager.open(strName);
         return Drawable.createFromStream(istr, null);
+    }
+
+    public static Drawable getIcon(Context cx, Integer icon_id) throws IOException {
+        return getDrawableFromAsset(cx, "thread-icons/icon" + icon_id + ".png");
+    }
+
+    public static void toast(Context cx, String content) {
+        Toast.makeText(cx, content, Toast.LENGTH_LONG).show();
     }
 
     public static WebView getWebViewInstance(Context cx) {

@@ -8,7 +8,8 @@ import android.view.MenuItem;
 import com.mde.potdroid.R;
 
 /**
- * Created by oli on 9/18/13.
+ * This Fragment extends BaseFragment and provides some more methods and an interface
+ * for those Fragments who have pagination functionality.
  */
 abstract public class PaginateFragment extends BaseFragment {
 
@@ -66,6 +67,10 @@ abstract public class PaginateFragment extends BaseFragment {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    /**
+     * All the functions below must be implemented by the child class.
+     */
 
     public abstract void goToNextPage();
 

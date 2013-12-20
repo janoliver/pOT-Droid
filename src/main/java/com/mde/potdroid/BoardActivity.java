@@ -27,7 +27,7 @@ public class BoardActivity extends BaseActivity {
 
         } else {
 
-            bid = mExtras.getInt("thread_id", 0);
+            bid = mExtras.getInt("board_id", 0);
             page = mExtras.getInt("page", 1);
 
         }

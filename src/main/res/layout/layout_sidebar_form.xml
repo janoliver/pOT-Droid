@@ -67,7 +67,8 @@
             android:layout_marginLeft="5pt"
             android:layout_marginRight="5pt"
             android:textColor="@color/bbstyle_darkblue"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:visibility="gone"/>
 
     <EditText
             android:layout_width="fill_parent"

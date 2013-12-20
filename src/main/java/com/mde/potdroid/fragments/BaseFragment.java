@@ -6,38 +6,26 @@ import android.support.v4.app.LoaderManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 /**
- * This class provides some methods to show Notifications on top of the fragment.
+ * The Base Fragment class that all Fragments should inherit. Provides some methods
+ * for convenient access of objects and handles loading animations.
  */
-public abstract class BaseFragment extends Fragment {
-
-    protected LayoutInflater mInflater;
+public abstract class BaseFragment extends Fragment
+{
+    // this is the ID of the content loader
     protected static final int CONTENT_LOADER_ID = 0;
 
-    @Override
-    public void onCreate (Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
+    /**
+     * When detached, stop all loaders.
+     */
     @Override
     public void onDetach() {
         super.onDetach();
 
         stopLoader();
     }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        mInflater = inflater;
-        return inflater.inflate(getLayout(), container, false);
-    }
-
-    abstract protected int getLayout();
 
     /**
      * Start the content loader
@@ -88,12 +76,28 @@ public abstract class BaseFragment extends Fragment {
         Toast.makeText(getSupportActivity(), error, Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * Get the activity of the current fragment
+     * @return SupportActivity
+     */
     public ActionBarActivity getSupportActivity() {
-        return (ActionBarActivity)super.getActivity();
+        return (ActionBarActivity) super.getActivity();
     }
 
+    /**
+     * Get the actionbar reference
+     * @return ActionBar
+     */
     public ActionBar getActionbar() {
         return getSupportActivity().getSupportActionBar();
+    }
+
+    /**
+     * Get a layout inflater instance.
+     * @return LayoutInflater
+     */
+    public LayoutInflater getInflater() {
+        return getSupportActivity().getLayoutInflater();
     }
 
 }

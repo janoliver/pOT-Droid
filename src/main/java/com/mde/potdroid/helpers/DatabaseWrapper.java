@@ -22,7 +22,7 @@ public class DatabaseWrapper {
 
     public DatabaseWrapper(Context cx) {
         mContext = cx;
-        BookmarkDatabaseOpenHelper helper = new BookmarkDatabaseOpenHelper(mContext);
+        BookmarkDatabaseOpenHelper helper = BookmarkDatabaseOpenHelper.getInstance(mContext);
         mDatabase = helper.getWritableDatabase();
     }
 
@@ -141,6 +141,7 @@ public class DatabaseWrapper {
     public static class BookmarkDatabaseOpenHelper extends SQLiteOpenHelper {
 
         private static final int DATABASE_VERSION = 4;
+        private static BookmarkDatabaseOpenHelper mInstance = null;
 
         private static final String BOOKMARKS_TABLE_CREATE =
                 "CREATE TABLE IF NOT EXISTS " + DatabaseWrapper.BOOKMARKS_TABLE_NAME + " (" +
@@ -162,8 +163,19 @@ public class DatabaseWrapper {
                         "bender_filename TEXT, " +
                         "last_seen INTEGER);";
 
-        BookmarkDatabaseOpenHelper(Context context) {
+        private BookmarkDatabaseOpenHelper(Context context) {
             super(context, DatabaseWrapper.DATABASE_NAME, null, DATABASE_VERSION);
+        }
+
+        public static BookmarkDatabaseOpenHelper getInstance(Context ctx) {
+
+            // Use the application context, which will ensure that you
+            // don't accidentally leak an Activity's context.
+            // See this article for more information: http://bit.ly/6LRzfx
+            if (mInstance == null) {
+                mInstance = new BookmarkDatabaseOpenHelper(ctx.getApplicationContext());
+            }
+            return mInstance;
         }
 
         @Override

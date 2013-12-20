@@ -18,6 +18,7 @@ import com.mde.potdroid.MessageActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
 import com.mde.potdroid.helpers.BenderHandler;
+import com.mde.potdroid.helpers.Network;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.MessageList;
@@ -27,54 +28,70 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 /**
- * Created by oli on 11/9/13.
+ * This fragment displays a list of messages below a Tab bar for the inbox/outbox folders.
  */
-public class MessageListFragment extends BaseFragment
-        implements LoaderManager.LoaderCallbacks<MessageList> {
+public class MessageListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<MessageList> {
 
+    // the tags of the fragment arguments
+    public static final String ARG_MODE = "mode";
+    public static final String MODE_INBOX = "inbox";
+    public static final String MODE_OUTBOX = "inbox";
+
+    // this variable also serves as fragmentmanager tag, so we have to use a String
     private String mMode;
-    private MessageList mMessageList = null;
-    private MessageListAdapter mListAdapter = null;
-    private ListView mListView = null;
+
+    // message list and adapter
+    private MessageList mMessageList;
+    private MessageListAdapter mListAdapter;
+
+    // a reference to the BaseActivity for API purposes
     private BaseActivity mActivity;
+
+    // the BenderHandler is used to display benders in front of the lines
     private BenderHandler mBenderHandler;
 
+    /**
+     * Returns an instance of the Fragment and sets required parameters as Arguments
+     *
+     * @param mode Which mode to use, INBOX or OUTBOX
+     * @return MessageListFragment object
+     */
     public static MessageListFragment newInstance(String mode) {
         MessageListFragment f = new MessageListFragment();
 
         // Supply index input as an argument.
         Bundle args = new Bundle();
-        args.putString("mode", mode);
+        args.putString(ARG_MODE, mode);
         f.setArguments(args);
 
         return f;
     }
 
     @Override
-    public void onCreate (Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
-        mMode = args.getString("mode");
+        mMode = args.getString(ARG_MODE);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
-        View v = super.onCreateView(inflater, container, saved);
+        View v = inflater.inflate(R.layout.layout_message_list, container, false);
 
         mListAdapter = new MessageListAdapter();
-        mListView = (ListView)v.findViewById(R.id.list_content);
+        ListView mListView = (ListView) v.findViewById(R.id.list_content);
         mListView.setAdapter(mListAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getSupportActivity(), MessageActivity.class);
-                intent.putExtra("message_id", mMessageList.getMessages().get(position).getId());
+                intent.putExtra(MessageFragment.ARG_ID, mMessageList.getMessages().get(position).getId());
                 startActivity(intent);
             }
         });
 
-        getActionbar().setTitle("PM Nachrichten");
-        getActionbar().setSubtitle(mMode == "inbox" ? "Posteingang" : "Postausgang");
+        getActionbar().setTitle(R.string.messages);
+        getActionbar().setSubtitle(mMode.equals(MODE_INBOX) ? R.string.inbox : R.string.outbox);
 
         return v;
     }
@@ -91,8 +108,6 @@ public class MessageListFragment extends BaseFragment
 
     @Override
     public Loader<MessageList> onCreateLoader(int id, Bundle args) {
-        int page = getArguments().getInt("page", 1);
-        int bid = getArguments().getInt("board_id", 0);
         AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), mMode);
         showLoadingAnimation();
         return l;
@@ -101,13 +116,13 @@ public class MessageListFragment extends BaseFragment
     @Override
     public void onLoadFinished(Loader<MessageList> loader, MessageList data) {
         hideLoadingAnimation();
-        if(data != null) {
+        if (data != null) {
             mMessageList = data;
             mListAdapter.notifyDataSetChanged();
 
             getSupportActivity().supportInvalidateOptionsMenu();
         } else {
-            showError("Fehler beim Laden der Daten.");
+            showError(getString(R.string.loading_error));
         }
     }
 
@@ -116,15 +131,10 @@ public class MessageListFragment extends BaseFragment
         hideLoadingAnimation();
     }
 
-    @Override
-    protected int getLayout() {
-        return R.layout.layout_message_list;
-    }
-
     private class MessageListAdapter extends BaseAdapter {
 
         public int getCount() {
-            if(mMessageList == null)
+            if (mMessageList == null)
                 return 0;
             return mMessageList.getMessages().size();
         }
@@ -138,8 +148,8 @@ public class MessageListFragment extends BaseFragment
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-            View row = mInflater.inflate(R.layout.listitem_message, null);
-            Message m = (Message)getItem(position);
+            View row = getInflater().inflate(R.layout.listitem_message, null);
+            Message m = (Message) getItem(position);
 
             // set the name, striked if closed
             TextView title = (TextView) row.findViewById(R.id.title);
@@ -149,25 +159,22 @@ public class MessageListFragment extends BaseFragment
             String author = m.isSystem() ? "System" : m.getFrom().getNick();
 
             TextView description = (TextView) row.findViewById(R.id.pages);
-            Spanned content = Html.fromHtml("von <b>" + author + "</b>, "
-                    + (mMode == MessageList.TAG_INBOX ? "erhalten" : "gesendet")
-                    + ": " + new SimpleDateFormat("HH:mm dd.MM.yyyy").format(m.getDate()));
+            Spanned content = Html.fromHtml(getString(R.string.message_description,
+                    author, mMode == MessageList.TAG_INBOX ? "erhalten" : "gesendet",
+                    new SimpleDateFormat(getString(R.string.standard_time_format)).format(m.getDate())));
             description.setText(content);
 
-            if(m.isUnread()) {
+            if (m.isUnread()) {
                 View v = row.findViewById(R.id.container);
-                int bottom = v.getPaddingBottom();
-                int top = v.getPaddingTop();
-                int right = v.getPaddingRight();
-                int left = v.getPaddingLeft();
                 v.setBackgroundResource(R.drawable.sidebar_button_background);
-                v.setPadding(left, top, right, bottom);
+                v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), v.getPaddingBottom());
             }
 
-            // bender
+            // bender. Show an alias as long as the real bender is not present. If the sender
+            // is "System", hide the view.
             final ImageView bender_img = (ImageView) row.findViewById(R.id.bender);
 
-            if(!m.isSystem()) {
+            if (!m.isSystem()) {
 
                 try {
                     Drawable d = Utils.getDrawableFromAsset(mActivity, "images/placeholder_bender.png");
@@ -180,13 +187,10 @@ public class MessageListFragment extends BaseFragment
                     @Override
                     public void onSuccess(String path) {
                         bender_img.setImageURI(Uri.parse(path));
-
                     }
 
                     @Override
-                    public void onFailure() {
-
-                    }
+                    public void onFailure() {}
                 });
             } else {
                 bender_img.setVisibility(View.GONE);
@@ -198,7 +202,7 @@ public class MessageListFragment extends BaseFragment
 
     static class AsyncContentLoader extends AsyncHttpLoader<MessageList> {
         AsyncContentLoader(Context cx, String mode) {
-            super(cx, MessageList.Html.getUrl(mode), GET, null, "ISO-8859-15");
+            super(cx, MessageList.Html.getUrl(mode), GET, null, Network.ENCODING_ISO);
         }
 
         @Override

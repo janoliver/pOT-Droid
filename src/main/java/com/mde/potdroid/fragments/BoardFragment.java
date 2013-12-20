@@ -25,21 +25,39 @@ import com.mde.potdroid.parsers.BoardParser;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
-public class BoardFragment extends PaginateFragment
-        implements LoaderManager.LoaderCallbacks<Board>  {
+/**
+ * The Board Fragment, which contains a list of Topics.
+ */
+public class BoardFragment extends PaginateFragment implements LoaderManager.LoaderCallbacks<Board>
+{
+    // the tags of the fragment arguments
+    public static final String ARG_ID = "board_id";
+    public static final String ARG_PAGE = "page";
 
-    private Board mBoard = null;
-    private BoardListAdapter mListAdapter = null;
-    private ListView mListView = null;
-    private DisplayMetrics mDisplayMetrics;
+    // the board object
+    private Board mBoard;
 
+    // the topic list adapter
+    private BoardListAdapter mListAdapter;
+
+    // we need this to convert dip to px for the icons
+    private float mDensity;
+
+    /**
+     * Returns an instance of the BoardFragment and sets required parameters as Arguments
+     *
+     * @param board_id the id of the board
+     * @param page     the currently visible page
+     * @return BoardFragment object
+     */
     public static BoardFragment newInstance(int board_id, int page) {
         BoardFragment f = new BoardFragment();
 
         // Supply index input as an argument.
         Bundle args = new Bundle();
-        args.putInt("board_id", board_id);
-        args.putInt("page", page);
+        args.putInt(ARG_ID, board_id);
+        args.putInt(ARG_PAGE, page);
+
         f.setArguments(args);
 
         return f;
@@ -47,22 +65,26 @@ public class BoardFragment extends PaginateFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
-        View v = super.onCreateView(inflater, container, saved);
+        View v = inflater.inflate(R.layout.layout_board, container, false);
 
         mListAdapter = new BoardListAdapter();
-        mListView = (ListView)v.findViewById(R.id.list_content);
+        ListView mListView = (ListView) v.findViewById(R.id.list_content);
         mListView.setAdapter(mListAdapter);
+
+        // clicking on a topic leads to the topicactivity
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getSupportActivity(), TopicActivity.class);
-                intent.putExtra("thread_id", mBoard.getTopics().get(position).getId());
-                intent.putExtra("page", 1);
+                intent.putExtra(TopicFragment.ARG_TOPIC_ID, mBoard.getTopics().get(position).getId());
+                intent.putExtra(TopicFragment.ARG_PAGE, 1);
                 startActivity(intent);
             }
         });
 
-        mDisplayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
+        // instantiate and calculate the display metrics
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        mDensity = displayMetrics.density;
 
         return v;
     }
@@ -71,33 +93,42 @@ public class BoardFragment extends PaginateFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        // when started, immediately start loading the content
         startLoader(this);
     }
 
     @Override
     public Loader<Board> onCreateLoader(int id, Bundle args) {
-        int page = getArguments().getInt("page", 1);
-        int bid = getArguments().getInt("board_id", 0);
+        int page = getArguments().getInt(ARG_PAGE, 1);
+        int bid = getArguments().getInt(ARG_ID, 0);
+
         showLoadingAnimation();
+
         return new AsyncContentLoader(getSupportActivity(), page, bid);
     }
 
     @Override
     public void onLoadFinished(Loader<Board> loader, Board data) {
         hideLoadingAnimation();
-        if(data != null) {
+
+        if (data != null) {
             mBoard = data;
+
+            // refresh the list
             mListAdapter.notifyDataSetChanged();
 
+            // refresh the OptionsMenu, because of new pagination possibilities
             getSupportActivity().supportInvalidateOptionsMenu();
 
-            Spanned subtitleText = Html.fromHtml("Seite <b>" + mBoard.getPage()
-                    + "</b> von <b>" + mBoard.getNumberOfPages() + "</b>");
+            // generate subtitle and set title and subtitle of the actionbar
+            Spanned subtitle = Html.fromHtml(String.format(getString(
+                    R.string.paginate_page_indicator), mBoard.getPage(), mBoard.getNumberOfPages()));
 
             getActionbar().setTitle(mBoard.getName());
-            getActionbar().setSubtitle(subtitleText);
+            getActionbar().setSubtitle(subtitle);
+
         } else {
-            showError("Fehler beim Laden der Daten.");
+            showError(getString(R.string.loading_error));
         }
     }
 
@@ -112,26 +143,26 @@ public class BoardFragment extends PaginateFragment
     }
 
     public void goToNextPage() {
-        // whether there is a next page was checked in onCreateOptionsMenu
-        getArguments().putInt("page", mBoard.getPage()+1);
+        // whether there is a next page was already checked in onCreateOptionsMenu
+        getArguments().putInt(ARG_PAGE, mBoard.getPage() + 1);
         restartLoader(this);
     }
 
     public void goToPrevPage() {
-        // whether there is a previous page was checked in onCreateOptionsMenu
-        getArguments().putInt("page", mBoard.getPage()-1);
+        // whether there is a previous page was already checked in onCreateOptionsMenu
+        getArguments().putInt(ARG_PAGE, mBoard.getPage() - 1);
         restartLoader(this);
     }
 
     public void goToFirstPage() {
-        // whether there is a previous page was checked in onCreateOptionsMenu
-        getArguments().putInt("page", 1);
+        // whether there is a previous page was already checked in onCreateOptionsMenu
+        getArguments().putInt(ARG_PAGE, 1);
         restartLoader(this);
     }
 
     public void goToLastPage() {
         // whether there is a previous page was checked in onCreateOptionsMenu
-        getArguments().putInt("page", mBoard.getNumberOfPages());
+        getArguments().putInt(ARG_PAGE, mBoard.getNumberOfPages());
         restartLoader(this);
     }
 
@@ -145,14 +176,10 @@ public class BoardFragment extends PaginateFragment
         hideLoadingAnimation();
     }
 
-    protected int getLayout() {
-        return R.layout.layout_board;
-    }
-
     private class BoardListAdapter extends BaseAdapter {
 
         public int getCount() {
-            if(mBoard == null)
+            if (mBoard == null)
                 return 0;
             return mBoard.getTopics().size();
         }
@@ -166,13 +193,13 @@ public class BoardFragment extends PaginateFragment
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-            View row = mInflater.inflate(R.layout.listitem_thread, null);
-            Topic t = (Topic)getItem(position);
+            View row = getInflater().inflate(R.layout.listitem_thread, null);
+            Topic t = (Topic) getItem(position);
 
             // set the name, striked if closed
             TextView title = (TextView) row.findViewById(R.id.title);
             title.setText(t.getTitle());
-            if(t.isClosed())
+            if (t.isClosed())
                 title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
             // set the subtitle
@@ -181,44 +208,43 @@ public class BoardFragment extends PaginateFragment
 
             // pages information
             TextView pages = (TextView) row.findViewById(R.id.pages);
-            Spanned content = Html.fromHtml("<b>" + (t.getNumberOfPosts()+1) + "</b> Posts, <b>" +
-                    t.getNumberOfPages() + "</b> Seiten");
-            pages.setText(content);
+            Spanned pages_content = Html.fromHtml(String.format(getString(
+                    R.string.topic_additional_information),
+                    t.getNumberOfPosts(), t.getNumberOfPages()));
+            pages.setText(pages_content);
 
             // date
             TextView date = (TextView) row.findViewById(R.id.date);
-            String ds = new SimpleDateFormat("dd.MM.yyyy, HH:mm").format(t.getFirstPost().getDate());
+            String ds = new SimpleDateFormat(getString(R.string.standard_time_format))
+                    .format(t.getFirstPost().getDate());
             date.setText(ds);
 
             // icon
-            ImageView icon = (ImageView) row.findViewById(R.id.icon);
-            try {
-                Drawable d = Utils.getDrawableFromAsset(getActivity(),
-                        "thread-icons/icon"+ t.getIconId() +".png");
-                d.setBounds(0,0,13*(int)mDisplayMetrics.density,13*(int)mDisplayMetrics.density);
-                title.setCompoundDrawables(d, null, null, null);
-            } catch (IOException e) {
-                //icon.setVisibility(View.GONE);
+            if(t.getIconId() != null) {
+                try {
+                    Drawable d = Utils.getIcon(getActivity(), t.getIconId());
+                    d.setBounds(0, 0, 13 * (int) mDensity, 13 * (int) mDensity);
+                    title.setCompoundDrawables(d, null, null, null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             // all important topics get a different background.
             // the padding stuff is apparently an android bug...
             // see http://stackoverflow.com/questions/5890379
-            if(t.isSticky() || t.isImportant() || t.isAnnouncement() || t.isGlobal()) {
+            if (t.isSticky() || t.isImportant() || t.isAnnouncement() || t.isGlobal()) {
                 View v = row.findViewById(R.id.container);
-                int bottom = v.getPaddingBottom();
-                int top = v.getPaddingTop();
-                int right = v.getPaddingRight();
-                int left = v.getPaddingLeft();
                 v.setBackgroundResource(R.drawable.sidebar_button_background);
-                v.setPadding(left, top, right, bottom);
+                v.setPadding(v.getPaddingLeft(), v.getPaddingTop(),
+                        v.getPaddingRight(), v.getPaddingBottom());
             }
 
-            if(!t.isSticky()) {
+            if (!t.isSticky()) {
                 row.findViewById(R.id.icon_pinned).setVisibility(View.INVISIBLE);
             }
 
-            if(!t.isClosed()) {
+            if (!t.isClosed()) {
                 row.findViewById(R.id.icon_locked).setVisibility(View.INVISIBLE);
             }
 
@@ -226,6 +252,9 @@ public class BoardFragment extends PaginateFragment
         }
     }
 
+    /**
+     * The content loader
+     */
     static class AsyncContentLoader extends AsyncHttpLoader<Board> {
         AsyncContentLoader(Context cx, int page, int board_id) {
             super(cx, Board.Xml.getUrl(board_id, page));
@@ -237,6 +266,7 @@ public class BoardFragment extends PaginateFragment
                 BoardParser parser = new BoardParser();
                 return parser.parse(response);
             } catch (Exception e) {
+                e.printStackTrace();
                 return null;
             }
         }

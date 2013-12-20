@@ -28,6 +28,8 @@ public class Network {
     public static final String UAGENT_BASE = "Apache-HttpClient/potdroid";
     public static final String UAGENT_TAIL = "potdroid";
 
+    public static final String ENCODING_UTF8 = "UTF-8";
+    public static final String ENCODING_ISO = "ISO-8859-15";
 
     public static final String COOKIE_LIFETIME = "31536000";
 
@@ -154,8 +156,12 @@ public class Network {
         }
     }
 
-    private static String getAbsoluteUrl(String relativeUrl) {
+    public static String getAbsoluteUrl(String relativeUrl) {
         return BASE_URL + relativeUrl;
+    }
+
+    public static String getAsyncUrl(String relativeUrl) {
+        return ASYNC_URL + relativeUrl;
     }
 
     public interface LoginCallback {

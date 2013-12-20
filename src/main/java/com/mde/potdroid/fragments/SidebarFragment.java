@@ -14,27 +14,31 @@ import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.BookmarkList;
 import com.mde.potdroid.parsers.BookmarkParser;
 
+/**
+ * This is the Sidebar containing a list of unread Bookmarks and the navigation.
+ */
 public class SidebarFragment extends BaseFragment
         implements LoaderManager.LoaderCallbacks<BookmarkParser.BookmarksContainer> {
 
+    // the bookmark list and adapter
     private BookmarkList mBookmarkList;
     private BookmarkListAdapter mListAdapter;
-    private ListView mListView;
-    protected Button mBookmarkRefreshButton;
-    private Boolean mDirty = true;
-    private BookmarkFragment.AsyncContentLoader mLoader;
 
+    // this member indicates, whether the view is "dirty" and should be refreshed.
+    private Boolean mDirty = true;
+
+    /**
+     * Return new instance of SidebarFragment. Although this fragment has no parameters,
+     * We provide this method for consistency.
+     *
+     * @return SidebarFragment
+     */
     public static SidebarFragment newInstance() {
         return new SidebarFragment();
     }
 
-    protected int getLayout() {
-        return R.layout.layout_sidebar;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setRetainInstance(true);
         mBookmarkList = new BookmarkList(getSupportActivity());
@@ -42,26 +46,30 @@ public class SidebarFragment extends BaseFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
-        View v = super.onCreateView(inflater, container, saved);
+        View v = inflater.inflate(R.layout.layout_sidebar, container, false);
 
         mListAdapter = new BookmarkListAdapter();
-        mListView = (ListView)v.findViewById(R.id.listview_bookmarks);
-        mListView.setAdapter(mListAdapter);
-        mListView.setEmptyView(v.findViewById(R.id.empty_bookmarks_text));
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        ListView listView = (ListView) v.findViewById(R.id.listview_bookmarks);
+        listView.setAdapter(mListAdapter);
+        listView.setEmptyView(v.findViewById(R.id.empty_bookmarks_text));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getSupportActivity(), TopicActivity.class);
-                intent.putExtra("post_id", mBookmarkList.getUnreadBookmarks().get(position).getLastPost().getId());
-                intent.putExtra("thread_id", mBookmarkList.getUnreadBookmarks().get(position).getThread().getId());
+                intent.putExtra(TopicFragment.ARG_POST_ID,
+                        mBookmarkList.getUnreadBookmarks().get(position).getLastPost().getId());
+                intent.putExtra(TopicFragment.ARG_TOPIC_ID,
+                        mBookmarkList.getUnreadBookmarks().get(position).getThread().getId());
                 startActivity(intent);
             }
         });
 
-        mBookmarkRefreshButton = (Button) v.findViewById(R.id.refresh_bookmarks);
-        mBookmarkRefreshButton.setOnClickListener(new View.OnClickListener() {
+        // below are the navigation and bookmark refresh buttons
+
+        Button bookmarkRefreshButton = (Button) v.findViewById(R.id.refresh_bookmarks);
+        bookmarkRefreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // replace the button's icon with a rotating one
                 restartLoader(SidebarFragment.this);
             }
         });
@@ -106,18 +114,30 @@ public class SidebarFragment extends BaseFragment
 
     }
 
+    /**
+     * We have a different loading animation in this fragment.
+     */
     @Override
     public void showLoadingAnimation() {
-        mBookmarkRefreshButton.setEnabled(false);
-        getView().findViewById(R.id.separator).setVisibility(View.GONE);
-        getView().findViewById(R.id.update_progress).setVisibility(View.VISIBLE);
+        try {
+            getView().findViewById(R.id.separator).setVisibility(View.GONE);
+            getView().findViewById(R.id.update_progress).setVisibility(View.VISIBLE);
+        } catch(NullPointerException e) {
+            // the view was already detached. Never mind...
+        }
     }
 
+    /**
+     * We have a different loading animation in this fragment.
+     */
     @Override
     public void hideLoadingAnimation() {
-        mBookmarkRefreshButton.setEnabled(true);
-        getView().findViewById(R.id.separator).setVisibility(View.VISIBLE);
-        getView().findViewById(R.id.update_progress).setVisibility(View.GONE);
+        try {
+            getView().findViewById(R.id.separator).setVisibility(View.VISIBLE);
+            getView().findViewById(R.id.update_progress).setVisibility(View.GONE);
+        } catch(NullPointerException e) {
+            // the view was already detached. Never mind...
+        }
     }
 
     public void refreshBookmarks() {
@@ -128,42 +148,44 @@ public class SidebarFragment extends BaseFragment
     public Loader<BookmarkParser.BookmarksContainer> onCreateLoader(int id, Bundle args) {
         mDirty = false;
         showLoadingAnimation();
-        mLoader = new BookmarkFragment.AsyncContentLoader(getSupportActivity());
-        return mLoader;
+        return new BookmarkFragment.AsyncContentLoader(getSupportActivity());
     }
 
     @Override
     public void onLoadFinished(Loader<BookmarkParser.BookmarksContainer> loader,
                                BookmarkParser.BookmarksContainer success) {
         hideLoadingAnimation();
-        if(success != null) {
+        if (success != null) {
             mBookmarkList.refresh(success.getBookmarks(), success.getNumberOfNewPosts());
             mListAdapter.notifyDataSetChanged();
+        } else {
+            showError(getString(R.string.loading_error));
         }
     }
 
     @Override
-    public void onLoaderReset(Loader<BookmarkParser.BookmarksContainer> loader) {}
-
-    public Boolean isDirty() {
-        return mDirty;
+    public void onLoaderReset(Loader<BookmarkParser.BookmarksContainer> loader) {
+        hideLoadingAnimation();
     }
 
-    public void setDirty(Boolean dirty) {
-        mDirty = dirty;
+    /**
+     * Is the sidebar dirty? *rr*
+     * @return true if it was not reloaded since it was attached, false otherwise
+     */
+    public Boolean isDirty() {
+        return mDirty;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        hideLoadingAnimation();
         mListAdapter.notifyDataSetChanged();
     }
 
     private class BookmarkListAdapter extends BaseAdapter {
 
         public int getCount() {
-            if(mBookmarkList == null)
+            if (mBookmarkList == null)
                 return 0;
             return mBookmarkList.getUnreadBookmarks().size();
         }
@@ -177,15 +199,16 @@ public class SidebarFragment extends BaseFragment
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-            View row = mInflater.inflate(R.layout.listitem_sidebar_bookmark, null);
-            Bookmark b = (Bookmark)getItem(position);
+            View row = getInflater().inflate(R.layout.listitem_sidebar_bookmark, null);
+            Bookmark b = (Bookmark) getItem(position);
 
             // set the name, striked if closed
             TextView title = (TextView) row.findViewById(R.id.name);
             title.setText(b.getThread().getTitle());
-            if(b.getThread().isClosed())
+            if (b.getThread().isClosed())
                 title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
+            // set the number of new posts
             TextView newposts = (TextView) row.findViewById(R.id.newposts);
             newposts.setText(b.getNumberOfNewPosts().toString());
 

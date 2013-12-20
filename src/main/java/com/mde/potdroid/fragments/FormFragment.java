@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,50 +24,67 @@ import com.mde.potdroid.models.Topic;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * This is the fragment responsible for the Forms, both the post editing/writing and the 
- * PM message form. Activities must implement the FormListener, to be notified on 
- * finishing, success and failure of the form. 
+ * This is the fragment responsible for the Forms, both the post editing/writing and the
+ * PM message form. Activities must implement the FormListener, to be notified on
+ * finishing, success and failure of the form.
  */
 public class FormFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Bundle>
 {
+    protected static final String ARG_MODE = "mode";
+    protected static final String ARG_TOPIC_ID = "topic_id";
+    protected static final String ARG_POST_ID = "post_id";
+    protected static final String ARG_TOKEN = "token";
 
     // the title view
     protected TextView mTitle;
-    
+
     // the input title and text views
     protected EditText mEditRcpt;
     protected EditText mEditTitle;
     protected EditText mEditText;
-    
+
     // should be moved to a bundle.
     protected int mTopicId;
     protected int mPostId;
     protected String mToken;
-    
+
     // this holds the kind of form this is. The static fields are defined below.
     public static int MODE_EDIT = 1;
     public static int MODE_REPLY = 2;
     public static int MODE_MESSAGE = 3;
 
+    protected static final String STATUS = "status";
     public static int STATUS_SUCCESS = 0;
     public static int STATUS_FAILED = 1;
 
     // the form listener
     protected FormListener mCallback;
 
+    // this bundle will be given to the loader
     protected Bundle mFormArguments;
+    protected static final String ARG_RCPT = "rcpt";
+    protected static final String ARG_TEXT = "text";
+    protected static final String ARG_TITLE = "title";
 
+    /**
+     * * Return new instance of FormFragment. Although this fragment has no parameters,
+     * We provide this method for consistency.
+     *
+     * @return FormFragment
+     */
     public static FormFragment newInstance() {
         return new FormFragment();
     }
 
-    // Container Activity must implement this interface
+    /**
+     * The containing Activity must implement this interface to be notified about
+     * success and failure of the submission
+     */
     public interface FormListener {
         public void onSuccess(Bundle result);
         public void onFailure(Bundle result);
@@ -88,7 +106,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
-        View v = super.onCreateView(inflater, container, saved);
+        View v = inflater.inflate(R.layout.layout_sidebar_form, container, false);
 
         // find the send button and add a click listener
         ImageButton home = (ImageButton) v.findViewById(R.id.button_send);
@@ -98,9 +116,9 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
                 hideKeyboard();
 
                 Bundle args = new Bundle(mFormArguments);
-                args.putString("rcpt", mEditRcpt.getText().toString());
-                args.putString("text", mEditText.getText().toString());
-                args.putString("title", mEditTitle.getText().toString());
+                args.putString(ARG_RCPT, mEditRcpt.getText().toString());
+                args.putString(ARG_TEXT, mEditText.getText().toString());
+                args.putString(ARG_TITLE, mEditTitle.getText().toString());
 
                 startLoader(FormFragment.this, args);
             }
@@ -119,7 +137,6 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         mEditText = (EditText) v.findViewById(R.id.edit_content);
         mEditTitle = (EditText) v.findViewById(R.id.edit_title);
         mEditRcpt = (EditText) v.findViewById(R.id.edit_rcpt);
-        mEditRcpt.setVisibility(View.GONE);
 
         return v;
     }
@@ -132,13 +149,12 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         clearForm();
 
         Bundle args = new Bundle();
-        args.putInt("mode", MODE_REPLY);
-        args.putInt("topic_id", topic.getId());
-        args.putString("token", topic.getNewreplytoken());
+        args.putInt(ARG_MODE, MODE_REPLY);
+        args.putInt(ARG_TOPIC_ID, topic.getId());
+        args.putString(ARG_TOKEN, topic.getNewreplytoken());
         setFormArguments(args);
 
-        mEditRcpt.setVisibility(View.GONE);
-        mTitle.setText("Antwort verfassen");
+        mTitle.setText(getString(R.string.write_answer));
     }
 
     /**
@@ -150,14 +166,13 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         clearForm();
 
         Bundle args = new Bundle();
-        args.putInt("mode", MODE_EDIT);
-        args.putInt("topic_id", topic.getId());
-        args.putInt("post_id", post.getId());
-        args.putString("token", post.getEdittoken());
+        args.putInt(ARG_MODE, MODE_EDIT);
+        args.putInt(ARG_TOPIC_ID, topic.getId());
+        args.putInt(ARG_POST_ID, post.getId());
+        args.putString(ARG_TOKEN, post.getEdittoken());
         setFormArguments(args);
 
-        mEditRcpt.setVisibility(View.GONE);
-        mTitle.setText("Post bearbeiten");
+        mTitle.setText(getString(R.string.edit_post));
     }
 
     /**
@@ -168,11 +183,13 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         clearForm();
 
         Bundle args = new Bundle();
-        args.putInt("mode", MODE_MESSAGE);
+        args.putInt(ARG_MODE, MODE_MESSAGE);
         setFormArguments(args);
 
+        // show the recipient field
         mEditRcpt.setVisibility(View.VISIBLE);
-        mTitle.setText("PM verfassen");
+
+        mTitle.setText(getString(R.string.write_message));
 
         // when the message object is given, fill in the recipient,
         // subject and message
@@ -186,20 +203,27 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
                 prefix = "Re: ";
             mEditTitle.setText(prefix + message.getTitle());
 
+            // read in the message string as HTML, so <br> is converted into line
+            // breaks and so on.
             BufferedReader bufReader = new BufferedReader(new StringReader(
-                    android.text.Html.fromHtml(message.getText()).toString()));
+                    Html.fromHtml(message.getText()).toString()));
+
+            // we need to build the message text using a string builder, so
+            // we can prefix each line with a > (for quotes)
             String line;
             StringBuilder content = new StringBuilder();
 
-            String ds = new SimpleDateFormat("dd. MMMM yyyy, HH:mm").format(message.getDate());
-            content.append("\n\n------------------------\n");
-            content.append(message.getFrom().getNick() + " schrieb am " + ds + ":\n");
+            String ds = new SimpleDateFormat(getString(R.string.standard_time_format)).format(message.getDate());
+            String quote_line = "> %1$s \n";
+            content.append(String.format(getString(R.string.message_header, message.getFrom().getNick(), ds)));
             try {
-                while((line = bufReader.readLine()) != null ) {
-                    content.append("> " + line + "\n");
-                }
-            } catch (IOException e) {}
+                while((line = bufReader.readLine()) != null)
+                    content.append(String.format(quote_line, line));
+            } catch (IOException e) {
+                // this will never occur.
+            }
 
+            // finally set the text and go to the beginning of the edit text
             mEditText.setText(content.toString());
             mEditText.setSelection(0);
         }
@@ -213,10 +237,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         mEditText.append(text);
     }
 
-    protected int getLayout() {
-        return R.layout.layout_sidebar_form;
-    }
-
+    // set the arguments for the FormFragment
     protected void setFormArguments(Bundle args) {
         mFormArguments = args;
     }
@@ -226,7 +247,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
         showLoadingAnimation();
 
-        if(mFormArguments.getInt("mode") == MODE_MESSAGE)
+        if(mFormArguments.getInt(ARG_MODE) == MODE_MESSAGE)
             return new AsyncMessageSubmitter(getSupportActivity(), args);
         else
             return new AsyncPostSubmitter(getSupportActivity(), args);
@@ -237,7 +258,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         hideLoadingAnimation();
         clearForm();
 
-        if(result.getInt("status", STATUS_FAILED) == STATUS_SUCCESS)
+        if(result.getInt(STATUS, STATUS_FAILED) == STATUS_SUCCESS)
             mCallback.onSuccess(result);
         else
             mCallback.onFailure(result);
@@ -263,11 +284,17 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         hideLoadingAnimation();
     }
 
+    /**
+     * We have a different loading animation in this fragment.
+     */
     @Override
     public void showLoadingAnimation() {
         getView().findViewById(R.id.send_progress).setVisibility(View.VISIBLE);
     }
 
+    /**
+     * We have a different loading animation in this fragment.
+     */
     @Override
     public void hideLoadingAnimation() {
         try {
@@ -281,21 +308,15 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         protected int mMode;
 
         AsyncPostSubmitter(Context cx, Bundle args) {
-            super(cx, Network.BOARD_URL_POST, AsyncHttpLoader.POST, null, "ISO-8859-15");
+            super(cx, Network.BOARD_URL_POST, AsyncHttpLoader.POST);
 
-            mMode = args.getInt("mode");
+            mMode = args.getInt(ARG_MODE);
 
             EncodingRequestParams r = new EncodingRequestParams();
 
-            r.setEncoding("ISO-8859-15");
+            r.setEncoding(Network.ENCODING_ISO);
 
-            byte[] message_latin1;
-            try {
-                message_latin1 = new String(args.getString("text").getBytes()).getBytes("ISO-8859-15");
-            } catch (UnsupportedEncodingException e) {
-                message_latin1 = args.getString("text").getBytes();
-            }
-
+            // this must resemble the same form on the website
             r.add("message", args.getString("text"));
             r.add("submit", "Eintragen");
             r.add("TID", "" + args.getInt("topic_id"));
@@ -318,17 +339,19 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
         @Override
         public Bundle processNetworkResponse(String response) {
+            // check if the correct success website is displayed
+
             Pattern pattern = Pattern.compile("thread.php\\?TID=([0-9]+)&temp=[0-9]+&PID=([0-9]+)");
             Matcher m = pattern.matcher(response);
 
             Bundle result = new Bundle();
-            result.putInt("mode", mMode);
+            result.putInt(ARG_MODE, mMode);
 
             if (m.find()) {
-                result.putInt("status", FormFragment.STATUS_SUCCESS);
-                result.putInt("post_id", Integer.parseInt(m.group(2)));
+                result.putInt(STATUS, FormFragment.STATUS_SUCCESS);
+                result.putInt(ARG_POST_ID, Integer.parseInt(m.group(2)));
             } else {
-                result.putInt("status", FormFragment.STATUS_FAILED);
+                result.putInt(STATUS, FormFragment.STATUS_FAILED);
             }
 
             return result;
@@ -339,13 +362,13 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         protected int mMode;
 
         AsyncMessageSubmitter(Context cx, Bundle args) {
-            super(cx, Message.Html.SEND_URL, AsyncHttpLoader.POST, null, "ISO-8859-15");
+            super(cx, Message.Html.SEND_URL, AsyncHttpLoader.POST);
 
-            mMode = args.getInt("mode");
+            mMode = args.getInt(ARG_MODE);
 
             EncodingRequestParams r = new EncodingRequestParams();
 
-            r.setEncoding("ISO-8859-15");
+            r.setEncoding(Network.ENCODING_ISO);
 
             r.add("rcpts", "0");
             r.add("rcpt", args.getString("rcpt"));
@@ -360,16 +383,18 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
         @Override
         public Bundle processNetworkResponse(String response) {
+            // check if the correct success website is displayed
+
             Pattern pattern = Pattern.compile("Nachricht wird an");
             Matcher m = pattern.matcher(response);
 
             Bundle result = new Bundle();
-            result.putInt("mode", mMode);
+            result.putInt(ARG_MODE, mMode);
 
             if (m.find()) {
-                result.putInt("status", FormFragment.STATUS_SUCCESS);
+                result.putInt(STATUS, FormFragment.STATUS_SUCCESS);
             } else {
-                result.putInt("status", FormFragment.STATUS_FAILED);
+                result.putInt(STATUS, FormFragment.STATUS_FAILED);
             }
 
             return result;

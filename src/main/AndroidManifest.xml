@@ -73,9 +73,31 @@
 
         </activity>
 
-        <activity android:name=".MessageListActivity"/>
+        <activity android:name=".MessageListActivity">
 
-        <activity android:name=".MessageActivity"/>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http"
+                      android:host="forum.mods.de"
+                      android:pathPrefix="/bb/pm/" />
+            </intent-filter>
+
+        </activity>
+
+        <activity android:name=".MessageActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http"
+                      android:host="forum.mods.de"
+                      android:pathPrefix="/bb/pm/?a=2" />
+            </intent-filter>
+
+        </activity>
 
         <activity android:name=".SettingsActivity"/>
 

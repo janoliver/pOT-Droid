@@ -1,5 +1,7 @@
 package com.mde.potdroid3;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 import com.mde.potdroid3.fragments.FormFragment;
@@ -13,7 +15,21 @@ public class MessageActivity extends BaseActivity implements FormFragment.FormLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int mid = mExtras.getInt("message_id", 0);
+        Integer mid = 0;
+
+        // check, if the activity was opened from externally
+        Intent intent = getIntent();
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+
+            Uri u = intent.getData();
+            if(u.getQueryParameter("mid") != null)
+                mid = Integer.parseInt(u.getQueryParameter("mid"));
+
+        } else {
+
+            mid = mExtras.getInt("message_id", 0);
+
+        }
 
         mMessageFragment = (MessageFragment)getSupportFragmentManager().findFragmentByTag("message");
         if(mMessageFragment == null)

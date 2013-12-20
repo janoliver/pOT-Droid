@@ -42,9 +42,6 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
     // the data cache
     protected E mData;
 
-    // the process response task container
-    protected ResponseTask mCurrentTask;
-
     /**
      * This is the respoonse handler of the asynchroneous network call, from the
      * android-async-http library.
@@ -135,7 +132,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
             mData = result;
             deliverResult(mData);
         }
-    };
+    }
 
     /**
      * Constructor

@@ -73,7 +73,7 @@ public class BBCodeParser {
         while (matcher.find()) {
 
             // the node is prefixed by some text
-            if(matcher.group(1).trim().length() > 0) {
+            if(matcher.group(1).length() > 0) {
                 Token t = new Token(Token.TYPE_STRING, strToHtml(matcher.group(1)));
                 tokens.add(t);
             }
@@ -491,7 +491,7 @@ public class BBCodeParser {
             mTag.endCallback(mArgs);
 
             // return empty tags
-            if(res.isEmpty()) {
+            if(res.compareTo("") == 0) {
                 mTag.emptyCallback(mArgs);
                 return "";
             }

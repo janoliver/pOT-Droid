@@ -132,6 +132,7 @@ public class TopicBuilder {
             } catch (BBCodeParser.UnknownErrorException e) {
                 text = "Could not parse post!";
             }
+
             return text;
         }
     }

@@ -23,6 +23,7 @@ import com.mde.potdroid3.models.Topic;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -285,6 +286,13 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
             mMode = args.getInt("mode");
 
             RequestParams r = new RequestParams();
+
+            byte[] message_latin1;
+            try {
+                message_latin1 = new String(args.getString("text").getBytes()).getBytes("ISO-8859-15");
+            } catch (UnsupportedEncodingException e) {
+                message_latin1 = args.getString("text").getBytes();
+            }
 
             r.add("message", args.getString("text"));
             r.add("submit", "Eintragen");

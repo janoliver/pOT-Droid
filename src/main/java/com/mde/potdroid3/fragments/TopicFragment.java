@@ -98,7 +98,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             mWebView.loadData("", "text/html", "utf-8");
         }
 
-        Utils.log("onResume finished");
     }
 
     @Override
@@ -109,7 +108,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         mWebView = null;
 
         mWebContainer.removeAllViews();
-        Utils.log("onPause finished");
     }
 
     @Override

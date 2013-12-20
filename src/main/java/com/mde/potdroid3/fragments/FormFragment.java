@@ -12,9 +12,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import com.loopj.android.http.RequestParams;
 import com.mde.potdroid3.R;
 import com.mde.potdroid3.helpers.AsyncHttpLoader;
+import com.mde.potdroid3.helpers.EncodingRequestParams;
 import com.mde.potdroid3.helpers.Network;
 import com.mde.potdroid3.models.Message;
 import com.mde.potdroid3.models.Post;
@@ -285,7 +285,9 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
             mMode = args.getInt("mode");
 
-            RequestParams r = new RequestParams();
+            EncodingRequestParams r = new EncodingRequestParams();
+
+            r.setEncoding("ISO-8859-15");
 
             byte[] message_latin1;
             try {
@@ -341,7 +343,9 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
             mMode = args.getInt("mode");
 
-            RequestParams r = new RequestParams();
+            EncodingRequestParams r = new EncodingRequestParams();
+
+            r.setEncoding("ISO-8859-15");
 
             r.add("rcpts", "0");
             r.add("rcpt", args.getString("rcpt"));

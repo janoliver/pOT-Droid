@@ -29,7 +29,7 @@ public class BaseActivity extends ActionBarActivity implements DrawerLayout.Draw
         mSettings = new SettingsWrapper(this);
         mExtras = getIntent().getExtras();
 
-        // debug mode
+        // debug mode. We write exceptions to the SDCard with a custom default exceptionhandler
         if(mSettings.isDebug()) {
             if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
                 Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler());

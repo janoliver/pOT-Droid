@@ -21,6 +21,7 @@
                 android:negativeButtonText="Abbrechen"
                 android:enabled="false"/>
     </PreferenceCategory>
+
     <PreferenceCategory
             android:title="Style"
             android:key="pref_style_settings">
@@ -45,6 +46,7 @@
                 android:entries="@array/load_images"
                 android:entryValues="@array/load_images_values" />
     </PreferenceCategory>
+
     <PreferenceCategory
             android:title="Polling"
             android:key="pref_style_settings">
@@ -74,7 +76,8 @@
 
         <CheckBoxPreference
                 android:key="pref_debug_mode"
-                android:title="Debug Modus" />
+                android:title="Debug Modus"
+                android:defaultValue="true"/>
 
     </PreferenceCategory>
 

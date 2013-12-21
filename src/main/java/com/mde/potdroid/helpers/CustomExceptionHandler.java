@@ -16,7 +16,7 @@ public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
     // forward to the one before.
     private Thread.UncaughtExceptionHandler mDefaultHandler;
 
-    public CustomExceptionHandler(String localPath, String url) {
+    public CustomExceptionHandler() {
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
     }
 

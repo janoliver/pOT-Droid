@@ -40,13 +40,3 @@ Ihr solltet die Android SDK und Android Studio installiert haben. Ihr solltet di
 `targetSDKVersion` (siehe `build.gradle`) sowie die `support library` und die `app compatibility
 library` installiert haben. Alle weiteren Dependencies werden über Maven gezogen.
 
-## Lizenz
-
-Everyone is permitted to copy and distribute verbatim or modified copies of
-this software, and changing it is allowed as long as the name is changed.
-
-DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE TERMS AND CONDITIONS FOR COPYING,
-DISTRIBUTION AND MODIFICATION
-
-  1. You just DO WHAT THE FUCK YOU WANT TO.
-

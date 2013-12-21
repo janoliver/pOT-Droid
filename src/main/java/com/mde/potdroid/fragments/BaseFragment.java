@@ -38,7 +38,7 @@ public abstract class BaseFragment extends Fragment
      * Start the content loader providing arguments
      */
     public void startLoader(LoaderManager.LoaderCallbacks l, Bundle args) {
-        getLoaderManager().initLoader(CONTENT_LOADER_ID, args, l);
+        getLoaderManager().restartLoader(CONTENT_LOADER_ID, args, l);
     }
 
     /**

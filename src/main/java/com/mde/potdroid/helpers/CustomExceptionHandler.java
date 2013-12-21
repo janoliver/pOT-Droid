@@ -8,9 +8,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by oli on 12/10/13.
+ * This class writes an exception to the SDCard and then forwards the Exception to
+ * the usual exception handler.
  */
 public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
+
+    // forward to the one before.
+    private Thread.UncaughtExceptionHandler mDefaultHandler;
+
+    public CustomExceptionHandler(String localPath, String url) {
+        mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+    }
 
     public void uncaughtException(Thread t, Throwable e) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
@@ -35,6 +43,6 @@ public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
             ex.printStackTrace();
         }
 
-        Thread.getDefaultUncaughtExceptionHandler().uncaughtException(t, e);
+        mDefaultHandler.uncaughtException(t, e);
     }
 }

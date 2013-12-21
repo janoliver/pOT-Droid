@@ -17,6 +17,7 @@ import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
 import com.mde.potdroid.helpers.EncodingRequestParams;
 import com.mde.potdroid.helpers.Network;
+import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
@@ -109,8 +110,8 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         View v = inflater.inflate(R.layout.layout_sidebar_form, container, false);
 
         // find the send button and add a click listener
-        ImageButton home = (ImageButton) v.findViewById(R.id.button_send);
-        home.setOnClickListener(new View.OnClickListener() {
+        ImageButton send = (ImageButton) v.findViewById(R.id.button_send);
+        send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hideKeyboard();
@@ -275,8 +276,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
     public void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager)getSupportActivity().getSystemService(
                 Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(mEditText.getWindowToken(),
-                InputMethodManager.HIDE_IMPLICIT_ONLY);
+        imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
     }
 
     @Override

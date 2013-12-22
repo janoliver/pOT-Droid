@@ -19,6 +19,8 @@ import com.mde.potdroid.helpers.AsyncHttpLoader;
 import com.mde.potdroid.helpers.BenderJSInterface;
 import com.mde.potdroid.helpers.MessageBuilder;
 import com.mde.potdroid.helpers.Network;
+import com.mde.potdroid.helpers.TopicJSInterface;
+import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.parsers.MessageParser;
 
@@ -29,6 +31,10 @@ import com.mde.potdroid.parsers.MessageParser;
  */
 public class MessageFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Message>
 {
+
+    // the message object
+    Message mMessage;
+
     // the tags of the fragment arguments
     public static final String ARG_ID = "message_id";
 
@@ -38,6 +44,10 @@ public class MessageFragment extends BaseFragment implements LoaderManager.Loade
     // the webview
     private WebView mWebView;
     private FrameLayout mWebContainer;
+
+    // singleton and state indicator for the Kitkat bug workaround
+    public static MessageFragment mWebViewSingleton;
+    public boolean mDestroyed;
 
     /**
      * Returns a new instance of the MessageFragment and sets the ID argument
@@ -60,6 +70,17 @@ public class MessageFragment extends BaseFragment implements LoaderManager.Loade
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_message, container, false);
         mWebContainer = (FrameLayout) v.findViewById(R.id.web_container);
+        mActivity = (BaseActivity) getSupportActivity();
+
+        setupWebView();
+
+        // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
+        // of the former TopicFragment.
+        if(mWebViewSingleton != this && mWebViewSingleton != null && Utils.isKitkat()) {
+            mWebViewSingleton.destroyWebView();
+        }
+        mWebViewSingleton = this;
+
         return v;
     }
 
@@ -67,16 +88,14 @@ public class MessageFragment extends BaseFragment implements LoaderManager.Loade
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mActivity = (BaseActivity) getSupportActivity();
-
         getActionbar().setTitle(R.string.loading_message);
 
         startLoader(this);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    public void setupWebView() {
+
+        mDestroyed = false;
 
         mWebView = new WebView(mActivity);
         mWebView.getSettings().setJavaScriptEnabled(true);
@@ -91,23 +110,42 @@ public class MessageFragment extends BaseFragment implements LoaderManager.Loade
 
         // 2.3 has a bug that prevents adding JS interfaces.
         // see here: http://code.google.com/p/android/issues/detail?id=12987
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.GINGERBREAD ||
-                android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+        if (!Utils.isGingerbread()) {
             mWebView.addJavascriptInterface(mJsInterface, "api");
+        } else {
+            Utils.toast(mActivity, getString(R.string.error_gingerbread_js));
         }
 
         mWebContainer.addView(mWebView);
 
+        if (mMessage != null) {
+            mWebView.loadDataWithBaseURL("file:///android_asset/",
+                    mMessage.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);
+        } else {
+            mWebView.loadData("", "text/html", Network.ENCODING_UTF8);
+        }
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onResume() {
+        super.onResume();
+
+        if(mDestroyed && Utils.isKitkat()) {
+            setupWebView();
+        }
+    }
+
+    /**
+     * Destroys and detaches the webview.
+     */
+    public void destroyWebView() {
 
         mWebView.destroy();
         mWebView = null;
 
         mWebContainer.removeAllViews();
+
+        mDestroyed = true;
     }
 
     @Override
@@ -126,7 +164,7 @@ public class MessageFragment extends BaseFragment implements LoaderManager.Loade
         if (data != null) {
 
             // update the topic data
-            Message mMessage = data;
+            mMessage = data;
 
             mWebView.loadDataWithBaseURL("file:///android_asset/",
                     mMessage.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);

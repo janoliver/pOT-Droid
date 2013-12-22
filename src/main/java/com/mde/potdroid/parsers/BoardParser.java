@@ -156,7 +156,7 @@ public class BoardParser extends DefaultHandler {
                 mCurrentThread.setNumberOfPages(Integer.parseInt(attributes.getValue(TopicParser.NUMBER_OF_PAGES_ATTRIBUTE)));
             }
         });
-        Element first_post = thread.getChild(TopicParser.FIRSTPOST_TAG).getChild(TopicParser.TAG);
+        Element first_post = thread.getChild(TopicParser.FIRSTPOST_TAG).getChild(TopicParser.POST_TAG);
         first_post.setElementListener(new ElementListener() {
 
             @Override
@@ -190,7 +190,7 @@ public class BoardParser extends DefaultHandler {
                 mCurrentPost.setIconFile(body);
             }
         });
-        first_post.requireChild(TopicParser.TAG).setTextElementListener(new TextElementListener() {
+        first_post.requireChild(TopicParser.USER_TAG).setTextElementListener(new TextElementListener() {
 
             @Override
             public void end(String body) {

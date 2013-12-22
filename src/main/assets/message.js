@@ -3,7 +3,7 @@ $(document).ready(function() {
         $("section").each(function() {
             var bender = $(this);
             var user_id = bender.attr("data-user-id");
-            api.getBenderUrl(parseInt(user_id,10), "", 0);
+            api.displayBender(parseInt(user_id,10), "", 0);
         });
     }
 

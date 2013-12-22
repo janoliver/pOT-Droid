@@ -19,6 +19,8 @@ public class Network {
     // this is the AsyncHttpClient we use for the network interaction
     private AsyncHttpClient mHttpClient = new AsyncHttpClient();
 
+    public static final int DEFAULT_TIMEOUT = 20 * 1000;
+
     // a reference to the Context
     private Context mContext;
 
@@ -49,6 +51,7 @@ public class Network {
         mSettings   = new SettingsWrapper(mContext);
         mHttpClient.setUserAgent(mSettings.getUserAgent());
         mHttpClient.addHeader("Accept-Encoding", "gzip");
+        mHttpClient.setTimeout(DEFAULT_TIMEOUT);
 
         if (mSettings.hasLoginCookie()) {
             PersistentCookieStore cStore = new PersistentCookieStore(mContext);

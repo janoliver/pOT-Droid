@@ -42,7 +42,7 @@ public class BenderJSInterface {
 
     /**
      * Return if Benders are enabled at all
-     * @return
+     * @return true if enabled
      */
     @JavascriptInterface
     public boolean isBenderEnabled() {

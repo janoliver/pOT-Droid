@@ -110,7 +110,7 @@ public class ForumParser extends DefaultHandler {
         });
 
         // the last post part
-        Element last_post = board.getChild(BoardParser.LASTPOST_TAG).getChild(TopicParser.TAG);
+        Element last_post = board.getChild(BoardParser.LASTPOST_TAG).getChild(TopicParser.POST_TAG);
         last_post.setElementListener(new ElementListener() {
 
             @Override
@@ -124,7 +124,7 @@ public class ForumParser extends DefaultHandler {
                 mCurrentPost.setBoard(mCurrentBoard);
             }
         });
-        last_post.requireChild(TopicParser.TAG).setTextElementListener(new TextElementListener() {
+        last_post.requireChild(TopicParser.USER_TAG).setTextElementListener(new TextElementListener() {
 
             @Override
             public void end(String body) {

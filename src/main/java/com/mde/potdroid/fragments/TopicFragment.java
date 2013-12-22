@@ -57,6 +57,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     // a reference to the activity, for API purposes.
     private BaseActivity mActivity;
 
+    // singleton and state indicator for the Kitkat bug workaround
     public static TopicFragment mWebViewSingleton;
     public boolean mDestroyed;
 
@@ -216,7 +217,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
     @Override
     public void onLoaderReset(Loader<Topic> loader) {
-        //hideLoadingAnimation();
+        hideLoadingAnimation();
     }
 
     public void goToNextPage() {

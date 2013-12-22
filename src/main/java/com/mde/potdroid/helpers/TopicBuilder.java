@@ -298,7 +298,7 @@ public class TopicBuilder {
                     return String.format("<div class=\"img-link\" data-src=\"%1$s\" data-href=\"%2$s\">"
                             + "<i class=\"link fa fa-external-link-square\"></i>"
                             + "<i class=\"img fa %3$s\"></i>"
-                            + "</div>", m.group(1), m.group(0), icon);
+                            + "</div>", m.group(1), args.get(0), icon);
                 }
 
                 if (args.size() > 0)
@@ -314,7 +314,7 @@ public class TopicBuilder {
                     return String.format("<blockquote><div class=\"author\">%1$s</div>" +
                             "<div class=\"content\">%2$s</div></blockquote>", args.get(2), content);
                 else
-                    return String.format("<blockquote><div class=\"content\">%2$s</div></blockquote>", content);
+                    return String.format("<blockquote><div class=\"content\">%1$s</div></blockquote>", content);
             }
         });
 

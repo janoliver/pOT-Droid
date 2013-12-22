@@ -12,19 +12,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by oli on 8/10/13.
+ * This class generates the Topic HTML from a Topic object.
  */
 public class TopicBuilder {
 
+    // context reference
     private Context mContext;
+
+    // a HashMap with the smileys
     private HashMap<String, String> mSmileys = new HashMap<String, String>();
+
+    // a reference to the Settings class
     private SettingsWrapper mSettings;
-    private BBCodeParser mParser;
+
+    // a BBCodeParser reference
+    private static BBCodeParser mParser;
+
 
     public TopicBuilder(Context cx) {
         mContext = cx;
         mSettings = new SettingsWrapper(cx);
-        mParser = getBBCodeParserInstance();
 
         // smileys
         mSmileys.put(":bang:", "banghead.gif");
@@ -49,25 +56,39 @@ public class TopicBuilder {
         mSmileys.put(":roll:", "icon18.gif");
     }
 
-    public String parse(Topic t) throws IOException {
+    /**
+     * Use JMoustache to generate the Topic HTML from a Topic object topic
+     * @param topic the topic object
+     * @return the HTML code
+     * @throws IOException
+     */
+    public String parse(Topic topic) throws IOException {
         InputStream is = mContext.getResources().getAssets().open("thread.html");
         Reader reader = new InputStreamReader(is);
         StringWriter sw = new StringWriter();
-        Mustache.compiler().compile(reader).execute(new TopicContext(t), sw);
+        Mustache.compiler().compile(reader).execute(new TopicContext(topic), sw);
         return sw.toString();
     }
 
+    /**
+     * Replace the text smileys with images
+     * @param code the HTML code
+     * @return HTML code with smileys
+     */
     private String parseSmileys(String code) {
+        String template = "<img src=\"smileys/%1$s\" alt=\"%2$s\" />";
         Iterator<Map.Entry<String, String>> i = mSmileys.entrySet().iterator();
 
         while (i.hasNext()) {
             Map.Entry<String, String> me = i.next();
-            code = code.replace(me.getKey(),
-                    "<img src=\"smileys/" + me.getValue() + "\" alt=\"+ " + me.getKey() +"\" />");
+            code = code.replace(me.getKey(), String.format(template, me.getValue(), me.getKey()));
         }
         return code;
     }
 
+    /**
+     * A wrapper object for JMoustache, providing some getters for the Topic object
+     */
     class TopicContext {
         private Topic mTopic;
 
@@ -83,6 +104,9 @@ public class TopicBuilder {
         }
     }
 
+    /**
+     * A wrapper object for JMoustache, providing some getters for the Post object
+     */
     class PostContext {
         private Post mPost;
 
@@ -100,7 +124,8 @@ public class TopicBuilder {
 
         public String getIcon() {
             if(mPost.getIconId() != null)
-                return "<img class=\"posticon\" src=\"thread-icons/icon" + mPost.getIconId() + ".png\" />";
+                return String.format("<img class=\"posticon\" src=\"thread-icons/icon%1$d.png\" />",
+                        mPost.getIconId());
             return "";
         }
 
@@ -125,11 +150,12 @@ public class TopicBuilder {
         }
 
         public String getText() {
-            String text = "parse error";
+            String text;
             try {
-                text = mParser.parse(mPost.getText());
+                text = getBBCodeParserInstance().parse(mPost.getText());
                 text = parseSmileys(text);
-            } catch (BBCodeParser.UnknownErrorException e) {
+            } catch (Exception e) {
+                e.printStackTrace();
                 text = "Could not parse post!";
             }
 
@@ -137,12 +163,18 @@ public class TopicBuilder {
         }
     }
 
+    /**
+     * Initialize the BBCodeParser setting all the bbcodes. The parser is a singleton object.
+     * @return BBCodeParser object
+     */
     public static BBCodeParser getBBCodeParserInstance() {
-        BBCodeParser a = new BBCodeParser();
+        if(mParser != null)
+            return mParser;
 
+        // instantiate it
+        mParser = new BBCodeParser();
 
-        String allNodes = "string, b, u, s, i, mod, spoiler, " +
-                "code, img, quote, url, list, table, m";
+        // the tags allowed in links
         String inLinks = "string, b, u, s, i, mod, img, url, list, table, m";
 
         class SimpleTag extends BBCodeParser.BBCodeTag {
@@ -163,92 +195,93 @@ public class TopicBuilder {
             }
         }
 
-        a.registerTag(new SimpleTag("b", "bold") {
+        mParser.registerTag(new SimpleTag("b", "bold") {
             @Override
             public String html(String content, List<String> args) {
-                return "<strong>" + content + "</strong>";
+                return String.format("<strong>%1$s</strong>", content);
             }
         });
 
-        a.registerTag(new SimpleTag("m", "monotype", "string") {
+        mParser.registerTag(new SimpleTag("m", "monotype", "string") {
             @Override
             public String html(String content, List<String> args) {
-                return "<pre class=\"inline\">" + content + "</pre>";
+                return String.format("<pre class=\"inline\">%1$s</pre>", content);
             }
         });
 
-        a.registerTag(new SimpleTag("u", "underline") {
+        mParser.registerTag(new SimpleTag("u", "underline") {
             @Override
             public String html(String content, List<String> args) {
-                return "<u>" + content + "</u>";
+                return String.format("<u>%1$s</u>", content);
             }
         });
 
-        a.registerTag(new SimpleTag("s", "strike") {
+        mParser.registerTag(new SimpleTag("s", "strike") {
             @Override
             public String html(String content, List<String> args) {
-                return "<span class=\"strike\">" + content + "</span>";
+                return String.format("<span class=\"strike\">%1$s</span>", content);
             }
         });
 
-        a.registerTag(new SimpleTag("i", "italic") {
+        mParser.registerTag(new SimpleTag("i", "italic") {
             @Override
             public String html(String content, List<String> args) {
-                return "<em>" + content + "</em>";
+                return String.format("<em>%1$s</em>", content);
             }
         });
 
-        a.registerTag(new SimpleTag("code", "code", "string") {
+        mParser.registerTag(new SimpleTag("code", "code", "string") {
             @Override
             public String html(String content, List<String> args) {
-                return "<span class=\"code\">" + content + "</span>";
+                return String.format("<span class=\"code\">%1$s</span>", content);
             }
         });
 
-        a.registerTag(new SimpleTag("spoiler", "spoiler") {
+        mParser.registerTag(new SimpleTag("spoiler", "spoiler") {
             @Override
             public String html(String content, List<String> args) {
-                return "<div class=\"spoiler\"><i class=\"fa fa-warning\"></i><div>" + content + "</div></div>";
+                return String.format("<div class=\"spoiler\"><i class=\"fa fa-warning\"></i>" +
+                        "<div>%1$s</div></div>", content);
             }
         });
 
-        a.registerTag(new SimpleTag("mod", "mod") {
+        mParser.registerTag(new SimpleTag("mod", "mod") {
             @Override
             public String html(String content, List<String> args) {
-                return "<span class=\"mod\">" + content + "</span>";
+                return String.format("<span class=\"mod\">%1$s</span>", content);
             }
         });
 
-        a.registerTag(new SimpleTag("trigger", "trigger") {
+        mParser.registerTag(new SimpleTag("trigger", "trigger") {
             @Override
             public String html(String content, List<String> args) {
-                return "<span class=\"trigger\">" + content + "</span>";
+                return String.format("<span class=\"trigger\">%1$s</span>", content);
             }
         });
 
         BBCodeParser.BBCodeTag list = new BBCodeParser.BBCodeTag("list", "list", "*") {
             @Override
             public String html(String content, List<String> args) {
-                return "<ul>" + content + "</ul>";
+                return String.format("<ul>%1$s</ul>", content);
             }
         };
         list.setInvalidStartRecovery(BBCodeParser.BBCodeTag.RECOVERY_ADD);
         list.setInvalidEndRecovery(BBCodeParser.BBCodeTag.RECOVERY_CLOSE);
         list.setInvalidStringRecovery(BBCodeParser.BBCodeTag.RECOVERY_ADD);
         list.setInvalidRecoveryTag("*");
-        a.registerTag(list);
+        mParser.registerTag(list);
 
         BBCodeParser.BBCodeTag item = new BBCodeParser.BBCodeTag("*", "listitem") {
             @Override
             public String html(String content, List<String> args) {
-                return "<li>" + content + "</li>";
+                return String.format("<li>%1$s</li>", content);
             }
         };
         item.setInvalidStartRecovery(BBCodeParser.BBCodeTag.RECOVERY_CLOSE);
         item.setInvalidEndRecovery(BBCodeParser.BBCodeTag.RECOVERY_CLOSE);
-        a.registerTag(item);
+        mParser.registerTag(item);
 
-        a.registerTag(new BBCodeParser.BBCodeTag("url", "link", inLinks) {
+        mParser.registerTag(new BBCodeParser.BBCodeTag("url", "link", inLinks) {
             @Override
             public String html(String content, List<String> args) {
 
@@ -260,50 +293,52 @@ public class TopicBuilder {
                 if (m.find() && args.size() > 0) {
                     String extension = m.group(1).substring(m.group(1).length() - 3).toLowerCase();
                     String icon = "fa-picture-o";
-                    if(extension.equals("gif"))
+                    if (extension.equals("gif"))
                         icon = "fa-film";
-                    return "<div class=\"img-link\" data-src=\"" + m.group(1) + "\" data-href=\"" + args.get(0) + "\">"
-                            +"<i class=\"link fa fa-external-link-square\"></i>"
-                            +"<i class=\"img fa " + icon + "\"></i>"
-                            +"</div>";
+                    return String.format("<div class=\"img-link\" data-src=\"%1$s\" data-href=\"%2$s\">"
+                            + "<i class=\"link fa fa-external-link-square\"></i>"
+                            + "<i class=\"img fa %3$s\"></i>"
+                            + "</div>", m.group(1), m.group(0), icon);
                 }
 
-                if(args.size() > 0)
+                if (args.size() > 0)
                     url = args.get(0);
-                return "<a href=\"" + url + "\">" + content + "</a>";
+                return String.format("<mParser href=\"%1$s\">%2$s</mParser>", url, content);
             }
         });
 
-        a.registerTag(new SimpleTag("quote", "quote") {
+        mParser.registerTag(new SimpleTag("quote", "quote") {
             @Override
             public String html(String content, List<String> args) {
-                if(args.size() == 3)
-                    return "<blockquote><div class=\"author\">" + args.get(2) + "</div>"
-                            +"<div class=\"content\">" + content + "</div></blockquote>";
+                if (args.size() == 3)
+                    return String.format("<blockquote><div class=\"author\">%1$s</div>" +
+                            "<div class=\"content\">%2$s</div></blockquote>", args.get(2), content);
                 else
-                    return "<blockquote><div class=\"content\">" + content + "</div></blockquote>";
+                    return String.format("<blockquote><div class=\"content\">%2$s</div></blockquote>", content);
             }
         });
 
-        a.registerTag(new SimpleTag("img", "image", "string") {
+        mParser.registerTag(new SimpleTag("img", "image", "string") {
             @Override
             public String html(String content, List<String> args) {
                 String extension = content.substring(content.length() - 3).toLowerCase();
                 String icon = "fa-picture-o";
-                if(extension.equals("gif"))
+                if (extension.equals("gif"))
                     icon = "fa-film";
-                return "<div class=\"img\" data-src=\"" + content + "\"><i class=\"fa " + icon + "\"></i></div>";
+                return String.format("<div class=\"img\" data-src=\"%1$s\"><i class=\"fa %2$s\"></i></div>", content, icon);
             }
         });
 
-        a.registerTag(new SimpleTag("tex", "latex", "string") {
+        mParser.registerTag(new SimpleTag("tex", "latex", "string") {
             @Override
             public String html(String content, List<String> args) {
                 String code = content;
                 try {
                     code = URLEncoder.encode(code, "utf-8");
-                    code = code.replace("<br />","\n");
-                    return "<img src=\"http://chart.apis.google.com/chart?chco=000000&chf=bg,s,ffffffff&cht=tx&chl=" + code + "\" class=\"tex\" />";
+                    code = code.replace("<br />", "\n");
+                    return String.format("<img src=\"" +
+                            "http://chart.apis.google.com/chart?chco=000000&chf=bg,s," +
+                            "ffffffff&cht=tx&chl=%1$s\" class=\"tex\" />", code);
                 } catch (UnsupportedEncodingException e) {
                     return "";
                 }
@@ -314,39 +349,38 @@ public class TopicBuilder {
         BBCodeParser.BBCodeTag table = new BBCodeParser.BBCodeTag("table", "table", "--") {
             @Override
             public String html(String content, List<String> args) {
-                return "<table>" + content + "</table>";
+                return String.format("<table>%1$s</table>", content);
             }
         };
         table.setInvalidRecoveryTag("--");
         table.setInvalidStartRecovery(BBCodeParser.BBCodeTag.RECOVERY_ADD);
         table.setInvalidStringRecovery(BBCodeParser.BBCodeTag.RECOVERY_ADD);
         table.setInvalidEndRecovery(BBCodeParser.BBCodeTag.RECOVERY_CLOSE);
-        a.registerTag(table);
+        mParser.registerTag(table);
 
         BBCodeParser.BBCodeTag row = new BBCodeParser.BBCodeTag("--", "tablerow", "||") {
             @Override
             public String html(String content, List<String> args) {
-                return "<tr>" + content + "</tr>";
+                return String.format("<tr>%1$s</tr>", content);
             }
         };
         row.setInvalidRecoveryTag("||");
         row.setInvalidStartRecovery(BBCodeParser.BBCodeTag.RECOVERY_ADD);
         row.setInvalidStringRecovery(BBCodeParser.BBCodeTag.RECOVERY_ADD);
         row.setInvalidEndRecovery(BBCodeParser.BBCodeTag.RECOVERY_CLOSE);
-        a.registerTag(row);
+        mParser.registerTag(row);
 
         BBCodeParser.BBCodeTag col = new BBCodeParser.BBCodeTag("||", "tablecol") {
             @Override
             public String html(String content, List<String> args) {
-                return "<td>" + content + "</td>";
+                return String.format("<td>%1$s</td>", content);
             }
         };
         col.setInvalidStartRecovery(BBCodeParser.BBCodeTag.RECOVERY_CLOSE);
         col.setInvalidEndRecovery(BBCodeParser.BBCodeTag.RECOVERY_CLOSE);
-        a.registerTag(col);
+        mParser.registerTag(col);
 
-
-        return a;
+        return mParser;
     }
 
 }

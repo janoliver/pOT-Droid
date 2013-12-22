@@ -197,7 +197,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
     static class AsyncContentLoader extends AsyncHttpLoader<Forum> {
         AsyncContentLoader(Context cx) {
-            super(cx, Forum.Xml.URL);
+            super(cx, ForumParser.URL);
         }
 
         @Override

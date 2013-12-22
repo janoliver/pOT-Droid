@@ -12,52 +12,67 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by oli on 5/26/13.
+ * Class that provides some static helper methods.
  */
 public class Utils {
 
+    // the logcat tag
     public static final String LOG_TAG = "pOT Droid";
-    public static WebView mWebView;
 
+    /**
+     * Log something to logcat
+     * @param msg the message to log
+     */
     public static void log(String msg) {
         Log.v(Utils.LOG_TAG, msg);
     }
 
+    /**
+     * Get a drawable asset file
+     * @param cx the context
+     * @param strName the filename
+     * @return Drawable asset
+     * @throws IOException
+     */
     public static Drawable getDrawableFromAsset(Context cx, String strName) throws IOException {
         AssetManager assetManager = cx.getAssets();
         InputStream istr = assetManager.open(strName);
         return Drawable.createFromStream(istr, null);
     }
 
+    /**
+     * Get a drawable Icon from the assets folder
+     * @param cx the context
+     * @param icon_id the icon id
+     * @return Drawable of the icon
+     * @throws IOException
+     */
     public static Drawable getIcon(Context cx, Integer icon_id) throws IOException {
         return getDrawableFromAsset(cx, "thread-icons/icon" + icon_id + ".png");
     }
 
+    /**
+     * Show a long toast
+     * @param cx the context
+     * @param content the message to show in the toast
+     */
     public static void toast(Context cx, String content) {
         Toast.makeText(cx, content, Toast.LENGTH_LONG).show();
     }
 
-    public static WebView getWebViewInstance(Context cx) {
-        if(mWebView == null) {
-            mWebView = new WebView(cx.getApplicationContext());
-            mWebView.getSettings().setJavaScriptEnabled(true);
-            mWebView.getSettings().setDomStorageEnabled(true);
-            mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-            mWebView.getSettings().setAllowFileAccess(true);
-            //mWebView.setWebChromeClient(new WebChromeClient());
-            //mWebView.setWebViewClient(new WebViewClient());
-            mWebView.loadData("", "text/html", "utf-8");
-            mWebView.setBackgroundColor(0x00000000);
-        }
-
-        return mWebView;
-    }
-
+    /**
+     * Check if the current device version is Gingerbread (2.3.x)
+     * @return true if GB
+     */
     public static boolean isGingerbread() {
-        return android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.GINGERBREAD ||
-               android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1;
+        return !(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.GINGERBREAD ||
+                 android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1);
     }
 
+    /**
+     * Check if the current device version is Kitkat (4.4.x)
+     * @return true if Kitkat
+     */
     public static boolean isKitkat() {
         return android.os.Build.VERSION.SDK_INT == android.os.Build.VERSION_CODES.KITKAT;
     }

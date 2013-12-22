@@ -13,13 +13,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by oli on 11/21/13.
+ * HTML Parser for the PM message list.
  */
 public class MessageListParser {
     private MessageList mMessageList;
     private Pattern mMessagePaggern = Pattern.compile("<a href='\\?a=2&mid=([0-9]+)'>([^<]+)</a></td> "
             + "<td (class=\"bold\" |)style='width: 40%'>(<a href='http://my.mods.de/([0-9]+)' "
             + "target='_blank'>([^<]+)</a>|System)</td> <td (class=\"bold\" |)style='width: 15%'>([.: 0-9]+)</td>");
+
+    public static final String INBOX_URL = "pm/?a=0&cid=1";
+    public static final String OUTBOX_URL = "pm/?a=0&cid=2";
+
+    public static String getUrl(String mode) {
+        if(mode.equals(MessageList.TAG_INBOX))
+            return INBOX_URL;
+        else
+            return OUTBOX_URL;
+    }
 
     public MessageListParser() {
         mMessageList = new MessageList();
@@ -35,7 +45,7 @@ public class MessageListParser {
             Message message = new Message();
             message.setId(Integer.parseInt(m.group(1)));
             message.setTitle(m.group(2));
-            message.setUnread(!m.group(3).isEmpty());
+            message.setUnread(m.group(3).compareTo("") != 0);
 
             if(m.group(4).equals("System")) {
                 message.setSystem(true);

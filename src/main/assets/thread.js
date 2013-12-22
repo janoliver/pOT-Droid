@@ -6,7 +6,7 @@ $(document).ready(function() {
             var user_id = bender.attr("data-user-id");
             var user_avatar_id = bender.attr("data-user-avatar-id");
             var user_avatar_file = bender.attr("data-user-avatar");
-            api.getBenderUrl(parseInt(user_id,10), user_avatar_file, parseInt(user_avatar_id,10));
+            api.displayBender(parseInt(user_id,10), user_avatar_file, parseInt(user_avatar_id,10));
         });
     }
 

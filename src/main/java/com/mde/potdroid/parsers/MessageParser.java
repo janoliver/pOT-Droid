@@ -12,11 +12,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by oli on 11/21/13.
+ * HTML Parser for a PM message.
  */
 public class MessageParser {
     private Message mMessage;
     private Pattern mMessagePattern = Pattern.compile("Betreff</td> <td class='hh'><b>([^<]+)</td>.*<td class='h'>(Absender|Empf&auml;nger)</td> <td class='hh'>.*<a href='http://my.mods.de/([0-9]+)' target='_blank'.*?>([^<]+?)</a>.*Gesendet</td> <td class='hh'><b>([0-9:\\. ]+)</td>.*<td colspan='2' class='b'>(.+)</td> </tr>  <tr> <td colspan='2' class='h'></td> </tr>.*</table>", Pattern.DOTALL | Pattern.MULTILINE);
+
+    public static final String URL = "pm/?a=2&mid=";
+    public static final String SEND_URL = "pm/?a=6";
+
+    public static String getUrl(Integer message_id) {
+        return URL + message_id.toString();
+    }
 
     public MessageParser() {
         mMessage = new Message();

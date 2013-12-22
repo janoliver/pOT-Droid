@@ -7,24 +7,35 @@ import com.samskivert.mustache.Mustache;
 import java.io.*;
 
 /**
- * Created by oli on 8/10/13.
+ * This class, given a Message object, turns it into displayable HTML code
+ * for the WebView we use.
  */
 public class MessageBuilder {
 
+    // a reference to the context
     private Context mContext;
 
     public MessageBuilder(Context cx) {
         mContext = cx;
     }
 
-    public String parse(Message m) throws IOException {
+    /**
+     * Parse a message object to HTML using JMoustache template engine.
+     * @param message the Message object
+     * @return HTML code
+     * @throws IOException
+     */
+    public String parse(Message message) throws IOException {
         InputStream is = mContext.getResources().getAssets().open("message.html");
         Reader reader = new InputStreamReader(is);
         StringWriter sw = new StringWriter();
-        Mustache.compiler().compile(reader).execute(new MessageContext(m), sw);
+        Mustache.compiler().compile(reader).execute(new MessageContext(message), sw);
         return sw.toString();
     }
 
+    /**
+     * A wrapper class for Message objects, needed by JMoustache.
+     */
     class MessageContext {
         private Message mMessage;
 

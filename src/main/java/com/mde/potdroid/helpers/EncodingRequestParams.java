@@ -15,9 +15,17 @@ import java.io.UnsupportedEncodingException;
  * obsolete.
  */
 public class EncodingRequestParams extends RequestParams {
+
+    // default encoding is UTF8
     protected String mEncoding = HTTP.UTF_8;
+
+    // variable must be used to extend the RequestParams class.
     protected boolean useJsonStreamer;
 
+    /**
+     * Set the encoding to use for the parameters
+     * @param encoding The encoding string to use, must be compatible to Android
+     */
     public void setEncoding(String encoding) {
         mEncoding = encoding;
     }

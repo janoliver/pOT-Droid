@@ -35,8 +35,4 @@ public class Forum implements Serializable {
         mCategories.add(cat);
     }
 
-    public static class Xml {
-        public static String TAG = "categories";
-        public static String URL = "xml/boards.php";
-    }
 }

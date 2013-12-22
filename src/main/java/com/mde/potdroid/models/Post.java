@@ -169,33 +169,5 @@ public class Post implements Serializable {
         return mEdited;
     }
 
-    public static class Xml {
-        public static String ID_ATTRIBUTE = "id";
-        public static String TAG = "post";
-        public static String MESSAGE_TAG = "message";
-
-        public static String ICON_TAG = "icon";
-        public static String ICON_ATTRIBUTE = "id";
-
-        public static String MESSAGE_TITLE_TAG = "title";
-        public static String MESSAGE_CONTENT_TAG = "content";
-        public static String MESSAGE_EDITED_TAG = "edited";
-        public static String MESSAGE_EDITED_ATTRIBUTE = "count";
-        public static String MESSAGE_LASTEDIT_TAG = "lastedit";
-
-        public static String DATE_TAG = "date";
-        public static String DATE_TIMESTAMP_ATTRIBUTE = "timestamp";
-
-        public static String IN_THREAD_TAG = "in-thread";
-        public static String IN_THREAD_ID_ATTRIBUTE = "id";
-
-        public static String TOKEN_SETBOOKMARK_TAG = "token-setbookmark";
-        public static String TOKEN_SETBOOKMARK_ATTRIBUTE = "value";
-
-        public static String TOKEN_EDITREPLY_TAG = "token-editreply";
-        public static String TOKEN_EDITREPLY_ATTRIBUTE = "value";
-
-
-    }
 
 }

@@ -154,7 +154,7 @@ public class MessageFragment extends BaseFragment implements LoaderManager.Loade
         private Integer mMessageId;
 
         AsyncContentLoader(Context cx, Integer message_id) {
-            super(cx, Message.Html.getUrl(message_id), GET, null, Network.ENCODING_ISO);
+            super(cx, MessageParser.getUrl(message_id), GET, null, Network.ENCODING_ISO);
 
             mMessageId = message_id;
         }

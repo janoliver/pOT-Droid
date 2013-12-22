@@ -58,5 +58,6 @@
     <string name="notyourpost_error">Nicht dein Post!</string>
     <string name="post_actions">Aktionen</string>
     <string name="cancel">Abbrechen</string>
+    <string name="error_gingerbread_js">Durch einen Bug in Android 2.3 sind einige Topic Features nicht verfügbar.</string>
 
 </resources>

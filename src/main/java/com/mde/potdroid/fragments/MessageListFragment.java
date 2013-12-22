@@ -202,7 +202,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager.L
 
     static class AsyncContentLoader extends AsyncHttpLoader<MessageList> {
         AsyncContentLoader(Context cx, String mode) {
-            super(cx, MessageList.Html.getUrl(mode), GET, null, Network.ENCODING_ISO);
+            super(cx, MessageListParser.getUrl(mode), GET, null, Network.ENCODING_ISO);
         }
 
         @Override

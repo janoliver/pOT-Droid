@@ -223,7 +223,7 @@ public class BookmarkFragment extends BaseFragment
 
     static class AsyncContentLoader extends AsyncHttpLoader<BookmarkParser.BookmarksContainer> {
         AsyncContentLoader(Context cx) {
-            super(cx, BookmarkList.Xml.getUrl());
+            super(cx, BookmarkParser.URL);
         }
 
         @Override
@@ -232,6 +232,7 @@ public class BookmarkFragment extends BaseFragment
                 BookmarkParser parser = new BookmarkParser();
                 return parser.parse(response);
             } catch (Exception e) {
+                e.printStackTrace();
                 return null;
             }
         }

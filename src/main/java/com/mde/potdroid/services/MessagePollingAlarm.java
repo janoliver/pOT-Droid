@@ -37,7 +37,7 @@ public class MessagePollingAlarm extends BroadcastReceiver
     public void onReceive(final Context context, Intent intent) {
 
         Network network = new Network(context);
-        network.get(MessageList.Html.INBOX_URL, null, new AsyncHttpResponseHandler() {
+        network.get(MessageListParser.INBOX_URL, null, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String stringResult;

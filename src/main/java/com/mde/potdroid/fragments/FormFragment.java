@@ -21,6 +21,7 @@ import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
+import com.mde.potdroid.parsers.MessageParser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -362,7 +363,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         protected int mMode;
 
         AsyncMessageSubmitter(Context cx, Bundle args) {
-            super(cx, Message.Html.SEND_URL, AsyncHttpLoader.POST);
+            super(cx, MessageParser.SEND_URL, AsyncHttpLoader.POST);
 
             mMode = args.getInt(ARG_MODE);
 

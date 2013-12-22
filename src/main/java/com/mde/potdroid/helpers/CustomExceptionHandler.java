@@ -20,14 +20,19 @@ public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
     }
 
+    @Override
     public void uncaughtException(Thread t, Throwable e) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         Date date = new Date();
+
+        // save stack trace to string
         final Writer result = new StringWriter();
         final PrintWriter printWriter = new PrintWriter(result);
         e.printStackTrace(printWriter);
         String stacktrace = result.toString();
         printWriter.close();
+
+        // save string to file
         String filename = dateFormat.format(date) + ".stacktrace";
 
         File ext_root = Environment.getExternalStorageDirectory();
@@ -43,6 +48,7 @@ public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
             ex.printStackTrace();
         }
 
+        // forward the exception to the usual Handler
         mDefaultHandler.uncaughtException(t, e);
     }
 }

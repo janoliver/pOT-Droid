@@ -49,18 +49,5 @@ public class BookmarkList implements Serializable {
         mBookmarkDatabase.refreshBookmarks(bookmarks);
     }
 
-    public static class Xml {
-        public static String TAG = "bookmarks";
-        public static String BOOKMARKS_TAG = "bookmarks";
-        public static String BOOKMARKS_ATTRIBUTE_USER = "current-user-id";
-        public static String BOOKMARKS_ATTRIBUTE_NEW = "newposts";
-        public static String BOOKMARKS_ATTRIBUTE_COUNT = "count";
-
-        public static String URL = "xml/bookmarks.php";
-
-        public static String getUrl() {
-            return Xml.URL;
-        }
-    }
 
 }

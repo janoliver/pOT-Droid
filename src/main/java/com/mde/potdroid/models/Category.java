@@ -52,11 +52,4 @@ public class Category implements Serializable {
         return mId;
     }
 
-    public static class Xml {
-        public static String TAG = "category";
-        public static String BOARDS_TAG = "boards";
-        public static String DESCRIPTION_TAG = "description";
-        public static String NAME_TAG = "name";
-        public static String ID_ATTRIBUTE = "id";
-    }
 }

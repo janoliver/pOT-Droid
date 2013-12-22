@@ -55,12 +55,5 @@ public class User implements Serializable {
         return mId;
     }
 
-    public static class Xml {
-        public static String TAG = "user";
-        public static String ID_ATTRIBUTE = "id";
-        public static String AVATAR_TAG = "avatar";
-        public static String AVATAR_ATTRIBUTE = "id";
-
-    }
 
 }

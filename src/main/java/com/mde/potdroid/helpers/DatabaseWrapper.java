@@ -11,13 +11,19 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by oli on 9/15/13.
+ * This Class provides convenient access to the Apps SQLite Database.
  */
 public class DatabaseWrapper {
+
+    // Database and table names
     public static final String DATABASE_NAME = "potdroid";
     public static final String BOOKMARKS_TABLE_NAME = "bookmarks";
     public static final String BENDER_TABLE_NAME = "benders";
+
+    // the database reference
     private SQLiteDatabase mDatabase;
+
+    // A reference to the context
     private Context mContext;
 
     public DatabaseWrapper(Context cx) {
@@ -26,10 +32,15 @@ public class DatabaseWrapper {
         mDatabase = helper.getWritableDatabase();
     }
 
+    /**
+     * Expects an ArrayList of Bookmarks and synchronizes the Bookmarks Database table.
+     * @param list the Arraylist of Bookmarks
+     */
     public void refreshBookmarks(ArrayList<Bookmark> list) {
-        // clear db
         try {
             mDatabase.beginTransaction();
+
+            // clear the bookmark table
             mDatabase.delete(BOOKMARKS_TABLE_NAME, null, null);
 
             // refresh database
@@ -56,16 +67,22 @@ public class DatabaseWrapper {
         }
     }
 
+    /**
+     * Returns an ArrayList of Bookmarks from the Database
+     * @return the Bookmarks Array
+     */
     public ArrayList<Bookmark> getBookmarks() {
 
         ArrayList<Bookmark> ret = new ArrayList<Bookmark>();
 
+        // retrieve bookmarks from Database sorted by board, as in the web
         Cursor c = mDatabase.query(BOOKMARKS_TABLE_NAME, null, null, null, null, null,
                 "board_id, thread_title");
 
         try {
             c.moveToFirst();
             while (!c.isAfterLast()) {
+                // create the objects and return
 
                 Bookmark b = new Bookmark(c.getInt(c.getColumnIndex("id")));
                 b.setRemovetoken(c.getString(c.getColumnIndex("remove_token")));
@@ -96,6 +113,7 @@ public class DatabaseWrapper {
         return ret;
     }
 
+    // update or create bender information of a user
     public void updateBender(int id, int user_id, String filename, Date last_seen) {
         ContentValues values = new ContentValues();
         values.put("id", id);
@@ -105,11 +123,17 @@ public class DatabaseWrapper {
         mDatabase.replace(BENDER_TABLE_NAME, null, values);
     }
 
-    public boolean isBookmark(Topic t) {
+    /**
+     * Check if a Topic is bookmarked.
+     * @param topic The topic instance
+     * @return True, if it is a bookmark
+     */
+    public boolean isBookmark(Topic topic) {
         Cursor result = mDatabase.query( BOOKMARKS_TABLE_NAME, new String[]{"id"},
-                "thread_id=?", new String[]{t.getId().toString()}, null, null, null);
+                "thread_id=?", new String[]{topic.getId().toString()}, null, null, null);
 
         Boolean is_bookmark = false;
+
         try {
             is_bookmark = result.getCount() > 0;
         } finally {
@@ -119,6 +143,12 @@ public class DatabaseWrapper {
         return is_bookmark;
     }
 
+    /**
+     * Given a User object u, this function populates its fields with the
+     * Bender information as known from the Database.
+     * @param u The user object
+     * @return true, if the user was found in the database, false otherwise
+     */
     public Boolean setCurrentBenderInformation(User u) {
         Cursor c = mDatabase.query(BENDER_TABLE_NAME, new String[] {"id", "bender_filename"},
                 "user_id = ?", new String[] {u.getId().toString()}, null, null, "last_seen desc");
@@ -138,6 +168,10 @@ public class DatabaseWrapper {
         return success;
     }
 
+    /**
+     * The Helper that creates and opens the SQLite Database. It is stored as a Singleton
+     * as suggested by the Android dev docs.
+     */
     public static class BookmarkDatabaseOpenHelper extends SQLiteOpenHelper {
 
         private static final int DATABASE_VERSION = 4;

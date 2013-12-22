@@ -257,7 +257,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
      */
     static class AsyncContentLoader extends AsyncHttpLoader<Board> {
         AsyncContentLoader(Context cx, int page, int board_id) {
-            super(cx, Board.Xml.getUrl(board_id, page));
+            super(cx, BoardParser.getUrl(board_id, page));
         }
 
         @Override

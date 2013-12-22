@@ -131,6 +131,8 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         // see here: http://code.google.com/p/android/issues/detail?id=12987
         if (!Utils.isGingerbread()) {
             mWebView.addJavascriptInterface(mJsInterface, "api");
+        } else {
+            Utils.toast(mActivity, getString(R.string.error_gingerbread_js));
         }
 
         mWebContainer.addView(mWebView);
@@ -299,7 +301,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
     static class AsyncContentLoader extends AsyncHttpLoader<Topic> {
         AsyncContentLoader(Context cx, int page, int thread_id, int post_id) {
-            super(cx, Topic.Xml.getUrl(thread_id, page, post_id));
+            super(cx, TopicParser.getUrl(thread_id, page, post_id));
         }
 
         @Override

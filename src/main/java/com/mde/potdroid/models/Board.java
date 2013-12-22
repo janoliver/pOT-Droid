@@ -127,36 +127,7 @@ public class Board implements Serializable {
     }
 
     public Boolean isLastPage() {
-        return mPage == getNumberOfPages();
-    }
-
-    public static class Xml {
-        public static String TAG = "board";
-        public static String DESCRIPTION_TAG = "description";
-        public static String NAME_TAG = "name";
-        public static String LASTPOST_TAG = "lastpost";
-        public static String ID_ATTRIBUTE = "id";
-
-        public static String THREADS_TAG = "threads";
-        public static String THREADS_ATTRIBUTE_PAGE = "page";
-
-        public static String IN_CATEGORY_TAG = "in-category";
-        public static String IN_CATEGORY_ID_ATTRIBUTE = "id";
-
-        public static String NUMBER_OF_THREADS_TAG = "number-of-threads";
-        public static String NUMBER_OF_THREADS_ATTRIBUTE = "value";
-
-        public static String NUMBER_OF_REPLIES_TAG = "number-of-replies";
-        public static String NUMBER_OF_REPLIES_ATTRIBUTE = "value";
-
-        public static String URL = "xml/board.php";
-
-        public static String getUrl(int bid, int page) {
-            Uri.Builder b = Uri.parse(URL).buildUpon();
-            b.appendQueryParameter("page", String.valueOf(page));
-            b.appendQueryParameter("BID", String.valueOf(bid));
-            return b.build().toString();
-        }
+        return mPage.equals(getNumberOfPages());
     }
 
 }

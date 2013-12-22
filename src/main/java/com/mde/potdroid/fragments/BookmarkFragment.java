@@ -83,7 +83,10 @@ public class BookmarkFragment extends BaseFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        startLoader(this);
+        setRetainInstance(true);
+
+        if(mBookmarkList == null)
+            startLoader(this);
     }
 
     @Override

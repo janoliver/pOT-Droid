@@ -103,7 +103,11 @@ public class MessageListFragment extends BaseFragment implements LoaderManager.L
         mActivity = (BaseActivity) getSupportActivity();
         mActivity.getRightSidebar().setIsMessage(null);
         mBenderHandler = new BenderHandler(mActivity);
-        startLoader(this);
+
+        setRetainInstance(true);
+
+        if(mMessageList == null)
+            startLoader(this);
     }
 
     @Override

@@ -71,8 +71,10 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // load the content
-        startLoader(this);
+        setRetainInstance(true);
+
+        if(mForum == null)
+            startLoader(this);
     }
 
     @Override

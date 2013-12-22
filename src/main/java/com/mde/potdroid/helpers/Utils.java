@@ -52,4 +52,13 @@ public class Utils {
 
         return mWebView;
     }
+
+    public static boolean isGingerbread() {
+        return android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.GINGERBREAD ||
+               android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1;
+    }
+
+    public static boolean isKitkat() {
+        return android.os.Build.VERSION.SDK_INT == android.os.Build.VERSION_CODES.KITKAT;
+    }
 }

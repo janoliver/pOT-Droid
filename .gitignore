@@ -1,3 +1,7 @@
 build/
 libs/
 *.apk
+gradlew
+gradlew.bat
+local.properties
+gradle/

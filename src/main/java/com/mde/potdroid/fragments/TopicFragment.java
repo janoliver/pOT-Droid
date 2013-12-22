@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
@@ -56,6 +57,9 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     // a reference to the activity, for API purposes.
     private BaseActivity mActivity;
 
+    public static TopicFragment mWebViewSingleton;
+    public boolean mDestroyed;
+
 
     /**
      * Create a new instance of TopicFragment and set the arguments
@@ -80,7 +84,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mActivity = (BaseActivity) getSupportActivity();
         startLoader(this);
     }
 
@@ -90,12 +93,26 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
         mWebContainer = (FrameLayout) v.findViewById(R.id.web_container);
 
+        mActivity = (BaseActivity) getSupportActivity();
+
+        setupWebView();
+
+        // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
+        // of the former TopicFragment.
+        if(mWebViewSingleton != this && mWebViewSingleton != null && Utils.isKitkat()) {
+            mWebViewSingleton.destroyWebView();
+        }
+        mWebViewSingleton = this;
+
         return v;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    /**
+     * Set up the webview programmatically, to workaround the kitkat memory leak.
+     */
+    public void setupWebView() {
+
+        mDestroyed = false;
 
         // create a webview
         mWebView = new WebView(mActivity);
@@ -108,12 +125,11 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         mWebView.setBackgroundColor(0x00000000);
 
         mJsInterface = new TopicJSInterface(mWebView, getSupportActivity(), this);
-        mJsInterface.registerScroll(getArguments().getInt("post_id", 0));
+        mJsInterface.registerScroll(getArguments().getInt(ARG_POST_ID, 0));
 
         // 2.3 has a bug that prevents adding JS interfaces.
         // see here: http://code.google.com/p/android/issues/detail?id=12987
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.GINGERBREAD ||
-            android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+        if (!Utils.isGingerbread()) {
             mWebView.addJavascriptInterface(mJsInterface, "api");
         }
 
@@ -127,17 +143,28 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         } else {
             mWebView.loadData("", "text/html", Network.ENCODING_UTF8);
         }
-
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onResume() {
+        super.onResume();
+
+        if(mDestroyed && Utils.isKitkat()) {
+            setupWebView();
+        }
+    }
+
+    /**
+     * Destroys and detaches the webview.
+     */
+    public void destroyWebView() {
 
         mWebView.destroy();
         mWebView = null;
 
         mWebContainer.removeAllViews();
+
+        mDestroyed = true;
     }
 
     @Override

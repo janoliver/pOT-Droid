@@ -5,26 +5,22 @@ import java.io.Serializable;
 /**
  * The Bookmark model.
  */
-public class Bookmark implements Serializable {
+public class Bookmark implements Serializable
+{
 
     private static final long serialVersionUID = 6L;
-    
     private Integer mId;
     private Integer mNumberOfNewPosts;
     private Post mLastPost;
     private Topic mThread;
-    private String  mRemovetoken;
+    private String mRemovetoken;
 
     public Bookmark(Integer id) {
         mId = id;
     }
 
-    public Integer getNumberOfNewPosts() {
-        return mNumberOfNewPosts;
-    }
-
-    public void setNumberOfNewPosts(Integer numberOfNewPosts) {
-        mNumberOfNewPosts = numberOfNewPosts;
+    public Integer getId() {
+        return mId;
     }
 
     public Post getLastPost() {
@@ -35,12 +31,12 @@ public class Bookmark implements Serializable {
         mLastPost = lastPost;
     }
 
-    public Topic getThread() {
-        return mThread;
+    public Integer getNumberOfNewPosts() {
+        return mNumberOfNewPosts;
     }
 
-    public void setThread(Topic thread) {
-        mThread = thread;
+    public void setNumberOfNewPosts(Integer numberOfNewPosts) {
+        mNumberOfNewPosts = numberOfNewPosts;
     }
 
     public String getRemovetoken() {
@@ -51,8 +47,12 @@ public class Bookmark implements Serializable {
         mRemovetoken = removetoken;
     }
 
-    public Integer getId() {
-        return mId;
+    public Topic getThread() {
+        return mThread;
+    }
+
+    public void setThread(Topic thread) {
+        mThread = thread;
     }
 
 

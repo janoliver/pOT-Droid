@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/loggedout">
+        <item android:id="@+id/preferences"
+            android:title="@string/action_settings"
+            android:icon="?attr/menu_icon_preferences"
+            android:showAsAction="never"/>
+        <item android:id="@+id/forumact"
+            android:title="@string/forum_title"
+            android:icon="?attr/menu_icon_home"
+            android:showAsAction="never"/>
+    </group>
+
+</menu>

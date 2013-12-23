@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * Created by oli on 12/5/13.
+ * A Broadcast Receiver that should be triggered after Boot. It starts the AlarmManager Service
+ * of the PM Polling.
  */
-public class BootBroadcastReceiver extends BroadcastReceiver {
+public class BootBroadcastReceiver extends BroadcastReceiver
+{
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Intent startServiceIntent = new Intent(context, MessagePollingService.class);

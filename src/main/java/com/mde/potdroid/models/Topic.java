@@ -1,17 +1,16 @@
 package com.mde.potdroid.models;
 
-import android.net.Uri;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Thread model.
  */
-public class Topic implements Serializable{
+public class Topic implements Serializable
+{
 
     private static final long serialVersionUID = 2L;
-    
+
     private Integer mId;
     private Integer mNumberOfPosts;
     private Integer mNumberOfHits;
@@ -40,7 +39,8 @@ public class Topic implements Serializable{
         mId = id;
     }
 
-    public Topic() {}
+    public Topic() {
+    }
 
     public void setId(int id) {
         mId = id;
@@ -67,7 +67,7 @@ public class Topic implements Serializable{
     }
 
     public Integer getNumberOfPages() {
-        if(mNumberOfPages == null)
+        if (mNumberOfPages == null)
             mNumberOfPages = mNumberOfPosts / mPostsPerPage + 1;
         return mNumberOfPages;
     }
@@ -237,8 +237,8 @@ public class Topic implements Serializable{
     }
 
     public Post getPostById(int id) {
-        for(Post p : mPosts)
-            if(p.getId() == id)
+        for (Post p : mPosts)
+            if (p.getId() == id)
                 return p;
 
         return null;

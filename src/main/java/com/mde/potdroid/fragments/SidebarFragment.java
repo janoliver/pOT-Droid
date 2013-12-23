@@ -8,8 +8,19 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-import com.mde.potdroid.*;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.mde.potdroid.BookmarkActivity;
+import com.mde.potdroid.ForumActivity;
+import com.mde.potdroid.MessageListActivity;
+import com.mde.potdroid.R;
+import com.mde.potdroid.SettingsActivity;
+import com.mde.potdroid.TopicActivity;
 import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.BookmarkList;
 import com.mde.potdroid.parsers.BookmarkParser;
@@ -18,7 +29,8 @@ import com.mde.potdroid.parsers.BookmarkParser;
  * This is the Sidebar containing a list of unread Bookmarks and the navigation.
  */
 public class SidebarFragment extends BaseFragment
-        implements LoaderManager.LoaderCallbacks<BookmarkParser.BookmarksContainer> {
+        implements LoaderManager.LoaderCallbacks<BookmarkParser.BookmarksContainer>
+{
 
     // the bookmark list and adapter
     private BookmarkList mBookmarkList;
@@ -53,7 +65,8 @@ public class SidebarFragment extends BaseFragment
         ListView listView = (ListView) v.findViewById(R.id.listview_bookmarks);
         listView.setAdapter(mListAdapter);
         listView.setEmptyView(v.findViewById(R.id.empty_bookmarks_text));
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getSupportActivity(), TopicActivity.class);
                 intent.putExtra(TopicFragment.ARG_POST_ID,
@@ -67,7 +80,8 @@ public class SidebarFragment extends BaseFragment
         // below are the navigation and bookmark refresh buttons
 
         Button bookmarkRefreshButton = (Button) v.findViewById(R.id.refresh_bookmarks);
-        bookmarkRefreshButton.setOnClickListener(new View.OnClickListener() {
+        bookmarkRefreshButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 restartLoader(SidebarFragment.this);
@@ -75,7 +89,8 @@ public class SidebarFragment extends BaseFragment
         });
 
         ImageButton home = (ImageButton) v.findViewById(R.id.button_home);
-        home.setOnClickListener(new View.OnClickListener() {
+        home.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getSupportActivity(), ForumActivity.class);
@@ -84,7 +99,8 @@ public class SidebarFragment extends BaseFragment
         });
 
         ImageButton preferences = (ImageButton) v.findViewById(R.id.button_preferences);
-        preferences.setOnClickListener(new View.OnClickListener() {
+        preferences.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getSupportActivity(), SettingsActivity.class);
@@ -93,7 +109,8 @@ public class SidebarFragment extends BaseFragment
         });
 
         ImageButton bookmarks = (ImageButton) v.findViewById(R.id.button_bookmarks);
-        bookmarks.setOnClickListener(new View.OnClickListener() {
+        bookmarks.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getSupportActivity(), BookmarkActivity.class);
@@ -102,7 +119,8 @@ public class SidebarFragment extends BaseFragment
         });
 
         ImageButton pm = (ImageButton) v.findViewById(R.id.button_pm);
-        pm.setOnClickListener(new View.OnClickListener() {
+        pm.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getSupportActivity(), MessageListActivity.class);
@@ -122,7 +140,7 @@ public class SidebarFragment extends BaseFragment
         try {
             getView().findViewById(R.id.separator).setVisibility(View.GONE);
             getView().findViewById(R.id.update_progress).setVisibility(View.VISIBLE);
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             // the view was already detached. Never mind...
         }
     }
@@ -135,7 +153,7 @@ public class SidebarFragment extends BaseFragment
         try {
             getView().findViewById(R.id.separator).setVisibility(View.VISIBLE);
             getView().findViewById(R.id.update_progress).setVisibility(View.GONE);
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             // the view was already detached. Never mind...
         }
     }
@@ -170,6 +188,7 @@ public class SidebarFragment extends BaseFragment
 
     /**
      * Is the sidebar dirty? *rr*
+     *
      * @return true if it was not reloaded since it was attached, false otherwise
      */
     public Boolean isDirty() {
@@ -182,7 +201,8 @@ public class SidebarFragment extends BaseFragment
         mListAdapter.notifyDataSetChanged();
     }
 
-    private class BookmarkListAdapter extends BaseAdapter {
+    private class BookmarkListAdapter extends BaseAdapter
+    {
 
         public int getCount() {
             if (mBookmarkList == null)

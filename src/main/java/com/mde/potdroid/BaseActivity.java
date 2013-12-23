@@ -6,12 +6,15 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+
 import com.mde.potdroid.fragments.FormFragment;
 import com.mde.potdroid.fragments.SidebarFragment;
 import com.mde.potdroid.helpers.CustomExceptionHandler;
 import com.mde.potdroid.helpers.SettingsWrapper;
+import com.mde.potdroid.helpers.Utils;
 
-public class BaseActivity extends ActionBarActivity implements DrawerLayout.DrawerListener {
+public class BaseActivity extends ActionBarActivity implements DrawerLayout.DrawerListener
+{
 
     protected SettingsWrapper mSettings;
     protected Bundle mExtras;
@@ -21,6 +24,8 @@ public class BaseActivity extends ActionBarActivity implements DrawerLayout.Draw
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Utils.setApplicationContext(getApplicationContext());
+
         // this must be called first to fix a crash in API 7
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
@@ -30,41 +35,46 @@ public class BaseActivity extends ActionBarActivity implements DrawerLayout.Draw
         mExtras = getIntent().getExtras();
 
         // debug mode. We write exceptions to the SDCard with a custom default exceptionhandler
-        if(mSettings.isDebug()) {
-            if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+        if (mSettings.isDebug()) {
+            if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
                 Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler());
             }
         }
 
         setContentView(getLayout());
 
-        // find sidebar fragment
-        mSidebar = (SidebarFragment)getSupportFragmentManager().findFragmentByTag("sidebar");
-        if(mSidebar == null)
-            mSidebar = SidebarFragment.newInstance();
+        if(Utils.isLoggedIn()) {
 
-        // if there is a right sidebar, i.e., the editor sidebar, take care of it
-        if(hasRightSidebar()) {
-            mRightSidebar = (FormFragment)getSupportFragmentManager().findFragmentByTag("sidebar_right");
-            if(mRightSidebar == null)
-                mRightSidebar = FormFragment.newInstance();
-        }
+            // find sidebar fragment
+            mSidebar = (SidebarFragment) getSupportFragmentManager().findFragmentByTag("sidebar");
+            if (mSidebar == null)
+                mSidebar = SidebarFragment.newInstance();
 
-        // find our drawerlayout
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerLayout.setDrawerListener(this);
-
-        // add the fragments
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.sidebar_container, mSidebar, "sidebar")
-                    .commit();
-
-            if(hasRightSidebar()) {
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.sidebar_container_right, mRightSidebar, "sidebar_right")
-                        .commit();
+            // if there is a right sidebar, i.e., the editor sidebar, take care of it
+            if (hasRightSidebar()) {
+                mRightSidebar = (FormFragment) getSupportFragmentManager().findFragmentByTag
+                        ("sidebar_right");
+                if (mRightSidebar == null)
+                    mRightSidebar = FormFragment.newInstance();
             }
+
+            // find our drawerlayout
+            mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+            mDrawerLayout.setDrawerListener(this);
+
+            // add the fragments
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.sidebar_container, mSidebar, "sidebar")
+                        .commit();
+
+                if (hasRightSidebar()) {
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.sidebar_container_right, mRightSidebar, "sidebar_right")
+                            .commit();
+                }
+            }
+
         }
     }
 
@@ -97,17 +107,20 @@ public class BaseActivity extends ActionBarActivity implements DrawerLayout.Draw
     }
 
     protected int getLayout() {
-        return R.layout.layout_activity_single_fragment;
+        if(!Utils.isLoggedIn())
+            return R.layout.layout_no_sidebar;
+        return R.layout.layout_sidebar_l;
     }
 
     @Override
-    public void onDrawerSlide(View view, float v) {}
+    public void onDrawerSlide(View view, float v) {
+    }
 
     @Override
     public void onDrawerOpened(View view) {
         // if the left sidebar is opened, refresh bookmarks
-        if(view.getId() == R.id.sidebar_container) {
-            if(mSidebar.isDirty())
+        if (view.getId() == R.id.sidebar_container) {
+            if (mSidebar.isDirty())
                 mSidebar.refreshBookmarks();
         }
 

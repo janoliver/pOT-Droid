@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
@@ -21,13 +20,20 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.R;
-import com.mde.potdroid.helpers.*;
+import com.mde.potdroid.helpers.AsyncHttpLoader;
+import com.mde.potdroid.helpers.Network;
+import com.mde.potdroid.helpers.SettingsWrapper;
+import com.mde.potdroid.helpers.TopicBuilder;
+import com.mde.potdroid.helpers.TopicJSInterface;
+import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.TopicParser;
+
 import org.apache.http.Header;
 
 /**
@@ -35,7 +41,8 @@ import org.apache.http.Header;
  * we have to work around that by adding and deleting it in onPause and onResume. This sucks,
  * I know, but LOLANDROID!
  */
-public class TopicFragment extends PaginateFragment implements LoaderManager.LoaderCallbacks<Topic> {
+public class TopicFragment extends PaginateFragment implements LoaderManager.LoaderCallbacks<Topic>
+{
 
     public static final String ARG_TOPIC_ID = "thread_id";
     public static final String ARG_POST_ID = "post_id";
@@ -64,6 +71,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
     /**
      * Create a new instance of TopicFragment and set the arguments
+     *
      * @param thread_id the thread id of the topic
      * @param page the displayed page of the topic
      * @param post_id the post id of the current post
@@ -88,7 +96,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
         setRetainInstance(true);
 
-        if(mTopic == null)
+        if (mTopic == null)
             startLoader(this);
     }
 
@@ -104,7 +112,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
         // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
         // of the former TopicFragment.
-        if(mWebViewSingleton != this && mWebViewSingleton != null && Utils.isKitkat()) {
+        if (mWebViewSingleton != this && mWebViewSingleton != null && Utils.isKitkat()) {
             mWebViewSingleton.destroyWebView();
         }
         mWebViewSingleton = this;
@@ -156,7 +164,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     public void onResume() {
         super.onResume();
 
-        if(mDestroyed && Utils.isKitkat()) {
+        if (mDestroyed && Utils.isKitkat()) {
             setupWebView();
         }
     }
@@ -281,7 +289,8 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo
+            menuInfo) {
         // long touch is only resolved if it happened on an image. If so, we
         // offer to open the image with an image application
         WebView.HitTestResult hitTestResult = mWebView.getHitTestResult();
@@ -297,6 +306,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
     /**
      * Shows a dialog with options for a single post (answer, quote, etc.)
+     *
      * @param post_id the PID
      */
     public void showPostDialog(int post_id) {
@@ -304,7 +314,9 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         menu.show(mActivity.getSupportFragmentManager(), PostDialogFragment.TAG);
     }
 
-    static class AsyncContentLoader extends AsyncHttpLoader<Topic> {
+    static class AsyncContentLoader extends AsyncHttpLoader<Topic>
+    {
+
         AsyncContentLoader(Context cx, int page, int thread_id, int post_id) {
             super(cx, TopicParser.getUrl(thread_id, page, post_id));
         }
@@ -328,11 +340,13 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
     /**
      * Open the form and insert the quoted post
+     *
      * @param id The post id to quote
      */
     public void quotePost(final int id) {
 
-        mActivity.runOnUiThread(new Runnable() {
+        mActivity.runOnUiThread(new Runnable()
+        {
             public void run() {
                 Post p = mTopic.getPostById(id);
 
@@ -351,10 +365,12 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
     /**
      * Open the form and insert the content of a post to edit it.
+     *
      * @param id the PID
      */
     public void editPost(final int id) {
-        mActivity.runOnUiThread(new Runnable() {
+        mActivity.runOnUiThread(new Runnable()
+        {
             public void run() {
                 Post p = mTopic.getPostById(id);
 
@@ -374,11 +390,13 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
     /**
      * Add a bookmark to a post
+     *
      * @param id the PID
      * @param d the Dialog to close, if successful and Dialog exists
      */
     public void bookmarkPost(final int id, final Dialog d) {
-        mActivity.runOnUiThread(new Runnable() {
+        mActivity.runOnUiThread(new Runnable()
+        {
             public void run() {
                 Post p = mTopic.getPostById(id);
 
@@ -386,7 +404,8 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
                         "set-bookmark.php?PID=" + p.getId() + "&token=" + p.getBookmarktoken());
 
                 Network network = new Network(getActivity());
-                network.get(url, null, new AsyncHttpResponseHandler() {
+                network.get(url, null, new AsyncHttpResponseHandler()
+                {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         Utils.toast(getSupportActivity(), "Bookmark hinzugefügt.");
@@ -401,15 +420,18 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
     /**
      * Open the post in a browser
+     *
      * @param id the PID
      */
     public void linkPost(final int id) {
-        mActivity.runOnUiThread(new Runnable() {
+        mActivity.runOnUiThread(new Runnable()
+        {
             public void run() {
                 Post p = mTopic.getPostById(id);
 
                 String url = Network.getAbsoluteUrl(
-                        "thread.php?PID=" + p.getId() + "&TID=" + mTopic.getId() + "#reply_" + p.getId());
+                        "thread.php?PID=" + p.getId() + "&TID=" + mTopic.getId() + "#reply_" + p
+                                .getId());
 
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
@@ -422,7 +444,9 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     /**
      * This DialogFragment shows a Menu for a Post with some actions
      */
-    public class PostDialogFragment extends DialogFragment {
+    public class PostDialogFragment extends DialogFragment
+    {
+
         private Integer mPostId;
 
         public static final String TAG = "postmenu";
@@ -440,7 +464,8 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             View dialog_view = inflater.inflate(R.layout.dialog_post_actions, null);
             builder.setView(dialog_view)
                     .setTitle(R.string.post_actions)
-                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
+                    {
                         public void onClick(DialogInterface dialog, int id) {
                         }
                     });
@@ -449,7 +474,8 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             final Dialog d = builder.create();
 
             ImageButton quote_button = (ImageButton) dialog_view.findViewById(R.id.button_quote);
-            quote_button.setOnClickListener(new View.OnClickListener() {
+            quote_button.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
                 public void onClick(View v) {
                     quotePost(mPostId);
@@ -458,7 +484,8 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             });
 
             ImageButton edit_button = (ImageButton) dialog_view.findViewById(R.id.button_edit);
-            edit_button.setOnClickListener(new View.OnClickListener() {
+            edit_button.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
                 public void onClick(View v) {
                     editPost(mPostId);
@@ -466,8 +493,10 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
                 }
             });
 
-            ImageButton bookmark_button = (ImageButton) dialog_view.findViewById(R.id.button_bookmark);
-            bookmark_button.setOnClickListener(new View.OnClickListener() {
+            ImageButton bookmark_button = (ImageButton) dialog_view.findViewById(R.id
+                    .button_bookmark);
+            bookmark_button.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
                 public void onClick(View v) {
                     bookmarkPost(mPostId, d);
@@ -475,7 +504,8 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             });
 
             ImageButton url_button = (ImageButton) dialog_view.findViewById(R.id.button_link);
-            url_button.setOnClickListener(new View.OnClickListener() {
+            url_button.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
                 public void onClick(View v) {
                     linkPost(mPostId);

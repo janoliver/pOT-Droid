@@ -1,6 +1,7 @@
 package com.mde.potdroid.models;
 
 import android.content.Context;
+
 import com.mde.potdroid.helpers.DatabaseWrapper;
 
 import java.io.Serializable;
@@ -9,7 +10,8 @@ import java.util.ArrayList;
 /**
  * Created by oli on 9/13/13.
  */
-public class BookmarkList implements Serializable {
+public class BookmarkList implements Serializable
+{
 
     private static final long serialVersionUID = 8L;
 
@@ -37,8 +39,8 @@ public class BookmarkList implements Serializable {
 
     public ArrayList<Bookmark> getUnreadBookmarks() {
         ArrayList<Bookmark> unread = new ArrayList<Bookmark>();
-        for(Bookmark b : getBookmarks()) {
-            if(b.getNumberOfNewPosts() > 0)
+        for (Bookmark b : getBookmarks()) {
+            if (b.getNumberOfNewPosts() > 0)
                 unread.add(b);
         }
         return unread;

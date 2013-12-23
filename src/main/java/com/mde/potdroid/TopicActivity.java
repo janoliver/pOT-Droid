@@ -3,12 +3,14 @@ package com.mde.potdroid;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.Toast;
+
 import com.mde.potdroid.fragments.FormFragment;
 import com.mde.potdroid.fragments.TopicFragment;
+import com.mde.potdroid.helpers.Utils;
 
 public class TopicActivity extends BaseActivity implements FormFragment.FormListener
 {
+
     private TopicFragment mTopicFragment;
 
     @Override
@@ -25,13 +27,13 @@ public class TopicActivity extends BaseActivity implements FormFragment.FormList
 
             Uri u = intent.getData();
 
-            if(u.getQueryParameter("TID") != null)
+            if (u.getQueryParameter("TID") != null)
                 tid = Integer.parseInt(u.getQueryParameter("TID"));
 
-            if(u.getQueryParameter("PID") != null)
+            if (u.getQueryParameter("PID") != null)
                 pid = Integer.parseInt(u.getQueryParameter("PID"));
 
-            if(u.getQueryParameter("page") != null)
+            if (u.getQueryParameter("page") != null)
                 page = Integer.parseInt(u.getQueryParameter("page"));
 
         } else {
@@ -42,8 +44,8 @@ public class TopicActivity extends BaseActivity implements FormFragment.FormList
 
         }
 
-        mTopicFragment = (TopicFragment)getSupportFragmentManager().findFragmentByTag("topic");
-        if(mTopicFragment == null)
+        mTopicFragment = (TopicFragment) getSupportFragmentManager().findFragmentByTag("topic");
+        if (mTopicFragment == null)
             mTopicFragment = TopicFragment.newInstance(tid, page, pid);
 
         if (savedInstanceState == null) {
@@ -55,14 +57,16 @@ public class TopicActivity extends BaseActivity implements FormFragment.FormList
 
     @Override
     protected int getLayout() {
-        return R.layout.layout_activity_single_fragment_rl;
+        if(!Utils.isLoggedIn())
+            return R.layout.layout_no_sidebar;
+        return R.layout.layout_sidebar_rl;
     }
 
     @Override
     public void onSuccess(Bundle result) {
         closeRightSidebar();
 
-        if(result.getInt("mode") == FormFragment.MODE_EDIT)
+        if (result.getInt("mode") == FormFragment.MODE_EDIT)
             mTopicFragment.refreshPage();
         else
             mTopicFragment.goToLastPost(result.getInt("post_id"));
@@ -70,7 +74,7 @@ public class TopicActivity extends BaseActivity implements FormFragment.FormList
 
     @Override
     public void onFailure(Bundle result) {
-        Toast.makeText(this, "Fehlgeschlagen", Toast.LENGTH_LONG).show();
+        Utils.toast(this, getString(R.string.send_failure));
     }
 
 }

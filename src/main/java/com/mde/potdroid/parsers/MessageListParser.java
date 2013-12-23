@@ -15,24 +15,27 @@ import java.util.regex.Pattern;
 /**
  * HTML Parser for the PM message list.
  */
-public class MessageListParser {
-    private MessageList mMessageList;
-    private Pattern mMessagePaggern = Pattern.compile("<a href='\\?a=2&mid=([0-9]+)'>([^<]+)</a></td> "
-            + "<td (class=\"bold\" |)style='width: 40%'>(<a href='http://my.mods.de/([0-9]+)' "
-            + "target='_blank'>([^<]+)</a>|System)</td> <td (class=\"bold\" |)style='width: 15%'>([.: 0-9]+)</td>");
+public class MessageListParser
+{
 
     public static final String INBOX_URL = "pm/?a=0&cid=1";
     public static final String OUTBOX_URL = "pm/?a=0&cid=2";
-
-    public static String getUrl(String mode) {
-        if(mode.equals(MessageList.TAG_INBOX))
-            return INBOX_URL;
-        else
-            return OUTBOX_URL;
-    }
+    private MessageList mMessageList;
+    private Pattern mMessagePaggern = Pattern.compile("<a href='\\?a=2&mid=([0-9]+)'>([^<]+)" +
+            "</a></td> "
+            + "<td (class=\"bold\" |)style='width: 40%'>(<a href='http://my.mods.de/([0-9]+)' "
+            + "target='_blank'>([^<]+)</a>|System)</td> <td (class=\"bold\" |)style='width: 15%'>" +
+            "([.: 0-9]+)</td>");
 
     public MessageListParser() {
         mMessageList = new MessageList();
+    }
+
+    public static String getUrl(String mode) {
+        if (mode.equals(MessageList.TAG_INBOX))
+            return INBOX_URL;
+        else
+            return OUTBOX_URL;
     }
 
     public MessageList parse(String html) throws IOException {
@@ -40,14 +43,14 @@ public class MessageListParser {
 
         int n_unread = 0;
 
-        while(m.find()) {
+        while (m.find()) {
 
             Message message = new Message();
             message.setId(Integer.parseInt(m.group(1)));
             message.setTitle(m.group(2));
             message.setUnread(m.group(3).compareTo("") != 0);
 
-            if(m.group(4).equals("System")) {
+            if (m.group(4).equals("System")) {
                 message.setSystem(true);
             } else {
                 message.setSystem(false);
@@ -59,11 +62,12 @@ public class MessageListParser {
             try {
                 DateFormat df = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.ENGLISH);
                 message.setDate(df.parse(m.group(8)));
-            } catch (ParseException e) {}
+            } catch (ParseException e) {
+            }
 
             mMessageList.addMessage(message);
 
-            if(message.isUnread())
+            if (message.isUnread())
                 n_unread++;
         }
 

@@ -5,18 +5,19 @@ import java.io.Serializable;
 /**
  * User model.
  */
-public class User implements Serializable {
+public class User implements Serializable
+{
 
     private static final long serialVersionUID = 3L;
 
     private Integer mId;
-    private String  mNick;
-    private String  mAvatarFile;
+    private String mNick;
+    private String mAvatarFile;
     private Integer mAvatarId;
     private Integer mGroup;
 
     public User(Integer id) {
-        mId = id; 
+        mId = id;
     }
 
     public String getNick() {

@@ -9,13 +9,15 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.services.MessagePollingService;
 import com.mde.potdroid.views.LoginDialog;
 import com.mde.potdroid.views.LogoutDialog;
 
 public class SettingsActivity extends PreferenceActivity
-        implements SharedPreferences.OnSharedPreferenceChangeListener {
+        implements SharedPreferences.OnSharedPreferenceChangeListener
+{
 
     private SettingsWrapper mSettings;
 
@@ -64,10 +66,12 @@ public class SettingsActivity extends PreferenceActivity
 
         if (key.equals(SettingsWrapper.PREF_KEY_USERNAME)) {
 
-            LoginDialog loginPreference = (LoginDialog) findPreference(SettingsWrapper.PREF_KEY_LOGIN);
-            LogoutDialog logoutPreference = (LogoutDialog) findPreference(SettingsWrapper.PREF_KEY_LOGOUT);
+            LoginDialog loginPreference = (LoginDialog) findPreference(SettingsWrapper
+                    .PREF_KEY_LOGIN);
+            LogoutDialog logoutPreference = (LogoutDialog) findPreference(SettingsWrapper
+                    .PREF_KEY_LOGOUT);
 
-            if(mSettings.hasUsername()) {
+            if (mSettings.hasUsername()) {
                 loginPreference.setSummary(getString(R.string.pref_state_loggedin)
                         + mSettings.getUsername());
                 logoutPreference.setEnabled(true);
@@ -77,12 +81,13 @@ public class SettingsActivity extends PreferenceActivity
             }
         } else if (key.equals(SettingsWrapper.PREF_KEY_POLL_MESSAGES)) {
 
-            Intent pollServiceIntent = new Intent(SettingsActivity.this, MessagePollingService.class);
-            if(mSettings.pollMessagesInterval() == 0) {
-                if(isMyServiceRunning())
+            Intent pollServiceIntent = new Intent(SettingsActivity.this,
+                    MessagePollingService.class);
+            if (mSettings.pollMessagesInterval() == 0) {
+                if (isMyServiceRunning())
                     stopService(pollServiceIntent);
             } else {
-                if(!isMyServiceRunning())
+                if (!isMyServiceRunning())
                     startService(pollServiceIntent);
             }
         }
@@ -90,7 +95,8 @@ public class SettingsActivity extends PreferenceActivity
 
     private boolean isMyServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer
+                .MAX_VALUE)) {
             if (MessagePollingService.class.getName().equals(service.service.getClassName())) {
                 return true;
             }

@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
+
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.mde.potdroid.MessageActivity;
 import com.mde.potdroid.MessageListActivity;
@@ -20,6 +21,7 @@ import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.MessageList;
 import com.mde.potdroid.parsers.MessageListParser;
+
 import org.apache.http.Header;
 
 import java.io.IOException;
@@ -27,33 +29,36 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 /**
- * Created by oli on 12/5/13.
+ * Sets and disables the Alarm that periodically checks for new messages.
  */
 public class MessagePollingAlarm extends BroadcastReceiver
 {
+
     public static final int NOTIFICATION_ID = 1337;
 
     @Override
     public void onReceive(final Context context, Intent intent) {
 
         Network network = new Network(context);
-        network.get(MessageListParser.INBOX_URL, null, new AsyncHttpResponseHandler() {
+        network.get(MessageListParser.INBOX_URL, null, new AsyncHttpResponseHandler()
+        {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String stringResult;
 
                 try {
-                    stringResult = new String(responseBody, "ISO-8859-15");
+                    stringResult = new String(responseBody, Network.ENCODING_ISO);
                 } catch (UnsupportedEncodingException e) {
                     stringResult = new String(responseBody);
                 }
-
 
                 try {
                     MessageListParser p = new MessageListParser();
                     MessageList list = p.parse(stringResult);
                     handleNotification(list, context);
-                } catch (IOException e) {}
+                } catch (IOException e) {
+                    // @TODO: Not logged in should cancel the service.
+                }
 
             }
         });
@@ -66,7 +71,7 @@ public class MessagePollingAlarm extends BroadcastReceiver
         NotificationManager manager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if(unreadMessages.size() == 0) {
+        if (unreadMessages.size() == 0) {
             manager.cancel(NOTIFICATION_ID);
             return;
         }
@@ -75,37 +80,40 @@ public class MessagePollingAlarm extends BroadcastReceiver
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setSmallIcon(R.drawable.statusbaricon);
         builder.setLargeIcon(
-                ((BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_launcher)).getBitmap()
+                ((BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_launcher))
+                        .getBitmap()
         );
-        builder.setContentTitle(list.getNumberOfUnreadMessages() + " neue PMs!");
+        builder.setContentTitle(String.format(context.getString(R.string.newpm_notification),
+                list.getNumberOfUnreadMessages()));
         builder.setAutoCancel(true);
         builder.setOnlyAlertOnce(true);
 
         // sound and vibrate
         SettingsWrapper settings = new SettingsWrapper(context);
-        if(settings.isNotificationVibrate())
-            builder.setVibrate(new long[] {0, 500});
+        if (settings.isNotificationVibrate())
+            builder.setVibrate(new long[]{0, 500});
 
         builder.setSound(Uri.parse(settings.getNotificationSoundURI()));
 
         // prepare the intent
         Intent messageIntent;
 
-        if(unreadMessages.size() > 1) {
+        if (unreadMessages.size() > 1) {
 
             // the inbox style
             // we want to display the senders and titles of the unread messages, but at most 3.
             NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
 
             int counter = 0;
-            for(Message m : unreadMessages) {
-                style.addLine(Html.fromHtml("<b>" + m.getFrom().getNick() + "</b>: " + m.getTitle()));
-                if(++counter >= 3)
+            for (Message m : unreadMessages) {
+                style.addLine(Html.fromHtml("<b>" + m.getFrom().getNick() + "</b>: " + m.getTitle
+                        ()));
+                if (++counter >= 3)
                     break;
             }
 
             // if there are more, then a summary with the number is displayed.
-            if(counter < unreadMessages.size())
+            if (counter < unreadMessages.size())
                 style.setSummaryText("+ " + (unreadMessages.size() - counter) + " weitere.");
 
             builder.setStyle(style);
@@ -116,7 +124,8 @@ public class MessagePollingAlarm extends BroadcastReceiver
 
             // only a single message, so display it the normal way.
             Message m = unreadMessages.get(0);
-            builder.setContentText(Html.fromHtml("<b>" + m.getFrom().getNick() + "</b>: " + m.getTitle()));
+            builder.setContentText(Html.fromHtml("<b>" + m.getFrom().getNick() + "</b>: " + m
+                    .getTitle()));
 
             messageIntent = new Intent(context, MessageActivity.class);
             messageIntent.putExtra("message_id", unreadMessages.get(0).getId());
@@ -136,6 +145,10 @@ public class MessagePollingAlarm extends BroadcastReceiver
         cancelAlarm(context);
 
         SettingsWrapper settings = new SettingsWrapper(context);
+
+        // return, if polling is disabled
+        if(settings.pollMessagesInterval().equals(0))
+            return;
 
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent(context, MessagePollingAlarm.class);

@@ -5,7 +5,9 @@ import java.util.ArrayList;
 /**
  * Created by oli on 11/9/13.
  */
-public class MessageList {
+public class MessageList
+{
+
     private static final long serialVersionUID = 10L;
 
     private Integer mNumberOfUnreadMessages;
@@ -36,8 +38,8 @@ public class MessageList {
 
     public ArrayList<Message> getUnreadMessages() {
         ArrayList<Message> ret = new ArrayList<Message>();
-        for(Message m: getMessages())
-            if(m.isUnread())
+        for (Message m : getMessages())
+            if (m.isUnread())
                 ret.add(m);
         return ret;
     }

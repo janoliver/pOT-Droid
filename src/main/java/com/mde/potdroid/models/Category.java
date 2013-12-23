@@ -7,13 +7,14 @@ import java.util.ArrayList;
 /**
  * Forum category model.
  */
-public class Category implements Serializable {
+public class Category implements Serializable
+{
 
     private static final long serialVersionUID = 5L;
-    
+
     private Integer mId;
-    private String  mName = "";
-    private String  mDescription = "";
+    private String mName = "";
+    private String mDescription = "";
     private ArrayList<Board> mBoards = new ArrayList<Board>();
 
     public Category(Integer id) {

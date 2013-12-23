@@ -13,7 +13,11 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
 import com.mde.potdroid.R;
 import com.mde.potdroid.TopicActivity;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
@@ -30,16 +34,14 @@ import java.text.SimpleDateFormat;
  */
 public class BoardFragment extends PaginateFragment implements LoaderManager.LoaderCallbacks<Board>
 {
+
     // the tags of the fragment arguments
     public static final String ARG_ID = "board_id";
     public static final String ARG_PAGE = "page";
-
     // the board object
     private Board mBoard;
-
     // the topic list adapter
     private BoardListAdapter mListAdapter;
-
     // we need this to convert dip to px for the icons
     private float mDensity;
 
@@ -47,7 +49,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
      * Returns an instance of the BoardFragment and sets required parameters as Arguments
      *
      * @param board_id the id of the board
-     * @param page     the currently visible page
+     * @param page the currently visible page
      * @return BoardFragment object
      */
     public static BoardFragment newInstance(int board_id, int page) {
@@ -72,10 +74,12 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         mListView.setAdapter(mListAdapter);
 
         // clicking on a topic leads to the topicactivity
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getSupportActivity(), TopicActivity.class);
-                intent.putExtra(TopicFragment.ARG_TOPIC_ID, mBoard.getTopics().get(position).getId());
+                intent.putExtra(TopicFragment.ARG_TOPIC_ID, mBoard.getTopics().get(position)
+                        .getId());
                 intent.putExtra(TopicFragment.ARG_PAGE, 1);
                 startActivity(intent);
             }
@@ -95,7 +99,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
         setRetainInstance(true);
 
-        if(mBoard == null)
+        if (mBoard == null)
             startLoader(this);
     }
 
@@ -124,7 +128,8 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
             // generate subtitle and set title and subtitle of the actionbar
             Spanned subtitle = Html.fromHtml(String.format(getString(
-                    R.string.paginate_page_indicator), mBoard.getPage(), mBoard.getNumberOfPages()));
+                    R.string.paginate_page_indicator), mBoard.getPage(),
+                    mBoard.getNumberOfPages()));
 
             getActionbar().setTitle(mBoard.getName());
             getActionbar().setSubtitle(subtitle);
@@ -135,13 +140,8 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     }
 
     @Override
-    public boolean isLastPage() {
-        return mBoard == null || mBoard.isLastPage();
-    }
-
-    @Override
-    public boolean isFirstPage() {
-        return mBoard == null || mBoard.getPage() == 1;
+    public void onLoaderReset(Loader<Board> loader) {
+        hideLoadingAnimation();
     }
 
     public void goToNextPage() {
@@ -156,16 +156,26 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         restartLoader(this);
     }
 
+    public void goToLastPage() {
+        // whether there is a previous page was checked in onCreateOptionsMenu
+        getArguments().putInt(ARG_PAGE, mBoard.getNumberOfPages());
+        restartLoader(this);
+    }
+
     public void goToFirstPage() {
         // whether there is a previous page was already checked in onCreateOptionsMenu
         getArguments().putInt(ARG_PAGE, 1);
         restartLoader(this);
     }
 
-    public void goToLastPage() {
-        // whether there is a previous page was checked in onCreateOptionsMenu
-        getArguments().putInt(ARG_PAGE, mBoard.getNumberOfPages());
-        restartLoader(this);
+    @Override
+    public boolean isLastPage() {
+        return mBoard == null || mBoard.isLastPage();
+    }
+
+    @Override
+    public boolean isFirstPage() {
+        return mBoard == null || mBoard.getPage() == 1;
     }
 
     @Override
@@ -173,12 +183,31 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         restartLoader(this);
     }
 
-    @Override
-    public void onLoaderReset(Loader<Board> loader) {
-        hideLoadingAnimation();
+    /**
+     * The content loader
+     */
+    static class AsyncContentLoader extends AsyncHttpLoader<Board>
+    {
+
+        AsyncContentLoader(Context cx, int page, int board_id) {
+            super(cx, BoardParser.getUrl(board_id, page));
+        }
+
+        @Override
+        public Board processNetworkResponse(String response) {
+            try {
+                BoardParser parser = new BoardParser();
+                return parser.parse(response);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
     }
 
-    private class BoardListAdapter extends BaseAdapter {
+    private class BoardListAdapter extends BaseAdapter
+    {
 
         public int getCount() {
             if (mBoard == null)
@@ -222,7 +251,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             date.setText(ds);
 
             // icon
-            if(t.getIconId() != null) {
+            if (t.getIconId() != null) {
                 try {
                     Drawable d = Utils.getIcon(getActivity(), t.getIconId());
                     d.setBounds(0, 0, 13 * (int) mDensity, 13 * (int) mDensity);
@@ -252,27 +281,6 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
             return row;
         }
-    }
-
-    /**
-     * The content loader
-     */
-    static class AsyncContentLoader extends AsyncHttpLoader<Board> {
-        AsyncContentLoader(Context cx, int page, int board_id) {
-            super(cx, BoardParser.getUrl(board_id, page));
-        }
-
-        @Override
-        public Board processNetworkResponse(String response) {
-            try {
-                BoardParser parser = new BoardParser();
-                return parser.parse(response);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
     }
 
 }

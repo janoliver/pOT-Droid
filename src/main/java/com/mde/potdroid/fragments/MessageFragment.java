@@ -13,13 +13,13 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+
 import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
 import com.mde.potdroid.helpers.BenderJSInterface;
 import com.mde.potdroid.helpers.MessageBuilder;
 import com.mde.potdroid.helpers.Network;
-import com.mde.potdroid.helpers.TopicJSInterface;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.parsers.MessageParser;
@@ -76,7 +76,7 @@ public class MessageFragment extends BaseFragment implements LoaderManager.Loade
 
         // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
         // of the former TopicFragment.
-        if(mWebViewSingleton != this && mWebViewSingleton != null && Utils.isKitkat()) {
+        if (mWebViewSingleton != this && mWebViewSingleton != null && Utils.isKitkat()) {
             mWebViewSingleton.destroyWebView();
         }
         mWebViewSingleton = this;
@@ -92,7 +92,7 @@ public class MessageFragment extends BaseFragment implements LoaderManager.Loade
 
         setRetainInstance(true);
 
-        if(mMessage == null)
+        if (mMessage == null)
             startLoader(this);
     }
 
@@ -133,7 +133,7 @@ public class MessageFragment extends BaseFragment implements LoaderManager.Loade
     public void onResume() {
         super.onResume();
 
-        if(mDestroyed && Utils.isKitkat()) {
+        if (mDestroyed && Utils.isKitkat()) {
             setupWebView();
         }
     }
@@ -191,7 +191,9 @@ public class MessageFragment extends BaseFragment implements LoaderManager.Loade
         hideLoadingAnimation();
     }
 
-    static class AsyncContentLoader extends AsyncHttpLoader<Message> {
+    static class AsyncContentLoader extends AsyncHttpLoader<Message>
+    {
+
         private Integer mMessageId;
 
         AsyncContentLoader(Context cx, Integer message_id) {

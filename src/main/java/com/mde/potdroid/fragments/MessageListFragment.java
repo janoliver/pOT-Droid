@@ -12,7 +12,12 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
 import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.MessageActivity;
 import com.mde.potdroid.R;
@@ -30,7 +35,9 @@ import java.text.SimpleDateFormat;
 /**
  * This fragment displays a list of messages below a Tab bar for the inbox/outbox folders.
  */
-public class MessageListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<MessageList> {
+public class MessageListFragment extends BaseFragment implements LoaderManager
+        .LoaderCallbacks<MessageList>
+{
 
     // the tags of the fragment arguments
     public static final String ARG_MODE = "mode";
@@ -82,10 +89,12 @@ public class MessageListFragment extends BaseFragment implements LoaderManager.L
         mListAdapter = new MessageListAdapter();
         ListView mListView = (ListView) v.findViewById(R.id.list_content);
         mListView.setAdapter(mListAdapter);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getSupportActivity(), MessageActivity.class);
-                intent.putExtra(MessageFragment.ARG_ID, mMessageList.getMessages().get(position).getId());
+                intent.putExtra(MessageFragment.ARG_ID, mMessageList.getMessages().get(position)
+                        .getId());
                 startActivity(intent);
             }
         });
@@ -106,7 +115,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager.L
 
         setRetainInstance(true);
 
-        if(mMessageList == null)
+        if (mMessageList == null)
             startLoader(this);
     }
 
@@ -135,7 +144,8 @@ public class MessageListFragment extends BaseFragment implements LoaderManager.L
         hideLoadingAnimation();
     }
 
-    private class MessageListAdapter extends BaseAdapter {
+    private class MessageListAdapter extends BaseAdapter
+    {
 
         public int getCount() {
             if (mMessageList == null)
@@ -165,13 +175,15 @@ public class MessageListFragment extends BaseFragment implements LoaderManager.L
             TextView description = (TextView) row.findViewById(R.id.pages);
             Spanned content = Html.fromHtml(getString(R.string.message_description,
                     author, mMode == MessageList.TAG_INBOX ? "erhalten" : "gesendet",
-                    new SimpleDateFormat(getString(R.string.standard_time_format)).format(m.getDate())));
+                    new SimpleDateFormat(getString(R.string.standard_time_format)).format(m
+                            .getDate())));
             description.setText(content);
 
             if (m.isUnread()) {
                 View v = row.findViewById(R.id.container);
                 v.setBackgroundResource(R.drawable.sidebar_button_background);
-                v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), v.getPaddingBottom());
+                v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(),
+                        v.getPaddingBottom());
             }
 
             // bender. Show an alias as long as the real bender is not present. If the sender
@@ -181,20 +193,23 @@ public class MessageListFragment extends BaseFragment implements LoaderManager.L
             if (!m.isSystem()) {
 
                 try {
-                    Drawable d = Utils.getDrawableFromAsset(mActivity, "images/placeholder_bender.png");
+                    Drawable d = Utils.getDrawableFromAsset(mActivity,
+                            "images/placeholder_bender.png");
                     bender_img.setImageDrawable(d);
                 } catch (IOException e) {
                     bender_img.setVisibility(View.GONE);
                 }
 
-                mBenderHandler.getAvatar(m.getFrom(), new BenderHandler.BenderListener() {
+                mBenderHandler.getAvatar(m.getFrom(), new BenderHandler.BenderListener()
+                {
                     @Override
                     public void onSuccess(String path) {
                         bender_img.setImageURI(Uri.parse(path));
                     }
 
                     @Override
-                    public void onFailure() {}
+                    public void onFailure() {
+                    }
                 });
             } else {
                 bender_img.setVisibility(View.GONE);
@@ -204,7 +219,9 @@ public class MessageListFragment extends BaseFragment implements LoaderManager.L
         }
     }
 
-    static class AsyncContentLoader extends AsyncHttpLoader<MessageList> {
+    static class AsyncContentLoader extends AsyncHttpLoader<MessageList>
+    {
+
         AsyncContentLoader(Context cx, String mode) {
             super(cx, MessageListParser.getUrl(mode), GET, null, Network.ENCODING_ISO);
         }

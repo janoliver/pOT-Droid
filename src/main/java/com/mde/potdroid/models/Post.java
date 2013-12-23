@@ -20,10 +20,11 @@ import java.util.Date;
 /**
  * Post model.
  */
-public class Post implements Serializable {
+public class Post implements Serializable
+{
 
     private static final long serialVersionUID = 1L;
-    
+
     private Integer mId;
     private Topic mTopic;
     private Board mBoard;
@@ -63,7 +64,8 @@ public class Post implements Serializable {
         mId = id;
     }
 
-    public Post() {}
+    public Post() {
+    }
 
     public void setText(String text) {
         try {
@@ -108,7 +110,7 @@ public class Post implements Serializable {
     public void setTitle(String title) {
         mTitle = title;
     }
-    
+
     public void setIconId(Integer icon) {
         mIconId = icon;
     }
@@ -144,7 +146,7 @@ public class Post implements Serializable {
     public String getText() {
         return mText;
     }
-    
+
     public Integer getIconId() {
         return mIconId;
     }
@@ -160,11 +162,11 @@ public class Post implements Serializable {
     public Board getBoard() {
         return mBoard;
     }
-    
+
     public void setEdited(Integer ed) {
         mEdited = ed;
     }
-    
+
     public Integer getEdited() {
         return mEdited;
     }

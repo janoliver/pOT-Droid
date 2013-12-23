@@ -8,8 +8,18 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.*;
-import android.widget.*;
+import android.view.ContextMenu;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.mde.potdroid.R;
 import com.mde.potdroid.TopicActivity;
@@ -19,6 +29,7 @@ import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.BookmarkList;
 import com.mde.potdroid.parsers.BookmarkParser;
+
 import org.apache.http.Header;
 
 /**
@@ -60,7 +71,8 @@ public class BookmarkFragment extends BaseFragment
         mListAdapter = new BookmarkListAdapter();
         mListView = (ListView) v.findViewById(R.id.list_content);
         mListView.setAdapter(mListAdapter);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getSupportActivity(), TopicActivity.class);
                 intent.putExtra(TopicFragment.ARG_POST_ID, mBookmarkList.getBookmarks()
@@ -85,7 +97,7 @@ public class BookmarkFragment extends BaseFragment
 
         setRetainInstance(true);
 
-        if(mBookmarkList == null)
+        if (mBookmarkList == null)
             startLoader(this);
     }
 
@@ -130,7 +142,8 @@ public class BookmarkFragment extends BaseFragment
                 showLoadingAnimation();
 
                 Network network = new Network(getActivity());
-                network.get(url, null, new AsyncHttpResponseHandler() {
+                network.get(url, null, new AsyncHttpResponseHandler()
+                {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         Utils.toast(getSupportActivity(), getString(R.string.removed_bookmark));
@@ -175,7 +188,8 @@ public class BookmarkFragment extends BaseFragment
         hideLoadingAnimation();
     }
 
-    private class BookmarkListAdapter extends BaseAdapter {
+    private class BookmarkListAdapter extends BaseAdapter
+    {
 
         public int getCount() {
             if (mBookmarkList == null)
@@ -199,7 +213,8 @@ public class BookmarkFragment extends BaseFragment
             if (b.getNumberOfNewPosts() > 0) {
                 View v = row.findViewById(R.id.container);
                 v.setBackgroundResource(R.drawable.sidebar_button_background);
-                v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), v.getPaddingBottom());
+                v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(),
+                        v.getPaddingBottom());
             }
 
             // set the name, striked if closed
@@ -224,7 +239,9 @@ public class BookmarkFragment extends BaseFragment
         }
     }
 
-    static class AsyncContentLoader extends AsyncHttpLoader<BookmarkParser.BookmarksContainer> {
+    static class AsyncContentLoader extends AsyncHttpLoader<BookmarkParser.BookmarksContainer>
+    {
+
         AsyncContentLoader(Context cx) {
             super(cx, BookmarkParser.URL);
         }
@@ -234,6 +251,9 @@ public class BookmarkFragment extends BaseFragment
             try {
                 BookmarkParser parser = new BookmarkParser();
                 return parser.parse(response);
+            } catch(Utils.NotLoggedInException e) {
+                Utils.setNotLoggedIn();
+                return null;
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;

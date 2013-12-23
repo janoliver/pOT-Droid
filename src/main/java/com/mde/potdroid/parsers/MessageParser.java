@@ -14,19 +14,24 @@ import java.util.regex.Pattern;
 /**
  * HTML Parser for a PM message.
  */
-public class MessageParser {
-    private Message mMessage;
-    private Pattern mMessagePattern = Pattern.compile("Betreff</td> <td class='hh'><b>([^<]+)</td>.*<td class='h'>(Absender|Empf&auml;nger)</td> <td class='hh'>.*<a href='http://my.mods.de/([0-9]+)' target='_blank'.*?>([^<]+?)</a>.*Gesendet</td> <td class='hh'><b>([0-9:\\. ]+)</td>.*<td colspan='2' class='b'>(.+)</td> </tr>  <tr> <td colspan='2' class='h'></td> </tr>.*</table>", Pattern.DOTALL | Pattern.MULTILINE);
+public class MessageParser
+{
 
     public static final String URL = "pm/?a=2&mid=";
     public static final String SEND_URL = "pm/?a=6";
-
-    public static String getUrl(Integer message_id) {
-        return URL + message_id.toString();
-    }
+    private Message mMessage;
+    private Pattern mMessagePattern = Pattern.compile("Betreff</td> <td class='hh'><b>([^<]+)" +
+            "</td>.*<td class='h'>(Absender|Empf&auml;nger)</td> <td class='hh'>.*<a " +
+            "href='http://my.mods.de/([0-9]+)' target='_blank'.*?>([^<]+?)</a>.*Gesendet</td> <td" +
+            " class='hh'><b>([0-9:\\. ]+)</td>.*<td colspan='2' class='b'>(.+)</td> </tr>  <tr> " +
+            "<td colspan='2' class='h'></td> </tr>.*</table>", Pattern.DOTALL | Pattern.MULTILINE);
 
     public MessageParser() {
         mMessage = new Message();
+    }
+
+    public static String getUrl(Integer message_id) {
+        return URL + message_id.toString();
     }
 
     public Message parse(String html, Integer message_id) throws IOException {
@@ -47,7 +52,8 @@ public class MessageParser {
             try {
                 DateFormat df = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.ENGLISH);
                 mMessage.setDate(df.parse(m.group(5)));
-            } catch (ParseException e) {}
+            } catch (ParseException e) {
+            }
 
             return mMessage;
         } else {

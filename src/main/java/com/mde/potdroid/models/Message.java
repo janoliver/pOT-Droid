@@ -5,7 +5,9 @@ import java.util.Date;
 /**
  * Created by oli on 11/9/13.
  */
-public class Message {
+public class Message
+{
+
     private static final long serialVersionUID = 9L;
 
     private Integer mId;

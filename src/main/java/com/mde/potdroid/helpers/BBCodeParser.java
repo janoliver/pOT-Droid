@@ -9,35 +9,35 @@ import java.util.regex.Pattern;
 
 /**
  * @author oli
- * This class parses some bbcode formatted text and replaces the bbcode
- * according to the BBCodeTag objects, that must be registered to the parser.
- *
- * It handles malformed input text as well as tag arguments.
- *
- * There are some hacks specific to the potdroid app for the mods.de forums.
- * They are:
- *    - in Node.toString() the quote hack
+ *         This class parses some bbcode formatted text and replaces the bbcode
+ *         according to the BBCodeTag objects, that must be registered to the parser.
+ *         <p/>
+ *         It handles malformed input text as well as tag arguments.
+ *         <p/>
+ *         There are some hacks specific to the potdroid app for the mods.de forums.
+ *         They are:
+ *         - in Node.toString() the quote hack
  */
-public class BBCodeParser {
+public class BBCodeParser
+{
 
+    Pattern mArgsPattern = Pattern.compile("([^,\"]+)|(\"[^\"]+\")");
     // the skeleton regex for the bbcodes. %1$s must be replaced by
     // the allowed bbcodes
     private String mRegexSkeleton =
             "(.*?)((\\[\\s*(%1$s)\\s*(=((\\s*((\"[^\"]+?\")|" +
                     "([^,\\]\"]+?))\\s*,)*(\\s*((\"[^\"]+?\")|([^,\"\\]]+?))\\s*)))?\\])|" +
                     "(\\[/\\s*((%1$s))\\s*\\]))";
-    Pattern mArgsPattern = Pattern.compile("([^,\"]+)|(\"[^\"]+\")");
-
     // this map holds our registered tags
-    private Map<String, BBCodeTag> mTags = new HashMap<String,BBCodeTag>();
+    private Map<String, BBCodeTag> mTags = new HashMap<String, BBCodeTag>();
+
+    public static String getAllTags() {
+        return "string, b, u, s, i, mod, spoiler, code, img, quote, url, list, table, m";
+    }
 
     // register a new tag
     public void registerTag(BBCodeTag tag) {
         mTags.put(tag.mTag, tag);
-    }
-
-    public static String getAllTags() {
-        return "string, b, u, s, i, mod, spoiler, code, img, quote, url, list, table, m";
     }
 
     // generate the regex by joining their names and compile the pattern
@@ -45,9 +45,9 @@ public class BBCodeParser {
         String tags = "";
         for (Map.Entry<String, BBCodeTag> entry : mTags.entrySet())
             tags += Pattern.quote(entry.getKey()) + "|";
-        tags = tags.substring(0,tags.length() - 1);
+        tags = tags.substring(0, tags.length() - 1);
 
-        Pattern pattern = Pattern.compile(String.format(mRegexSkeleton,tags),
+        Pattern pattern = Pattern.compile(String.format(mRegexSkeleton, tags),
                 Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE);
         return pattern;
     }
@@ -73,12 +73,12 @@ public class BBCodeParser {
         while (matcher.find()) {
 
             // the node is prefixed by some text
-            if(matcher.group(1).length() > 0) {
+            if (matcher.group(1).length() > 0) {
                 Token t = new Token(Token.TYPE_STRING, strToHtml(matcher.group(1)));
                 tokens.add(t);
             }
 
-            if(matcher.group(2).indexOf("[/") > -1) {
+            if (matcher.group(2).indexOf("[/") > -1) {
                 Token t = new Token(Token.TYPE_CLOSE,
                         matcher.group(16).toLowerCase(), matcher.group(2));
                 tokens.add(t);
@@ -99,7 +99,7 @@ public class BBCodeParser {
             lastMatched = matcher.end();
         }
 
-        if(input.substring(lastMatched).length() > 0) {
+        if (input.substring(lastMatched).length() > 0) {
             Token t = new Token(Token.TYPE_STRING, strToHtml(input.substring(lastMatched)));
             tokens.add(t);
         }
@@ -126,7 +126,7 @@ public class BBCodeParser {
                 }
             }
 
-            if(tokens.get(0).mType == Token.TYPE_OPEN) {
+            if (tokens.get(0).mType == Token.TYPE_OPEN) {
 
                 // we add a new opening tag
                 try {
@@ -138,7 +138,7 @@ public class BBCodeParser {
 
                     // this tag is not allowed anywhere in this branch,
                     // so we make it a string.
-                    if(!is_allowed_anywhere(current, tokens.get(0).mTag) &&
+                    if (!is_allowed_anywhere(current, tokens.get(0).mTag) &&
                             current.mTag.mInvalidStartRecovery != BBCodeTag.RECOVERY_ADD)
                         recovery = BBCodeTag.RECOVERY_STRING;
                     else
@@ -146,7 +146,7 @@ public class BBCodeParser {
 
                     // this hack is needed to prevent an infinite loop
                     // in certain cases.
-                    if(current.mTag.mTag.equals(tokens.get(0).mTag) &&
+                    if (current.mTag.mTag.equals(tokens.get(0).mTag) &&
                             current.mTag.mInvalidStartRecovery == BBCodeTag.RECOVERY_ADD)
                         recovery = BBCodeTag.RECOVERY_CLOSE;
 
@@ -173,7 +173,7 @@ public class BBCodeParser {
                 }
             }
 
-            if(tokens.get(0).mType == Token.TYPE_CLOSE) {
+            if (tokens.get(0).mType == Token.TYPE_CLOSE) {
 
                 // new closing tag
                 try {
@@ -181,7 +181,7 @@ public class BBCodeParser {
                 } catch (InvalidTokenException e) {
                     int recovery;
 
-                    if(!is_open(current, tokens.get(0).mTag))
+                    if (!is_open(current, tokens.get(0).mTag))
                         recovery = BBCodeTag.RECOVERY_STRING;
                     else
                         recovery = current.mTag.mInvalidEndRecovery;
@@ -219,9 +219,9 @@ public class BBCodeParser {
         return root.toString();
     }
 
-    public Node add_string(Node current, String str) throws InvalidTokenException{
+    public Node add_string(Node current, String str) throws InvalidTokenException {
 
-        if(!is_root(current) && !current.mTag.mAllowedTags.contains("string"))
+        if (!is_root(current) && !current.mTag.mAllowedTags.contains("string"))
             throw new InvalidTokenException();
 
         Node new_node = new Node(str);
@@ -232,7 +232,7 @@ public class BBCodeParser {
 
     public Node add_end(Node current, String tagStr, String raw) throws InvalidTokenException {
 
-        if(is_root(current) || !tagStr.equals(current.mTag.mTag))
+        if (is_root(current) || !tagStr.equals(current.mTag.mTag))
             throw new InvalidTokenException();
 
         return current.close(raw);
@@ -243,7 +243,7 @@ public class BBCodeParser {
     }
 
     public Node add_start(Node current, String tagStr, List<String> args, String raw)
-            throws  InvalidTokenException, InvalidParameterCountException {
+            throws InvalidTokenException, InvalidParameterCountException {
 
         // create the node
         BBCodeTag tag = mTags.get(tagStr);
@@ -251,7 +251,7 @@ public class BBCodeParser {
         Node new_node = new Node(tag, args, raw);
 
         // check if bbcode is allowed here
-        if(!is_root(current) && !current.mTag.mAllowedTags.contains(tagStr))
+        if (!is_root(current) && !current.mTag.mAllowedTags.contains(tagStr))
             throw new InvalidTokenException();
 
         // This check should be performed by the tag adding
@@ -267,11 +267,11 @@ public class BBCodeParser {
     }
 
     public Boolean is_open(Node current, String tag) {
-        if(is_root(current)) {
+        if (is_root(current)) {
             return false;
         } else {
 
-            if(current.mTag.mTag.equals(tag))
+            if (current.mTag.mTag.equals(tag))
                 return true;
             else
                 return is_open(current.mParent, tag);
@@ -279,10 +279,10 @@ public class BBCodeParser {
     }
 
     public Boolean is_allowed_anywhere(Node current, String tag) {
-        if(is_root(current)) {
+        if (is_root(current)) {
             return false;
         } else {
-            if(current.mTag.mAllowedTags.contains(tag))
+            if (current.mTag.mAllowedTags.contains(tag))
                 return true;
             else
                 return is_allowed_anywhere(current.mParent, tag);
@@ -293,23 +293,38 @@ public class BBCodeParser {
         return current.isRoot();
     }
 
+    private String strToHtml(String input) {
+
+        input = input.replace("<", "&lt;");
+        input = input.replace(">", "&gt;");
+        input = input.replace("\n", "<br />\n");
+
+        return input;
+    }
+
+    public interface TextCallback
+    {
+
+        public void run(String text);
+    }
+
     /**
      * This class describes one bbcode tag. For each allowed tag it must be
      * instanciated and its members filled. The tag is then registered to the
      * parser via the registerTag() function.
      */
-    public static abstract class BBCodeTag {
+    public static abstract class BBCodeTag
+    {
+
         public static final int RECOVERY_NONE = 0;
         public static final int RECOVERY_STRING = 1;
         public static final int RECOVERY_CLOSE = 2;
         public static final int RECOVERY_REOPEN = 3;
         public static final int RECOVERY_ADD = 4;
-
         public int mInvalidEndRecovery = BBCodeTag.RECOVERY_STRING;
         public int mInvalidStringRecovery = BBCodeTag.RECOVERY_NONE;
         public int mInvalidStartRecovery = BBCodeTag.RECOVERY_STRING;
         public String mInvalidRecoveryAddTag = "";
-
         public String mTag;
         public String mDescription = "";
         public List<String> mAllowedTags = new ArrayList<String>();
@@ -352,27 +367,32 @@ public class BBCodeParser {
         private BBCodeTag allowTags(String tags) {
             String[] t = {};
             t = tags.split(",");
-            for(String tag: t)
+            for (String tag : t)
                 mAllowedTags.add(tag.replace(" ", ""));
 
             return this;
         }
 
-        public void startCallback(List<String> args) {}
+        public void startCallback(List<String> args) {
+        }
 
-        public void endCallback(List<String> args) {}
+        public void endCallback(List<String> args) {
+        }
 
-        public void invalidCallback(List<String> args) {}
+        public void invalidCallback(List<String> args) {
+        }
 
-        public void emptyCallback(List<String> args) {}
+        public void emptyCallback(List<String> args) {
+        }
 
     }
 
-    public static class Token {
+    public static class Token
+    {
+
         public static final int TYPE_STRING = 0;
         public static final int TYPE_OPEN = 1;
         public static final int TYPE_CLOSE = 2;
-
         public int mType;
         public String mText;
         public String mTag;
@@ -381,16 +401,16 @@ public class BBCodeParser {
         public Token(int type, String text) {
             mType = type;
 
-            if(mType == Token.TYPE_STRING) {
+            if (mType == Token.TYPE_STRING) {
                 mText = text;
             } else {
                 mTag = text;
 
-                if(mType == Token.TYPE_OPEN) {
+                if (mType == Token.TYPE_OPEN) {
                     mText = "[" + mTag + "]";
                 }
 
-                if(mType == Token.TYPE_CLOSE) {
+                if (mType == Token.TYPE_CLOSE) {
                     mText = "[/" + mTag + "]";
                 }
             }
@@ -415,7 +435,9 @@ public class BBCodeParser {
     /**
      * This is one Node in our lexigraphical tree.
      */
-    private class Node {
+    private class Node
+    {
+
         public List<Node> mChildren = new ArrayList<Node>();
         public Node mParent;
         public BBCodeTag mTag = null;
@@ -426,7 +448,8 @@ public class BBCodeParser {
         public Boolean mInvalid = false;
 
         // initializer for the root element
-        public Node(){}
+        public Node() {
+        }
 
         // initializer for a new bbcode node
         public Node(BBCodeTag type, List<String> args, String raw) {
@@ -471,47 +494,48 @@ public class BBCodeParser {
         public String toString() {
 
             // is this a string?
-            if(isString())
+            if (isString())
                 return mText;
 
             // the start callback
-            if(hasTag())
+            if (hasTag())
                 mTag.startCallback(mArgs);
 
             // build the result string by concatenating all children
             String res = "";
-            for(Node n : mChildren)
+            for (Node n : mChildren)
                 res = res + n.toString();
 
             // this is just for the root element.
-            if(isRoot())
+            if (isRoot())
                 return res;
 
             // end element callback
             mTag.endCallback(mArgs);
 
             // return empty tags
-            if(res.compareTo("") == 0) {
+            if (res.compareTo("") == 0) {
                 mTag.emptyCallback(mArgs);
                 return "";
             }
 
             // invalid?
-            if(isInvalid()) {
+            if (isInvalid()) {
                 mTag.invalidCallback(mArgs);
-                return String.format("%s" + res + "%s",mRawStart, mRawEnd);
+                return String.format("%s" + res + "%s", mRawStart, mRawEnd);
             }
 
             // replace the arguments if there are some
             int num_args = 0;
-            if(mArgs != null)
+            if (mArgs != null)
                 num_args = mArgs.size();
 
             // this is a hack for the potdroid app: if the current tag
             // is [quote] and the containing string starts with [b] and ends
             // with [/b], remove the bold tags.
-            if(mTag.mTag.equals("quote") && res.startsWith("<strong>") && res.endsWith("</strong>"))
-                res = res.substring(8,res.length() - 9);
+            if (mTag.mTag.equals("quote") && res.startsWith("<strong>") && res.endsWith
+                    ("</strong>"))
+                res = res.substring(8, res.length() - 9);
 
             // create the html
             String html = mTag.html(res, mArgs);
@@ -520,39 +544,32 @@ public class BBCodeParser {
         }
     }
 
-    private String strToHtml(String input) {
+    public class InvalidTokenException extends Exception
+    {
 
-        input = input.replace("<", "&lt;");
-        input = input.replace(">", "&gt;");
-        input = input.replace("\n", "<br />\n");
-
-        return input;
-    }
-
-    public interface TextCallback {
-        public void run(String text);
-    }
-
-    public class InvalidTokenException extends Exception {
         private static final long serialVersionUID = 42L;
 
-        public InvalidTokenException(){
+        public InvalidTokenException() {
             super("Invalid token");
         }
     }
 
-    public class InvalidParameterCountException extends Exception {
+    public class InvalidParameterCountException extends Exception
+    {
+
         private static final long serialVersionUID = 44L;
 
-        public InvalidParameterCountException(){
+        public InvalidParameterCountException() {
             super("Invalid parameter count");
         }
     }
 
-    public class UnknownErrorException extends Exception {
+    public class UnknownErrorException extends Exception
+    {
+
         private static final long serialVersionUID = 43L;
 
-        public UnknownErrorException(){
+        public UnknownErrorException() {
             super("Unknown error");
         }
     }

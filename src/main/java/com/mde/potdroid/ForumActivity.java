@@ -1,9 +1,11 @@
 package com.mde.potdroid;
 
 import android.os.Bundle;
+
 import com.mde.potdroid.fragments.ForumFragment;
 
-public class ForumActivity extends BaseActivity {
+public class ForumActivity extends BaseActivity
+{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -5,13 +5,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+
 import com.mde.potdroid.fragments.TopicFragment;
 
 /**
  * The Javascript interface for the Topic Webviews, extended from the Bender js interface.
  * Provides some more API functions.
  */
-public class TopicJSInterface extends BenderJSInterface {
+public class TopicJSInterface extends BenderJSInterface
+{
 
     // this is the post that is currently visible
     private Integer mCurrentVisiblePost;
@@ -28,6 +30,7 @@ public class TopicJSInterface extends BenderJSInterface {
 
     /**
      * When scrolled over a post, register it
+     *
      * @param id the Post id
      */
     @JavascriptInterface
@@ -37,6 +40,7 @@ public class TopicJSInterface extends BenderJSInterface {
 
     /**
      * Get the last or currently visible post id
+     *
      * @return post id
      */
     @JavascriptInterface
@@ -46,6 +50,7 @@ public class TopicJSInterface extends BenderJSInterface {
 
     /**
      * Check if images should be loaded right now
+     *
      * @return true if yes
      */
     @JavascriptInterface
@@ -55,6 +60,7 @@ public class TopicJSInterface extends BenderJSInterface {
 
     /**
      * Opens the dialog presenting some more functions for the Post
+     *
      * @param post_id the post id
      */
     @JavascriptInterface
@@ -64,6 +70,7 @@ public class TopicJSInterface extends BenderJSInterface {
 
     /**
      * Open the FormFragment to edit the post
+     *
      * @param post_id the post id to edit
      */
     @JavascriptInterface
@@ -73,6 +80,7 @@ public class TopicJSInterface extends BenderJSInterface {
 
     /**
      * Open the FormFragment to answer with a quote
+     *
      * @param post_id the post id to quote
      */
     @JavascriptInterface
@@ -82,6 +90,7 @@ public class TopicJSInterface extends BenderJSInterface {
 
     /**
      * Open the post in a webbrowser
+     *
      * @param post_id the post id
      */
     @JavascriptInterface
@@ -91,6 +100,7 @@ public class TopicJSInterface extends BenderJSInterface {
 
     /**
      * Bookmark a post
+     *
      * @param post_id the post id to bookmark
      */
     @JavascriptInterface
@@ -100,6 +110,7 @@ public class TopicJSInterface extends BenderJSInterface {
 
     /**
      * Send an intent and open the url URL
+     *
      * @param url url to open
      */
     @JavascriptInterface

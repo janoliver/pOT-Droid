@@ -13,11 +13,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
 import com.mde.potdroid.helpers.EncodingRequestParams;
 import com.mde.potdroid.helpers.Network;
-import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
@@ -37,6 +37,7 @@ import java.util.regex.Pattern;
  */
 public class FormFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Bundle>
 {
+
     protected static final String ARG_MODE = "mode";
     protected static final String ARG_TOPIC_ID = "topic_id";
     protected static final String ARG_POST_ID = "post_id";
@@ -87,8 +88,11 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
      * The containing Activity must implement this interface to be notified about
      * success and failure of the submission
      */
-    public interface FormListener {
+    public interface FormListener
+    {
+
         public void onSuccess(Bundle result);
+
         public void onFailure(Bundle result);
     }
 
@@ -112,7 +116,8 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
         // find the send button and add a click listener
         ImageButton send = (ImageButton) v.findViewById(R.id.button_send);
-        send.setOnClickListener(new View.OnClickListener() {
+        send.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 hideKeyboard();
@@ -128,7 +133,8 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
         // find the cancel button and add a click listener
         ImageButton preferences = (ImageButton) v.findViewById(R.id.button_cancel);
-        preferences.setOnClickListener(new View.OnClickListener() {
+        preferences.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 stopLoader();
@@ -145,6 +151,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
     /**
      * Prepare the form as a new post form
+     *
      * @param topic The topic Iobject in which to post
      */
     public void setIsNewPost(Topic topic) {
@@ -161,6 +168,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
     /**
      * Prepare the form to be an edit post form.
+     *
      * @param topic The topic in which to post
      * @param post The post to edit
      */
@@ -179,6 +187,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
     /**
      * Prepare the form as a new PM form.
+     *
      * @param message The message object if this is a reply or null if new PM
      */
     public void setIsMessage(Message message) {
@@ -195,13 +204,13 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
         // when the message object is given, fill in the recipient,
         // subject and message
-        if(message != null) {
+        if (message != null) {
             // recipient
             mEditRcpt.setText(message.getFrom().getNick());
 
             // title with or without Re: prefix
             String prefix = "";
-            if(!message.getTitle().substring(0,3).equals("Re:"))
+            if (!message.getTitle().substring(0, 3).equals("Re:"))
                 prefix = "Re: ";
             mEditTitle.setText(prefix + message.getTitle());
 
@@ -215,11 +224,13 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
             String line;
             StringBuilder content = new StringBuilder();
 
-            String ds = new SimpleDateFormat(getString(R.string.standard_time_format)).format(message.getDate());
+            String ds = new SimpleDateFormat(getString(R.string.standard_time_format)).format
+                    (message.getDate());
             String quote_line = "> %1$s \n";
-            content.append(String.format(getString(R.string.message_header, message.getFrom().getNick(), ds)));
+            content.append(String.format(getString(R.string.message_header,
+                    message.getFrom().getNick(), ds)));
             try {
-                while((line = bufReader.readLine()) != null)
+                while ((line = bufReader.readLine()) != null)
                     content.append(String.format(quote_line, line));
             } catch (IOException e) {
                 // this will never occur.
@@ -233,6 +244,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
     /**
      * This appends a given to the form text field.
+     *
      * @param text The text to append
      */
     public void appendText(String text) {
@@ -249,7 +261,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
         showLoadingAnimation();
 
-        if(mFormArguments.getInt(ARG_MODE) == MODE_MESSAGE)
+        if (mFormArguments.getInt(ARG_MODE) == MODE_MESSAGE)
             return new AsyncMessageSubmitter(getSupportActivity(), args);
         else
             return new AsyncPostSubmitter(getSupportActivity(), args);
@@ -260,7 +272,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         hideLoadingAnimation();
         clearForm();
 
-        if(result.getInt(STATUS, STATUS_FAILED) == STATUS_SUCCESS)
+        if (result.getInt(STATUS, STATUS_FAILED) == STATUS_SUCCESS)
             mCallback.onSuccess(result);
         else
             mCallback.onFailure(result);
@@ -275,7 +287,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
     }
 
     public void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager)getSupportActivity().getSystemService(
+        InputMethodManager imm = (InputMethodManager) getSupportActivity().getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
     }
@@ -300,12 +312,14 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
     public void hideLoadingAnimation() {
         try {
             getView().findViewById(R.id.send_progress).setVisibility(View.INVISIBLE);
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             // the view was already detached. Never mind...
         }
     }
 
-    static class AsyncPostSubmitter extends AsyncHttpLoader<Bundle> {
+    static class AsyncPostSubmitter extends AsyncHttpLoader<Bundle>
+    {
+
         protected int mMode;
 
         AsyncPostSubmitter(Context cx, Bundle args) {
@@ -323,11 +337,11 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
             r.add("TID", "" + args.getInt("topic_id"));
             r.add("token", args.getString("token"));
 
-            if(mMode == MODE_EDIT) {
+            if (mMode == MODE_EDIT) {
                 r.add("PID", "" + args.getInt("post_id"));
                 r.add("edit_title", args.getString("title"));
                 setUrl(Network.BOARD_URL_EDITPOST);
-            } else if(mMode == MODE_REPLY) {
+            } else if (mMode == MODE_REPLY) {
                 r.add("SID", "");
                 r.add("PID", "");
                 r.add("post_title", args.getString("title"));
@@ -359,7 +373,9 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         }
     }
 
-    static class AsyncMessageSubmitter extends AsyncHttpLoader<Bundle> {
+    static class AsyncMessageSubmitter extends AsyncHttpLoader<Bundle>
+    {
+
         protected int mMode;
 
         AsyncMessageSubmitter(Context cx, Bundle args) {

@@ -1,71 +1,70 @@
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/container"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:background="@drawable/sidebar_bookmarkbutton_background">
+
+    <TextView
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:background="@drawable/sidebar_bookmarkbutton_background">
-
-    <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/icon_pinned"
-            android:layout_alignParentLeft="true"
-            android:textSize="16sp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textColor="@color/white"
-            android:drawablePadding="5dp"/>
+        android:layout_toLeftOf="@+id/icon_pinned"
+        android:layout_alignParentLeft="true"
+        android:textSize="16sp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:drawablePadding="5dp" />
 
     <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="2dp"
-            android:id="@+id/icon_locked"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/dark_indicator_locked"
-            android:adjustViewBounds="true" />
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="2dp"
+        android:id="@+id/icon_locked"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/dark_indicator_locked"
+        android:adjustViewBounds="true" />
 
     <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="2dp"
-            android:id="@+id/icon_pinned"
-            android:layout_toLeftOf="@+id/icon_locked"
-            android:src="@drawable/dark_indicator_pinned"
-            android:adjustViewBounds="true" />
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="2dp"
+        android:id="@+id/icon_pinned"
+        android:layout_toLeftOf="@+id/icon_locked"
+        android:src="@drawable/dark_indicator_pinned"
+        android:adjustViewBounds="true" />
 
     <TextView
-            android:id="@+id/subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:lines="2"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/pages"
-            android:layout_below="@+id/title"
-            android:layout_marginRight="15dp"
-            android:textSize="14sp"
-            android:textColor="@color/grey"/>
+        android:id="@+id/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:lines="2"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/pages"
+        android:layout_below="@+id/title"
+        android:layout_marginRight="15dp"
+        android:textSize="14sp"
+        android:textColor="@color/grey" />
 
     <TextView
-            android:id="@+id/pages"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/title"
-            android:textSize="12sp"
-            android:textColor="@color/darkgrey"/>
+        android:id="@+id/pages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/title"
+        android:textSize="12sp"
+        android:textColor="@color/darkgrey" />
 
     <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/pages"
-            android:textSize="12sp"
-            android:textColor="@color/darkgrey"/>
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/pages"
+        android:textSize="12sp"
+        android:textColor="@color/darkgrey" />
 
 </RelativeLayout>

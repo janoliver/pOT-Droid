@@ -2,20 +2,31 @@ package com.mde.potdroid.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.mde.potdroid.R;
 
 /**
  * This Fragment extends BaseFragment and provides some more methods and an interface
  * for those Fragments who have pagination functionality.
  */
-abstract public class PaginateFragment extends BaseFragment {
+abstract public class PaginateFragment extends BaseFragment
+{
 
     @Override
-    public void onCreate (Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getActionbar().setCustomView(R.layout.view_paginate);
+        getActionbar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM |
+                ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_HOME_AS_UP);
+
         setHasOptionsMenu(true);
     }
 
@@ -30,22 +41,23 @@ abstract public class PaginateFragment extends BaseFragment {
         super.onPrepareOptionsMenu(menu);
 
         // only show the paginate buttons if there are before or after the current
-        if(!isLastPage()) {
+        if (!isLastPage()) {
             menu.findItem(R.id.nav_next).setIcon(R.drawable.dark_navigation_fwd).setEnabled(true);
-            menu.findItem(R.id.nav_lastpage).setIcon(R.drawable.dark_navigation_ffwd).setEnabled(true);
+            menu.findItem(R.id.nav_lastpage).setIcon(R.drawable.dark_navigation_ffwd).setEnabled
+                    (true);
         }
 
-        if(!isFirstPage()) {
-            menu.findItem(R.id.nav_firstpage).setIcon(R.drawable.dark_navigation_frwd).setEnabled(true);
-            menu.findItem(R.id.nav_previous).setIcon(R.drawable.dark_navigation_rwd).setEnabled(true);
+        if (!isFirstPage()) {
+            menu.findItem(R.id.nav_firstpage).setIcon(R.drawable.dark_navigation_frwd).setEnabled
+                    (true);
+            menu.findItem(R.id.nav_previous).setIcon(R.drawable.dark_navigation_rwd).setEnabled
+                    (true);
         }
 
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
-
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.nav_next:

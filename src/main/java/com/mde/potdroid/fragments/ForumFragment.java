@@ -7,10 +7,16 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+
 import com.mde.potdroid.BoardActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
@@ -33,7 +39,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
     private ForumListAdapter mListAdapter;
 
     @Override
-    public void onCreate (Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
@@ -49,8 +55,10 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
         mListView.setGroupIndicator(null);
         mListView.setAdapter(mListAdapter);
-        mListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+        mListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener()
+        {
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
+                                        int childPosition, long id) {
                 // go to a board
                 Intent intent = new Intent(getSupportActivity(), BoardActivity.class);
                 intent.putExtra(BoardFragment.ARG_ID, mForum.getCategories()
@@ -73,7 +81,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
         setRetainInstance(true);
 
-        if(mForum == null)
+        if (mForum == null)
             startLoader(this);
     }
 
@@ -107,7 +115,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
     @Override
     public void onLoadFinished(Loader<Forum> loader, Forum data) {
         hideLoadingAnimation();
-        if(data != null) {
+        if (data != null) {
             mForum = data;
             mListAdapter.notifyDataSetChanged();
         } else {
@@ -120,7 +128,8 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
         hideLoadingAnimation();
     }
 
-    public class ForumListAdapter extends BaseExpandableListAdapter {
+    public class ForumListAdapter extends BaseExpandableListAdapter
+    {
 
         public Object getChild(int groupPosition, int childPosition) {
             return mForum.getCategories().get(groupPosition).getBoards().get(childPosition);
@@ -131,7 +140,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
         }
 
         public int getChildrenCount(int groupPosition) {
-            if(mForum.getCategories().get(groupPosition).getBoards() == null)
+            if (mForum.getCategories().get(groupPosition).getBoards() == null)
                 return 0;
             return mForum.getCategories().get(groupPosition).getBoards().size();
         }
@@ -140,7 +149,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
                                  View convertView, ViewGroup parent) {
             View row = getInflater().inflate(R.layout.listitem_forum, null);
 
-            Board b = (Board)getChild(groupPosition, childPosition);
+            Board b = (Board) getChild(groupPosition, childPosition);
 
             TextView name = (TextView) row.findViewById(R.id.text_name);
             name.setText(b.getName());
@@ -149,7 +158,8 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
             descr.setText(b.getDescription());
 
             TextView lastpost = (TextView) row.findViewById(R.id.last_post);
-            String time = new SimpleDateFormat(getString(R.string.standard_time_format)).format(b.getLastPost().getDate());
+            String time = new SimpleDateFormat(getString(R.string.standard_time_format)).format(b
+                    .getLastPost().getDate());
             Spanned lastpost_text = Html.fromHtml(String.format(
                     getString(R.string.last_post, b.getLastPost().getAuthor().getNick(), time)));
             lastpost.setText(lastpost_text);
@@ -163,7 +173,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
         }
 
         public int getGroupCount() {
-            if(mForum == null)
+            if (mForum == null)
                 return 0;
             return mForum.getCategories().size();
         }
@@ -176,7 +186,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
                                  ViewGroup parent) {
             View row = getInflater().inflate(R.layout.listitem_category, null);
 
-            Category cat = (Category)getGroup(groupPosition);
+            Category cat = (Category) getGroup(groupPosition);
 
             TextView name = (TextView) row.findViewById(R.id.text_name);
             name.setText(cat.getName());
@@ -197,7 +207,9 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
     }
 
-    static class AsyncContentLoader extends AsyncHttpLoader<Forum> {
+    static class AsyncContentLoader extends AsyncHttpLoader<Forum>
+    {
+
         AsyncContentLoader(Context cx) {
             super(cx, ForumParser.URL);
         }

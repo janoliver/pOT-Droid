@@ -3,12 +3,14 @@ package com.mde.potdroid;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.Toast;
+
 import com.mde.potdroid.fragments.FormFragment;
 import com.mde.potdroid.fragments.MessageFragment;
+import com.mde.potdroid.helpers.Utils;
 
 public class MessageActivity extends BaseActivity implements FormFragment.FormListener
 {
+
     private MessageFragment mMessageFragment;
 
     @Override
@@ -22,7 +24,7 @@ public class MessageActivity extends BaseActivity implements FormFragment.FormLi
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 
             Uri u = intent.getData();
-            if(u.getQueryParameter("mid") != null)
+            if (u.getQueryParameter("mid") != null)
                 mid = Integer.parseInt(u.getQueryParameter("mid"));
 
         } else {
@@ -31,8 +33,9 @@ public class MessageActivity extends BaseActivity implements FormFragment.FormLi
 
         }
 
-        mMessageFragment = (MessageFragment)getSupportFragmentManager().findFragmentByTag("message");
-        if(mMessageFragment == null)
+        mMessageFragment = (MessageFragment) getSupportFragmentManager().findFragmentByTag
+                ("message");
+        if (mMessageFragment == null)
             mMessageFragment = MessageFragment.newInstance(mid);
 
         if (savedInstanceState == null) {
@@ -45,18 +48,18 @@ public class MessageActivity extends BaseActivity implements FormFragment.FormLi
 
     @Override
     protected int getLayout() {
-        return R.layout.layout_activity_single_fragment_rl;
+        return R.layout.layout_sidebar_rl;
     }
 
     @Override
     public void onSuccess(Bundle result) {
         closeRightSidebar();
-        Toast.makeText(this, "Erfolgreich gesendet", Toast.LENGTH_LONG).show();
+        Utils.toast(this, getString(R.string.send_successful));
     }
 
     @Override
     public void onFailure(Bundle result) {
-        Toast.makeText(this, "Fehlgeschlagen", Toast.LENGTH_LONG).show();
+        Utils.toast(this, getString(R.string.send_failure));
     }
 
 

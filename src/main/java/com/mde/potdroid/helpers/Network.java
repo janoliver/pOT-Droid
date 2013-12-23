@@ -3,7 +3,12 @@ package com.mde.potdroid.helpers;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import com.loopj.android.http.*;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
+
 import org.apache.http.Header;
 import org.apache.http.cookie.Cookie;
 
@@ -14,7 +19,8 @@ import java.util.regex.Pattern;
  * Network functionality class. Provides convenience methods for Get and Post
  * requests, login and some URLs.
  */
-public class Network {
+public class Network
+{
 
     // this is the AsyncHttpClient we use for the network interaction
     private AsyncHttpClient mHttpClient = new AsyncHttpClient();
@@ -47,8 +53,8 @@ public class Network {
     public static final int NETWORK_ELSE = 2;
 
     public Network(Context context) {
-        mContext    = context;
-        mSettings   = new SettingsWrapper(mContext);
+        mContext = context;
+        mSettings = new SettingsWrapper(mContext);
         mHttpClient.setUserAgent(mSettings.getUserAgent());
         mHttpClient.addHeader("Accept-Encoding", "gzip");
         mHttpClient.setTimeout(DEFAULT_TIMEOUT);
@@ -84,6 +90,7 @@ public class Network {
     /**
      * Given username and password, try to login. We do not use AsyncHttpLoader here
      * because we generate new user agents and do not use cookie storage here.
+     *
      * @param username the username
      * @param password the password
      * @param callback the callback instance
@@ -104,10 +111,12 @@ public class Network {
         params.put("login_password", password);
         params.put("login_lifetime", COOKIE_LIFETIME);
 
-        mHttpClient.post(LOGIN_URL, params, new AsyncHttpResponseHandler() {
+        mHttpClient.post(LOGIN_URL, params, new AsyncHttpResponseHandler()
+        {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Pattern pattern = Pattern.compile("http://forum.mods.de/SSO.php\\?UID=([0-9]+)[^']*");
+                Pattern pattern = Pattern.compile("http://forum.mods.de/SSO.php\\?UID=([0-9]+)" +
+                        "[^']*");
 
                 // check if the login worked, e.g. one was redirected to SSO.php..
                 Matcher m = pattern.matcher(new String(responseBody));
@@ -118,9 +127,11 @@ public class Network {
 
                     final PersistentCookieStore cStore = new PersistentCookieStore(mContext);
                     mHttpClient.setCookieStore(cStore);
-                    mHttpClient.get(m.group(0), null, new AsyncHttpResponseHandler() {
+                    mHttpClient.get(m.group(0), null, new AsyncHttpResponseHandler()
+                    {
                         @Override
-                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        public void onSuccess(int statusCode, Header[] headers,
+                                              byte[] responseBody) {
                             for (Cookie cookie : cStore.getCookies()) {
                                 if (cookie.getName().equals("MDESID")) {
                                     mSettings.setLoginCookie(cookie);
@@ -151,6 +162,7 @@ public class Network {
 
     /**
      * Returns the state of the network connection
+     *
      * @param context A context object
      * @return 0 -> not connected, 1 -> wifi, 2 -> else
      */
@@ -172,6 +184,7 @@ public class Network {
 
     /**
      * Given a relative URL, return the absolute one to http://forum.mods.de/..
+     *
      * @param relativeUrl the URL to shape
      * @return the shaped url
      */
@@ -181,6 +194,7 @@ public class Network {
 
     /**
      * Given a URL relative to /async, attach async/
+     *
      * @param relativeUrl the URL to shape
      * @return the shaped url
      */
@@ -191,7 +205,9 @@ public class Network {
     /**
      * A callback Class for the login function.
      */
-    public interface LoginCallback {
+    public interface LoginCallback
+    {
+
         /**
          * Called on login success
          */

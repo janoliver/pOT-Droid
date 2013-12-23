@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.cookie.BasicClientCookie;
 
@@ -14,7 +15,8 @@ import java.security.SecureRandom;
  * This class provides access to the preferences of the App. All settings should be
  * retrieved through this class.
  */
-public class SettingsWrapper {
+public class SettingsWrapper
+{
 
     // The keys to the settings
     public static final String PREF_KEY_LOGIN = "pref_login";
@@ -45,6 +47,7 @@ public class SettingsWrapper {
 
     /**
      * Do we show benders at all?
+     *
      * @return true, if benders should be shown
      */
     public Boolean showBenders() {
@@ -53,6 +56,7 @@ public class SettingsWrapper {
 
     /**
      * The interval for the PM polling
+     *
      * @return interval in seconds
      */
     public Integer pollMessagesInterval() {
@@ -61,6 +65,7 @@ public class SettingsWrapper {
 
     /**
      * Never, always or only in Wifi benders
+     *
      * @return 0 -> never, 1 -> only wifi, 2 -> always
      */
     public String loadBenders() {
@@ -69,6 +74,7 @@ public class SettingsWrapper {
 
     /**
      * Never, always or only in Wifi images
+     *
      * @return 0 -> never, 1 -> only wifi, 2 -> always
      */
     public String loadImages() {
@@ -77,6 +83,7 @@ public class SettingsWrapper {
 
     /**
      * Check if, given the current network state, Benders should be loaded.
+     *
      * @return true if loaded
      */
     public Boolean downloadBenders() {
@@ -87,6 +94,7 @@ public class SettingsWrapper {
 
     /**
      * Check if, given the current network state, Images should be loaded.
+     *
      * @return true if loaded
      */
     public Boolean downloadImages() {
@@ -106,6 +114,7 @@ public class SettingsWrapper {
 
     /**
      * Check if a username is stored in the settings
+     *
      * @return true if set
      */
     public Boolean hasUsername() {
@@ -114,6 +123,7 @@ public class SettingsWrapper {
 
     /**
      * Check if debug mode is switched on
+     *
      * @return true if switched on
      */
     public Boolean isDebug() {
@@ -122,6 +132,7 @@ public class SettingsWrapper {
 
     /**
      * Check if notifications should vibrate
+     *
      * @return true if switched on
      */
     public Boolean isNotificationVibrate() {
@@ -130,6 +141,7 @@ public class SettingsWrapper {
 
     /**
      * Get the URI to the notification sound
+     *
      * @return String uri of the sound
      */
     public String getNotificationSoundURI() {
@@ -139,6 +151,7 @@ public class SettingsWrapper {
 
     /**
      * Get the username as stored in the settings
+     *
      * @return the username
      */
     public String getUsername() {
@@ -156,6 +169,7 @@ public class SettingsWrapper {
 
     /**
      * Set the User ID in the sharedpreferences
+     *
      * @param id the User ID
      */
     public void setUserId(int id) {
@@ -175,6 +189,7 @@ public class SettingsWrapper {
 
     /**
      * Get the user id from the settings
+     *
      * @return user ID
      */
     public int getUserId() {
@@ -183,6 +198,7 @@ public class SettingsWrapper {
 
     /**
      * Check, if a login cookie is stored in the settings
+     *
      * @return true if one is present
      */
     public Boolean hasLoginCookie() {
@@ -191,6 +207,7 @@ public class SettingsWrapper {
 
     /**
      * Get a Login Cookie from the values stored in the settings.
+     *
      * @return the cookie
      */
     public BasicClientCookie getLoginCookie() {
@@ -205,6 +222,7 @@ public class SettingsWrapper {
 
     /**
      * Store a login cookie in the settings
+     *
      * @param cookie the cookie to store
      */
     public void setLoginCookie(Cookie cookie) {
@@ -230,6 +248,7 @@ public class SettingsWrapper {
 
     /**
      * Get the user agent of the current user.
+     *
      * @return User agent
      */
     public String getUserAgent() {

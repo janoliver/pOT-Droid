@@ -2,7 +2,12 @@ package com.mde.potdroid.helpers;
 
 import android.os.Environment;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,7 +16,8 @@ import java.util.Date;
  * This class writes an exception to the SDCard and then forwards the Exception to
  * the usual exception handler.
  */
-public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
+public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler
+{
 
     // forward to the one before.
     private Thread.UncaughtExceptionHandler mDefaultHandler;

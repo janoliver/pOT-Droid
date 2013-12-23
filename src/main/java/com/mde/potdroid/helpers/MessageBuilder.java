@@ -1,16 +1,22 @@
 package com.mde.potdroid.helpers;
 
 import android.content.Context;
+
 import com.mde.potdroid.models.Message;
 import com.samskivert.mustache.Mustache;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
 
 /**
  * This class, given a Message object, turns it into displayable HTML code
  * for the WebView we use.
  */
-public class MessageBuilder {
+public class MessageBuilder
+{
 
     // a reference to the context
     private Context mContext;
@@ -21,6 +27,7 @@ public class MessageBuilder {
 
     /**
      * Parse a message object to HTML using JMoustache template engine.
+     *
      * @param message the Message object
      * @return HTML code
      * @throws IOException
@@ -36,7 +43,9 @@ public class MessageBuilder {
     /**
      * A wrapper class for Message objects, needed by JMoustache.
      */
-    class MessageContext {
+    class MessageContext
+    {
+
         private Message mMessage;
 
         public MessageContext(Message m) {

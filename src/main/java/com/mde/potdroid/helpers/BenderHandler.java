@@ -3,6 +3,7 @@ package com.mde.potdroid.helpers;
 import android.content.Context;
 import android.os.Environment;
 import android.text.TextUtils;
+
 import com.loopj.android.http.BinaryHttpResponseHandler;
 import com.mde.potdroid.models.User;
 
@@ -19,6 +20,7 @@ import java.util.Date;
  */
 public class BenderHandler
 {
+
     protected static final String BENDER_STORAGE_DIR = "/files/avatars";
 
     // the context
@@ -38,6 +40,7 @@ public class BenderHandler
 
     /**
      * Check, whether the external files dir is writable
+     *
      * @return writable or not
      */
     private boolean isWritable() {
@@ -48,6 +51,7 @@ public class BenderHandler
      * Get the path to the avatar of User user. If the user object has an Avatar field set,
      * this is taken (and, if needed, downloaded). If not, we look for the last seen
      * avatar of this user in the Database. If this is not available either, return null.
+     *
      * @param user User object
      * @param callback Callback
      */
@@ -56,12 +60,12 @@ public class BenderHandler
         File avatar = getAvatarFile(user);
 
         // figure out, if it already exists in the storage
-        if(avatar == null) {
+        if (avatar == null) {
 
             callback.onFailure();
             return;
 
-        } else if(avatar.exists()) {
+        } else if (avatar.exists()) {
 
             // update the last_seen time
             Date date = new Date();
@@ -70,11 +74,11 @@ public class BenderHandler
 
             callback.onSuccess(getAvatarFilePath(user));
 
-        } else if(!isWritable()) {
+        } else if (!isWritable()) {
 
             callback.onFailure();
 
-        } else if(mSettings.downloadBenders()) {
+        } else if (mSettings.downloadBenders()) {
 
             downloadBender(callback, user);
 
@@ -85,6 +89,7 @@ public class BenderHandler
     /**
      * Perform the downloading of a bender an, upon success or failure, call the corresponding
      * method of the callback.
+     *
      * @param callback The BenderListener callback implementation
      * @param user the user object
      */
@@ -101,8 +106,9 @@ public class BenderHandler
         }
 
         // perform the download.
-        String[] allowedContentTypes = new String[] { "image/png", "image/jpeg", "image/gif" };
-        network.get(url, null, new BinaryHttpResponseHandler(allowedContentTypes) {
+        String[] allowedContentTypes = new String[]{"image/png", "image/jpeg", "image/gif"};
+        network.get(url, null, new BinaryHttpResponseHandler(allowedContentTypes)
+        {
             @Override
             public void onSuccess(byte[] fileData) {
                 try {
@@ -113,7 +119,7 @@ public class BenderHandler
                     fos.close();
 
 
-                    Date date= new Date();
+                    Date date = new Date();
                     mDatabase.updateBender(user.getAvatarId(), user.getId(),
                             user.getAvatarFile(), new Timestamp(date.getTime()));
 
@@ -130,6 +136,7 @@ public class BenderHandler
     /**
      * This function returns the theoretical path of a User's avatar, regardless of
      * whether it exists or not.
+     *
      * @param user user object
      * @return path
      */
@@ -140,45 +147,53 @@ public class BenderHandler
     /**
      * This function returns the file object of a User's avatar, regardless of
      * whether it exists or not.
+     *
      * @param user User object
      * @return file object
      */
     public File getAvatarFile(User user) {
         // if the information is not known in the user object, try to retrieve it
         // from the database
-        if((user.getAvatarFile() == null || user.getAvatarFile().equals("") || user.getAvatarId() == 0) &&
-            !mDatabase.setCurrentBenderInformation(user))
+        if ((user.getAvatarFile() == null || user.getAvatarFile().equals("") || user.getAvatarId
+                () == 0) &&
+                !mDatabase.setCurrentBenderInformation(user))
             return null;
 
         String[] parts = user.getAvatarFile().split("\\.");
-        String filename = user.getAvatarId() + "." + parts[parts.length-1];
+        String filename = user.getAvatarId() + "." + parts[parts.length - 1];
 
         return new File(getBenderStorageDir(), filename);
     }
 
     /**
      * This function returns the relative URL of a user's bender as stored on the mods.de website.
+     *
      * @param user The user object
      * @return The URL as string
      * @throws UnsupportedEncodingException
      */
     public String getAvatarUrl(User user) throws UnsupportedEncodingException {
         String[] parts = user.getAvatarFile().split("/");
-        parts[parts.length-1] = URLEncoder.encode(parts[parts.length-1], "UTF-8").replace("+", "%20");
+        parts[parts.length - 1] = URLEncoder.encode(parts[parts.length - 1],
+                "UTF-8").replace("+", "%20");
         return TextUtils.join("/", parts);
     }
 
     /**
      * The interface to implement for notification of success or failure of bender downloads.
      */
-    public interface BenderListener {
+    public interface BenderListener
+    {
+
         public abstract void onSuccess(String path);
+
         public abstract void onFailure();
     }
 
     /**
      * Return a File object pointing to the bender storage dir.
      * Compatible with API < 8
+     *
      * @return File object
      */
     public File getBenderStorageDir() {

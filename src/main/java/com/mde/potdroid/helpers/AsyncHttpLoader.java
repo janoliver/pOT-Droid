@@ -3,8 +3,10 @@ package com.mde.potdroid.helpers;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.content.Loader;
+
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
 import org.apache.http.Header;
 
 import java.io.UnsupportedEncodingException;
@@ -14,39 +16,53 @@ import java.io.UnsupportedEncodingException;
  * One should extend this class to provide the abstract method "parseContent", in which some
  * postprocessing can be done. This, as well as the loading, runs asynchroneously in a separate
  * thread.
- *
+ * <p/>
  * The HTTP Client from the Network class is used, so that headers and cookies are in place.
  */
-public abstract class AsyncHttpLoader<E> extends Loader<E> {
+public abstract class AsyncHttpLoader<E> extends Loader<E>
+{
 
     // request type codes
     public static final Integer GET = 0;
     public static final Integer POST = 1;
     public static final String DEFAULT_ENCODING = "UTF-8";
-
     // the instance of the Network class
     protected Network mNetwork;
-
     // request URL (without (!) the Network.BASE_URL part)
     protected String mRequestUrl;
-
     // request mode, GET or POST (see above)
     protected Integer mMode;
-
     // the parameters for the request, mostly required for POST requests
     protected RequestParams mParams;
-
     // the encoding to use when decoding the response
     protected String mEncoding;
-
     // the data cache
     protected E mData;
-
     /**
      * This is the respoonse handler of the asynchroneous network call, from the
      * android-async-http library.
      */
-    private AsyncHttpResponseHandler mHandler = new AsyncHttpResponseHandler() {
+    private AsyncHttpResponseHandler mHandler = new AsyncHttpResponseHandler()
+    {
+
+        @Override
+        public void onProgress(int bytesWritten, int totalSize) {
+            AsyncHttpLoader.this.onNetworkProgress(bytesWritten, totalSize);
+        }
+
+        /**
+         * the following few methods simply forward their calls to the API of
+         * the AsyncHttpLoader class.
+         */
+        @Override
+        public void onStart() {
+            AsyncHttpLoader.this.onNetworkStarted();
+        }
+
+        @Override
+        public void onFinish() {
+            AsyncHttpLoader.this.onNetworkFinished();
+        }
 
         /**
          * Try to decode the responseBody and trigger the post processing with
@@ -65,19 +81,9 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
             AsyncHttpLoader.this.processResponse(stringResult);
         }
 
-        /**
-         * the following few methods simply forward their calls to the API of
-         * the AsyncHttpLoader class.
-         */
-        @Override
-        public void onStart() {
-            AsyncHttpLoader.this.onNetworkStarted();
-        }
-
         @Override
         public void onFailure(int statusCode, Header[] headers, byte[] responseBody,
-                              Throwable error)
-        {
+                              Throwable error) {
             String stringResult;
 
             // try to decode the response again
@@ -96,46 +102,11 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
         public void onRetry() {
             AsyncHttpLoader.this.onNetworkRetry();
         }
-
-        @Override
-        public void onProgress(int bytesWritten, int totalSize) {
-            AsyncHttpLoader.this.onNetworkProgress(bytesWritten, totalSize);
-        }
-
-        @Override
-        public void onFinish() {
-            AsyncHttpLoader.this.onNetworkFinished();
-        }
     };
 
     /**
-     * This AsyncTask calls the processNetworkResponse in a separate thread.
-     */
-    protected class ResponseTask extends AsyncTask<String, Void, E> {
-
-        @Override
-        protected void onPreExecute() {
-            onProcessingStarted();
-        }
-
-        @Override
-        protected void onCancelled() {
-            onProcessingCancelled();
-        }
-
-        protected E doInBackground(String ... response) {
-            return processNetworkResponse(response[0]);
-        }
-
-        protected void onPostExecute(E result) {
-            onProcessingFinished();
-            mData = result;
-            deliverResult(mData);
-        }
-    }
-
-    /**
      * Constructor
+     *
      * @param context The application context to use
      * @param url The request URL WITHOUT the base (forum.mods.de/bb)
      */
@@ -145,6 +116,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
 
     /**
      * Constructor
+     *
      * @param context The application context to use
      * @param url The request URL WITHOUT the base (forum.mods.de/bb)
      * @param mode The request mode, GET or POST
@@ -155,6 +127,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
 
     /**
      * Constructor
+     *
      * @param context The application context to use
      * @param url The request URL WITHOUT the base (forum.mods.de/bb)
      * @param mode The request mode, GET or POST
@@ -166,6 +139,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
 
     /**
      * Constructor
+     *
      * @param context The application context to use
      * @param url The request URL WITHOUT the base (forum.mods.de/bb)
      * @param mode The request mode, GET or POST
@@ -185,6 +159,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
 
     /**
      * Update the request URL.
+     *
      * @param url the new requestb url
      */
     public void setUrl(String url) {
@@ -193,6 +168,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
 
     /**
      * Update the request parameters
+     *
      * @param p The new request parameters.
      */
     public void setParams(RequestParams p) {
@@ -201,6 +177,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
 
     /**
      * Update the encoding
+     *
      * @param encoding The new encoding.
      */
     public void setEncoding(String encoding) {
@@ -209,6 +186,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
 
     /**
      * Start the AsyncTask to process the response.
+     *
      * @param response The response string
      */
     protected void processResponse(String response) {
@@ -223,14 +201,27 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
     protected void onStartLoading() {
         super.onStartLoading();
 
-        if(mData != null)
+        if (mData != null)
             deliverResult(mData);
 
-        if(mNetwork == null)
+        if (mNetwork == null)
             mNetwork = new Network(getContext());
 
-        if(mData == null)
+        if (mData == null)
             forceLoad();
+    }
+
+    /**
+     * Actually submit the network request.
+     */
+    @Override
+    protected void onForceLoad() {
+        super.onForceLoad();
+
+        if (mMode.equals(GET))
+            mNetwork.get(mRequestUrl, mParams, mHandler);
+        else if (mMode.equals(POST))
+            mNetwork.post(mRequestUrl, mParams, mHandler);
     }
 
     /**
@@ -258,21 +249,9 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
     }
 
     /**
-     * Actually submit the network request.
-     */
-    @Override
-    protected void onForceLoad() {
-        super.onForceLoad();
-
-        if(mMode.equals(GET))
-            mNetwork.get(mRequestUrl, mParams, mHandler);
-        else if(mMode.equals(POST))
-            mNetwork.post(mRequestUrl, mParams, mHandler);
-    }
-
-    /**
      * This method must be implemented by the user subclassing the Loader. It takes teh
      * network response String and must return an Object E.
+     *
      * @param response The response HTML/XML/whatever.
      * @return The generated Object E
      */
@@ -280,49 +259,86 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
 
     /**
      * Called upon failure of the network Request.
+     *
      * @param statusCode the HTTP status Code
      * @param headers The header list
      * @param responseBody The response Body, already decoded
      * @param error A throwable with the error
      */
     protected void onNetworkFailure(int statusCode, Header[] headers,
-                                    String responseBody, Throwable error) {}
+                                    String responseBody, Throwable error) {
+    }
 
     /**
      * Called, when the network request is started.
      */
-    protected void onNetworkStarted() {}
+    protected void onNetworkStarted() {
+    }
 
     /**
      * Called, when the network request is retried
      */
-    protected void onNetworkRetry() {}
+    protected void onNetworkRetry() {
+    }
 
     /**
      * Called upon progress update of the network request.
+     *
      * @param bytesWritten The number of bytes written
      * @param bytesTotal The number of total bytes
      */
-    protected void onNetworkProgress(int bytesWritten, int bytesTotal) {}
+    protected void onNetworkProgress(int bytesWritten, int bytesTotal) {
+    }
 
     /**
      * Called, when the network request is finished.
      */
-    protected void onNetworkFinished() {}
+    protected void onNetworkFinished() {
+    }
 
     /**
      * Called, when the postprocessing is finished.
      */
-    protected void onProcessingFinished() {}
+    protected void onProcessingFinished() {
+    }
 
     /**
      * Called, when the postprocessing is started.
      */
-    protected void onProcessingStarted() {}
+    protected void onProcessingStarted() {
+    }
 
     /**
      * Called, when the postprocessing is cancelled.
      */
-    protected void onProcessingCancelled() {}
+    protected void onProcessingCancelled() {
+    }
+
+    /**
+     * This AsyncTask calls the processNetworkResponse in a separate thread.
+     */
+    protected class ResponseTask extends AsyncTask<String, Void, E>
+    {
+
+        protected E doInBackground(String... response) {
+            return processNetworkResponse(response[0]);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            onProcessingStarted();
+        }
+
+        protected void onPostExecute(E result) {
+            onProcessingFinished();
+            mData = result;
+            deliverResult(mData);
+        }
+
+        @Override
+        protected void onCancelled() {
+            onProcessingCancelled();
+        }
+    }
 
 }

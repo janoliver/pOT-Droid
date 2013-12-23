@@ -9,7 +9,8 @@ import java.util.ArrayList;
 /**
  * Forum model.
  */
-public class Forum implements Serializable {
+public class Forum implements Serializable
+{
 
     private static final long serialVersionUID = 4L;
     ArrayList<Category> mCategories = new ArrayList<Category>();
@@ -20,9 +21,9 @@ public class Forum implements Serializable {
 
     public SparseArray<Board> getBoards() {
         SparseArray<Board> b = new SparseArray<Board>();
-        for(Category c : mCategories)
-            if(c.getBoards() != null)
-                for(Board bo : c.getBoards())
+        for (Category c : mCategories)
+            if (c.getBoards() != null)
+                for (Board bo : c.getBoards())
                     b.put(bo.getId(), bo);
         return b;
     }

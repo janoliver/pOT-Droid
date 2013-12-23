@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +26,22 @@ public abstract class BaseFragment extends Fragment
 
     // this is the ID of the content loader
     protected static final int CONTENT_LOADER_ID = 0;
+
+    // we need this to convert dip to px for the icons
+    protected float mDensity;
+
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        setRetainInstance(true);
+
+        // instantiate and calculate the display metrics
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        mDensity = displayMetrics.density;
+    }
 
     /**
      * Get the actionbar reference

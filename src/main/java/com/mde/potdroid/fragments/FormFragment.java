@@ -1,8 +1,15 @@
 package com.mde.potdroid.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
@@ -10,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -19,6 +27,7 @@ import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
 import com.mde.potdroid.helpers.EncodingRequestParams;
 import com.mde.potdroid.helpers.Network;
+import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
@@ -28,6 +37,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,6 +54,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
     protected static final String ARG_TOPIC_ID = "topic_id";
     protected static final String ARG_POST_ID = "post_id";
     protected static final String ARG_TOKEN = "token";
+    protected static final String ARG_ICON = "icon";
 
     // the title view
     protected TextView mTitle;
@@ -51,6 +63,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
     protected EditText mEditRcpt;
     protected EditText mEditTitle;
     protected EditText mEditText;
+    protected ImageButton mIcon;
 
     // should be moved to a bundle.
     protected int mTopicId;
@@ -74,6 +87,11 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
     protected static final String ARG_RCPT = "rcpt";
     protected static final String ARG_TEXT = "text";
     protected static final String ARG_TITLE = "title";
+
+    // the array of icons
+    private ArrayList<String> mIcons = new ArrayList<String>();
+    private int mIconId;
+
 
     /**
      * * Return new instance of FormFragment. Although this fragment has no parameters,
@@ -115,6 +133,12 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_sidebar_form, container, false);
 
+        // find all icons
+        AssetManager aMan = getActivity().getAssets();
+        try {
+            mIcons.addAll(Arrays.asList(aMan.list("thread-icons")));
+        } catch (IOException e) {}
+
         // find the send button and add a click listener
         ImageButton send = (ImageButton) v.findViewById(R.id.button_send);
         send.setOnClickListener(new View.OnClickListener()
@@ -127,20 +151,31 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
                 args.putString(ARG_RCPT, mEditRcpt.getText().toString());
                 args.putString(ARG_TEXT, mEditText.getText().toString());
                 args.putString(ARG_TITLE, mEditTitle.getText().toString());
+                args.putInt(ARG_ICON, mIconId);
 
                 startLoader(FormFragment.this, args);
             }
         });
 
         // find the cancel button and add a click listener
-        ImageButton preferences = (ImageButton) v.findViewById(R.id.button_cancel);
-        preferences.setOnClickListener(new View.OnClickListener()
+        ImageButton cancel = (ImageButton) v.findViewById(R.id.button_cancel);
+        cancel.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v) {
                 stopLoader();
                 hideKeyboard();
-                ((BaseActivity)getActivity()).closeRightSidebar();
+                ((BaseActivity) getActivity()).closeRightSidebar();
+            }
+        });
+
+        ImageButton icon = (ImageButton) v.findViewById(R.id.button_icon);
+        icon.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                IconSelection id = new IconSelection();
+                id.show(getSupportActivity().getSupportFragmentManager(), "icondialog");
             }
         });
 
@@ -148,6 +183,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         mEditText = (EditText) v.findViewById(R.id.edit_content);
         mEditTitle = (EditText) v.findViewById(R.id.edit_title);
         mEditRcpt = (EditText) v.findViewById(R.id.edit_rcpt);
+        mIcon = (ImageButton) v.findViewById(R.id.button_icon);
 
         return v;
     }
@@ -202,6 +238,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
         // show the recipient field
         mEditRcpt.setVisibility(View.VISIBLE);
+        mIcon.setVisibility(View.GONE);
 
         mTitle.setText(getString(R.string.write_message));
 
@@ -286,6 +323,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         mEditTitle.setText("");
         mTopicId = 0;
         mPostId = 0;
+        mIcon.setImageResource(R.drawable.dark_navigation_cancel);
         mToken = "";
     }
 
@@ -320,6 +358,21 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         }
     }
 
+    /**
+     * Set the icon by providing its id
+     * @param iconId the icon id
+     */
+    public void setIconById(Integer iconId) {
+
+        Bitmap icon;
+        try {
+            icon = Utils.getBitmapIcon(getActivity(), iconId);
+            Bitmap bm = Bitmap.createScaledBitmap(icon, 80, 80, true);
+            mIcon.setImageBitmap(bm);
+            mIconId = iconId;
+        } catch (IOException e) {}
+    }
+
     static class AsyncPostSubmitter extends AsyncHttpLoader<Bundle>
     {
 
@@ -335,19 +388,21 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
             r.setEncoding(Network.ENCODING_ISO);
 
             // this must resemble the same form on the website
-            r.add("message", args.getString("text"));
+            r.add("message", args.getString(ARG_TEXT));
             r.add("submit", "Eintragen");
-            r.add("TID", "" + args.getInt("topic_id"));
-            r.add("token", args.getString("token"));
+            r.add("TID", "" + args.getInt(ARG_TOPIC_ID));
+            r.add("token", args.getString(ARG_TOKEN));
 
             if (mMode == MODE_EDIT) {
-                r.add("PID", "" + args.getInt("post_id"));
-                r.add("edit_title", args.getString("title"));
+                r.add("PID", "" + args.getInt(ARG_POST_ID));
+                r.add("edit_title", args.getString(ARG_TITLE));
+                r.add("edit_icon", new Integer(args.getInt(ARG_ICON)).toString());
                 setUrl(Network.BOARD_URL_EDITPOST);
             } else if (mMode == MODE_REPLY) {
                 r.add("SID", "");
                 r.add("PID", "");
-                r.add("post_title", args.getString("title"));
+                r.add("post_title", args.getString(ARG_TITLE));
+                r.add("post_icon", new Integer(args.getInt(ARG_ICON)).toString());
                 setUrl(Network.BOARD_URL_POST);
             }
 
@@ -418,6 +473,66 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
             }
 
             return result;
+        }
+    }
+
+    public class IconSelection extends DialogFragment
+    {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setTitle(R.string.icon_selection);
+            builder.setAdapter(new IconListAdapter(getActivity()),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            Bitmap icon;
+                            try {
+                                icon = Utils.getBitmapIcon(getActivity(), mIcons.get(which));
+                                Bitmap bm = Bitmap.createScaledBitmap(icon, 80, 80, true);
+                                mIcon.setImageBitmap(bm);
+                                mIconId = Integer.parseInt(mIcons.get(which).substring(4).split("\\.")[0]);
+                            } catch (IOException e) {}
+
+                        }
+                    });
+            return builder.create();
+        }
+    }
+
+
+    /**
+     * Custom view adapter for the ListView items
+     */
+    class IconListAdapter extends ArrayAdapter<String>
+    {
+        Activity context;
+
+        IconListAdapter(Activity context) {
+            super(context, R.layout.listitem_icon, R.id.name, mIcons);
+            this.context = context;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = context.getLayoutInflater();
+            View row = inflater.inflate(R.layout.listitem_icon, null);
+            String icon = mIcons.get(position);
+
+            TextView name = (TextView) row.findViewById(R.id.name);
+            name.setText(icon);
+
+            try {
+                Drawable dr = Utils.getIcon(getActivity(), icon);
+                dr.setBounds(0,0,20*(int)mDensity, 20*(int)mDensity);
+                name.setCompoundDrawables(dr, null, null, null);
+
+            } catch (IOException e) { }
+
+
+            return (row);
         }
     }
 }

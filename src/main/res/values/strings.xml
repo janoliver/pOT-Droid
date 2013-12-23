@@ -28,6 +28,7 @@
     <string name="pref_state_debug_inactive">Debug modus ist nicht aktiv.</string>
     <string name="pref_state_vibrate_active">Vibration aktiv.</string>
     <string name="pref_state_vibrate_inactive">Vibration nicht aktiv.</string>
+    <string name="icon_selection">Icon auswählen.</string>
 
     <string name="paginate_page_indicator">Seite <b>%1$d</b> von <b>%2$d</b></string>
     <string name="topic_additional_information"><b>%1$d</b> Posts, <b>%2$d</b> Seiten</string>

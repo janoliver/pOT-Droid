@@ -380,6 +380,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
                     mActivity.getRightSidebar().setIsEditPost(mTopic, p);
                     mActivity.getRightSidebar().appendText(p.getText());
+                    mActivity.getRightSidebar().setIconById(p.getIconId());
                     mActivity.openRightSidebar();
                 } else {
                     Utils.toast(mActivity, getString(R.string.notyourpost_error));

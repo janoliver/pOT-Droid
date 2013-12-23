@@ -2,6 +2,9 @@ package com.mde.potdroid.helpers;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.Toast;
@@ -40,7 +43,9 @@ public class Utils
     public static Drawable getDrawableFromAsset(Context cx, String strName) throws IOException {
         AssetManager assetManager = cx.getAssets();
         InputStream istr = assetManager.open(strName);
-        return Drawable.createFromStream(istr, null);
+        Bitmap bitmap = BitmapFactory.decodeStream(istr);
+        Drawable d = new BitmapDrawable(cx.getResources(), bitmap);
+        return d;
     }
 
     /**
@@ -52,7 +57,57 @@ public class Utils
      * @throws IOException
      */
     public static Drawable getIcon(Context cx, Integer icon_id) throws IOException {
-        return getDrawableFromAsset(cx, "thread-icons/icon" + icon_id + ".png");
+        return getDrawableFromAsset(cx, String.format("thread-icons/icon%d.png", icon_id));
+    }
+
+    /**
+     * Get a drawable Icon from the assets folder
+     *
+     * @param cx the context
+     * @param filename the icon filename
+     * @return Drawable of the icon
+     * @throws IOException
+     */
+    public static Drawable getIcon(Context cx, String filename) throws IOException {
+        return getDrawableFromAsset(cx, "thread-icons/" + filename);
+    }
+
+    /**
+     * Get a drawable asset file
+     *
+     * @param cx the context
+     * @param strName the filename
+     * @return Bitmap asset
+     * @throws IOException
+     */
+    public static Bitmap getBitmapFromAsset(Context cx, String strName) throws IOException {
+        AssetManager assetManager = cx.getAssets();
+        InputStream istr = assetManager.open(strName);
+        return BitmapFactory.decodeStream(istr);
+    }
+
+    /**
+     * Get a drawable Icon from the assets folder
+     *
+     * @param cx the context
+     * @param filename the icon filename
+     * @return Drawable of the icon
+     * @throws IOException
+     */
+    public static Bitmap getBitmapIcon(Context cx, String filename) throws IOException {
+        return getBitmapFromAsset(cx, "thread-icons/" + filename);
+    }
+
+    /**
+     * Get a drawable Icon from the assets folder
+     *
+     * @param cx the context
+     * @param id the icon id
+     * @return Drawable of the icon
+     * @throws IOException
+     */
+    public static Bitmap getBitmapIcon(Context cx, Integer id) throws IOException {
+        return getBitmapFromAsset(cx, String.format("thread-icons/icon%d.png", id));
     }
 
     /**

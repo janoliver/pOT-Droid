@@ -42,8 +42,6 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     private Board mBoard;
     // the topic list adapter
     private BoardListAdapter mListAdapter;
-    // we need this to convert dip to px for the icons
-    private float mDensity;
 
     /**
      * Returns an instance of the BoardFragment and sets required parameters as Arguments
@@ -84,11 +82,6 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                 startActivity(intent);
             }
         });
-
-        // instantiate and calculate the display metrics
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        mDensity = displayMetrics.density;
 
         return v;
     }

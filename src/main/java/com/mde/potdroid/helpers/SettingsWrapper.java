@@ -2,12 +2,14 @@ package com.mde.potdroid.helpers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.cookie.BasicClientCookie;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
@@ -43,6 +45,22 @@ public class SettingsWrapper
     public SettingsWrapper(Context cx) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(cx);
         mContext = cx;
+
+        // if this is a pre-3 version, delete all the preferences
+        if(!mSharedPreferences.getBoolean("is_v3", false))
+        {
+            SharedPreferences.Editor editor = mSharedPreferences.edit();
+            editor.clear();
+            editor.putBoolean("is_v3", true);
+            editor.commit();
+
+            // and delete the old benders
+            File ext_root = Environment.getExternalStorageDirectory();
+            File dir = new File(ext_root, "Android/data/" + mContext.getPackageName() + "/files/avatare");
+
+            if(dir.exists())
+                dir.delete();
+        }
     }
 
     /**

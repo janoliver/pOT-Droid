@@ -69,6 +69,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
     protected int mTopicId;
     protected int mPostId;
     protected String mToken;
+    protected Topic mTopicCache;
 
     // this holds the kind of form this is. The static fields are defined below.
     public static int MODE_EDIT = 1;
@@ -165,6 +166,9 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
             public void onClick(View v) {
                 stopLoader();
                 hideKeyboard();
+                clearForm();
+                if(mTopicCache != null)
+                    setIsNewPost(mTopicCache);
                 ((BaseActivity) getActivity()).closeRightSidebar();
             }
         });
@@ -200,6 +204,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         args.putInt(ARG_MODE, MODE_REPLY);
         args.putInt(ARG_TOPIC_ID, topic.getId());
         args.putString(ARG_TOKEN, topic.getNewreplytoken());
+        mTopicCache = topic;
         setFormArguments(args);
 
         mTitle.setText(getString(R.string.write_answer));

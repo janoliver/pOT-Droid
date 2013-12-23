@@ -227,6 +227,10 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         }
     }
 
+    public Topic getTopic() {
+        return mTopic;
+    }
+
     @Override
     public void onLoaderReset(Loader<Topic> loader) {
         hideLoadingAnimation();

@@ -9,7 +9,7 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/icon_pinned"
+        android:layout_toLeftOf="@+id/icon_bookmarked"
         android:layout_alignParentLeft="true"
         android:textSize="16sp"
         android:ellipsize="end"
@@ -33,6 +33,15 @@
         android:id="@+id/icon_pinned"
         android:layout_toLeftOf="@+id/icon_locked"
         android:src="@drawable/dark_indicator_pinned"
+        android:adjustViewBounds="true" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="2dp"
+        android:id="@+id/icon_bookmarked"
+        android:layout_toLeftOf="@+id/icon_pinned"
+        android:src="@drawable/dark_indicator_bookmarked"
         android:adjustViewBounds="true" />
 
     <TextView

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.mde.potdroid.R;
 import com.mde.potdroid.TopicActivity;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
+import com.mde.potdroid.helpers.DatabaseWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Topic;
@@ -42,6 +43,8 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     private Board mBoard;
     // the topic list adapter
     private BoardListAdapter mListAdapter;
+    // bookmark database handler
+    private DatabaseWrapper mDatabase;
 
     /**
      * Returns an instance of the BoardFragment and sets required parameters as Arguments
@@ -82,6 +85,8 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                 startActivity(intent);
             }
         });
+
+        mDatabase = new DatabaseWrapper(getActivity());
 
         return v;
     }
@@ -270,6 +275,10 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
             if (!t.isClosed()) {
                 row.findViewById(R.id.icon_locked).setVisibility(View.INVISIBLE);
+            }
+
+            if (!mDatabase.isBookmark(t)) {
+                row.findViewById(R.id.icon_bookmarked).setVisibility(View.INVISIBLE);
             }
 
             return row;

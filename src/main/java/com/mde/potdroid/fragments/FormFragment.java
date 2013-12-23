@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
 import com.mde.potdroid.helpers.EncodingRequestParams;
@@ -138,6 +139,8 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
             @Override
             public void onClick(View v) {
                 stopLoader();
+                hideKeyboard();
+                ((BaseActivity)getActivity()).closeRightSidebar();
             }
         });
 

@@ -1,47 +1,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/sidebar"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="?attr/actionBarSize"
     android:orientation="horizontal">
 
     <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
         android:src="?attr/menu_icon_frwd"
         android:id="@+id/button_frwd"
         android:background="@drawable/actionbar_button_background"
-        android:layout_gravity="right"/>
+        android:layout_gravity="center"/>
 
     <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
         android:src="?attr/menu_icon_rwd"
         android:id="@+id/button_rwd"
         android:background="@drawable/actionbar_button_background"
-        android:layout_gravity="right"/>
+        android:layout_gravity="center"/>
 
     <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
         android:src="?attr/menu_icon_refresh"
         android:id="@+id/button_refresh"
         android:background="@drawable/actionbar_button_background"
-        android:layout_gravity="right"/>
+        android:layout_gravity="center"/>
 
     <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
         android:src="?attr/menu_icon_fwd"
         android:id="@+id/button_fwd"
         android:background="@drawable/actionbar_button_background"
-        android:layout_gravity="right"/>
+        android:layout_gravity="center"/>
 
     <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
         android:src="?attr/menu_icon_ffwd"
         android:id="@+id/button_ffwd"
         android:background="@drawable/actionbar_button_background"
-        android:layout_gravity="right"/>
+        android:layout_gravity="center"/>
 
 </LinearLayout>

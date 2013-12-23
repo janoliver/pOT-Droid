@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:potdroid="http://schemas.android.com/apk/res-auto">
 
     <group android:id="@+id/loggedout">
         <item android:id="@+id/preferences"
             android:title="@string/action_settings"
             android:icon="?attr/menu_icon_preferences"
-            android:showAsAction="never"/>
+            potdroid:showAsAction="always"/>
         <item android:id="@+id/forumact"
             android:title="@string/forum_title"
             android:icon="?attr/menu_icon_home"
-            android:showAsAction="never"/>
+            potdroid:showAsAction="always"/>
     </group>
 
 </menu>

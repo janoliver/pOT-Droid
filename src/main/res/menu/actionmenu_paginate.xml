@@ -1,29 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:potdroid="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/nav_firstpage"
-          android:title="Erste Seite"
-          potdroid:showAsAction="always"
-          android:icon="@android:color/transparent"
-          android:enabled="false"/>
-    <item android:id="@+id/nav_previous"
-          android:title="Seite zurück"
-          potdroid:showAsAction="always"
-          android:icon="@android:color/transparent"
-          android:enabled="false"/>
-    <item android:id="@+id/nav_refresh"
-          android:title="Aktualisieren"
-          android:icon="?attr/menu_icon_refresh"
-          potdroid:showAsAction="always" />
-    <item android:id="@+id/nav_next"
-          android:title="Seite vor"
-          potdroid:showAsAction="always"
-          android:icon="@android:color/transparent"
-          android:enabled="false"/>
-    <item android:id="@+id/nav_lastpage"
-          android:title="Letzte Seite"
-          potdroid:showAsAction="always"
-          android:icon="@android:color/transparent"
-          android:enabled="false"/>
-
+    <item
+        android:id="@+id/layout_item"
+        potdroid:actionLayout="@layout/view_paginate"
+        potdroid:showAsAction="always"
+        android:icon="@drawable/dark_navigation_refresh"/>
 </menu>

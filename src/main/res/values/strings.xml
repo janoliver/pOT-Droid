@@ -4,9 +4,9 @@
     <string name="app_name">pOT-Droid3</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="login_success">Erfolgreich eingeloggt!</string>
+    <string name="login_success">Erfolgreich eingeloggt! Die App sollte neu gestartet werden.</string>
     <string name="login_failure">Fehler!</string>
-    <string name="logout_success">Daten gelöscht!</string>
+    <string name="logout_success">Daten gelöscht! Die App sollte neu gestartet werden.</string>
     <string name="login_dialog_warning">Das Passwort wird NICHT gespeichert! Es wird lediglich ein
         Cookie erstellt.</string>
     <string name="login_dialog_username_hint">Username</string>

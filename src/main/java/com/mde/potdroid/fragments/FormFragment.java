@@ -402,12 +402,14 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
                 r.add("PID", "" + args.getInt(ARG_POST_ID));
                 r.add("edit_title", args.getString(ARG_TITLE));
                 r.add("edit_icon", new Integer(args.getInt(ARG_ICON)).toString());
+                r.add("edit_converturls", "1");
                 setUrl(Network.BOARD_URL_EDITPOST);
             } else if (mMode == MODE_REPLY) {
                 r.add("SID", "");
                 r.add("PID", "");
                 r.add("post_title", args.getString(ARG_TITLE));
                 r.add("post_icon", new Integer(args.getInt(ARG_ICON)).toString());
+                r.add("post_converturls", "1");
                 setUrl(Network.BOARD_URL_POST);
             }
 

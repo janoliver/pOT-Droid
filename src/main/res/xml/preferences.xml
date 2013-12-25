@@ -1,83 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-            android:title="Account"
-            android:key="pref_account_settings">
+        android:title="Account"
+        android:key="pref_account_settings">
         <com.mde.potdroid.views.LoginDialog
-                android:key="pref_login"
-                android:dialogIcon="@android:drawable/ic_dialog_alert"
-                android:title="Login"
-                android:summary="Login um Bookmarks, PMs etc. zu nutzen"
-                android:dialogMessage="Blablabla"
-                android:positiveButtonText="Login"
-                android:negativeButtonText="Abbrechen"/>
+            android:key="pref_login"
+            android:dialogIcon="@android:drawable/ic_dialog_alert"
+            android:title="Login"
+            android:summary="Login um Bookmarks, PMs etc. zu nutzen"
+            android:dialogMessage="Blablabla"
+            android:positiveButtonText="Login"
+            android:negativeButtonText="Abbrechen"/>
         <com.mde.potdroid.views.LogoutDialog
-                android:key="pref_logout"
-                android:dialogIcon="@android:drawable/ic_dialog_alert"
-                android:title="Logout"
-                android:summary="Cookie und Usernamen aus dem Speicher löschen."
-                android:dialogMessage="Mit Click auf 'Logout' werden der gespeicherte Cookie sowie die Informationen über Usernamen und ID gelöscht."
-                android:positiveButtonText="Logout"
-                android:negativeButtonText="Abbrechen"
-                android:enabled="false"/>
+            android:key="pref_logout"
+            android:dialogIcon="@android:drawable/ic_dialog_alert"
+            android:title="Logout"
+            android:summary="Cookie und Usernamen aus dem Speicher löschen."
+            android:dialogMessage="Mit Click auf 'Logout' werden der gespeicherte Cookie sowie die Informationen über Usernamen und ID gelöscht."
+            android:positiveButtonText="Logout"
+            android:negativeButtonText="Abbrechen"
+            android:enabled="false"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="Style"
-            android:key="pref_style_settings">
+        android:title="Style"
+        android:key="pref_style_settings">
 
         <CheckBoxPreference
-                android:key="pref_show_benders"
-                android:title="Bender anzeigen wenn vorhanden" />
+            android:key="pref_show_benders"
+            android:title="Bender anzeigen wenn vorhanden"/>
 
         <ListPreference
-                android:key="pref_load_benders"
-                android:title="Bender downloaden"
-                android:summary="Wann sollen Bender mit heruntergeladen werden"
-                android:defaultValue="0"
-                android:entries="@array/load_images"
-                android:entryValues="@array/load_images_values" />
+            android:key="pref_load_benders"
+            android:title="Bender downloaden"
+            android:summary="Wann sollen Bender mit heruntergeladen werden"
+            android:defaultValue="0"
+            android:entries="@array/load_images"
+            android:entryValues="@array/load_images_values"/>
 
         <ListPreference
-                android:key="pref_load_images"
-                android:title="Bilder automatisch anzeigen"
-                android:summary="Wann sollen Bilder automatisch angezeigt werden"
-                android:defaultValue="0"
-                android:entries="@array/load_images"
-                android:entryValues="@array/load_images_values" />
+            android:key="pref_load_images"
+            android:title="Bilder automatisch anzeigen"
+            android:summary="Wann sollen Bilder automatisch angezeigt werden"
+            android:defaultValue="0"
+            android:entries="@array/load_images"
+            android:entryValues="@array/load_images_values"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="Polling"
-            android:key="pref_style_settings">
+        android:title="Polling"
+        android:key="pref_style_settings">
 
         <ListPreference
-                android:title="Nach neuen PMs pollen"
-                android:key="pref_message_polling_interval"
-                android:summary="Wie häufig nach neuen PMs geschaut wird."
-                android:entries="@array/pref_poll_messages_entries"
-                android:entryValues="@array/pref_poll_messages_values"
-                android:defaultValue="0"/>
+            android:title="Nach neuen PMs pollen"
+            android:key="pref_message_polling_interval"
+            android:summary="Wie häufig nach neuen PMs geschaut wird."
+            android:entries="@array/pref_poll_messages_entries"
+            android:entryValues="@array/pref_poll_messages_values"
+            android:defaultValue="0"/>
 
         <RingtonePreference
-                android:key="pref_notification_sound"
-                android:ringtoneType="notification"
-                android:summary="Benachrichtigungston bei ungelesener PM"
-                android:title="Benachrichtigungston" />
+            android:key="pref_notification_sound"
+            android:ringtoneType="notification"
+            android:summary="Benachrichtigungston bei ungelesener PM"
+            android:title="Benachrichtigungston"/>
 
         <CheckBoxPreference
-                android:key="pref_notification_vibrate"
-                android:title="Vibrieren bei Benachrichtigung" />
+            android:key="pref_notification_vibrate"
+            android:title="Vibrieren bei Benachrichtigung"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="System"
-            android:key="pref_system_settings">
+        android:title="System"
+        android:key="pref_system_settings">
 
         <CheckBoxPreference
-                android:key="pref_debug_mode"
-                android:title="Debug Modus"
-                android:defaultValue="true"/>
+            android:key="pref_debug_mode"
+            android:title="Debug Modus"
+            android:defaultValue="true"/>
 
     </PreferenceCategory>
 

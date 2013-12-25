@@ -1,16 +1,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/sidebar_button_background"
-    android:paddingBottom="10dp"
-    android:paddingTop="10dp"
-    android:paddingLeft="10dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/sidebar_button_background"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp">
 
     <TextView
         android:id="@+id/text_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp" />
+        android:textSize="18sp"/>
 
     <TextView
         android:id="@+id/text_description"
@@ -18,6 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_name"
         android:textSize="14sp"
-        android:textColor="@color/darkgrey" />
+        android:textColor="@color/darkgrey"/>
 
 </RelativeLayout>

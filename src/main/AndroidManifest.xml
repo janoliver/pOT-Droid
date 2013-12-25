@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.mde.potdroid"
-        android:versionCode="30"
-        android:versionName="3.0a">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mde.potdroid"
+    android:versionCode="30"
+    android:versionName="3.0a">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
 
     <uses-sdk
-            android:minSdkVersion="7"
-            android:targetSdkVersion="19"/>
+        android:minSdkVersion="7"
+        android:targetSdkVersion="19"/>
 
     <application
-            android:hardwareAccelerated="true"
-            android:allowBackup="true"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/app_name"
-            android:theme="@style/PotDroidDark"
-            android:uiOptions="splitActionBarWhenNarrow">
+        android:hardwareAccelerated="true"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/PotDroidDark"
+        android:uiOptions="splitActionBarWhenNarrow">
 
         <activity
-                android:name=".ForumActivity"
-                android:label="@string/app_name">
+            android:name=".ForumActivity"
+            android:label="@string/app_name">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -35,12 +35,15 @@
             </intent-filter>
 
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http"
-                      android:host="forum.mods.de"
-                      android:pathPrefix="/bb/index.php" />
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:scheme="http"
+                    android:host="forum.mods.de"
+                    android:pathPrefix="/bb/index.php"/>
             </intent-filter>
 
         </activity>
@@ -48,12 +51,15 @@
         <activity android:name=".BoardActivity">
 
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http"
-                      android:host="forum.mods.de"
-                      android:pathPrefix="/bb/board.php" />
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:scheme="http"
+                    android:host="forum.mods.de"
+                    android:pathPrefix="/bb/board.php"/>
             </intent-filter>
 
         </activity>
@@ -63,12 +69,15 @@
         <activity android:name=".TopicActivity">
 
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http"
-                      android:host="forum.mods.de"
-                      android:pathPrefix="/bb/thread.php" />
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:scheme="http"
+                    android:host="forum.mods.de"
+                    android:pathPrefix="/bb/thread.php"/>
             </intent-filter>
 
         </activity>
@@ -76,12 +85,15 @@
         <activity android:name=".MessageListActivity">
 
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http"
-                      android:host="forum.mods.de"
-                      android:pathPrefix="/bb/pm/" />
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:scheme="http"
+                    android:host="forum.mods.de"
+                    android:pathPrefix="/bb/pm/"/>
             </intent-filter>
 
         </activity>
@@ -89,12 +101,15 @@
         <activity android:name=".MessageActivity">
 
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http"
-                      android:host="forum.mods.de"
-                      android:pathPrefix="/bb/pm/?a=2" />
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:scheme="http"
+                    android:host="forum.mods.de"
+                    android:pathPrefix="/bb/pm/?a=2"/>
             </intent-filter>
 
         </activity>
@@ -104,16 +119,18 @@
         <receiver android:name=".services.BootBroadcastReceiver">
 
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
 
         </receiver>
 
-        <receiver android:name=".services.MessagePollingAlarm"
-                  android:process=":remote" />
+        <receiver
+            android:name=".services.MessagePollingAlarm"
+            android:process=":remote"/>
 
-        <service android:name=".services.MessagePollingService"
-                android:exported="false" />
+        <service
+            android:name=".services.MessagePollingService"
+            android:exported="false"/>
     </application>
 
 </manifest>

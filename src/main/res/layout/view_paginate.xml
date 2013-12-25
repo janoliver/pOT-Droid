@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/sidebar"
-    android:layout_width="wrap_content"
-    android:layout_height="?attr/actionBarSize"
-    android:orientation="horizontal">
+              android:id="@+id/sidebar"
+              android:layout_width="wrap_content"
+              android:layout_height="?attr/actionBarSize"
+              android:orientation="horizontal">
 
     <ImageButton
         android:layout_width="?attr/actionBarSize"

@@ -20,17 +20,20 @@
 <resources>
 
     <style name="Theme.Bbdarkstyle" parent="@style/Theme.AppCompat">
-        <item name="android:actionBarItemBackground">@drawable/selectable_background_bbdarkstyle</item>
+        <item name="android:actionBarItemBackground">@drawable/selectable_background_bbdarkstyle
+        </item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Bbdarkstyle</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Bbdarkstyle</item>
         <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Bbdarkstyle</item>
         <item name="android:actionDropDownStyle">@style/DropDownNav.Bbdarkstyle</item>
         <item name="android:actionBarStyle">@style/ActionBar.Solid.Bbdarkstyle</item>
         <item name="android:actionModeBackground">@drawable/cab_background_top_bbdarkstyle</item>
-        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_bbdarkstyle</item>
-        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Bbdarkstyle</item>
-        
-        
+        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_bbdarkstyle
+        </item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Bbdarkstyle
+        </item>
+
+
     </style>
 
     <style name="ActionBar.Solid.Bbdarkstyle" parent="@style/Widget.AppCompat.ActionBar.Solid">
@@ -44,7 +47,7 @@
         <item name="android:background">@drawable/ab_transparent_bbdarkstyle</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Bbdarkstyle</item>
     </style>
-    
+
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
     <style name="Theme.Bbdarkstyle.Widget" parent="@style/Theme.AppCompat">
         <item name="android:popupMenuStyle">@style/PopupMenu.Bbdarkstyle</item>

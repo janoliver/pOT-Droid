@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_root"
-    android:orientation="horizontal"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:padding="10dp">
+              android:id="@+id/layout_root"
+              android:orientation="horizontal"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:padding="10dp">
 
     <ImageButton
         android:layout_width="0dp"
@@ -13,7 +13,7 @@
         android:id="@+id/button_edit"
         style="?android:attr/buttonBarButtonStyle"
         android:textSize="14sp"
-        android:layout_weight="1" />
+        android:layout_weight="1"/>
 
     <ImageButton
         android:layout_width="0dp"
@@ -22,7 +22,7 @@
         android:id="@+id/button_quote"
         style="?android:attr/buttonBarButtonStyle"
         android:textSize="14sp"
-        android:layout_weight="1" />
+        android:layout_weight="1"/>
 
     <ImageButton
         android:layout_width="0dp"
@@ -31,7 +31,7 @@
         android:id="@+id/button_bookmark"
         style="?android:attr/buttonBarButtonStyle"
         android:textSize="14sp"
-        android:layout_weight="1" />
+        android:layout_weight="1"/>
 
     <ImageButton
         android:layout_width="0dp"
@@ -40,5 +40,5 @@
         android:id="@+id/button_link"
         style="?android:attr/buttonBarButtonStyle"
         android:textSize="14sp"
-        android:layout_weight="1" />
+        android:layout_weight="1"/>
 </LinearLayout>

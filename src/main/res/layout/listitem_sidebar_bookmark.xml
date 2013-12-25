@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/RelativeLayout01"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/sidebar_bookmarkbutton_background"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp">
+                android:id="@+id/RelativeLayout01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/sidebar_bookmarkbutton_background"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
     <TextView
         android:id="@+id/name"
@@ -19,7 +19,7 @@
         android:paddingBottom="10dp"
         android:textSize="16sp"
         android:textColor="#fff"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"/>
 
     <TextView
         android:id="@+id/newposts"
@@ -33,5 +33,5 @@
         android:paddingBottom="2dp"
         android:textSize="11sp"
         android:background="#222E3A"
-        android:textColor="#fff" />
+        android:textColor="#fff"/>
 </RelativeLayout>

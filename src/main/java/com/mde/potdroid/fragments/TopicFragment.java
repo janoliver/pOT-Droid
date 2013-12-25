@@ -96,8 +96,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setRetainInstance(true);
-
         if (mTopic == null)
             startLoader(this);
     }

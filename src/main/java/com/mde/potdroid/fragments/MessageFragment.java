@@ -93,8 +93,6 @@ public class MessageFragment extends BaseFragment implements LoaderManager.Loade
 
         getActionbar().setTitle(R.string.loading_message);
 
-        setRetainInstance(true);
-
         if (mMessage == null)
             startLoader(this);
     }

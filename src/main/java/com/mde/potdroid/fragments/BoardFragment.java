@@ -95,8 +95,6 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setRetainInstance(true);
-
         if (mBoard == null)
             startLoader(this);
     }

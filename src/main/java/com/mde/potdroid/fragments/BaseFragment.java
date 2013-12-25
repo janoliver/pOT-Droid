@@ -35,6 +35,7 @@ public abstract class BaseFragment extends Fragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        // the fragment instance should persist upon orientation changes.
         setRetainInstance(true);
 
         // instantiate and calculate the display metrics

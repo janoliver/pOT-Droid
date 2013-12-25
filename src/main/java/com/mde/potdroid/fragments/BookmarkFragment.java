@@ -59,7 +59,6 @@ public class BookmarkFragment extends BaseFragment
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
-        setRetainInstance(true);
 
         mBookmarkList = new BookmarkList(getSupportActivity());
     }
@@ -94,8 +93,6 @@ public class BookmarkFragment extends BaseFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        setRetainInstance(true);
 
         if (mBookmarkList == null)
             startLoader(this);

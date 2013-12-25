@@ -13,7 +13,6 @@ public class MessageListActivity extends BaseActivity
         implements ActionBar.TabListener, FormFragment.FormListener
 {
 
-    private MessageListFragment mMessageList;
     private ActionBar mActionBar;
 
     @Override
@@ -31,22 +30,22 @@ public class MessageListActivity extends BaseActivity
                 mActionBar.newTab().setText("Postausgang").setTag(MessageList.TAG_OUTBOX)
                         .setTabListener(this)
         );
-
-        mMessageList = (MessageListFragment) getSupportFragmentManager().findFragmentByTag
-                (MessageList.TAG_INBOX);
-        if (mMessageList == null)
-            mMessageList = MessageListFragment.newInstance(MessageList.TAG_INBOX);
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction().add(R.id.content, mMessageList, MessageList.TAG_INBOX)
-                    .commit();
-        }
     }
 
     @Override
     protected int getLayout() {
         return R.layout.layout_sidebar_rl;
+    }
+
+    @Override
+    public void onSuccess(Bundle result) {
+        closeRightSidebar();
+        Utils.toast(this, getString(R.string.send_successful));
+    }
+
+    @Override
+    public void onFailure(Bundle result) {
+        Utils.toast(this, getString(R.string.send_failure));
     }
 
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
@@ -64,16 +63,5 @@ public class MessageListActivity extends BaseActivity
 
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
         // probably ignore this event
-    }
-
-    @Override
-    public void onSuccess(Bundle result) {
-        closeRightSidebar();
-        Utils.toast(this, getString(R.string.send_successful));
-    }
-
-    @Override
-    public void onFailure(Bundle result) {
-        Utils.toast(this, getString(R.string.send_failure));
     }
 }

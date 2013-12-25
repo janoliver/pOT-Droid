@@ -24,6 +24,8 @@ import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.parsers.MessageParser;
 
+import java.util.LinkedList;
+
 /**
  * This Fragment displays a PM Message in a WebView. Since the WebView has a memory leak,
  * we have to work around that by adding and deleting it in onPause and onResume. This sucks,
@@ -46,7 +48,7 @@ public class MessageFragment extends BaseFragment implements LoaderManager.Loade
     private FrameLayout mWebContainer;
 
     // singleton and state indicator for the Kitkat bug workaround
-    public static MessageFragment mWebViewSingleton;
+    public static LinkedList<MessageFragment> mWebViewHolder = new LinkedList<MessageFragment>();
     public boolean mDestroyed;
 
     /**
@@ -75,11 +77,12 @@ public class MessageFragment extends BaseFragment implements LoaderManager.Loade
         setupWebView();
 
         // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
-        // of the former TopicFragment.
-        if (mWebViewSingleton != this && mWebViewSingleton != null && Utils.isKitkat()) {
-            mWebViewSingleton.destroyWebView();
+        // of some former TopicFragment, which will be restored on onResume. .
+        if(Utils.isKitkat()) {
+            mWebViewHolder.add(this);
+            if(mWebViewHolder.size() > 3)
+                mWebViewHolder.removeFirst().destroyWebView();
         }
-        mWebViewSingleton = this;
 
         return v;
     }

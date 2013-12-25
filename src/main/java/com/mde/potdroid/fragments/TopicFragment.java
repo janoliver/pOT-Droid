@@ -36,6 +36,8 @@ import com.mde.potdroid.parsers.TopicParser;
 
 import org.apache.http.Header;
 
+import java.util.LinkedList;
+
 /**
  * This Fragment displays a Topic in a WebView. Since the WebView has a memory leak,
  * we have to work around that by adding and deleting it in onPause and onResume. This sucks,
@@ -65,7 +67,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     private BaseActivity mActivity;
 
     // singleton and state indicator for the Kitkat bug workaround
-    public static TopicFragment mWebViewSingleton;
+    public static LinkedList<TopicFragment> mWebViewHolder = new LinkedList<TopicFragment>();
     public boolean mDestroyed;
 
 
@@ -111,11 +113,12 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         setupWebView();
 
         // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
-        // of the former TopicFragment.
-        if (mWebViewSingleton != this && mWebViewSingleton != null && Utils.isKitkat()) {
-            mWebViewSingleton.destroyWebView();
+        // of some former TopicFragment, which will be restored on onResume. .
+        if(Utils.isKitkat()) {
+            mWebViewHolder.add(this);
+            if(mWebViewHolder.size() > 3)
+                mWebViewHolder.removeFirst().destroyWebView();
         }
-        mWebViewSingleton = this;
 
         return v;
     }

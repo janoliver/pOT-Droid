@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import com.mde.potdroid.fragments.BoardFragment;
 
+/**
+ * Activity that wraps the BoardFragment
+ */
 public class BoardActivity extends BaseActivity
 {
 
@@ -35,10 +38,15 @@ public class BoardActivity extends BaseActivity
 
         }
 
-        if (savedInstanceState == null) {
+        // create and add the fragment
+        BoardFragment bm = (BoardFragment) getSupportFragmentManager()
+                .findFragmentByTag("board");
+        if (bm == null)
+            bm = BoardFragment.newInstance(bid, page);
 
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.content, BoardFragment.newInstance(bid, page))
+                    .add(R.id.content, bm, "board")
                     .commit();
         }
     }

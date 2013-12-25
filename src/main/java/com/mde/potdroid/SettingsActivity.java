@@ -11,10 +11,15 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
 import com.mde.potdroid.helpers.SettingsWrapper;
+import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.services.MessagePollingService;
 import com.mde.potdroid.views.LoginDialog;
 import com.mde.potdroid.views.LogoutDialog;
 
+/**
+ * Settings Activity. Since the support lib does not contain a PreferenceFragment,
+ * we use the legacy PreferenceActivity.
+ */
 public class SettingsActivity extends PreferenceActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener
 {
@@ -35,6 +40,7 @@ public class SettingsActivity extends PreferenceActivity
     public void onResume() {
         super.onResume();
 
+        // set some custom descriptions programmatically
         setPreferenceDescription(SettingsWrapper.PREF_KEY_USERNAME);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_BENDERS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_IMAGES);
@@ -59,41 +65,50 @@ public class SettingsActivity extends PreferenceActivity
 
     private void setPreferenceDescription(String key) {
         Preference preference = findPreference(key);
+
+        // if list preference, set the chosen value as description
         if (preference instanceof ListPreference) {
             ListPreference listPref = (ListPreference) preference;
             preference.setSummary(listPref.getEntry());
         }
 
+
         if (key.equals(SettingsWrapper.PREF_KEY_USERNAME)) {
 
+            // set the description of the login state and enable/disable
+            // the logout button.
             LoginDialog loginPreference = (LoginDialog) findPreference(SettingsWrapper
                     .PREF_KEY_LOGIN);
             LogoutDialog logoutPreference = (LogoutDialog) findPreference(SettingsWrapper
                     .PREF_KEY_LOGOUT);
 
-            if (mSettings.hasUsername()) {
-                loginPreference.setSummary(getString(R.string.pref_state_loggedin)
-                        + mSettings.getUsername());
+            if (Utils.isLoggedIn()) {
+                loginPreference.setSummary(String.format("%s %s", getString(R.string
+                        .pref_state_loggedin), mSettings.getUsername()));
                 logoutPreference.setEnabled(true);
+                loginPreference.setEnabled(false);
             } else {
                 loginPreference.setSummary(getString(R.string.pref_state_notloggedin));
                 logoutPreference.setEnabled(false);
+                loginPreference.setEnabled(true);
             }
         } else if (key.equals(SettingsWrapper.PREF_KEY_POLL_MESSAGES)) {
 
+            // the polling preference
             Intent pollServiceIntent = new Intent(SettingsActivity.this,
                     MessagePollingService.class);
             if (mSettings.pollMessagesInterval() == 0) {
-                if (isMyServiceRunning())
+                if (isPollingServiceRunning())
                     stopService(pollServiceIntent);
             } else {
-                if (!isMyServiceRunning())
+                if (!isPollingServiceRunning())
                     startService(pollServiceIntent);
             }
         }
     }
 
-    private boolean isMyServiceRunning() {
+    // check if the MessagePollingService is running.
+    private boolean isPollingServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer
                 .MAX_VALUE)) {

@@ -8,6 +8,10 @@ import com.mde.potdroid.fragments.FormFragment;
 import com.mde.potdroid.fragments.TopicFragment;
 import com.mde.potdroid.helpers.Utils;
 
+/**
+ * The Activity that contains a TopicFragment. It handles some callbacks of the
+ * Formlistener after Post submission.
+ */
 public class TopicActivity extends BaseActivity implements FormFragment.FormListener
 {
 
@@ -44,6 +48,7 @@ public class TopicActivity extends BaseActivity implements FormFragment.FormList
 
         }
 
+        // create and add the fragment
         mTopicFragment = (TopicFragment) getSupportFragmentManager().findFragmentByTag("topic");
         if (mTopicFragment == null)
             mTopicFragment = TopicFragment.newInstance(tid, page, pid);
@@ -62,6 +67,10 @@ public class TopicActivity extends BaseActivity implements FormFragment.FormList
         return R.layout.layout_sidebar_rl;
     }
 
+    /**
+     * Called upon Form success.
+     * @param result a bundle containing information about the result
+     */
     @Override
     public void onSuccess(Bundle result) {
         closeRightSidebar();
@@ -72,6 +81,10 @@ public class TopicActivity extends BaseActivity implements FormFragment.FormList
             mTopicFragment.goToLastPost(result.getInt("post_id"));
     }
 
+    /**
+     * Called upon Form failure.
+     * @param result a bundle containing information about the result
+     */
     @Override
     public void onFailure(Bundle result) {
         Utils.toast(this, getString(R.string.send_failure));

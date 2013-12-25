@@ -9,31 +9,35 @@ import com.mde.potdroid.fragments.MessageListFragment;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.MessageList;
 
+/**
+ * The Container Activity for the MessageList, containing a TabBar for the
+ * inbox and outbox folders.
+ */
 public class MessageListActivity extends BaseActivity
         implements ActionBar.TabListener, FormFragment.FormListener
 {
-
-    private ActionBar mActionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mActionBar = getSupportActionBar();
-        mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        mActionBar.addTab(
-                mActionBar.newTab().setText("Posteingang").setTag(MessageList.TAG_INBOX)
+        actionBar.addTab(
+                actionBar.newTab().setText("Posteingang").setTag(MessageList.TAG_INBOX)
                         .setTabListener(this)
         );
-        mActionBar.addTab(
-                mActionBar.newTab().setText("Postausgang").setTag(MessageList.TAG_OUTBOX)
+        actionBar.addTab(
+                actionBar.newTab().setText("Postausgang").setTag(MessageList.TAG_OUTBOX)
                         .setTabListener(this)
         );
     }
 
     @Override
     protected int getLayout() {
+        if(!Utils.isLoggedIn())
+            return R.layout.layout_no_sidebar;
         return R.layout.layout_sidebar_rl;
     }
 

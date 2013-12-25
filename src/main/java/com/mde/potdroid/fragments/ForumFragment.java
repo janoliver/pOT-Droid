@@ -38,13 +38,22 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
     private Forum mForum;
     private ForumListAdapter mListAdapter;
 
+    /**
+     * Return new instance of ForumFragment. Although this fragment has no parameters,
+     * We provide this method for consistency.
+     *
+     * @return ForumFragment
+     */
+    public static ForumFragment newInstance() {
+        return new ForumFragment();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {

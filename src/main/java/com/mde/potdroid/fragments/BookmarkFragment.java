@@ -42,7 +42,6 @@ public class BookmarkFragment extends BaseFragment
     // the bookmark list, Listview and adapter
     private BookmarkList mBookmarkList;
     private BookmarkListAdapter mListAdapter;
-    private ListView mListView;
 
     /**
      * Return new instance of BookmarkFragment. Although this fragment has no parameters,
@@ -60,7 +59,7 @@ public class BookmarkFragment extends BaseFragment
 
         setHasOptionsMenu(true);
 
-        mBookmarkList = new BookmarkList(getSupportActivity());
+        mBookmarkList = new BookmarkList(getBaseActivity());
     }
 
     @Override
@@ -68,12 +67,12 @@ public class BookmarkFragment extends BaseFragment
         View v = inflater.inflate(R.layout.layout_board, container, false);
 
         mListAdapter = new BookmarkListAdapter();
-        mListView = (ListView) v.findViewById(R.id.list_content);
-        mListView.setAdapter(mListAdapter);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        ListView listView = (ListView) v.findViewById(R.id.list_content);
+        listView.setAdapter(mListAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getSupportActivity(), TopicActivity.class);
+                Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
                 intent.putExtra(TopicFragment.ARG_POST_ID, mBookmarkList.getBookmarks()
                         .get(position).getLastPost().getId());
                 intent.putExtra(TopicFragment.ARG_TOPIC_ID, mBookmarkList.getBookmarks()
@@ -82,7 +81,7 @@ public class BookmarkFragment extends BaseFragment
             }
         });
 
-        registerForContextMenu(mListView);
+        registerForContextMenu(listView);
 
         getActionbar().setTitle(R.string.bookmarks);
 
@@ -93,6 +92,8 @@ public class BookmarkFragment extends BaseFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        getBaseActivity().enableLeftSidebar();
 
         if (mBookmarkList == null)
             startLoader(this);
@@ -120,7 +121,7 @@ public class BookmarkFragment extends BaseFragment
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getSupportActivity().getMenuInflater();
+        MenuInflater inflater = getBaseActivity().getMenuInflater();
         inflater.inflate(R.menu.contextmenu_bookmark, menu);
     }
 
@@ -143,7 +144,7 @@ public class BookmarkFragment extends BaseFragment
                 {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        Utils.toast(getSupportActivity(), getString(R.string.removed_bookmark));
+                        Utils.toast(getBaseActivity(), getString(R.string.removed_bookmark));
                         hideLoadingAnimation();
                         restartLoader(BookmarkFragment.this);
                     }
@@ -157,7 +158,7 @@ public class BookmarkFragment extends BaseFragment
 
     @Override
     public Loader<BookmarkParser.BookmarksContainer> onCreateLoader(int id, Bundle args) {
-        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity());
+        AsyncContentLoader l = new AsyncContentLoader(getBaseActivity());
         showLoadingAnimation();
         return l;
     }
@@ -209,9 +210,13 @@ public class BookmarkFragment extends BaseFragment
             // change the background color, if the bookmark has unread posts
             if (b.getNumberOfNewPosts() > 0) {
                 View v = row.findViewById(R.id.container);
+                int padding_top = v.getPaddingTop();
+                int padding_bottom = v.getPaddingBottom();
+                int padding_right = v.getPaddingRight();
+                int padding_left = v.getPaddingLeft();
+
                 v.setBackgroundResource(R.drawable.sidebar_button_background);
-                v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(),
-                        v.getPaddingBottom());
+                v.setPadding(padding_left, padding_top, padding_right, padding_bottom);
             }
 
             // set the name, striked if closed

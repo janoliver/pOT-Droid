@@ -3,6 +3,7 @@ package com.mde.potdroid.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
@@ -68,12 +69,30 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
         {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
                                         int childPosition, long id) {
-                // go to a board
-                Intent intent = new Intent(getSupportActivity(), BoardActivity.class);
-                intent.putExtra(BoardFragment.ARG_ID, mForum.getCategories()
-                        .get(groupPosition).getBoards().get(childPosition).getId());
-                intent.putExtra(BoardFragment.ARG_PAGE, 1);
-                startActivity(intent);
+
+                int bid = mForum.getCategories()
+                        .get(groupPosition).getBoards().get(childPosition).getId();
+
+                if(getBaseActivity().isDualPane()) {
+
+                    BoardFragment bm = (BoardFragment) getFragmentManager()
+                            .findFragmentByTag("board");
+                    if (bm == null)
+                        bm = BoardFragment.newInstance(bid, 1);
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.content, bm, "board");
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    ft.commit();
+
+                } else {
+
+                    Intent intent = new Intent(getBaseActivity(), BoardActivity.class);
+                    intent.putExtra(BoardFragment.ARG_ID, bid);
+                    intent.putExtra(BoardFragment.ARG_PAGE, 1);
+                    startActivity(intent);
+                }
+
                 return true;
             }
         });
@@ -87,6 +106,8 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        getBaseActivity().enableLeftSidebar();
 
         if (mForum == null)
             startLoader(this);
@@ -114,7 +135,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
     @Override
     public Loader<Forum> onCreateLoader(int id, Bundle args) {
-        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity());
+        AsyncContentLoader l = new AsyncContentLoader(getBaseActivity());
         showLoadingAnimation();
         return l;
     }

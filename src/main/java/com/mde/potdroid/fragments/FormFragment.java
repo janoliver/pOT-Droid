@@ -120,15 +120,11 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallback = (FormListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement FormListener");
-        }
-
         mFormArguments = getArguments();
+    }
+
+    public void setFormListener(FormListener callback) {
+        mCallback = callback;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
@@ -179,7 +175,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
             @Override
             public void onClick(View v) {
                 IconSelection id = new IconSelection();
-                id.show(getSupportActivity().getSupportFragmentManager(), "icondialog");
+                id.show(getBaseActivity().getSupportFragmentManager(), "icondialog");
             }
         });
 
@@ -307,9 +303,9 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         showLoadingAnimation();
 
         if (mFormArguments.getInt(ARG_MODE) == MODE_MESSAGE)
-            return new AsyncMessageSubmitter(getSupportActivity(), args);
+            return new AsyncMessageSubmitter(getBaseActivity(), args);
         else
-            return new AsyncPostSubmitter(getSupportActivity(), args);
+            return new AsyncPostSubmitter(getBaseActivity(), args);
     }
 
     @Override
@@ -317,10 +313,13 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         hideLoadingAnimation();
         clearForm();
 
-        if (result.getInt(STATUS, STATUS_FAILED) == STATUS_SUCCESS)
-            mCallback.onSuccess(result);
-        else
-            mCallback.onFailure(result);
+        if (result.getInt(STATUS, STATUS_FAILED) == STATUS_SUCCESS) {
+            if(mCallback != null)
+                mCallback.onSuccess(result);
+        } else {
+            if(mCallback != null)
+                mCallback.onFailure(result);
+        }
     }
 
     public void clearForm() {
@@ -333,7 +332,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
     }
 
     public void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getSupportActivity().getSystemService(
+        InputMethodManager imm = (InputMethodManager) getBaseActivity().getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
     }

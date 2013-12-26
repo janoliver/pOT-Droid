@@ -21,12 +21,12 @@ public class BaseActivity extends ActionBarActivity implements DrawerLayout.Draw
 
     protected static final String TAG_SIDEBAR_LEFT = "sidebar-left";
     protected static final String TAG_SIDEBAR_RIGHT = "sidebar-right";
-
     protected SettingsWrapper mSettings;
     protected Bundle mExtras;
-    protected SidebarFragment mSidebar;
+    protected SidebarFragment mLeftSidebar;
     protected FormFragment mRightSidebar;
     protected DrawerLayout mDrawerLayout;
+    protected Boolean mDualPane = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,102 +48,111 @@ public class BaseActivity extends ActionBarActivity implements DrawerLayout.Draw
             }
         }
 
+        // find out, if we are in dual pane mode
+        if(findViewById(R.id.dual_pane_container) != null)
+            mDualPane = true;
+
         // see getLayout function. We implement it as a function
         // so it can be overridden for a custom layout.
-        setContentView(getLayout());
+        setContentView(R.layout.main);
 
-        // sidebars are only needed when logged in.
-        if(Utils.isLoggedIn()) {
+        // find our drawerlayout. If it does not exist, we are in large mode.
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout.setDrawerListener(this);
 
-            // find or create the left sidebar fragment
-            mSidebar = (SidebarFragment) getSupportFragmentManager().findFragmentByTag(TAG_SIDEBAR_LEFT);
-            if (mSidebar == null)
-                mSidebar = SidebarFragment.newInstance();
+        // find or create the left sidebar fragment
+        mLeftSidebar = (SidebarFragment) getSupportFragmentManager()
+                .findFragmentByTag(TAG_SIDEBAR_LEFT);
+        if (mLeftSidebar == null)
+            mLeftSidebar = SidebarFragment.newInstance();
 
-            // if there is a right sidebar, i.e., the editor sidebar, take care of it
-            if (hasRightSidebar()) {
-                mRightSidebar = (FormFragment) getSupportFragmentManager()
-                        .findFragmentByTag(TAG_SIDEBAR_RIGHT);
-                if (mRightSidebar == null)
-                    mRightSidebar = FormFragment.newInstance();
-            }
+        mRightSidebar = (FormFragment) getSupportFragmentManager()
+                .findFragmentByTag(TAG_SIDEBAR_RIGHT);
+        if (mRightSidebar == null)
+            mRightSidebar = FormFragment.newInstance();
 
-            // find our drawerlayout
-            mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-            mDrawerLayout.setDrawerListener(this);
+        // add the fragments
+        if (savedInstanceState == null) {
 
-            // add the fragments
-            if (savedInstanceState == null) {
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.sidebar_container, mSidebar, TAG_SIDEBAR_LEFT)
-                        .commit();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.sidebar_container_left, mLeftSidebar, TAG_SIDEBAR_LEFT).commit();
 
-                if (hasRightSidebar()) {
-                    getSupportFragmentManager().beginTransaction()
-                            .add(R.id.sidebar_container_right, mRightSidebar, TAG_SIDEBAR_RIGHT)
-                            .commit();
-                }
-            }
-
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.sidebar_container_right, mRightSidebar, TAG_SIDEBAR_RIGHT).commit();
         }
+
+        // disable the fragments first, the extending activities must enable them
+        // as needed.
+        disableLeftSidebar();
+        disableRightSidebar();
+
     }
 
-    public boolean isRightSidebarOpen() {
-        return mDrawerLayout.isDrawerOpen(Gravity.RIGHT);
+    @Override
+    public void onDrawerSlide(View view, float v) {}
+
+    @Override
+    public void onDrawerOpened(View view) {
+        // if the left sidebar is opened, refresh bookmarks
+        if (view.getId() == R.id.sidebar_container_left) {
+            if (mLeftSidebar.isDirty())
+                mLeftSidebar.refreshBookmarks();
+        }
+
     }
 
-    protected boolean hasRightSidebar() {
-        return findViewById(R.id.sidebar_container_right) != null;
-    }
+    @Override
+    public void onDrawerClosed(View view) {}
 
-    public SidebarFragment getSidebar() {
-        return mSidebar;
-    }
-
-    public FormFragment getRightSidebar() {
-        return mRightSidebar;
-    }
-
-    public void openRightSidebar() {
-        mDrawerLayout.openDrawer(Gravity.RIGHT);
-    }
+    @Override
+    public void onDrawerStateChanged(int i) {}
 
     public void closeRightSidebar() {
         mDrawerLayout.closeDrawer(Gravity.RIGHT);
+    }
+
+    public void closeLeftSidebar() {
+        mDrawerLayout.closeDrawer(Gravity.RIGHT);
+    }
+
+    public void enableLeftSidebar() {
+        if (Utils.isLoggedIn())
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.LEFT);
+    }
+
+    public void enableRightSidebar() {
+        if (Utils.isLoggedIn())
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.RIGHT);
+    }
+
+    public void disableLeftSidebar() {
+        if (Utils.isLoggedIn())
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT);
+    }
+
+    public void disableRightSidebar() {
+        if (Utils.isLoggedIn())
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
+    }
+
+    public FormFragment getRightSidebarFragment() {
+        return mRightSidebar;
+    }
+
+    public SidebarFragment getLeftSidebarFragment() {
+        return mLeftSidebar;
     }
 
     public void openLeftSidebar() {
         mDrawerLayout.openDrawer(Gravity.RIGHT);
     }
 
-    protected int getLayout() {
-        if(!Utils.isLoggedIn())
-            return R.layout.layout_no_sidebar;
-        return R.layout.layout_sidebar_l;
+    public void openRightSidebar() {
+        mDrawerLayout.openDrawer(Gravity.RIGHT);
     }
 
-    @Override
-    public void onDrawerSlide(View view, float v) {
-    }
-
-    @Override
-    public void onDrawerOpened(View view) {
-        // if the left sidebar is opened, refresh bookmarks
-        if (view.getId() == R.id.sidebar_container) {
-            if (mSidebar.isDirty())
-                mSidebar.refreshBookmarks();
-        }
-
-    }
-
-    @Override
-    public void onDrawerClosed(View view) {
-
-    }
-
-    @Override
-    public void onDrawerStateChanged(int i) {
-
+    public Boolean isDualPane() {
+        return mDualPane;
     }
 }
 

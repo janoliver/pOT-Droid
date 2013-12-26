@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.ForumActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.SettingsActivity;
@@ -50,7 +51,7 @@ public abstract class BaseFragment extends Fragment
      * @return ActionBar
      */
     public ActionBar getActionbar() {
-        return getSupportActivity().getSupportActionBar();
+        return getBaseActivity().getSupportActionBar();
     }
 
     /**
@@ -59,7 +60,7 @@ public abstract class BaseFragment extends Fragment
      * @return LayoutInflater
      */
     public LayoutInflater getInflater() {
-        return getSupportActivity().getLayoutInflater();
+        return getBaseActivity().getLayoutInflater();
     }
 
     /**
@@ -67,15 +68,15 @@ public abstract class BaseFragment extends Fragment
      *
      * @return SupportActivity
      */
-    public ActionBarActivity getSupportActivity() {
-        return (ActionBarActivity) super.getActivity();
+    public BaseActivity getBaseActivity() {
+        return (BaseActivity) super.getActivity();
     }
 
     /**
      * Hides the loading message
      */
     public void hideLoadingAnimation() {
-        getSupportActivity().setProgressBarIndeterminateVisibility(false);
+        getBaseActivity().setProgressBarIndeterminateVisibility(false);
     }
 
     /**
@@ -112,11 +113,11 @@ public abstract class BaseFragment extends Fragment
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.preferences:
-                intent = new Intent(getSupportActivity(), SettingsActivity.class);
+                intent = new Intent(getBaseActivity(), SettingsActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.forumact:
-                intent = new Intent(getSupportActivity(), ForumActivity.class);
+                intent = new Intent(getBaseActivity(), ForumActivity.class);
                 startActivity(intent);
                 return true;
             default:
@@ -135,14 +136,14 @@ public abstract class BaseFragment extends Fragment
      * Display an error
      */
     public void showError(String error) {
-        Utils.toast(getSupportActivity(), error);
+        Utils.toast(getBaseActivity(), error);
     }
 
     /**
      * Shows a "loading" message with a small loading animation
      */
     public void showLoadingAnimation() {
-        getSupportActivity().setProgressBarIndeterminateVisibility(true);
+        getBaseActivity().setProgressBarIndeterminateVisibility(true);
     }
 
     /**

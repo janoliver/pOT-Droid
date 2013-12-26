@@ -51,9 +51,6 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
     private MessageList mMessageList;
     private MessageListAdapter mListAdapter;
 
-    // a reference to the BaseActivity for API purposes
-    private BaseActivity mActivity;
-
     // the BenderHandler is used to display benders in front of the lines
     private BenderHandler mBenderHandler;
 
@@ -92,7 +89,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getSupportActivity(), MessageActivity.class);
+                Intent intent = new Intent(getBaseActivity(), MessageActivity.class);
                 intent.putExtra(MessageFragment.ARG_ID, mMessageList.getMessages().get(position)
                         .getId());
                 startActivity(intent);
@@ -109,9 +106,24 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mActivity = (BaseActivity) getSupportActivity();
-        mActivity.getRightSidebar().setIsMessage(null);
-        mBenderHandler = new BenderHandler(mActivity);
+        getBaseActivity().enableLeftSidebar();
+        getBaseActivity().enableRightSidebar();
+        getBaseActivity().getRightSidebarFragment().setIsMessage(null);
+        getBaseActivity().getRightSidebarFragment().setFormListener(new FormFragment.FormListener()
+        {
+            @Override
+            public void onSuccess(Bundle result) {
+                getBaseActivity().closeRightSidebar();
+                Utils.toast(getBaseActivity(), getString(R.string.send_successful));
+            }
+
+            @Override
+            public void onFailure(Bundle result) {
+                Utils.toast(getBaseActivity(), getString(R.string.send_failure));
+            }
+        });
+
+        mBenderHandler = new BenderHandler(getBaseActivity());
 
         if (mMessageList == null)
             startLoader(this);
@@ -119,7 +131,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
 
     @Override
     public Loader<MessageList> onCreateLoader(int id, Bundle args) {
-        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), mMode);
+        AsyncContentLoader l = new AsyncContentLoader(getBaseActivity(), mMode);
         showLoadingAnimation();
         return l;
     }
@@ -131,7 +143,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
             mMessageList = data;
             mListAdapter.notifyDataSetChanged();
 
-            getSupportActivity().supportInvalidateOptionsMenu();
+            getBaseActivity().supportInvalidateOptionsMenu();
         } else {
             showError(getString(R.string.loading_error));
         }
@@ -179,9 +191,13 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
 
             if (m.isUnread()) {
                 View v = row.findViewById(R.id.container);
+                int padding_top = v.getPaddingTop();
+                int padding_bottom = v.getPaddingBottom();
+                int padding_right = v.getPaddingRight();
+                int padding_left = v.getPaddingLeft();
+
                 v.setBackgroundResource(R.drawable.sidebar_button_background);
-                v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(),
-                        v.getPaddingBottom());
+                v.setPadding(padding_left, padding_top, padding_right, padding_bottom);
             }
 
             // bender. Show an alias as long as the real bender is not present. If the sender
@@ -191,7 +207,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
             if (!m.isSystem()) {
 
                 try {
-                    Drawable d = Utils.getDrawableFromAsset(mActivity,
+                    Drawable d = Utils.getDrawableFromAsset(getBaseActivity(),
                             "images/placeholder_bender.png");
                     bender_img.setImageDrawable(d);
                 } catch (IOException e) {

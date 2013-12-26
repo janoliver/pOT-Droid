@@ -9,7 +9,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,7 +77,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getSupportActivity(), TopicActivity.class);
+                Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
                 intent.putExtra(TopicFragment.ARG_TOPIC_ID, mBoard.getTopics().get(position)
                         .getId());
                 intent.putExtra(TopicFragment.ARG_PAGE, 1);
@@ -95,6 +94,8 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        getBaseActivity().enableLeftSidebar();
+
         if (mBoard == null)
             startLoader(this);
     }
@@ -106,7 +107,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
         showLoadingAnimation();
 
-        return new AsyncContentLoader(getSupportActivity(), page, bid);
+        return new AsyncContentLoader(getBaseActivity(), page, bid);
     }
 
     @Override
@@ -120,7 +121,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             mListAdapter.notifyDataSetChanged();
 
             // refresh the OptionsMenu, because of new pagination possibilities
-            getSupportActivity().supportInvalidateOptionsMenu();
+            getBaseActivity().supportInvalidateOptionsMenu();
 
             // generate subtitle and set title and subtitle of the actionbar
             Spanned subtitle = Html.fromHtml(String.format(getString(
@@ -262,9 +263,13 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             // see http://stackoverflow.com/questions/5890379
             if (t.isSticky() || t.isImportant() || t.isAnnouncement() || t.isGlobal()) {
                 View v = row.findViewById(R.id.container);
+                int padding_top = v.getPaddingTop();
+                int padding_bottom = v.getPaddingBottom();
+                int padding_right = v.getPaddingRight();
+                int padding_left = v.getPaddingLeft();
+
                 v.setBackgroundResource(R.drawable.sidebar_button_background);
-                v.setPadding(v.getPaddingLeft(), v.getPaddingTop(),
-                        v.getPaddingRight(), v.getPaddingBottom());
+                v.setPadding(padding_left, padding_top, padding_right, padding_bottom);
             }
 
             if (!t.isSticky()) {

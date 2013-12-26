@@ -63,9 +63,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     // webview initialization, so keep a reference here.
     private TopicJSInterface mJsInterface;
 
-    // a reference to the activity, for API purposes.
-    private BaseActivity mActivity;
-
     // singleton and state indicator for the Kitkat bug workaround
     public static LinkedList<TopicFragment> mWebViewHolder = new LinkedList<TopicFragment>();
     public boolean mDestroyed;
@@ -96,6 +93,26 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        getBaseActivity().enableLeftSidebar();
+        getBaseActivity().enableRightSidebar();
+        getBaseActivity().getRightSidebarFragment().setFormListener(new FormFragment.FormListener()
+        {
+            @Override
+            public void onSuccess(Bundle result) {
+                getBaseActivity().closeRightSidebar();
+
+                if (result.getInt("mode") == FormFragment.MODE_EDIT)
+                    refreshPage();
+                else
+                    goToLastPost(result.getInt("post_id"));
+            }
+
+            @Override
+            public void onFailure(Bundle result) {
+                Utils.toast(getBaseActivity(), getString(R.string.send_failure));
+            }
+        });
+
         if (mTopic == null)
             startLoader(this);
     }
@@ -105,8 +122,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         View v = inflater.inflate(R.layout.layout_topic, container, false);
 
         mWebContainer = (FrameLayout) v.findViewById(R.id.web_container);
-
-        mActivity = (BaseActivity) getSupportActivity();
 
         setupWebView();
 
@@ -129,7 +144,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         mDestroyed = false;
 
         // create a webview
-        mWebView = new WebView(mActivity);
+        mWebView = new WebView(getBaseActivity());
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setDomStorageEnabled(true);
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -138,7 +153,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         mWebView.getSettings().setLoadWithOverviewMode(true);
         mWebView.setBackgroundColor(0x00000000);
 
-        mJsInterface = new TopicJSInterface(mWebView, getSupportActivity(), this);
+        mJsInterface = new TopicJSInterface(mWebView, getBaseActivity(), this);
         mJsInterface.registerScroll(getArguments().getInt(ARG_POST_ID, 0));
 
         // 2.3 has a bug that prevents adding JS interfaces.
@@ -146,7 +161,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         if (!Utils.isGingerbread()) {
             mWebView.addJavascriptInterface(mJsInterface, "api");
         } else {
-            Utils.toast(mActivity, getString(R.string.error_gingerbread_js));
+            Utils.toast(getBaseActivity(), getString(R.string.error_gingerbread_js));
         }
 
         mWebContainer.addView(mWebView);
@@ -191,7 +206,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
         showLoadingAnimation();
 
-        return new AsyncContentLoader(getSupportActivity(), page, tid, pid);
+        return new AsyncContentLoader(getBaseActivity(), page, tid, pid);
     }
 
     @Override
@@ -206,10 +221,10 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             mTopic = data;
 
             // Refresh the bookmarks after the topic loaded
-            mActivity.getSidebar().refreshBookmarks();
+            getBaseActivity().getLeftSidebarFragment().refreshBookmarks();
 
             // populate the form in the right sidebar
-            mActivity.getRightSidebar().setIsNewPost(mTopic);
+            getBaseActivity().getRightSidebarFragment().setIsNewPost(mTopic);
 
             // update html
             mWebView.loadDataWithBaseURL("file:///android_asset/",
@@ -219,7 +234,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             Spanned subtitleText = Html.fromHtml(getString(R.string.paginate_page_indicator,
                     mTopic.getPage(), mTopic.getNumberOfPages()));
 
-            getSupportActivity().supportInvalidateOptionsMenu();
+            getBaseActivity().supportInvalidateOptionsMenu();
             getActionbar().setTitle(mTopic.getTitle());
             getActionbar().setSubtitle(subtitleText);
 
@@ -316,7 +331,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
      */
     public void showPostDialog(int post_id) {
         PostDialogFragment menu = new PostDialogFragment(post_id);
-        menu.show(mActivity.getSupportFragmentManager(), PostDialogFragment.TAG);
+        menu.show(getBaseActivity().getSupportFragmentManager(), PostDialogFragment.TAG);
     }
 
     static class AsyncContentLoader extends AsyncHttpLoader<Topic>
@@ -350,19 +365,19 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
      */
     public void quotePost(final int id) {
 
-        mActivity.runOnUiThread(new Runnable()
+        getBaseActivity().runOnUiThread(new Runnable()
         {
             public void run() {
                 Post p = mTopic.getPostById(id);
 
                 if (mTopic.isClosed())
-                    Utils.toast(mActivity, getString(R.string.closed_warning));
+                    Utils.toast(getBaseActivity(), getString(R.string.closed_warning));
 
                 String text = String.format(getString(R.string.quote,
                         mTopic.getId(), p.getId(), p.getAuthor().getNick(), p.getText()));
 
-                mActivity.getRightSidebar().appendText(text);
-                mActivity.openRightSidebar();
+                getBaseActivity().getRightSidebarFragment().appendText(text);
+                getBaseActivity().openRightSidebar();
             }
         });
 
@@ -374,21 +389,21 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
      * @param id the PID
      */
     public void editPost(final int id) {
-        mActivity.runOnUiThread(new Runnable()
+        getBaseActivity().runOnUiThread(new Runnable()
         {
             public void run() {
                 Post p = mTopic.getPostById(id);
 
-                SettingsWrapper settings = new SettingsWrapper(mActivity);
+                SettingsWrapper settings = new SettingsWrapper(getBaseActivity());
 
                 if (p.getAuthor().getId() == settings.getUserId()) {
 
-                    mActivity.getRightSidebar().setIsEditPost(mTopic, p);
-                    mActivity.getRightSidebar().appendText(p.getText());
-                    mActivity.getRightSidebar().setIconById(p.getIconId());
-                    mActivity.openRightSidebar();
+                    getBaseActivity().getRightSidebarFragment().setIsEditPost(mTopic, p);
+                    getBaseActivity().getRightSidebarFragment().appendText(p.getText());
+                    getBaseActivity().getRightSidebarFragment().setIconById(p.getIconId());
+                    getBaseActivity().openRightSidebar();
                 } else {
-                    Utils.toast(mActivity, getString(R.string.notyourpost_error));
+                    Utils.toast(getBaseActivity(), getString(R.string.notyourpost_error));
                 }
             }
         });
@@ -401,7 +416,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
      * @param d the Dialog to close, if successful and Dialog exists
      */
     public void bookmarkPost(final int id, final Dialog d) {
-        mActivity.runOnUiThread(new Runnable()
+        getBaseActivity().runOnUiThread(new Runnable()
         {
             public void run() {
                 Post p = mTopic.getPostById(id);
@@ -414,7 +429,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
                 {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        Utils.toast(getSupportActivity(), "Bookmark hinzugefügt.");
+                        Utils.toast(getBaseActivity(), "Bookmark hinzugefügt.");
                         if (d != null)
                             d.cancel();
                     }
@@ -430,7 +445,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
      * @param id the PID
      */
     public void linkPost(final int id) {
-        mActivity.runOnUiThread(new Runnable()
+        getBaseActivity().runOnUiThread(new Runnable()
         {
             public void run() {
                 Post p = mTopic.getPostById(id);
@@ -465,8 +480,8 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            LayoutInflater inflater = getSupportActivity().getLayoutInflater();
-            AlertDialog.Builder builder = new AlertDialog.Builder(getSupportActivity());
+            LayoutInflater inflater = getBaseActivity().getLayoutInflater();
+            AlertDialog.Builder builder = new AlertDialog.Builder(getBaseActivity());
             View dialog_view = inflater.inflate(R.layout.dialog_post_actions, null);
             builder.setView(dialog_view)
                     .setTitle(R.string.post_actions)

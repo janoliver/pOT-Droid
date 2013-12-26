@@ -1,8 +1,11 @@
 package com.mde.potdroid;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.View;
 
 import com.mde.potdroid.fragments.FormFragment;
 import com.mde.potdroid.fragments.TopicFragment;
@@ -12,7 +15,7 @@ import com.mde.potdroid.helpers.Utils;
  * The Activity that contains a TopicFragment. It handles some callbacks of the
  * Formlistener after Post submission.
  */
-public class TopicActivity extends BaseActivity implements FormFragment.FormListener
+public class TopicActivity extends BaseActivity
 {
 
     private TopicFragment mTopicFragment;
@@ -58,36 +61,6 @@ public class TopicActivity extends BaseActivity implements FormFragment.FormList
                     .add(R.id.content, mTopicFragment, "topic")
                     .commit();
         }
-    }
-
-    @Override
-    protected int getLayout() {
-        if(!Utils.isLoggedIn())
-            return R.layout.layout_no_sidebar;
-        return R.layout.layout_sidebar_rl;
-    }
-
-    /**
-     * Called upon Form success.
-     * @param result a bundle containing information about the result
-     */
-    @Override
-    public void onSuccess(Bundle result) {
-        closeRightSidebar();
-
-        if (result.getInt("mode") == FormFragment.MODE_EDIT)
-            mTopicFragment.refreshPage();
-        else
-            mTopicFragment.goToLastPost(result.getInt("post_id"));
-    }
-
-    /**
-     * Called upon Form failure.
-     * @param result a bundle containing information about the result
-     */
-    @Override
-    public void onFailure(Bundle result) {
-        Utils.toast(this, getString(R.string.send_failure));
     }
 
 }

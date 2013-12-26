@@ -11,7 +11,7 @@ import com.mde.potdroid.helpers.Utils;
 /**
  * Activity that displays as MessageFragment showing a PM message
  */
-public class MessageActivity extends BaseActivity implements FormFragment.FormListener
+public class MessageActivity extends BaseActivity
 {
 
     @Override
@@ -47,30 +47,5 @@ public class MessageActivity extends BaseActivity implements FormFragment.FormLi
         }
 
     }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.layout_sidebar_rl;
-    }
-
-    /**
-     * Called upon Form success.
-     * @param result a bundle containing information about the result
-     */
-    @Override
-    public void onSuccess(Bundle result) {
-        closeRightSidebar();
-        Utils.toast(this, getString(R.string.send_successful));
-    }
-
-    /**
-     * Called upon Form failure.
-     * @param result a bundle containing information about the result
-     */
-    @Override
-    public void onFailure(Bundle result) {
-        Utils.toast(this, getString(R.string.send_failure));
-    }
-
 
 }

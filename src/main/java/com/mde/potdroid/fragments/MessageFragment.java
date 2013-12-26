@@ -14,7 +14,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 
-import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
 import com.mde.potdroid.helpers.BenderJSInterface;
@@ -31,25 +30,20 @@ import java.util.LinkedList;
  * we have to work around that by adding and deleting it in onPause and onResume. This sucks,
  * I know, but LOLANDROID!
  */
-public class MessageFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Message>
+public class MessageFragment extends BaseFragment
+        implements LoaderManager.LoaderCallbacks<Message>
 {
-
-    // the message object
-    Message mMessage;
 
     // the tags of the fragment arguments
     public static final String ARG_ID = "message_id";
-
-    // we store a reference to the BaseActivity for API purposes
-    private BaseActivity mActivity;
-
-    // the webview
-    private WebView mWebView;
-    private FrameLayout mWebContainer;
-
     // singleton and state indicator for the Kitkat bug workaround
     public static LinkedList<MessageFragment> mWebViewHolder = new LinkedList<MessageFragment>();
     public boolean mDestroyed;
+    // the message object
+    Message mMessage;
+    // the webview
+    private WebView mWebView;
+    private FrameLayout mWebContainer;
 
     /**
      * Returns a new instance of the MessageFragment and sets the ID argument
@@ -68,77 +62,6 @@ public class MessageFragment extends BaseFragment implements LoaderManager.Loade
         return f;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
-        View v = inflater.inflate(R.layout.layout_message, container, false);
-        mWebContainer = (FrameLayout) v.findViewById(R.id.web_container);
-        mActivity = (BaseActivity) getSupportActivity();
-
-        setupWebView();
-
-        // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
-        // of some former TopicFragment, which will be restored on onResume. .
-        if(Utils.isKitkat()) {
-            mWebViewHolder.add(this);
-            if(mWebViewHolder.size() > 3)
-                mWebViewHolder.removeFirst().destroyWebView();
-        }
-
-        return v;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        getActionbar().setTitle(R.string.loading_message);
-
-        if (mMessage == null)
-            startLoader(this);
-    }
-
-    public void setupWebView() {
-
-        mDestroyed = false;
-
-        mWebView = new WebView(mActivity);
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.getSettings().setDomStorageEnabled(true);
-        mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        mWebView.getSettings().setAllowFileAccess(true);
-        mWebView.setWebChromeClient(new WebChromeClient());
-        mWebView.loadData("", "text/html", "utf-8");
-        mWebView.setBackgroundColor(0x00000000);
-
-        BenderJSInterface mJsInterface = new BenderJSInterface(mWebView, getSupportActivity());
-
-        // 2.3 has a bug that prevents adding JS interfaces.
-        // see here: http://code.google.com/p/android/issues/detail?id=12987
-        if (!Utils.isGingerbread()) {
-            mWebView.addJavascriptInterface(mJsInterface, "api");
-        } else {
-            Utils.toast(mActivity, getString(R.string.error_gingerbread_js));
-        }
-
-        mWebContainer.addView(mWebView);
-
-        if (mMessage != null) {
-            mWebView.loadDataWithBaseURL("file:///android_asset/",
-                    mMessage.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);
-        } else {
-            mWebView.loadData("", "text/html", Network.ENCODING_UTF8);
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (mDestroyed && Utils.isKitkat()) {
-            setupWebView();
-        }
-    }
-
     /**
      * Destroys and detaches the webview.
      */
@@ -153,9 +76,35 @@ public class MessageFragment extends BaseFragment implements LoaderManager.Loade
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        getBaseActivity().enableLeftSidebar();
+        getBaseActivity().enableRightSidebar();
+        getBaseActivity().getRightSidebarFragment().setFormListener(new FormFragment.FormListener()
+        {
+            @Override
+            public void onSuccess(Bundle result) {
+                getBaseActivity().closeRightSidebar();
+                Utils.toast(getBaseActivity(), getString(R.string.send_successful));
+            }
+
+            @Override
+            public void onFailure(Bundle result) {
+                Utils.toast(getBaseActivity(), getString(R.string.send_failure));
+            }
+        });
+
+        getActionbar().setTitle(R.string.loading_message);
+
+        if (mMessage == null)
+            startLoader(this);
+    }
+
+    @Override
     public Loader<Message> onCreateLoader(int id, Bundle args) {
         int mid = getArguments().getInt(ARG_ID, 0);
-        AsyncContentLoader l = new AsyncContentLoader(getSupportActivity(), mid);
+        AsyncContentLoader l = new AsyncContentLoader(getBaseActivity(), mid);
         showLoadingAnimation();
 
         return l;
@@ -180,7 +129,7 @@ public class MessageFragment extends BaseFragment implements LoaderManager.Loade
             getActionbar().setSubtitle(subtitle);
 
             // populate right sidebar
-            mActivity.getRightSidebar().setIsMessage(mMessage);
+            getBaseActivity().getRightSidebarFragment().setIsMessage(mMessage);
 
         } else {
             showError(getString(R.string.loading_error));
@@ -190,6 +139,66 @@ public class MessageFragment extends BaseFragment implements LoaderManager.Loade
     @Override
     public void onLoaderReset(Loader<Message> loader) {
         hideLoadingAnimation();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
+        View v = inflater.inflate(R.layout.layout_message, container, false);
+        mWebContainer = (FrameLayout) v.findViewById(R.id.web_container);
+
+        setupWebView();
+
+        // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
+        // of some former TopicFragment, which will be restored on onResume. .
+        if (Utils.isKitkat()) {
+            mWebViewHolder.add(this);
+            if (mWebViewHolder.size() > 3)
+                mWebViewHolder.removeFirst().destroyWebView();
+        }
+
+        return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (mDestroyed && Utils.isKitkat()) {
+            setupWebView();
+        }
+    }
+
+    public void setupWebView() {
+
+        mDestroyed = false;
+
+        mWebView = new WebView(getBaseActivity());
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setDomStorageEnabled(true);
+        mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        mWebView.getSettings().setAllowFileAccess(true);
+        mWebView.setWebChromeClient(new WebChromeClient());
+        mWebView.loadData("", "text/html", "utf-8");
+        mWebView.setBackgroundColor(0x00000000);
+
+        BenderJSInterface mJsInterface = new BenderJSInterface(mWebView, getBaseActivity());
+
+        // 2.3 has a bug that prevents adding JS interfaces.
+        // see here: http://code.google.com/p/android/issues/detail?id=12987
+        if (!Utils.isGingerbread()) {
+            mWebView.addJavascriptInterface(mJsInterface, "api");
+        } else {
+            Utils.toast(getBaseActivity(), getString(R.string.error_gingerbread_js));
+        }
+
+        mWebContainer.addView(mWebView);
+
+        if (mMessage != null) {
+            mWebView.loadDataWithBaseURL("file:///android_asset/",
+                    mMessage.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);
+        } else {
+            mWebView.loadData("", "text/html", Network.ENCODING_UTF8);
+        }
     }
 
     static class AsyncContentLoader extends AsyncHttpLoader<Message>

@@ -30,7 +30,7 @@ public class SettingsWrapper
     public static final String PREF_KEY_COOKIE_VALUE = "cookie_value";
     public static final String PREF_KEY_COOKIE_PATH = "cookie_path";
     public static final String PREF_KEY_COOKIE_URL = "cookie_url";
-    public static final String PREF_KEY_SHOW_BENDERS = "pref_show_benders";
+    public static final String PREF_KEY_SHOW_BENDERS = "pref_bender_position";
     public static final String PREF_KEY_DEBUG = "pref_debug_mode";
     public static final String PREF_KEY_LOAD_BENDERS = "pref_load_benders";
     public static final String PREF_KEY_LOAD_IMAGES = "pref_load_images";
@@ -69,7 +69,16 @@ public class SettingsWrapper
      * @return true, if benders should be shown
      */
     public Boolean showBenders() {
-        return mSharedPreferences.getBoolean(PREF_KEY_SHOW_BENDERS, true);
+        return !mSharedPreferences.getString(PREF_KEY_SHOW_BENDERS, "0").equals("0");
+    }
+
+    /**
+     * Position of benders.
+     *
+     * @return 0 -> never, 1 -> always posthead, 2 -> always postbody, 3 -> orientation dependent
+     */
+    public Integer benderPosition() {
+        return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_SHOW_BENDERS, "0"));
     }
 
     /**

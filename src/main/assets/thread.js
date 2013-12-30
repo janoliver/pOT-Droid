@@ -2,6 +2,16 @@ $(document).ready(function() {
 
     // bender loading
     if($(".bender").length > 0 && api.isBenderEnabled()) {
+
+        if(api.getBenderPosition() == 1) {
+            $("header .bender").show();
+        } else if(api.getBenderPosition() == 2) {
+            $("article .bender").show();
+        } else if(api.getBenderPosition() == 3) {
+            $("header .bender").addClass("portrait");
+            $("article .bender").addClass("landscape");
+        }
+
         $("section").each(function() {
             var bender = $(this);
             var user_id = bender.attr("data-user-id");
@@ -9,8 +19,6 @@ $(document).ready(function() {
             var user_avatar_file = bender.attr("data-user-avatar");
             api.displayBender(parseInt(user_id,10), user_avatar_file, parseInt(user_avatar_id,10));
         });
-    } else if($(".bender").length > 0) {
-        $(".bender").hide();
     }
 
     // login shit

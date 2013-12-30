@@ -13,13 +13,8 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
-
 import com.mde.potdroid.R;
-import com.mde.potdroid.helpers.AsyncHttpLoader;
-import com.mde.potdroid.helpers.BenderJSInterface;
-import com.mde.potdroid.helpers.MessageBuilder;
-import com.mde.potdroid.helpers.Network;
-import com.mde.potdroid.helpers.Utils;
+import com.mde.potdroid.helpers.*;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.parsers.MessageParser;
 
@@ -187,7 +182,7 @@ public class MessageFragment extends BaseFragment
         mWebView.loadData("", "text/html", "utf-8");
         mWebView.setBackgroundColor(0x00000000);
 
-        BenderJSInterface mJsInterface = new BenderJSInterface(mWebView, getBaseActivity());
+        MessageJSInterface mJsInterface = new MessageJSInterface(mWebView, getBaseActivity(), this);
 
         // 2.3 has a bug that prevents adding JS interfaces.
         // see here: http://code.google.com/p/android/issues/detail?id=12987
@@ -205,6 +200,13 @@ public class MessageFragment extends BaseFragment
         } else {
             mWebView.loadData("", "text/html", Network.ENCODING_UTF8);
         }
+    }
+
+    /**
+     * Open the form for reply
+     */
+    public void replyPost() {
+        getBaseActivity().openRightSidebar();
     }
 
     static class AsyncContentLoader extends AsyncHttpLoader<Message>

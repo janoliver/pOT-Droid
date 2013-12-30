@@ -18,6 +18,18 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+    <string-array name="show_benders">
+        <item>Gar nicht</item>
+        <item>Immer im Post-Kopf</item>
+        <item>Immer im Post-Körper</item>
+        <item>Nach Gerät-Orientierung</item>
+    </string-array>
+    <string-array name="show_benders_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
     <string-array name="pref_poll_messages_values">
         <item>0</item>
         <item>300</item>

@@ -54,6 +54,16 @@ public class BenderJSInterface
     }
 
     /**
+     * Return the bender position
+     *
+     * @return 0 -> never, 1 -> always posthead, 2 -> always postbody, 3 -> orientation dependent
+     */
+    @JavascriptInterface
+    public int getBenderPosition() {
+        return mSettings.benderPosition();
+    }
+
+    /**
      * Return an url (filepath) to a bender
      *
      * @param user_id the user id of the User whose Bender is requested

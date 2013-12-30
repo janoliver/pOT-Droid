@@ -43,6 +43,7 @@ public class SettingsActivity extends PreferenceActivity
         // set some custom descriptions programmatically
         setPreferenceDescription(SettingsWrapper.PREF_KEY_USERNAME);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_BENDERS);
+        setPreferenceDescription(SettingsWrapper.PREF_KEY_SHOW_BENDERS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_IMAGES);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_POLL_MESSAGES);
 

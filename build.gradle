@@ -28,5 +28,6 @@ android {
         minSdkVersion 7
         targetSdkVersion 19
     }
+
 }
 

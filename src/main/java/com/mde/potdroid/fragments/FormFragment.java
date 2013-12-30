@@ -90,7 +90,6 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
     protected static final String ARG_TITLE = "title";
 
     // the array of icons
-    private ArrayList<String> mIcons = new ArrayList<String>();
     private int mIconId;
 
 
@@ -130,11 +129,6 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_sidebar_form, container, false);
 
-        // find all icons
-        AssetManager aMan = getActivity().getAssets();
-        try {
-            mIcons.addAll(Arrays.asList(aMan.list("thread-icons")));
-        } catch (IOException e) {}
 
         // find the send button and add a click listener
         ImageButton send = (ImageButton) v.findViewById(R.id.button_send);
@@ -175,6 +169,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
             @Override
             public void onClick(View v) {
                 IconSelection id = new IconSelection();
+                id.setTargetFragment(FormFragment.this, 0);
                 id.show(getBaseActivity().getSupportFragmentManager(), "icondialog");
             }
         });
@@ -186,6 +181,11 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         mIcon = (ImageButton) v.findViewById(R.id.button_icon);
 
         return v;
+    }
+
+    public void setIcon(Bitmap bitmap, int icon_id) {
+        mIconId = icon_id;
+        mIcon.setImageBitmap(bitmap);
     }
 
     /**
@@ -268,8 +268,8 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
             String ds = new SimpleDateFormat(getString(R.string.standard_time_format)).format
                     (message.getDate());
             String quote_line = "> %1$s \n";
-            content.append(String.format(getString(R.string.message_header,
-                    message.getFrom().getNick(), ds)));
+            content.append(String.format(getString(R.string.message_header),
+                    message.getFrom().getNick(), ds));
             try {
                 while ((line = bufReader.readLine()) != null)
                     content.append(String.format(quote_line, line));
@@ -482,10 +482,22 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         }
     }
 
-    public class IconSelection extends DialogFragment
+    /**
+     * The icon selection dialog
+     */
+    public static class IconSelection extends DialogFragment
     {
+        private ArrayList<String> mIcons = new ArrayList<String>();
+
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final FormFragment fragment = ((FormFragment) getTargetFragment());
+
+            // find all icons
+            AssetManager aMan = getActivity().getAssets();
+            try {
+                mIcons.addAll(Arrays.asList(aMan.list("thread-icons")));
+            } catch (IOException e) {}
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -498,47 +510,51 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
                             try {
                                 icon = Utils.getBitmapIcon(getActivity(), mIcons.get(which));
                                 Bitmap bm = Bitmap.createScaledBitmap(icon, 80, 80, true);
-                                mIcon.setImageBitmap(bm);
-                                mIconId = Integer.parseInt(mIcons.get(which).substring(4).split("\\.")[0]);
+                                Integer icon_id = Integer
+                                        .parseInt(mIcons.get(which).substring(4).split("\\.")[0]);
+                                fragment.setIcon(bm, icon_id);
                             } catch (IOException e) {}
 
                         }
                     });
             return builder.create();
         }
+
+        /**
+         * Custom view adapter for the ListView items
+         */
+        public class IconListAdapter extends ArrayAdapter<String>
+        {
+            Activity context;
+
+            IconListAdapter(Activity context) {
+                super(context, R.layout.listitem_icon, R.id.name, mIcons);
+                this.context = context;
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                LayoutInflater inflater = context.getLayoutInflater();
+                View row = inflater.inflate(R.layout.listitem_icon, null);
+                String icon = mIcons.get(position);
+
+                TextView name = (TextView) row.findViewById(R.id.name);
+                name.setText(icon);
+
+                try {
+                    Drawable dr = Utils.getIcon(getActivity(), icon);
+                    dr.setBounds(0,0,20*(int)((FormFragment) getTargetFragment()).mDensity,
+                            20*(int)((FormFragment) getTargetFragment()).mDensity);
+                    name.setCompoundDrawables(dr, null, null, null);
+
+                } catch (IOException e) { }
+
+
+                return (row);
+            }
+        }
     }
 
 
-    /**
-     * Custom view adapter for the ListView items
-     */
-    class IconListAdapter extends ArrayAdapter<String>
-    {
-        Activity context;
 
-        IconListAdapter(Activity context) {
-            super(context, R.layout.listitem_icon, R.id.name, mIcons);
-            this.context = context;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = context.getLayoutInflater();
-            View row = inflater.inflate(R.layout.listitem_icon, null);
-            String icon = mIcons.get(position);
-
-            TextView name = (TextView) row.findViewById(R.id.name);
-            name.setText(icon);
-
-            try {
-                Drawable dr = Utils.getIcon(getActivity(), icon);
-                dr.setBounds(0,0,20*(int)mDensity, 20*(int)mDensity);
-                name.setCompoundDrawables(dr, null, null, null);
-
-            } catch (IOException e) { }
-
-
-            return (row);
-        }
-    }
 }

@@ -8,37 +8,37 @@
 
     <ImageButton
         android:layout_width="0dp"
-        android:layout_height="fill_parent"
+        android:layout_height="48dip"
         android:src="?attr/menu_icon_edit"
         android:id="@+id/button_edit"
-        style="?android:attr/buttonBarButtonStyle"
+        android:background="@drawable/transparent_button_background"
         android:textSize="14sp"
         android:layout_weight="1"/>
 
     <ImageButton
         android:layout_width="0dp"
-        android:layout_height="fill_parent"
+        android:layout_height="48dip"
         android:src="?attr/menu_icon_quote"
         android:id="@+id/button_quote"
-        style="?android:attr/buttonBarButtonStyle"
+        android:background="@drawable/transparent_button_background"
         android:textSize="14sp"
         android:layout_weight="1"/>
 
     <ImageButton
         android:layout_width="0dp"
-        android:layout_height="fill_parent"
+        android:layout_height="48dip"
         android:src="?attr/menu_icon_favorite"
         android:id="@+id/button_bookmark"
-        style="?android:attr/buttonBarButtonStyle"
+        android:background="@drawable/transparent_button_background"
         android:textSize="14sp"
         android:layout_weight="1"/>
 
     <ImageButton
         android:layout_width="0dp"
-        android:layout_height="fill_parent"
+        android:layout_height="48dip"
         android:src="?attr/menu_icon_link"
         android:id="@+id/button_link"
-        style="?android:attr/buttonBarButtonStyle"
+        android:background="@drawable/transparent_button_background"
         android:textSize="14sp"
         android:layout_weight="1"/>
 </LinearLayout>

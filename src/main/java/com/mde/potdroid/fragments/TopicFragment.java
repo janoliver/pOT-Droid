@@ -325,7 +325,8 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
      * @param post_id the PID
      */
     public void showPostDialog(int post_id) {
-        PostDialogFragment menu = new PostDialogFragment(post_id);
+        PostDialogFragment menu = PostDialogFragment.getInstance(post_id);
+        menu.setTargetFragment(this, 0);
         menu.show(getBaseActivity().getSupportFragmentManager(), PostDialogFragment.TAG);
     }
 
@@ -364,8 +365,8 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         if (mTopic.isClosed())
             Utils.toast(getBaseActivity(), getString(R.string.closed_warning));
 
-        String text = String.format(getString(R.string.quote,
-                mTopic.getId(), p.getId(), p.getAuthor().getNick(), p.getText()));
+        String text = String.format(getString(R.string.quote),
+                mTopic.getId(), p.getId(), p.getAuthor().getNick(), p.getText());
 
         getBaseActivity().getRightSidebarFragment().appendText(text);
         getBaseActivity().openRightSidebar();
@@ -443,23 +444,28 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     /**
      * This DialogFragment shows a Menu for a Post with some actions
      */
-    public class PostDialogFragment extends DialogFragment
+    public static class PostDialogFragment extends DialogFragment
     {
-
-        private Integer mPostId;
 
         public static final String TAG = "postmenu";
 
-        PostDialogFragment(int post_id) {
-            super();
+        public static PostDialogFragment getInstance(int post_id) {
+            PostDialogFragment f = new PostDialogFragment();
 
-            mPostId = post_id;
+            // Supply index input as an argument.
+            Bundle args = new Bundle();
+            args.putInt(ARG_POST_ID, post_id);
+            f.setArguments(args);
+
+            return f;
         }
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            LayoutInflater inflater = getBaseActivity().getLayoutInflater();
-            AlertDialog.Builder builder = new AlertDialog.Builder(getBaseActivity());
+            final TopicFragment fragment = (TopicFragment) getTargetFragment();
+
+            LayoutInflater inflater = fragment.getBaseActivity().getLayoutInflater();
+            AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getBaseActivity());
             View dialog_view = inflater.inflate(R.layout.dialog_post_actions, null);
             builder.setView(dialog_view)
                     .setTitle(R.string.post_actions)
@@ -477,7 +483,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             {
                 @Override
                 public void onClick(View v) {
-                    quotePost(mPostId);
+                    fragment.quotePost(getArguments().getInt(ARG_POST_ID));
                     d.cancel();
                 }
             });
@@ -487,7 +493,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             {
                 @Override
                 public void onClick(View v) {
-                    editPost(mPostId);
+                    fragment.editPost(getArguments().getInt(ARG_POST_ID));
                     d.cancel();
                 }
             });
@@ -498,7 +504,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             {
                 @Override
                 public void onClick(View v) {
-                    bookmarkPost(mPostId, d);
+                    fragment.bookmarkPost(getArguments().getInt(ARG_POST_ID), d);
                 }
             });
 
@@ -507,7 +513,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             {
                 @Override
                 public void onClick(View v) {
-                    linkPost(mPostId);
+                    fragment.linkPost(getArguments().getInt(ARG_POST_ID));
                     d.cancel();
                 }
             });

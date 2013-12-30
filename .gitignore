@@ -5,3 +5,5 @@ gradlew
 gradlew.bat
 local.properties
 gradle/
+.gradle
+.idea

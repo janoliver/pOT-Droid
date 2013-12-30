@@ -308,7 +308,10 @@ public class TopicBuilder
         {
             @Override
             public String html(String content, List<String> args) {
-                return String.format("<li>%1$s</li>", content);
+                if(content.replace("<br />", "").trim().length() == 0)
+                    return "";
+                else
+                    return String.format("<li>%1$s</li>", content);
             }
         };
         item.setInvalidStartRecovery(BBCodeParser.BBCodeTag.RECOVERY_CLOSE);

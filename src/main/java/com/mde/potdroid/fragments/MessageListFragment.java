@@ -12,19 +12,10 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-
-import com.mde.potdroid.BaseActivity;
+import android.widget.*;
 import com.mde.potdroid.MessageActivity;
 import com.mde.potdroid.R;
-import com.mde.potdroid.helpers.AsyncHttpLoader;
-import com.mde.potdroid.helpers.BenderHandler;
-import com.mde.potdroid.helpers.Network;
-import com.mde.potdroid.helpers.Utils;
+import com.mde.potdroid.helpers.*;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.MessageList;
 import com.mde.potdroid.parsers.MessageListParser;
@@ -53,6 +44,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
 
     // the BenderHandler is used to display benders in front of the lines
     private BenderHandler mBenderHandler;
+    private SettingsWrapper mSettings;
 
     /**
      * Returns an instance of the Fragment and sets required parameters as Arguments
@@ -77,6 +69,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
 
         Bundle args = getArguments();
         mMode = args.getString(ARG_MODE);
+        mSettings = new SettingsWrapper(getActivity());
     }
 
     @Override
@@ -184,7 +177,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
 
             TextView description = (TextView) row.findViewById(R.id.pages);
             Spanned content = Html.fromHtml(getString(R.string.message_description,
-                    author, mMode == MessageList.TAG_INBOX ? "erhalten" : "gesendet",
+                    author, mMode.equals(MessageList.TAG_INBOX) ? "erhalten" : "gesendet",
                     new SimpleDateFormat(getString(R.string.standard_time_format)).format(m
                             .getDate())));
             description.setText(content);
@@ -204,7 +197,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
             // is "System", hide the view.
             final ImageView bender_img = (ImageView) row.findViewById(R.id.bender);
 
-            if (!m.isSystem()) {
+            if (!m.isSystem() && mSettings.showBenders()) {
 
                 try {
                     Drawable d = Utils.getDrawableFromAsset(getBaseActivity(),

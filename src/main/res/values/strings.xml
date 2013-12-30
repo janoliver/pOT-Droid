@@ -30,10 +30,10 @@
     <string name="pref_state_vibrate_inactive">Vibration nicht aktiv.</string>
     <string name="icon_selection">Icon auswählen.</string>
 
-    <string name="paginate_page_indicator">Seite <b>%1$d</b> von <b>%2$d</b></string>
-    <string name="topic_additional_information"><b>%1$d</b> Posts, <b>%2$d</b> Seiten</string>
-    <string name="new_posts_description"><b>%1$d</b> neue Posts, <b>%2$d</b> Seiten</string>
-    <string name="x_unread_posts"><b>%1$d</b> Ungelesene Bookmarks.</string>
+    <string name="paginate_page_indicator"><![CDATA[Seite <strong>%1$d</strong> von <strong>%2$d</strong>]]></string>
+    <string name="topic_additional_information"><![CDATA[<strong>%1$d</strong> Posts, <strong>%2$d</strong> Seiten]]></string>
+    <string name="new_posts_description"><![CDATA[<strong>%1$d</strong> neue Posts, <strong>%2$d</strong> Seiten]]></string>
+    <string name="x_unread_posts"><![CDATA[<strong>%1$d</strong> Ungelesene Bookmarks.]]></string>
     <string name="standard_time_format">dd.MM.yyyy, HH:mm</string>
 
     <string name="loading_error">Fehler beim Laden der Daten.</string>
@@ -42,17 +42,17 @@
 
     <string name="write_answer">Antwort verfassen</string>
     <string name="loading_message">Lade Nachricht</string>
-    <string name="message_subtitle">%1$s <b>%2$s</b></string>
+    <string name="message_subtitle"><![CDATA[%1$s <strong>%2$s</strong>]]></string>
     <string name="edit_post">Post bearbeiten</string>
     <string name="write_message">PM verfassen</string>
     <string name="messages">PM Nachrichten</string>
     <string name="inbox">Posteingang</string>
     <string name="outbox">Postausgang</string>
     <string name="bookmarks">Bookmarks</string>
-    <string name="message_description">von <b>%1$s</b>, %2$s: %3$s</string>
+    <string name="message_description"><![CDATA[von <strong>%1$s</strong>, %2$s: %3$s]]></string>
     <string name="message_header">\n\n------------------------\n%1$s schrieb am %2$s:\n</string>
     <string name="forum_title">Forenübersicht</string>
-    <string name="last_post">Letzter Beitrag von <b>%1$s</b> (%2$s)</string>
+    <string name="last_post"><![CDATA[Letzter Beitrag von <strong>%1$s</strong> (%2$s)]]></string>
 
     <string name="closed_warning">Vorsicht, Topic geschlossen!</string>
     <string name="quote">[quote=%1$d,%2$d,%3$s][b]\n%4$s\n[/b][/quote]</string>

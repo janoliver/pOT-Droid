@@ -1,6 +1,7 @@
 $(document).ready(function() {
+
     // bender loading
-    if($(".bender").length > 0) {
+    if($(".bender").length > 0 && api.isBenderEnabled()) {
         $("section").each(function() {
             var bender = $(this);
             var user_id = bender.attr("data-user-id");
@@ -8,6 +9,8 @@ $(document).ready(function() {
             var user_avatar_file = bender.attr("data-user-avatar");
             api.displayBender(parseInt(user_id,10), user_avatar_file, parseInt(user_avatar_id,10));
         });
+    } else if($(".bender").length > 0) {
+        $(".bender").hide();
     }
 
     // login shit

@@ -80,8 +80,19 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                 Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
                 intent.putExtra(TopicFragment.ARG_TOPIC_ID, mBoard.getTopics().get(position)
                         .getId());
+                intent.putExtra(TopicFragment.ARG_PAGE, mBoard.getTopics().get(position)
+                        .getNumberOfPages());
+                startActivity(intent);
+            }
+        });
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
+                intent.putExtra(TopicFragment.ARG_TOPIC_ID, mBoard.getTopics().get(position)
+                        .getId());
                 intent.putExtra(TopicFragment.ARG_PAGE, 1);
                 startActivity(intent);
+                return true;
             }
         });
 

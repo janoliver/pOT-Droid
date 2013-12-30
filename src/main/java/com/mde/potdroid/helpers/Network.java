@@ -3,12 +3,10 @@ package com.mde.potdroid.helpers;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
-
 import org.apache.http.Header;
 import org.apache.http.cookie.Cookie;
 
@@ -103,7 +101,9 @@ public class Network
         mHttpClient.setUserAgent(mSettings.getUserAgent());
 
         // add login data
-        RequestParams params = new RequestParams();
+        EncodingRequestParams params = new EncodingRequestParams();
+        params.setEncoding(Network.ENCODING_ISO);
+
         if (username.equals("") || password.equals(""))
             callback.onFailure();
 

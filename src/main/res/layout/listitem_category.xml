@@ -2,7 +2,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/sidebar_button_background"
-                android:padding="5dp">
+                android:padding="7dp">
 
     <TextView
         android:id="@+id/text_name"

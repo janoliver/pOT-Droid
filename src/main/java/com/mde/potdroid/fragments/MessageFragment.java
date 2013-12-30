@@ -67,12 +67,15 @@ public class MessageFragment extends BaseFragment
      */
     public void destroyWebView() {
 
-        mWebView.destroy();
-        mWebView = null;
+        if(mWebView != null && !mDestroyed) {
 
-        mWebContainer.removeAllViews();
+            mWebView.destroy();
+            mWebView = null;
 
-        mDestroyed = true;
+            mWebContainer.removeAllViews();
+
+            mDestroyed = true;
+        }
     }
 
     @Override
@@ -149,11 +152,14 @@ public class MessageFragment extends BaseFragment
         setupWebView();
 
         // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
-        // of some former TopicFragment, which will be restored on onResume. .
-        if (Utils.isKitkat()) {
+        // of some former MessageFragment, which will be restored on onResume. .
+        if(Utils.isKitkat()) {
             mWebViewHolder.add(this);
-            if (mWebViewHolder.size() > 3)
-                mWebViewHolder.removeFirst().destroyWebView();
+            if(mWebViewHolder.size() > 3) {
+                MessageFragment fragment =  mWebViewHolder.removeFirst();
+                if(fragment != null)
+                    fragment.destroyWebView();
+            }
         }
 
         return v;

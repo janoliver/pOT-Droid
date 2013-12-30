@@ -233,7 +233,7 @@ public class Topic implements Serializable
     }
 
     public Boolean isLastPage() {
-        return mPage == getNumberOfPages();
+        return mPage.equals(getNumberOfPages());
     }
 
     public Post getPostById(int id) {

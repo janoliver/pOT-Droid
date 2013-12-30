@@ -26,7 +26,6 @@ public class BaseActivity extends ActionBarActivity implements DrawerLayout.Draw
     protected SidebarFragment mLeftSidebar;
     protected FormFragment mRightSidebar;
     protected DrawerLayout mDrawerLayout;
-    protected Boolean mDualPane = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +46,6 @@ public class BaseActivity extends ActionBarActivity implements DrawerLayout.Draw
                 Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler());
             }
         }
-
-        // find out, if we are in dual pane mode
-        if(findViewById(R.id.dual_pane_container) != null)
-            mDualPane = true;
 
         // see getLayout function. We implement it as a function
         // so it can be overridden for a custom layout.
@@ -126,13 +121,11 @@ public class BaseActivity extends ActionBarActivity implements DrawerLayout.Draw
     }
 
     public void disableLeftSidebar() {
-        if (Utils.isLoggedIn())
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT);
     }
 
     public void disableRightSidebar() {
-        if (Utils.isLoggedIn())
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
     }
 
     public FormFragment getRightSidebarFragment() {
@@ -151,8 +144,5 @@ public class BaseActivity extends ActionBarActivity implements DrawerLayout.Draw
         mDrawerLayout.openDrawer(Gravity.RIGHT);
     }
 
-    public Boolean isDualPane() {
-        return mDualPane;
-    }
 }
 

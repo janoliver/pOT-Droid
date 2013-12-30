@@ -3,21 +3,14 @@ package com.mde.potdroid.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
-
 import com.mde.potdroid.BoardActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
@@ -73,25 +66,10 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
                 int bid = mForum.getCategories()
                         .get(groupPosition).getBoards().get(childPosition).getId();
 
-                if(getBaseActivity().isDualPane()) {
-
-                    BoardFragment bm = (BoardFragment) getFragmentManager()
-                            .findFragmentByTag("board");
-                    if (bm == null)
-                        bm = BoardFragment.newInstance(bid, 1);
-
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.replace(R.id.content, bm, "board");
-                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                    ft.commit();
-
-                } else {
-
-                    Intent intent = new Intent(getBaseActivity(), BoardActivity.class);
-                    intent.putExtra(BoardFragment.ARG_ID, bid);
-                    intent.putExtra(BoardFragment.ARG_PAGE, 1);
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(getBaseActivity(), BoardActivity.class);
+                intent.putExtra(BoardFragment.ARG_ID, bid);
+                intent.putExtra(BoardFragment.ARG_PAGE, 1);
+                startActivity(intent);
 
                 return true;
             }

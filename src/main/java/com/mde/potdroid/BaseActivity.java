@@ -1,12 +1,14 @@
 package com.mde.potdroid;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-
 import com.mde.potdroid.fragments.FormFragment;
 import com.mde.potdroid.fragments.SidebarFragment;
 import com.mde.potdroid.helpers.CustomExceptionHandler;
@@ -16,7 +18,7 @@ import com.mde.potdroid.helpers.Utils;
 /**
  * The Class all activities should extend. It mainly handles the sidebar(s)
  */
-public class BaseActivity extends ActionBarActivity implements DrawerLayout.DrawerListener
+public class BaseActivity extends ActionBarActivity
 {
 
     protected static final String TAG_SIDEBAR_LEFT = "sidebar-left";
@@ -26,6 +28,8 @@ public class BaseActivity extends ActionBarActivity implements DrawerLayout.Draw
     protected SidebarFragment mLeftSidebar;
     protected FormFragment mRightSidebar;
     protected DrawerLayout mDrawerLayout;
+    protected ActionBarDrawerToggle mDrawerToggle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +57,21 @@ public class BaseActivity extends ActionBarActivity implements DrawerLayout.Draw
 
         // find our drawerlayout. If it does not exist, we are in large mode.
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerLayout.setDrawerListener(this);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
+
+            public void onDrawerClosed(View view) {}
+
+            public void onDrawerOpened(View view) {
+                // if the left sidebar is opened, refresh bookmarks
+                if (view.getId() == R.id.sidebar_container_left) {
+                    if (mLeftSidebar.isDirty())
+                        mLeftSidebar.refreshBookmarks();
+                }
+            }
+        };
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         // find or create the left sidebar fragment
         mLeftSidebar = (SidebarFragment) getSupportFragmentManager()
@@ -81,26 +99,37 @@ public class BaseActivity extends ActionBarActivity implements DrawerLayout.Draw
         disableLeftSidebar();
         disableRightSidebar();
 
-    }
-
-    @Override
-    public void onDrawerSlide(View view, float v) {}
-
-    @Override
-    public void onDrawerOpened(View view) {
-        // if the left sidebar is opened, refresh bookmarks
-        if (view.getId() == R.id.sidebar_container_left) {
-            if (mLeftSidebar.isDirty())
-                mLeftSidebar.refreshBookmarks();
+        if(Utils.isLoggedIn()) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
         }
-
     }
 
     @Override
-    public void onDrawerClosed(View view) {}
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
 
     @Override
-    public void onDrawerStateChanged(int i) {}
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Pass the event to ActionBarDrawerToggle, if it returns
+        // true, then it has handled the app icon touch event
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        // Handle your other action bar items...
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     public void closeRightSidebar() {
         mDrawerLayout.closeDrawer(Gravity.RIGHT);

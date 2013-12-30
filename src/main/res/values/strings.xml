@@ -63,5 +63,7 @@
     <string name="newpm_notification">%1$d neue PMs!</string>
     <string name="send_successful">Erfolgreich gesendet</string>
     <string name="send_failure">Fehlgeschlagen</string>
+    <string name="drawer_open">Sidebar öffnen</string>
+    <string name="drawer_close">Sidebar schließen</string>
 
 </resources>

@@ -10,31 +10,17 @@ $(document).ready(function() {
         });
     }
 
+    // login shit
+    if(!api.isLoggedIn()) {
+        $(".login").hide();
+    }
+
     // scroll to the last post, when there was one
     if(api.getScroll() > 0) {
         document.location.href = "#" + api.getScroll();
         var before = $('a[name="' + api.getScroll() + '"]').parent().prevAll();
         before.css({ opacity: 0.5 });
     }
-
-    // manual image loader
-    $("div.img i").click(function() {
-        replaceImage($(this), "");
-    });
-
-    // manual image with link loader
-    $("div.img-link i.link").click(function() {
-        api.openUrl($(this).parent().attr('data-href'));
-    });
-
-    // manual image with link loader
-    $("div.img-link i.img").click(function() {
-        replaceImage($(this), $(this).parent().attr('data-href'));
-    });
-
-    $("div.spoiler i").click(function() {
-        $(this).hide().parent().find('div').show();
-    });
 
     // automatic image loader
     // Only images within or after the currently visible post are loaded, so
@@ -60,6 +46,25 @@ $(document).ready(function() {
         });
     }
 
+    // manual image loader
+    $("div.img i").click(function() {
+        replaceImage($(this), "");
+    });
+
+    // manual image with link loader
+    $("div.img-link i.link").click(function() {
+        api.openUrl($(this).parent().attr('data-href'));
+    });
+
+    // manual image with link loader
+    $("div.img-link i.img").click(function() {
+        replaceImage($(this), $(this).parent().attr('data-href'));
+    });
+
+    $("div.spoiler i").click(function() {
+        $(this).hide().parent().find('div').show();
+    });
+
     $('i.menu-icon').click(function(e) {
         var post_id = parseInt($(this).closest('section').attr('data-id'));
         api.openTopicMenu(post_id);
@@ -84,6 +89,38 @@ $(document).ready(function() {
         var post_id = parseInt($(this).closest('section').attr('data-id'));
         api.linkPost(post_id);
     });
+
+    $("div.buttons.reply i.reply").click(function() {
+        api.replyPost();
+    });
+
+    $("div.buttons.paginate i.frwd").click(function() {
+        api.frwd();
+    });
+
+    $("div.buttons.paginate i.rwd").click(function() {
+        api.rwd();
+    });
+
+    $("div.buttons.paginate i.refresh").click(function() {
+        api.refresh();
+    });
+
+    $("div.buttons.paginate i.fwd").click(function() {
+        api.fwd();
+    });
+
+    $("div.buttons.paginate i.ffwd").click(function() {
+        api.ffwd();
+    });
+
+    // hide the paginate buttons
+    if(api.isLastPage()) {
+        $("div.buttons.paginate i.fwd, div.buttons.paginate i.ffwd").css('visibility','hidden');
+    }
+    if(api.isFirstPage()) {
+        $("div.buttons.paginate i.rwd, div.buttons.paginate i.frwd").css('visibility','hidden');
+    }
 
     // register waypoints while scrolling over them
     // should be the last thing executed!

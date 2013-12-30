@@ -353,23 +353,23 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
      * @param id The post id to quote
      */
     public void quotePost(final int id) {
+        Post p = mTopic.getPostById(id);
 
-        getBaseActivity().runOnUiThread(new Runnable()
-        {
-            public void run() {
-                Post p = mTopic.getPostById(id);
+        if (mTopic.isClosed())
+            Utils.toast(getBaseActivity(), getString(R.string.closed_warning));
 
-                if (mTopic.isClosed())
-                    Utils.toast(getBaseActivity(), getString(R.string.closed_warning));
+        String text = String.format(getString(R.string.quote,
+                mTopic.getId(), p.getId(), p.getAuthor().getNick(), p.getText()));
 
-                String text = String.format(getString(R.string.quote,
-                        mTopic.getId(), p.getId(), p.getAuthor().getNick(), p.getText()));
+        getBaseActivity().getRightSidebarFragment().appendText(text);
+        getBaseActivity().openRightSidebar();
+    }
 
-                getBaseActivity().getRightSidebarFragment().appendText(text);
-                getBaseActivity().openRightSidebar();
-            }
-        });
-
+    /**
+     * Open the form for reply
+     */
+    public void replyPost() {
+        getBaseActivity().openRightSidebar();
     }
 
     /**
@@ -378,24 +378,19 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
      * @param id the PID
      */
     public void editPost(final int id) {
-        getBaseActivity().runOnUiThread(new Runnable()
-        {
-            public void run() {
-                Post p = mTopic.getPostById(id);
+        Post p = mTopic.getPostById(id);
 
-                SettingsWrapper settings = new SettingsWrapper(getBaseActivity());
+        SettingsWrapper settings = new SettingsWrapper(getBaseActivity());
 
-                if (p.getAuthor().getId() == settings.getUserId()) {
+        if (p.getAuthor().getId() == settings.getUserId()) {
 
-                    getBaseActivity().getRightSidebarFragment().setIsEditPost(mTopic, p);
-                    getBaseActivity().getRightSidebarFragment().appendText(p.getText());
-                    getBaseActivity().getRightSidebarFragment().setIconById(p.getIconId());
-                    getBaseActivity().openRightSidebar();
-                } else {
-                    Utils.toast(getBaseActivity(), getString(R.string.notyourpost_error));
-                }
-            }
-        });
+            getBaseActivity().getRightSidebarFragment().setIsEditPost(mTopic, p);
+            getBaseActivity().getRightSidebarFragment().appendText(p.getText());
+            getBaseActivity().getRightSidebarFragment().setIconById(p.getIconId());
+            getBaseActivity().openRightSidebar();
+        } else {
+            Utils.toast(getBaseActivity(), getString(R.string.notyourpost_error));
+        }
     }
 
     /**
@@ -405,27 +400,21 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
      * @param d the Dialog to close, if successful and Dialog exists
      */
     public void bookmarkPost(final int id, final Dialog d) {
-        getBaseActivity().runOnUiThread(new Runnable()
+        Post p = mTopic.getPostById(id);
+
+        final String url = Network.getAsyncUrl(
+                "set-bookmark.php?PID=" + p.getId() + "&token=" + p.getBookmarktoken());
+
+        Network network = new Network(getActivity());
+        network.get(url, null, new AsyncHttpResponseHandler()
         {
-            public void run() {
-                Post p = mTopic.getPostById(id);
-
-                final String url = Network.getAsyncUrl(
-                        "set-bookmark.php?PID=" + p.getId() + "&token=" + p.getBookmarktoken());
-
-                Network network = new Network(getActivity());
-                network.get(url, null, new AsyncHttpResponseHandler()
-                {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        Utils.toast(getBaseActivity(), "Bookmark hinzugefügt.");
-                        if (d != null)
-                            d.cancel();
-                    }
-                });
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Utils.toast(getBaseActivity(), "Bookmark hinzugefügt.");
+                if (d != null)
+                    d.cancel();
             }
         });
-
     }
 
     /**
@@ -434,21 +423,15 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
      * @param id the PID
      */
     public void linkPost(final int id) {
-        getBaseActivity().runOnUiThread(new Runnable()
-        {
-            public void run() {
-                Post p = mTopic.getPostById(id);
+        Post p = mTopic.getPostById(id);
 
-                String url = Network.getAbsoluteUrl(
-                        "thread.php?PID=" + p.getId() + "&TID=" + mTopic.getId() + "#reply_" + p
-                                .getId());
+        String url = Network.getAbsoluteUrl(
+                "thread.php?PID=" + p.getId() + "&TID=" + mTopic.getId() + "#reply_" + p
+                        .getId());
 
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-            }
-        });
-
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
     }
 
     /**
@@ -522,6 +505,18 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
                     d.cancel();
                 }
             });
+
+
+            // disable the buttons if the user is not logged in
+            if(!Utils.isLoggedIn()) {
+                quote_button.setAlpha(100);
+                quote_button.setEnabled(false);
+                edit_button.setAlpha(100);
+                edit_button.setEnabled(false);
+                bookmark_button.setAlpha(100);
+                bookmark_button.setEnabled(false);
+            }
+
 
             return d;
         }

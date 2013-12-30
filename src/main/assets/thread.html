@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="thread.css" type="text/css" />
     </head>
     <body>
+
         {{#posts}}
         <section
                 data-id="{{id}}"
@@ -22,17 +23,17 @@
             <header>
                 <div class="icons">
                     <i class="menu-icon fa fa-list portrait"></i>
-                    <i class="menu-edit fa fa-pencil landscape"></i>
-                    <i class="menu-quote fa fa-quote-left landscape"></i>
-                    <i class="menu-bookmark fa fa-heart landscape"></i>
+                    <i class="menu-edit fa fa-pencil landscape login"></i>
+                    <i class="menu-quote fa fa-quote-left landscape login"></i>
+                    <i class="menu-bookmark fa fa-heart landscape login"></i>
                     <i class="menu-link fa fa-external-link landscape"></i>
                 </div>
 
                 <div class="bender portrait"></div>
                 <div class="author">{{author}}</div>
                 {{&icon}}
-                <div class="date">{{date}}&nbsp;</div>
-                <div class="title">{{title}}</div>
+                <div class="date">{{date}}</div>
+                <div class="title">{{title}}&nbsp;</div>
             </header>
             <article>
                 <div class="bender landscape"></div>
@@ -41,5 +42,14 @@
             </article>
         </section>
         {{/posts}}
+
+        <div class="buttons reply login"><i class="fa fa-reply reply"></i></div>
+        <div class="buttons paginate landscape">
+            <i class="fa fa-fast-backward frwd"></i>
+            <i class="fa fa-backward rwd"></i>
+            <i class="fa fa-refresh refresh"></i>
+            <i class="fa fa-forward fwd"></i>
+            <i class="fa fa-fast-forward ffwd"></i>
+        </div>
     </body>
 </html>

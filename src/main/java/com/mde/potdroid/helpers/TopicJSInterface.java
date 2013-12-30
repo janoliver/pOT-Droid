@@ -59,13 +59,61 @@ public class TopicJSInterface extends BenderJSInterface
     }
 
     /**
+     * Check if User is logged in
+     *
+     * @return true if yes
+     */
+    @JavascriptInterface
+    public boolean isLoggedIn() {
+        return Utils.isLoggedIn();
+    }
+
+    /**
+     * Check if this is the last Page of the topic
+     *
+     * @return true if yes
+     */
+    @JavascriptInterface
+    public boolean isLastPage() {
+        return mTopicFragment.isLastPage();
+    }
+
+    /**
+     * Check if this is the first Page of the topic
+     *
+     * @return true if yes
+     */
+    @JavascriptInterface
+    public boolean isFirstPage() {
+        return mTopicFragment.isFirstPage();
+    }
+
+    /**
+     * Open the reply form
+     */
+    @JavascriptInterface
+    public void replyPost() {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
+        {
+            public void run() {
+                mTopicFragment.replyPost();
+            }
+        });
+    }
+
+    /**
      * Opens the dialog presenting some more functions for the Post
      *
      * @param post_id the post id
      */
     @JavascriptInterface
-    public void openTopicMenu(int post_id) {
-        mTopicFragment.showPostDialog(post_id);
+    public void openTopicMenu(final int post_id) {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
+        {
+            public void run() {
+                mTopicFragment.showPostDialog(post_id);
+            }
+        });
     }
 
     /**
@@ -74,8 +122,13 @@ public class TopicJSInterface extends BenderJSInterface
      * @param post_id the post id to edit
      */
     @JavascriptInterface
-    public void editPost(int post_id) {
-        mTopicFragment.editPost(post_id);
+    public void editPost(final int post_id) {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
+        {
+            public void run() {
+                mTopicFragment.editPost(post_id);
+            }
+        });
     }
 
     /**
@@ -84,8 +137,13 @@ public class TopicJSInterface extends BenderJSInterface
      * @param post_id the post id to quote
      */
     @JavascriptInterface
-    public void quotePost(int post_id) {
-        mTopicFragment.quotePost(post_id);
+    public void quotePost(final int post_id) {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
+        {
+            public void run() {
+                mTopicFragment.quotePost(post_id);
+            }
+        });
     }
 
     /**
@@ -94,8 +152,13 @@ public class TopicJSInterface extends BenderJSInterface
      * @param post_id the post id
      */
     @JavascriptInterface
-    public void linkPost(int post_id) {
-        mTopicFragment.linkPost(post_id);
+    public void linkPost(final int post_id) {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
+        {
+            public void run() {
+                mTopicFragment.linkPost(post_id);
+            }
+        });
     }
 
     /**
@@ -104,8 +167,78 @@ public class TopicJSInterface extends BenderJSInterface
      * @param post_id the post id to bookmark
      */
     @JavascriptInterface
-    public void bookmarkPost(int post_id) {
-        mTopicFragment.bookmarkPost(post_id, null);
+    public void bookmarkPost(final int post_id) {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
+        {
+            public void run() {
+                mTopicFragment.bookmarkPost(post_id, null);
+            }
+        });
+    }
+
+    /**
+     * Paginate: Go to first page
+     */
+    @JavascriptInterface
+    public void frwd() {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
+        {
+            public void run() {
+                mTopicFragment.goToFirstPage();
+            }
+        });
+    }
+
+    /**
+     * Paginate: Go to previous page
+     */
+    @JavascriptInterface
+    public void rwd() {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
+        {
+            public void run() {
+                mTopicFragment.goToPrevPage();
+            }
+        });
+    }
+
+    /**
+     * Paginate: refresh
+     */
+    @JavascriptInterface
+    public void refresh() {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
+        {
+            public void run() {
+                mTopicFragment.refreshPage();
+            }
+        });
+    }
+
+    /**
+     * Paginate: Go to next page
+     */
+    @JavascriptInterface
+    public void fwd() {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
+        {
+            public void run() {
+                mTopicFragment.goToNextPage();
+            }
+        });
+    }
+
+    /**
+     * Paginate: Go to last page
+     */
+    @JavascriptInterface
+    public void ffwd() {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
+        {
+            public void run() {
+                mTopicFragment.goToLastPage();
+            }
+        });
     }
 
     /**

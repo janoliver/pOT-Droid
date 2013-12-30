@@ -63,7 +63,8 @@ header div.date {
     font-weight:normal;
 }
 
-header i {
+header i,
+.buttons i {
     font-size:1.5em;
     color:#394E63;
     width:1em;
@@ -72,8 +73,14 @@ header i {
     padding-left:10px;
 }
 
-header i:active {
+header i:active,
+.buttons i:active {
     color:#ffffff;
+}
+
+.buttons {
+    margin-bottom:10px;
+    text-align:center;
 }
 
 header .icons {

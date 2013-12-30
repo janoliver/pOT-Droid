@@ -123,11 +123,14 @@ $(document).ready(function() {
 
     // scroll to the last post, when there was one
     // to ensure correct scrolling, this should be the last JS call.
-    if(api.getScroll() > 0) {
-        document.location.href = "#" + api.getScroll();
-        var before = $('a[name="' + api.getScroll() + '"]').parent().prevAll();
-        before.css({ opacity: 0.5 });
-    }
+    setTimeout(function() {
+          if(api.getScroll() > 0) {
+              document.location.href = "#" + api.getScroll();
+              var before = $('a[name="' + api.getScroll() + '"]').parent().prevAll();
+              before.css({ opacity: 0.5 });
+          }
+    }, 100);
+
 
 });
 

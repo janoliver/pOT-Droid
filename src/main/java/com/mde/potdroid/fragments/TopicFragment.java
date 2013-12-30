@@ -121,8 +121,11 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         // of some former TopicFragment, which will be restored on onResume. .
         if(Utils.isKitkat()) {
             mWebViewHolder.add(this);
-            if(mWebViewHolder.size() > 3)
-                mWebViewHolder.removeFirst().destroyWebView();
+            if(mWebViewHolder.size() > 3) {
+                TopicFragment fragment =  mWebViewHolder.removeFirst();
+                if(fragment != null)
+                    fragment.destroyWebView();
+            }
         }
 
         return v;
@@ -182,12 +185,15 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
      */
     public void destroyWebView() {
 
-        mWebView.destroy();
-        mWebView = null;
+        if(mWebView != null && !mDestroyed) {
 
-        mWebContainer.removeAllViews();
+            mWebView.destroy();
+            mWebView = null;
 
-        mDestroyed = true;
+            mWebContainer.removeAllViews();
+
+            mDestroyed = true;
+        }
     }
 
     @Override

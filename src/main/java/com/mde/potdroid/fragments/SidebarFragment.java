@@ -8,19 +8,9 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.TextView;
-
-import com.mde.potdroid.BookmarkActivity;
-import com.mde.potdroid.ForumActivity;
-import com.mde.potdroid.MessageListActivity;
-import com.mde.potdroid.R;
-import com.mde.potdroid.SettingsActivity;
-import com.mde.potdroid.TopicActivity;
+import android.widget.*;
+import com.mde.potdroid.*;
+import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.BookmarkList;
 import com.mde.potdroid.parsers.BookmarkParser;
@@ -159,7 +149,8 @@ public class SidebarFragment extends BaseFragment
     }
 
     public void refreshBookmarks() {
-        restartLoader(this);
+        if(Utils.isLoggedIn())
+            restartLoader(this);
     }
 
     @Override

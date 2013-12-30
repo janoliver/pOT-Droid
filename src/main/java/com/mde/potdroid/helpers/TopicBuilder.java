@@ -2,6 +2,7 @@ package com.mde.potdroid.helpers;
 
 import android.content.Context;
 
+import com.mde.potdroid.R;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.samskivert.mustache.Mustache;
@@ -13,6 +14,7 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -159,7 +161,8 @@ public class TopicBuilder
         }
 
         public String getDate() {
-            return mPost.getDate().toString();
+            return new SimpleDateFormat(mContext.getString(R.string.standard_time_format))
+                    .format(mPost.getDate());
         }
 
         public String getTitle() {
@@ -173,7 +176,7 @@ public class TopicBuilder
                 text = parseSmileys(text);
             } catch (Exception e) {
                 e.printStackTrace();
-                text = "Could not parse post!";
+                text = "-- Post konnte nicht geparsed werden --";
             }
 
             return text;

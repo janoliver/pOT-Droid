@@ -20,20 +20,12 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.R;
-import com.mde.potdroid.helpers.AsyncHttpLoader;
-import com.mde.potdroid.helpers.Network;
-import com.mde.potdroid.helpers.SettingsWrapper;
-import com.mde.potdroid.helpers.TopicBuilder;
-import com.mde.potdroid.helpers.TopicJSInterface;
-import com.mde.potdroid.helpers.Utils;
+import com.mde.potdroid.helpers.*;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.TopicParser;
-
 import org.apache.http.Header;
 
 import java.util.LinkedList;
@@ -213,10 +205,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     public void onLoadFinished(Loader<Topic> loader, Topic data) {
         hideLoadingAnimation();
 
-        if (mWebView == null)
-            return;
-
-        if (data != null) {
+        if (mWebView != null && data != null) {
             // update the topic data
             mTopic = data;
 

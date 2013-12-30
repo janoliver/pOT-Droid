@@ -15,13 +15,6 @@ $(document).ready(function() {
         $(".login").hide();
     }
 
-    // scroll to the last post, when there was one
-    if(api.getScroll() > 0) {
-        document.location.href = "#" + api.getScroll();
-        var before = $('a[name="' + api.getScroll() + '"]').parent().prevAll();
-        before.css({ opacity: 0.5 });
-    }
-
     // automatic image loader
     // Only images within or after the currently visible post are loaded, so
     // the visible position is not changed
@@ -127,6 +120,15 @@ $(document).ready(function() {
     $("header").waypoint(function() {
         api.registerScroll(parseInt($(this).parent().attr("data-id"),10));
     });
+
+    // scroll to the last post, when there was one
+    // to ensure correct scrolling, this should be the last JS call.
+    if(api.getScroll() > 0) {
+        document.location.href = "#" + api.getScroll();
+        var before = $('a[name="' + api.getScroll() + '"]').parent().prevAll();
+        before.css({ opacity: 0.5 });
+    }
+
 });
 
 function replaceImage(icon, link_target) {

@@ -21,7 +21,7 @@
             android:background="@color/bbstyle_darkblue"
             android:gravity="left|center_vertical"
             android:paddingLeft="5pt"
-            android:text="Antwort verfassen"
+            android:text="@string/write_answer"
             android:textSize="16sp"/>
 
         <ImageButton
@@ -63,14 +63,16 @@
         android:layout_marginRight="5pt"
         android:layout_marginTop="5pt"
         android:background="@color/white"
-        android:hint="Empfänger"
+        android:hint="@string/form_rcpt_hint"
         android:padding="3pt"
         android:textColor="@color/bbstyle_darkblue"
         android:textSize="16sp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:cursorVisible="true"
+        android:textCursorDrawable="@null"/>
 
     <RelativeLayout
-        android:id="@+id/nav_buttons"
+        android:id="@+id/title_icon_bar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
@@ -81,11 +83,13 @@
             android:layout_gravity="center"
             android:layout_margin="5pt"
             android:background="@color/white"
-            android:hint="Titel"
+            android:hint="@string/form_title_hint"
             android:layout_toLeftOf="@+id/button_icon"
             android:padding="3pt"
             android:textColor="@color/bbstyle_darkblue"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@null"/>
 
         <ImageButton
             android:id="@+id/button_icon"
@@ -115,12 +119,14 @@
         android:background="@color/white"
         android:ems="10"
         android:gravity="top"
-        android:hint="Text"
+        android:hint="@string/form_text_hint"
         android:inputType="textMultiLine"
         android:padding="3pt"
         android:scrollbars="vertical|horizontal"
         android:textColor="@color/bbstyle_darkblue"
-        android:textSize="16sp"/>
+        android:textSize="12sp"
+        android:cursorVisible="true"
+        android:textCursorDrawable="@null"/>
 
 
 </LinearLayout>

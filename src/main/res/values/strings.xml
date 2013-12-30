@@ -65,5 +65,8 @@
     <string name="send_failure">Fehlgeschlagen</string>
     <string name="drawer_open">Sidebar öffnen</string>
     <string name="drawer_close">Sidebar schließen</string>
+    <string name="form_text_hint">Text</string>
+    <string name="form_title_hint">Titel</string>
+    <string name="form_rcpt_hint">Empfänger</string>
 
 </resources>

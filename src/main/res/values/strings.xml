@@ -68,5 +68,7 @@
     <string name="form_text_hint">Text</string>
     <string name="form_title_hint">Titel</string>
     <string name="form_rcpt_hint">Empfänger</string>
+    <string name="sidebar_cap_bookmarks">BOOKMARKS</string>
+    <string name="no_unread_bookmarks">Keine ungelesenen Bookmarks</string>
 
 </resources>

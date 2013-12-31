@@ -1,133 +1,139 @@
 <LinearLayout
-    android:id="@+id/sidebar"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bbstyle_lightblue"
-    android:orientation="vertical">
+        android:id="@+id/sidebar"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bbstyle_lightblue"
+        android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/nav_buttons"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            android:id="@+id/nav_buttons"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/text_form_title"
-            android:layout_width="0dp"
-            android:layout_height="48dip"
-            android:layout_weight="2"
-            android:background="@color/bbstyle_darkblue"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="5pt"
-            android:text="@string/write_answer"
-            android:textSize="16sp"/>
+                android:id="@+id/text_form_title"
+                android:layout_width="0dp"
+                android:layout_height="48dip"
+                android:layout_weight="2"
+                android:background="@color/bbstyle_darkblue"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="5pt"
+                android:text="@string/write_answer"
+                android:textSize="16sp"/>
 
         <ImageButton
-            android:id="@+id/button_send"
-            android:layout_width="0dp"
-            android:layout_height="48dip"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:background="@drawable/sidebar_button_background"
-            android:src="?attr/menu_icon_accept"
-            android:textSize="14sp"/>
+                android:id="@+id/button_send"
+                android:layout_width="0dp"
+                android:layout_height="48dip"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/sidebar_button_background"
+                android:src="?attr/menu_icon_accept"
+                android:textSize="14sp"/>
 
         <ImageButton
-            android:id="@+id/button_cancel"
-            android:layout_width="0dp"
-            android:layout_height="48dip"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:background="@drawable/sidebar_button_background"
-            android:src="?attr/menu_icon_cancel"
-            android:textSize="14sp"/>
+                android:id="@+id/button_cancel"
+                android:layout_width="0dp"
+                android:layout_height="48dip"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/sidebar_button_background"
+                android:src="?attr/menu_icon_cancel"
+                android:textSize="14sp"/>
 
     </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/send_progress"
-        style="@style/Holo.ProgressBar.Horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:indeterminateOnly="true"
-        android:visibility="invisible"/>
+    <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/send_progress"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:indeterminate="true"
+            app:spb_sections_count="12"
+            app:spb_stroke_width="2dp"
+            app:spb_stroke_separator_length="4dp"
+            android:visibility="invisible"
+            app:spb_color="@color/white"/>
 
     <EditText
-        android:id="@+id/edit_rcpt"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="5pt"
-        android:layout_marginRight="5pt"
-        android:layout_marginTop="5pt"
-        android:background="@color/white"
-        android:hint="@string/form_rcpt_hint"
-        android:padding="3pt"
-        android:textColor="@color/bbstyle_darkblue"
-        android:textSize="16sp"
-        android:visibility="gone"
-        android:cursorVisible="true"
-        android:textCursorDrawable="@null"/>
-
-    <RelativeLayout
-        android:id="@+id/title_icon_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/edit_title"
+            android:id="@+id/edit_rcpt"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="5pt"
+            android:layout_marginLeft="5pt"
+            android:layout_marginRight="5pt"
+            android:layout_marginTop="5pt"
             android:background="@color/white"
-            android:hint="@string/form_title_hint"
-            android:layout_toLeftOf="@+id/button_icon"
+            android:hint="@string/form_rcpt_hint"
             android:padding="3pt"
-            android:inputType="text|textCapSentences"
             android:textColor="@color/bbstyle_darkblue"
             android:textSize="16sp"
+            android:visibility="gone"
             android:cursorVisible="true"
             android:textCursorDrawable="@null"/>
 
+    <RelativeLayout
+            android:id="@+id/title_icon_bar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+        <EditText
+                android:id="@+id/edit_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5pt"
+                android:background="@color/white"
+                android:hint="@string/form_title_hint"
+                android:layout_toLeftOf="@+id/button_icon"
+                android:padding="3pt"
+                android:inputType="text|textCapSentences"
+                android:textColor="@color/bbstyle_darkblue"
+                android:textSize="16sp"
+                android:cursorVisible="true"
+                android:textCursorDrawable="@null"/>
+
         <ImageButton
-            android:id="@+id/button_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5pt"
-            android:layout_marginRight="5pt"
-            android:scaleType="fitCenter"
-            android:layout_marginBottom="5pt"
-            android:layout_marginLeft="0dp"
-            android:layout_gravity="center"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/actionbar_button_background"
-            android:src="?attr/menu_icon_cancel"/>
+                android:id="@+id/button_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5pt"
+                android:layout_marginRight="5pt"
+                android:scaleType="fitCenter"
+                android:layout_marginBottom="5pt"
+                android:layout_marginLeft="0dp"
+                android:layout_gravity="center"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/actionbar_button_background"
+                android:src="?attr/menu_icon_cancel"/>
 
     </RelativeLayout>
 
 
     <EditText
-        android:id="@+id/edit_content"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:layout_marginBottom="5pt"
-        android:layout_marginLeft="5pt"
-        android:layout_marginRight="5pt"
-        android:background="@color/white"
-        android:ems="10"
-        android:gravity="top"
-        android:hint="@string/form_text_hint"
-        android:inputType="textMultiLine|textCapSentences|textLongMessage"
-        android:padding="3pt"
-        android:scrollbars="vertical|horizontal"
-        android:textColor="@color/bbstyle_darkblue"
-        android:textSize="12sp"
-        android:cursorVisible="true"
-        android:textCursorDrawable="@null"/>
+            android:id="@+id/edit_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5pt"
+            android:layout_marginLeft="5pt"
+            android:layout_marginRight="5pt"
+            android:background="@color/white"
+            android:ems="10"
+            android:gravity="top"
+            android:hint="@string/form_text_hint"
+            android:inputType="textMultiLine|textCapSentences|textLongMessage"
+            android:padding="3pt"
+            android:scrollbars="vertical|horizontal"
+            android:textColor="@color/bbstyle_darkblue"
+            android:textSize="12sp"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@null"/>
 
 
 </LinearLayout>

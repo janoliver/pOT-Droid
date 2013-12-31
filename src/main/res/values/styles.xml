@@ -30,7 +30,13 @@
         <item name="menu_icon_cancel">@drawable/dark_navigation_cancel</item>
         <item name="menu_icon_link">@drawable/dark_navigation_link</item>
         <item name="menu_icon_quote">@drawable/dark_navigation_quote</item>
+        <item name="ptrHeaderStyle">@style/Widget.Custom.PtrHeader</item>
     </style>
 
+    <style name="Widget.Custom.PtrHeader" parent="android:Widget">
+        <!-- Color to tint the progress bar -->
+        <item name="ptrProgressBarColor">@color/white</item>
+
+    </style>
 
 </resources>

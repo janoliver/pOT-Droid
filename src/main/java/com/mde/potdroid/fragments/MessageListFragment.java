@@ -19,6 +19,7 @@ import com.mde.potdroid.helpers.*;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.MessageList;
 import com.mde.potdroid.parsers.MessageListParser;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -27,7 +28,7 @@ import java.text.SimpleDateFormat;
  * This fragment displays a list of messages below a Tab bar for the inbox/outbox folders.
  */
 public class MessageListFragment extends BaseFragment implements LoaderManager
-        .LoaderCallbacks<MessageList>
+        .LoaderCallbacks<MessageList>, OnRefreshListener
 {
 
     // the tags of the fragment arguments
@@ -145,6 +146,12 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
     @Override
     public void onLoaderReset(Loader<MessageList> loader) {
         hideLoadingAnimation();
+    }
+
+    @Override
+    public void onRefreshStarted(View view) {
+        super.onRefreshStarted(view);
+        restartLoader(this);
     }
 
     private class MessageListAdapter extends BaseAdapter

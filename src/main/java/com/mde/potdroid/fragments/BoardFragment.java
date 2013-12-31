@@ -122,6 +122,12 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     }
 
     @Override
+    public void onRefreshStarted(View view) {
+        super.onRefreshStarted(view);
+        restartLoader(this);
+    }
+
+    @Override
     public void onLoadFinished(Loader<Board> loader, Board data) {
         hideLoadingAnimation();
 

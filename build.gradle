@@ -14,10 +14,12 @@ repositories {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:19.+'
-    compile 'com.android.support:appcompat-v7:19.0.+'
-    compile 'com.samskivert:jmustache:1.8@jar'
-    compile 'com.loopj.android:android-async-http:1.4.4'
+    compile 'com.android.support:support-v4:+'
+    compile 'com.android.support:appcompat-v7:+'
+    compile 'com.samskivert:jmustache:+@jar'
+    compile 'com.loopj.android:android-async-http:+'
+    compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abc:+'
+    compile 'com.github.castorflex.smoothprogressbar:library:+'
 }
 
 android {

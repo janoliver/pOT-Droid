@@ -30,6 +30,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 {
 
     private Forum mForum;
+
     private ForumListAdapter mListAdapter;
 
     /**
@@ -96,6 +97,12 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_forum, menu);
+    }
+
+    @Override
+    public void onRefreshStarted(View view) {
+        super.onRefreshStarted(view);
+        restartLoader(this);
     }
 
     @Override

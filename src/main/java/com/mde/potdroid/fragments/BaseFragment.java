@@ -5,24 +5,22 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-
+import android.view.*;
 import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.ForumActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.SettingsActivity;
 import com.mde.potdroid.helpers.Utils;
+import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 /**
  * The Base Fragment class that all Fragments should inherit. Provides some methods
  * for convenient access of objects and handles loading animations.
  */
-public abstract class BaseFragment extends Fragment
+public abstract class BaseFragment extends Fragment implements OnRefreshListener
 {
 
     // this is the ID of the content loader
@@ -30,6 +28,9 @@ public abstract class BaseFragment extends Fragment
 
     // we need this to convert dip to px for the icons
     protected float mDensity;
+
+    // the pulltorefresh instance
+    protected PullToRefreshLayout mPullToRefreshLayout;
 
 
     @Override
@@ -43,6 +44,18 @@ public abstract class BaseFragment extends Fragment
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         mDensity = displayMetrics.density;
+
+        // Now find the PullToRefreshLayout to setup
+        mPullToRefreshLayout = (PullToRefreshLayout) getView().findViewById(R.id.ptr_layout);
+
+        if(mPullToRefreshLayout != null) {
+            // Now setup the PullToRefreshLayout
+            ActionBarPullToRefresh.from(getActivity())
+                    .allChildrenArePullable()
+                    .listener(this)
+                    .setup(mPullToRefreshLayout);
+
+        }
     }
 
     /**
@@ -76,7 +89,15 @@ public abstract class BaseFragment extends Fragment
      * Hides the loading message
      */
     public void hideLoadingAnimation() {
+        if(mPullToRefreshLayout != null) {
+            mPullToRefreshLayout.setRefreshComplete();
+        }
         getBaseActivity().setProgressBarIndeterminateVisibility(false);
+    }
+
+    @Override
+    public void onRefreshStarted(View view) {
+
     }
 
     /**
@@ -143,6 +164,9 @@ public abstract class BaseFragment extends Fragment
      * Shows a "loading" message with a small loading animation
      */
     public void showLoadingAnimation() {
+        if(mPullToRefreshLayout != null) {
+            mPullToRefreshLayout.setRefreshing(true);
+        }
         getBaseActivity().setProgressBarIndeterminateVisibility(true);
     }
 

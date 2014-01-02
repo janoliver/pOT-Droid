@@ -17,11 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
@@ -327,7 +323,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         mEditTitle.setText("");
         mTopicId = 0;
         mPostId = 0;
-        mIcon.setImageResource(R.drawable.dark_navigation_cancel);
+        mIcon.setImageResource(R.drawable.ic_action_icon);
         mToken = "";
     }
 

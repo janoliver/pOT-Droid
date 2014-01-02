@@ -110,7 +110,7 @@
                 android:layout_gravity="center"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/actionbar_button_background"
-                android:src="?attr/menu_icon_cancel"/>
+                android:src="@drawable/ic_action_icon"/>
 
     </RelativeLayout>
 

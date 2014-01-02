@@ -36,12 +36,22 @@
         <item>600</item>
         <item>1800</item>
         <item>3600</item>
+        <item>7200</item>
+        <item>14400</item>
+        <item>28800</item>
+        <item>43200</item>
+        <item>86400</item>
     </string-array>
     <string-array name="pref_poll_messages_entries">
-        <item>Kein Polling</item>
+        <item>kein Polling</item>
         <item>alle fünf Minuten</item>
         <item>alle zehn Minuten</item>
         <item>halbstündlich</item>
         <item>stündlich</item>
+        <item>alle zwei Stunden</item>
+        <item>alle vier Stunden</item>
+        <item>alle acht Stunden</item>
+        <item>alle zwölf Stunden</item>
+        <item>alle 24 Stunden</item>
     </string-array>
 </resources>

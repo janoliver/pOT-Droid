@@ -8,47 +8,47 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:id="@+id/nav_buttons"
                   android:layout_width="fill_parent"
-                  android:layout_height="wrap_content"
+                  android:layout_height="48dip"
                   android:orientation="horizontal">
 
-        <ImageButton
+        <com.mde.potdroid.views.IconButton
                 android:layout_width="0dp"
-                android:layout_height="48dip"
-                android:src="?attr/menu_icon_home"
+                android:layout_height="match_parent"
+                android:text="@string/icon_home"
                 android:id="@+id/button_home"
                 android:background="@drawable/sidebar_button_background"
-                android:textSize="14sp"
-                android:layout_gravity="center_horizontal"
+                android:textSize="28sp"
+                android:color="@color/white"
                 android:layout_weight="1"/>
 
-        <ImageButton
+        <com.mde.potdroid.views.IconButton
                 android:layout_width="0dp"
-                android:layout_height="48dip"
-                android:src="?attr/menu_icon_pm"
+                android:layout_height="match_parent"
+                android:text="@string/icon_envelope_alt"
                 android:id="@+id/button_pm"
                 android:background="@drawable/sidebar_button_background"
-                android:layout_gravity="center_horizontal"
-                android:textSize="14sp"
+                android:textSize="24sp"
+                android:color="@color/white"
                 android:layout_weight="1"/>
 
-        <ImageButton
+        <com.mde.potdroid.views.IconButton
                 android:layout_width="0dp"
-                android:layout_height="48dip"
-                android:src="?attr/menu_icon_favorite"
+                android:layout_height="match_parent"
+                android:text="@string/icon_bookmark"
                 android:id="@+id/button_bookmarks"
                 android:background="@drawable/sidebar_button_background"
-                android:layout_gravity="center_horizontal"
-                android:textSize="14sp"
+                android:textSize="24sp"
+                android:color="@color/white"
                 android:layout_weight="1"/>
 
-        <ImageButton
+        <com.mde.potdroid.views.IconButton
                 android:layout_width="0dp"
-                android:layout_height="48dip"
-                android:src="?attr/menu_icon_preferences"
+                android:layout_height="match_parent"
+                android:text="@string/icon_cogs"
                 android:id="@+id/button_preferences"
                 android:background="@drawable/sidebar_button_background"
-                android:layout_gravity="center_horizontal"
-                android:textSize="14sp"
+                android:textSize="24sp"
+                android:color="@color/white"
                 android:layout_weight="1"/>
 
     </LinearLayout>

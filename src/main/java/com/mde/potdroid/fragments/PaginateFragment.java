@@ -6,10 +6,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-
 import com.mde.potdroid.R;
+import com.mde.potdroid.views.IconButton;
 
 /**
  * This Fragment extends BaseFragment and provides some more methods and an interface
@@ -47,11 +46,11 @@ abstract public class PaginateFragment extends BaseFragment
         MenuItem paginate_layout = menu.findItem(R.id.layout_item);
         LinearLayout paginateWidget = (LinearLayout) MenuItemCompat.getActionView(paginate_layout);
 
-        ImageButton refreshButton = (ImageButton) paginateWidget.findViewById(R.id.button_refresh);
-        ImageButton fwdButton = (ImageButton) paginateWidget.findViewById(R.id.button_fwd);
-        ImageButton ffwdButton = (ImageButton) paginateWidget.findViewById(R.id.button_ffwd);
-        ImageButton rwdButton = (ImageButton) paginateWidget.findViewById(R.id.button_rwd);
-        ImageButton frwdButton = (ImageButton) paginateWidget.findViewById(R.id.button_frwd);
+        IconButton refreshButton = (IconButton) paginateWidget.findViewById(R.id.button_refresh);
+        IconButton fwdButton = (IconButton) paginateWidget.findViewById(R.id.button_fwd);
+        IconButton ffwdButton = (IconButton) paginateWidget.findViewById(R.id.button_ffwd);
+        IconButton rwdButton = (IconButton) paginateWidget.findViewById(R.id.button_rwd);
+        IconButton frwdButton = (IconButton) paginateWidget.findViewById(R.id.button_frwd);
 
         refreshButton.setOnClickListener(new View.OnClickListener()
         {

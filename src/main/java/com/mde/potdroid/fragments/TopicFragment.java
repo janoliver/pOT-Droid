@@ -1,13 +1,10 @@
 package com.mde.potdroid.fragments;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
@@ -19,13 +16,13 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.*;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.TopicParser;
+import com.mde.potdroid.views.PostActionsDialog;
 import org.apache.http.Header;
 
 import java.util.LinkedList;
@@ -325,9 +322,9 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
      * @param post_id the PID
      */
     public void showPostDialog(int post_id) {
-        PostDialogFragment menu = PostDialogFragment.getInstance(post_id);
+        PostActionsDialog menu = PostActionsDialog.getInstance(post_id);
         menu.setTargetFragment(this, 0);
-        menu.show(getBaseActivity().getSupportFragmentManager(), PostDialogFragment.TAG);
+        menu.show(getBaseActivity().getSupportFragmentManager(), PostActionsDialog.TAG);
     }
 
     static class AsyncContentLoader extends AsyncHttpLoader<Topic>
@@ -439,99 +436,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
-    }
-
-    /**
-     * This DialogFragment shows a Menu for a Post with some actions
-     */
-    public static class PostDialogFragment extends DialogFragment
-    {
-
-        public static final String TAG = "postmenu";
-
-        public static PostDialogFragment getInstance(int post_id) {
-            PostDialogFragment f = new PostDialogFragment();
-
-            // Supply index input as an argument.
-            Bundle args = new Bundle();
-            args.putInt(ARG_POST_ID, post_id);
-            f.setArguments(args);
-
-            return f;
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final TopicFragment fragment = (TopicFragment) getTargetFragment();
-
-            LayoutInflater inflater = fragment.getBaseActivity().getLayoutInflater();
-            AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getBaseActivity());
-            View dialog_view = inflater.inflate(R.layout.dialog_post_actions, null);
-            builder.setView(dialog_view)
-                    .setTitle(R.string.post_actions)
-                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
-                    {
-                        public void onClick(DialogInterface dialog, int id) {
-                        }
-                    });
-
-            // Create the AlertDialog object and return it
-            final Dialog d = builder.create();
-
-            ImageButton quote_button = (ImageButton) dialog_view.findViewById(R.id.button_quote);
-            quote_button.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v) {
-                    fragment.quotePost(getArguments().getInt(ARG_POST_ID));
-                    d.cancel();
-                }
-            });
-
-            ImageButton edit_button = (ImageButton) dialog_view.findViewById(R.id.button_edit);
-            edit_button.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v) {
-                    fragment.editPost(getArguments().getInt(ARG_POST_ID));
-                    d.cancel();
-                }
-            });
-
-            ImageButton bookmark_button = (ImageButton) dialog_view.findViewById(R.id
-                    .button_bookmark);
-            bookmark_button.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v) {
-                    fragment.bookmarkPost(getArguments().getInt(ARG_POST_ID), d);
-                }
-            });
-
-            ImageButton url_button = (ImageButton) dialog_view.findViewById(R.id.button_link);
-            url_button.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v) {
-                    fragment.linkPost(getArguments().getInt(ARG_POST_ID));
-                    d.cancel();
-                }
-            });
-
-
-            // disable the buttons if the user is not logged in
-            if(!Utils.isLoggedIn()) {
-                quote_button.setAlpha(100);
-                quote_button.setEnabled(false);
-                edit_button.setAlpha(100);
-                edit_button.setEnabled(false);
-                bookmark_button.setAlpha(100);
-                bookmark_button.setEnabled(false);
-            }
-
-
-            return d;
-        }
     }
 
 }

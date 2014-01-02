@@ -4,6 +4,5 @@
     <item
         android:id="@+id/layout_item"
         potdroid:actionLayout="@layout/view_paginate"
-        potdroid:showAsAction="always"
-        android:icon="@drawable/dark_navigation_refresh"/>
+        potdroid:showAsAction="always"/>
 </menu>

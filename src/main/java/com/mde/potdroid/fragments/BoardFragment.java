@@ -268,7 +268,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             if (t.getIconId() != null) {
                 try {
                     Drawable d = Utils.getIcon(getActivity(), t.getIconId());
-                    d.setBounds(0, 0, 13 * (int) mDensity, 13 * (int) mDensity);
+                    d.setBounds(0, 0, 13 * getDensity(), 13 * getDensity());
                     title.setCompoundDrawables(d, null, null, null);
                 } catch (IOException e) {
                     e.printStackTrace();

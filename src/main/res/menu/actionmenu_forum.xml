@@ -3,7 +3,6 @@
       xmlns:potdroid="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/refresh"
-        android:title="Aktualisieren"
-        android:icon="?attr/menu_icon_refresh"
+        android:title="@string/refresh"
         potdroid:showAsAction="ifRoom"/>
 </menu>

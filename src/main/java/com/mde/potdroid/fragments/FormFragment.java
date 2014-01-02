@@ -1,15 +1,9 @@
 package com.mde.potdroid.fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
@@ -17,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
@@ -28,13 +24,13 @@ import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.MessageParser;
+import com.mde.potdroid.views.IconButton;
+import com.mde.potdroid.views.IconSelectionDialog;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -127,7 +123,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
 
         // find the send button and add a click listener
-        ImageButton send = (ImageButton) v.findViewById(R.id.button_send);
+        IconButton send = (IconButton) v.findViewById(R.id.button_send);
         send.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -145,7 +141,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         });
 
         // find the cancel button and add a click listener
-        ImageButton cancel = (ImageButton) v.findViewById(R.id.button_cancel);
+        IconButton cancel = (IconButton) v.findViewById(R.id.button_cancel);
         cancel.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -164,7 +160,7 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         {
             @Override
             public void onClick(View v) {
-                IconSelection id = new IconSelection();
+                IconSelectionDialog id = new IconSelectionDialog();
                 id.setTargetFragment(FormFragment.this, 0);
                 id.show(getBaseActivity().getSupportFragmentManager(), "icondialog");
             }
@@ -477,80 +473,4 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
             return result;
         }
     }
-
-    /**
-     * The icon selection dialog
-     */
-    public static class IconSelection extends DialogFragment
-    {
-        private ArrayList<String> mIcons = new ArrayList<String>();
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final FormFragment fragment = ((FormFragment) getTargetFragment());
-
-            // find all icons
-            AssetManager aMan = getActivity().getAssets();
-            try {
-                mIcons.addAll(Arrays.asList(aMan.list("thread-icons")));
-            } catch (IOException e) {}
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-            builder.setTitle(R.string.icon_selection);
-            builder.setAdapter(new IconListAdapter(getActivity()),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            Bitmap icon;
-                            try {
-                                icon = Utils.getBitmapIcon(getActivity(), mIcons.get(which));
-                                Bitmap bm = Bitmap.createScaledBitmap(icon, 80, 80, true);
-                                Integer icon_id = Integer
-                                        .parseInt(mIcons.get(which).substring(4).split("\\.")[0]);
-                                fragment.setIcon(bm, icon_id);
-                            } catch (IOException e) {}
-
-                        }
-                    });
-            return builder.create();
-        }
-
-        /**
-         * Custom view adapter for the ListView items
-         */
-        public class IconListAdapter extends ArrayAdapter<String>
-        {
-            Activity context;
-
-            IconListAdapter(Activity context) {
-                super(context, R.layout.listitem_icon, R.id.name, mIcons);
-                this.context = context;
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                LayoutInflater inflater = context.getLayoutInflater();
-                View row = inflater.inflate(R.layout.listitem_icon, null);
-                String icon = mIcons.get(position);
-
-                TextView name = (TextView) row.findViewById(R.id.name);
-                name.setText(icon);
-
-                try {
-                    Drawable dr = Utils.getIcon(getActivity(), icon);
-                    dr.setBounds(0,0,20*(int)((FormFragment) getTargetFragment()).mDensity,
-                            20*(int)((FormFragment) getTargetFragment()).mDensity);
-                    name.setCompoundDrawables(dr, null, null, null);
-
-                } catch (IOException e) { }
-
-
-                return (row);
-            }
-        }
-    }
-
-
-
 }

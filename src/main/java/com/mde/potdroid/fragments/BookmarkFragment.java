@@ -30,6 +30,7 @@ import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.BookmarkList;
 import com.mde.potdroid.parsers.BookmarkParser;
 
+import com.mde.potdroid.views.IconDrawable;
 import org.apache.http.Header;
 
 /**
@@ -104,6 +105,9 @@ public class BookmarkFragment extends BaseFragment
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_bookmarks, menu);
+
+        MenuItem refresh = menu.findItem(R.id.refresh);
+        refresh.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
     }
 
     @Override

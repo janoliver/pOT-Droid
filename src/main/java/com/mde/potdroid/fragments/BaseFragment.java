@@ -12,6 +12,7 @@ import com.mde.potdroid.ForumActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.SettingsActivity;
 import com.mde.potdroid.helpers.Utils;
+import com.mde.potdroid.views.IconDrawable;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
@@ -56,6 +57,15 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
                     .setup(mPullToRefreshLayout);
 
         }
+    }
+
+    /**
+     * Returns the density of the display in pt
+     *
+     * @return the density
+     */
+    public int getDensity() {
+        return (int) mDensity;
     }
 
     /**
@@ -119,7 +129,15 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+
         inflater.inflate(R.menu.actionmenu_base, menu);
+
+        MenuItem settings = menu.findItem(R.id.preferences);
+        settings.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_cogs));
+
+        MenuItem home = menu.findItem(R.id.forumact);
+        home.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_home));
+
         if (!Utils.isLoggedIn()) {
             menu.setGroupVisible(R.id.loggedout, true);
         } else {

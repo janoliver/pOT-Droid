@@ -14,6 +14,7 @@ import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.BookmarkList;
 import com.mde.potdroid.parsers.BookmarkParser;
+import com.mde.potdroid.views.IconButton;
 
 /**
  * This is the Sidebar containing a list of unread Bookmarks and the navigation.
@@ -78,7 +79,7 @@ public class SidebarFragment extends BaseFragment
             }
         });
 
-        ImageButton home = (ImageButton) v.findViewById(R.id.button_home);
+        IconButton home = (IconButton) v.findViewById(R.id.button_home);
         home.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -88,7 +89,7 @@ public class SidebarFragment extends BaseFragment
             }
         });
 
-        ImageButton preferences = (ImageButton) v.findViewById(R.id.button_preferences);
+        IconButton preferences = (IconButton) v.findViewById(R.id.button_preferences);
         preferences.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -98,7 +99,7 @@ public class SidebarFragment extends BaseFragment
             }
         });
 
-        ImageButton bookmarks = (ImageButton) v.findViewById(R.id.button_bookmarks);
+        IconButton bookmarks = (IconButton) v.findViewById(R.id.button_bookmarks);
         bookmarks.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -108,7 +109,7 @@ public class SidebarFragment extends BaseFragment
             }
         });
 
-        ImageButton pm = (ImageButton) v.findViewById(R.id.button_pm);
+        IconButton pm = (IconButton) v.findViewById(R.id.button_pm);
         pm.setOnClickListener(new View.OnClickListener()
         {
             @Override

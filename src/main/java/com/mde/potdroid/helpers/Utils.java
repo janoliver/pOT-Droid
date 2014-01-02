@@ -169,6 +169,16 @@ public class Utils
         mContext = cx;
     }
 
+    /**
+     * Get the static application context
+     * @return the Context
+     */
+    public static Context getApplicationContext() {
+        if(mContext == null)
+            throw new NullPointerException("No application context saved.");
+        return mContext;
+    }
+
     public static class NotLoggedInException extends Exception
     {
 

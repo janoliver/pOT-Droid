@@ -14,22 +14,6 @@
     </style>
 
     <style name="PotDroidDark" parent="Theme.Bbdarkstyle">
-        <item name="menu_icon_preferences">@drawable/dark_action_settings</item>
-        <item name="menu_icon_edit">@drawable/dark_content_edit</item>
-        <item name="menu_icon_back">@drawable/dark_navigation_back</item>
-        <item name="menu_icon_forward">@drawable/dark_navigation_forward</item>
-        <item name="menu_icon_refresh">@drawable/dark_navigation_refresh</item>
-        <item name="menu_icon_fwd">@drawable/dark_navigation_fwd</item>
-        <item name="menu_icon_ffwd">@drawable/dark_navigation_ffwd</item>
-        <item name="menu_icon_rwd">@drawable/dark_navigation_rwd</item>
-        <item name="menu_icon_frwd">@drawable/dark_navigation_frwd</item>
-        <item name="menu_icon_favorite">@drawable/dark_rating_favorite</item>
-        <item name="menu_icon_pm">@drawable/dark_navigation_pm</item>
-        <item name="menu_icon_home">@drawable/dark_navigation_home</item>
-        <item name="menu_icon_accept">@drawable/dark_navigation_accept</item>
-        <item name="menu_icon_cancel">@drawable/dark_navigation_cancel</item>
-        <item name="menu_icon_link">@drawable/dark_navigation_link</item>
-        <item name="menu_icon_quote">@drawable/dark_navigation_quote</item>
         <item name="ptrHeaderStyle">@style/Widget.Custom.PtrHeader</item>
     </style>
 

@@ -29,17 +29,13 @@
     <string name="pref_state_vibrate_active">Vibration aktiv.</string>
     <string name="pref_state_vibrate_inactive">Vibration nicht aktiv.</string>
     <string name="icon_selection">Icon auswählen.</string>
-
     <string name="paginate_page_indicator"><![CDATA[Seite <strong>%1$d</strong> von <strong>%2$d</strong>]]></string>
     <string name="topic_additional_information"><![CDATA[<strong>%1$d</strong> Posts, <strong>%2$d</strong> Seiten]]></string>
     <string name="new_posts_description"><![CDATA[<strong>%1$d</strong> neue Posts, <strong>%2$d</strong> Seiten]]></string>
     <string name="x_unread_posts"><![CDATA[<strong>%1$d</strong> Ungelesene Bookmarks.]]></string>
     <string name="standard_time_format">dd.MM.yyyy, HH:mm</string>
-
     <string name="loading_error">Fehler beim Laden der Daten.</string>
-
     <string name="removed_bookmark">Bookmark entfernt.</string>
-
     <string name="write_answer">Antwort verfassen</string>
     <string name="loading_message">Lade Nachricht</string>
     <string name="message_subtitle"><![CDATA[%1$s <strong>%2$s</strong>]]></string>
@@ -53,7 +49,6 @@
     <string name="message_header">\n\n------------------------\n%1$s schrieb am %2$s:\n</string>
     <string name="forum_title">Forenübersicht</string>
     <string name="last_post"><![CDATA[Letzter Beitrag von <strong>%1$s</strong> (%2$s)]]></string>
-
     <string name="closed_warning">Vorsicht, Topic geschlossen!</string>
     <string name="quote">[quote=%1$d,%2$d,"%3$s"][b]\n%4$s\n[/b][/quote]</string>
     <string name="notyourpost_error">Nicht dein Post!</string>
@@ -70,5 +65,6 @@
     <string name="form_rcpt_hint">Empfänger</string>
     <string name="sidebar_cap_bookmarks">BOOKMARKS</string>
     <string name="no_unread_bookmarks">Keine ungelesenen Bookmarks</string>
-
+    <string name="remove_bookmark">Bookmark entfernen</string>
+    <string name="refresh">Aktualisieren</string>
 </resources>

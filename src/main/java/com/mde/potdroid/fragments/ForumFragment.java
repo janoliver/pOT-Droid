@@ -18,6 +18,7 @@ import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Category;
 import com.mde.potdroid.models.Forum;
 import com.mde.potdroid.parsers.ForumParser;
+import com.mde.potdroid.views.IconDrawable;
 
 import java.text.SimpleDateFormat;
 
@@ -97,6 +98,9 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_forum, menu);
+
+        MenuItem refresh = menu.findItem(R.id.refresh);
+        refresh.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
     }
 
     @Override

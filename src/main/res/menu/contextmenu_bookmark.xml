@@ -3,6 +3,6 @@
       xmlns:potdroid="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/delete"
-        android:title="Bookmark entfernen"
+        android:title="@string/remove_bookmark"
         potdroid:showAsAction="ifRoom"/>
 </menu>

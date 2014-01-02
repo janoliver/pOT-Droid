@@ -11,23 +11,5 @@
     <attr name="color_background_forum" format="color"/>
     <attr name="color_background_input" format="color"/>
 
-    <!-- menu thread-icons -->
-    <attr name="menu_icon_accept" format="reference"/>
-    <attr name="menu_icon_cancel" format="reference"/>
-    <attr name="menu_icon_preferences" format="reference"/>
-    <attr name="menu_icon_home" format="reference"/>
-    <attr name="menu_icon_favorite" format="reference"/>
-    <attr name="menu_icon_pm" format="reference"/>
-    <attr name="menu_icon_refresh" format="reference"/>
-    <attr name="menu_icon_rwd" format="reference"/>
-    <attr name="menu_icon_frwd" format="reference"/>
-    <attr name="menu_icon_fwd" format="reference"/>
-    <attr name="menu_icon_ffwd" format="reference"/>
-    <attr name="menu_icon_back" format="reference"/>
-    <attr name="menu_icon_forward" format="reference"/>
-    <attr name="menu_icon_edit" format="reference"/>
-    <attr name="menu_icon_link" format="reference"/>
-    <attr name="menu_icon_quote" format="reference"/>
-
     <attr name="list_selector" format="reference"/>
 </resources>

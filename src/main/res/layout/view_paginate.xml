@@ -4,44 +4,49 @@
               android:layout_height="?attr/actionBarSize"
               android:orientation="horizontal">
 
-    <ImageButton
-        android:layout_width="?attr/actionBarSize"
-        android:layout_height="?attr/actionBarSize"
-        android:src="?attr/menu_icon_frwd"
-        android:id="@+id/button_frwd"
-        android:background="@drawable/actionbar_button_background"
-        android:layout_gravity="center"/>
+    <com.mde.potdroid.views.IconButton
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:text="@string/icon_fast_backward"
+            android:id="@+id/button_frwd"
+            android:background="@drawable/actionbar_button_background"
+            android:textSize="24sp"
+            android:color="@color/white"/>
 
-    <ImageButton
-        android:layout_width="?attr/actionBarSize"
-        android:layout_height="?attr/actionBarSize"
-        android:src="?attr/menu_icon_rwd"
-        android:id="@+id/button_rwd"
-        android:background="@drawable/actionbar_button_background"
-        android:layout_gravity="center"/>
+    <com.mde.potdroid.views.IconButton
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:text="@string/icon_backward"
+            android:id="@+id/button_rwd"
+            android:background="@drawable/actionbar_button_background"
+            android:textSize="24sp"
+            android:color="@color/white"/>
 
-    <ImageButton
-        android:layout_width="?attr/actionBarSize"
-        android:layout_height="?attr/actionBarSize"
-        android:src="?attr/menu_icon_refresh"
-        android:id="@+id/button_refresh"
-        android:background="@drawable/actionbar_button_background"
-        android:layout_gravity="center"/>
+    <com.mde.potdroid.views.IconButton
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:text="@string/icon_refresh"
+            android:id="@+id/button_refresh"
+            android:background="@drawable/actionbar_button_background"
+            android:textSize="24sp"
+            android:color="@color/white"/>
 
-    <ImageButton
-        android:layout_width="?attr/actionBarSize"
-        android:layout_height="?attr/actionBarSize"
-        android:src="?attr/menu_icon_fwd"
-        android:id="@+id/button_fwd"
-        android:background="@drawable/actionbar_button_background"
-        android:layout_gravity="center"/>
+    <com.mde.potdroid.views.IconButton
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:text="@string/icon_forward"
+            android:id="@+id/button_fwd"
+            android:background="@drawable/actionbar_button_background"
+            android:textSize="24sp"
+            android:color="@color/white"/>
 
-    <ImageButton
-        android:layout_width="?attr/actionBarSize"
-        android:layout_height="?attr/actionBarSize"
-        android:src="?attr/menu_icon_ffwd"
-        android:id="@+id/button_ffwd"
-        android:background="@drawable/actionbar_button_background"
-        android:layout_gravity="center"/>
+    <com.mde.potdroid.views.IconButton
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:text="@string/icon_fast_forward"
+            android:id="@+id/button_ffwd"
+            android:background="@drawable/actionbar_button_background"
+            android:textSize="24sp"
+            android:color="@color/white"/>
 
 </LinearLayout>

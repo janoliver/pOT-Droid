@@ -6,12 +6,10 @@
         <item
             android:id="@+id/preferences"
             android:title="@string/action_settings"
-            android:icon="?attr/menu_icon_preferences"
             potdroid:showAsAction="always"/>
         <item
             android:id="@+id/forumact"
             android:title="@string/forum_title"
-            android:icon="?attr/menu_icon_home"
             potdroid:showAsAction="always"/>
     </group>
 

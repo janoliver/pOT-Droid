@@ -157,6 +157,12 @@ public class BookmarkFragment extends BaseFragment
     }
 
     @Override
+    public void onRefreshStarted(View view) {
+        super.onRefreshStarted(view);
+        restartLoader(this);
+    }
+
+    @Override
     public Loader<BookmarkParser.BookmarksContainer> onCreateLoader(int id, Bundle args) {
         AsyncContentLoader l = new AsyncContentLoader(getBaseActivity());
         showLoadingAnimation();

@@ -19,6 +19,7 @@ import com.mde.potdroid.helpers.*;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.MessageList;
 import com.mde.potdroid.parsers.MessageListParser;
+import org.apache.http.Header;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 import java.io.IOException;
@@ -248,6 +249,14 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
             } catch (Exception e) {
                 return null;
             }
+        }
+
+        @Override
+        protected void onNetworkFailure(int statusCode, Header[] headers,
+                                        String responseBody, Throwable error) {
+
+            Utils.printException(error);
+            deliverResult(null);
         }
     }
 

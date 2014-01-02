@@ -175,7 +175,7 @@ public class TopicBuilder
                 text = getBBCodeParserInstance().parse(mPost.getText());
                 text = parseSmileys(text);
             } catch (Exception e) {
-                e.printStackTrace();
+                Utils.printException(e);
                 text = "-- Post konnte nicht geparsed werden --";
             }
 

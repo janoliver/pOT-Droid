@@ -26,6 +26,7 @@ import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.MessageParser;
 import com.mde.potdroid.views.IconButton;
 import com.mde.potdroid.views.IconSelectionDialog;
+import org.apache.http.Header;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -305,13 +306,21 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
         hideLoadingAnimation();
         clearForm();
 
-        if (result.getInt(STATUS, STATUS_FAILED) == STATUS_SUCCESS) {
-            if(mCallback != null)
-                mCallback.onSuccess(result);
+        if (result != null) {
+
+            if (result.getInt(STATUS, STATUS_FAILED) == STATUS_SUCCESS) {
+                if(mCallback != null)
+                    mCallback.onSuccess(result);
+            } else {
+                if(mCallback != null)
+                    mCallback.onFailure(result);
+            }
+
         } else {
-            if(mCallback != null)
-                mCallback.onFailure(result);
+            showError(getString(R.string.loading_error));
         }
+
+
     }
 
     public void clearForm() {
@@ -427,6 +436,14 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
 
             return result;
         }
+
+        @Override
+        protected void onNetworkFailure(int statusCode, Header[] headers,
+                                        String responseBody, Throwable error) {
+
+            Utils.printException(error);
+            deliverResult(null);
+        }
     }
 
     static class AsyncMessageSubmitter extends AsyncHttpLoader<Bundle>
@@ -471,6 +488,14 @@ public class FormFragment extends BaseFragment implements LoaderManager.LoaderCa
             }
 
             return result;
+        }
+
+        @Override
+        protected void onNetworkFailure(int statusCode, Header[] headers,
+                                        String responseBody, Throwable error) {
+
+            Utils.printException(error);
+            deliverResult(null);
         }
     }
 }

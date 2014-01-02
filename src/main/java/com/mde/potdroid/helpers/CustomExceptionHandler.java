@@ -28,6 +28,13 @@ public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler
 
     @Override
     public void uncaughtException(Thread t, Throwable e) {
+        writeExceptionToSdCard(e);
+
+        // forward the exception to the usual Handler
+        mDefaultHandler.uncaughtException(t, e);
+    }
+
+    public static void writeExceptionToSdCard(Throwable e) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         Date date = new Date();
 
@@ -53,8 +60,5 @@ public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-        // forward the exception to the usual Handler
-        mDefaultHandler.uncaughtException(t, e);
     }
 }

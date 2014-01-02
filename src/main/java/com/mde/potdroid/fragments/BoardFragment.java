@@ -25,6 +25,7 @@ import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.BoardParser;
+import org.apache.http.Header;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -213,9 +214,17 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                 BoardParser parser = new BoardParser();
                 return parser.parse(response);
             } catch (Exception e) {
-                e.printStackTrace();
+                Utils.printException(e);
                 return null;
             }
+        }
+
+        @Override
+        protected void onNetworkFailure(int statusCode, Header[] headers,
+                                        String responseBody, Throwable error) {
+
+            Utils.printException(error);
+            deliverResult(null);
         }
 
     }

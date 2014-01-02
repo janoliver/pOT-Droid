@@ -179,6 +179,14 @@ public class Utils
         return mContext;
     }
 
+    public static void printException(Throwable e) {
+        e.printStackTrace();
+
+        SettingsWrapper s = new SettingsWrapper(getApplicationContext());
+        if(s.isDebug())
+            CustomExceptionHandler.writeExceptionToSdCard(e);
+    }
+
     public static class NotLoggedInException extends Exception
     {
 

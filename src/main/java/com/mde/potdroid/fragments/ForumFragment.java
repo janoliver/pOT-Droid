@@ -14,11 +14,13 @@ import android.widget.TextView;
 import com.mde.potdroid.BoardActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
+import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Category;
 import com.mde.potdroid.models.Forum;
 import com.mde.potdroid.parsers.ForumParser;
 import com.mde.potdroid.views.IconDrawable;
+import org.apache.http.Header;
 
 import java.text.SimpleDateFormat;
 
@@ -232,15 +234,24 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
         }
 
         @Override
-        public Forum processNetworkResponse(String response) {
+        protected Forum processNetworkResponse(String response) {
             try {
                 ForumParser parser = new ForumParser();
                 return parser.parse(response);
             } catch (Exception e) {
-                e.printStackTrace();
+                Utils.printException(e);
                 return null;
             }
         }
+
+        @Override
+        protected void onNetworkFailure(int statusCode, Header[] headers,
+                         String responseBody, Throwable error) {
+
+            Utils.printException(error);
+            deliverResult(null);
+        }
+
     }
 
 }

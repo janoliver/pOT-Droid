@@ -17,6 +17,7 @@ import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.*;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.parsers.MessageParser;
+import org.apache.http.Header;
 
 import java.util.LinkedList;
 
@@ -231,6 +232,14 @@ public class MessageFragment extends BaseFragment
             } catch (Exception e) {
                 return null;
             }
+        }
+
+        @Override
+        protected void onNetworkFailure(int statusCode, Header[] headers,
+                                        String responseBody, Throwable error) {
+
+            Utils.printException(error);
+            deliverResult(null);
         }
     }
 

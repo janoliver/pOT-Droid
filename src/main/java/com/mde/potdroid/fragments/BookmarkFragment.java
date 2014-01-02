@@ -267,9 +267,17 @@ public class BookmarkFragment extends BaseFragment
                 Utils.setNotLoggedIn();
                 return null;
             } catch (Exception e) {
-                e.printStackTrace();
+                Utils.printException(e);
                 return null;
             }
+        }
+
+        @Override
+        protected void onNetworkFailure(int statusCode, Header[] headers,
+                                        String responseBody, Throwable error) {
+
+            Utils.printException(error);
+            deliverResult(null);
         }
     }
 

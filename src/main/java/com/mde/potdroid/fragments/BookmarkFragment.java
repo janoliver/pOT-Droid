@@ -182,8 +182,8 @@ public class BookmarkFragment extends BaseFragment
 
             mBookmarkList.refresh(success.getBookmarks(), success.getNumberOfNewPosts());
             mListAdapter.notifyDataSetChanged();
-            String subtitle = String.format(getString(R.string.x_unread_posts),
-                    success.getNumberOfNewPosts());
+            Spanned subtitle = Html.fromHtml(String.format(getString(R.string.x_unread_posts),
+                    success.getNumberOfNewPosts()));
             getActionbar().setSubtitle(subtitle);
 
         } else {

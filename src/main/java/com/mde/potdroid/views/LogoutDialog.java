@@ -1,6 +1,7 @@
 package com.mde.potdroid.views;
 
 import android.app.Activity;
+import android.content.Context;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import com.mde.potdroid.R;
@@ -15,14 +16,14 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 public class LogoutDialog extends DialogPreference
 {
 
-    private Activity mActivity;
+    private Context mContext;
     private SettingsWrapper mSettingsWrapper;
 
-    public LogoutDialog(Activity activity, AttributeSet attrs) {
-        super(activity, attrs);
+    public LogoutDialog(Context context, AttributeSet attrs) {
+        super(context, attrs);
 
-        mActivity = activity;
-        mSettingsWrapper = new SettingsWrapper(mActivity);
+        mContext = context;
+        mSettingsWrapper = new SettingsWrapper(mContext);
     }
 
     @Override
@@ -32,7 +33,7 @@ public class LogoutDialog extends DialogPreference
             mSettingsWrapper.clearCookie();
             mSettingsWrapper.clearUsername();
             mSettingsWrapper.clearUserId();
-            Crouton.makeText(mActivity, R.string.logout_success, Style.CONFIRM);
+            Crouton.makeText((Activity)mContext, R.string.logout_success, Style.CONFIRM);
         }
     }
 

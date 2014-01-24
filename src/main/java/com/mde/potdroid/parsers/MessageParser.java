@@ -57,7 +57,7 @@ public class MessageParser
 
             return mMessage;
         } else {
-            throw new IOException("Macthing error.");
+            throw new IOException("Matching error.");
         }
 
     }

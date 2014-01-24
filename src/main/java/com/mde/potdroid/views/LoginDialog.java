@@ -24,7 +24,6 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 public class LoginDialog extends DialogPreference
 {
 
-    private Context mContext;
     private SettingsWrapper mSettingsWrapper;
     // ui elements
     private Button mPositiveButton;
@@ -37,8 +36,7 @@ public class LoginDialog extends DialogPreference
     public LoginDialog(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        mContext = context;
-        mSettingsWrapper = new SettingsWrapper(mContext);
+        mSettingsWrapper = new SettingsWrapper(getContext());
         mLoggingIn = false;
 
         setDialogLayoutResource(R.layout.dialog_login);
@@ -82,12 +80,12 @@ public class LoginDialog extends DialogPreference
                 final String user_name = mUsername.getText().toString().trim();
                 final String user_password = mPassword.getText().toString();
 
-                Network n = new Network(mContext);
+                Network n = new Network(getContext());
                 n.login(user_name, user_password, new Network.LoginCallback()
                 {
                     @Override
                     public void onSuccess() {
-                        Crouton.makeText((Activity)mContext, R.string.login_success, Style.CONFIRM);
+                        Crouton.makeText((Activity)getContext(), R.string.login_success, Style.CONFIRM).show();
 
                         mSettingsWrapper.setUsername(user_name);
                         getDialog().dismiss();
@@ -95,7 +93,7 @@ public class LoginDialog extends DialogPreference
 
                     @Override
                     public void onFailure() {
-                        Crouton.makeText((Activity)mContext, R.string.login_failure, Style.ALERT);
+                        Crouton.makeText((Activity)getContext(), R.string.login_failure, Style.ALERT).show();
                     }
 
                     @Override

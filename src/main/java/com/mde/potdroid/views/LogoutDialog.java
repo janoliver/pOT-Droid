@@ -33,7 +33,7 @@ public class LogoutDialog extends DialogPreference
             mSettingsWrapper.clearCookie();
             mSettingsWrapper.clearUsername();
             mSettingsWrapper.clearUserId();
-            Crouton.makeText((Activity)mContext, R.string.logout_success, Style.CONFIRM);
+            Crouton.makeText((Activity)mContext, R.string.logout_success, Style.CONFIRM).show();
         }
     }
 

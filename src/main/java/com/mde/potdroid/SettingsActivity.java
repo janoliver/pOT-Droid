@@ -15,6 +15,7 @@ import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.services.MessagePollingService;
 import com.mde.potdroid.views.LoginDialog;
 import com.mde.potdroid.views.LogoutDialog;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 /**
  * Settings Activity. Since the support lib does not contain a PreferenceFragment,
@@ -106,6 +107,13 @@ public class SettingsActivity extends PreferenceActivity
                     startService(pollServiceIntent);
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        Crouton.cancelAllCroutons();
     }
 
     // check if the MessagePollingService is running.

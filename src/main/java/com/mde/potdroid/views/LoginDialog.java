@@ -1,7 +1,7 @@
 package com.mde.potdroid.views;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.DialogPreference;
@@ -9,12 +9,11 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.Network;
 import com.mde.potdroid.helpers.SettingsWrapper;
-import com.mde.potdroid.helpers.Utils;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 /**
  * This class is a DialogPreference for the Login Action. It takes care of showing the login form
@@ -24,7 +23,7 @@ import com.mde.potdroid.helpers.Utils;
 public class LoginDialog extends DialogPreference
 {
 
-    private Context mContext;
+    private Activity mActivity;
     private SettingsWrapper mSettingsWrapper;
     // ui elements
     private Button mPositiveButton;
@@ -34,11 +33,11 @@ public class LoginDialog extends DialogPreference
     // true if a server request is made, false otherwise
     private Boolean mLoggingIn;
 
-    public LoginDialog(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public LoginDialog(Activity activity, AttributeSet attrs) {
+        super(activity, attrs);
 
-        mContext = context;
-        mSettingsWrapper = new SettingsWrapper(mContext);
+        mActivity = activity;
+        mSettingsWrapper = new SettingsWrapper(mActivity);
         mLoggingIn = false;
 
         setDialogLayoutResource(R.layout.dialog_login);
@@ -82,19 +81,20 @@ public class LoginDialog extends DialogPreference
                 final String user_name = mUsername.getText().toString().trim();
                 final String user_password = mPassword.getText().toString();
 
-                Network n = new Network(mContext);
+                Network n = new Network(mActivity);
                 n.login(user_name, user_password, new Network.LoginCallback()
                 {
                     @Override
                     public void onSuccess() {
-                        Utils.toast(mContext, mContext.getString(R.string.login_success));
+                        Crouton.makeText(mActivity, R.string.login_success, Style.CONFIRM);
+
                         mSettingsWrapper.setUsername(user_name);
                         getDialog().dismiss();
                     }
 
                     @Override
                     public void onFailure() {
-                        Utils.toast(mContext, mContext.getString(R.string.login_failure));
+                        Crouton.makeText(mActivity, R.string.login_failure, Style.ALERT);
                     }
 
                     @Override

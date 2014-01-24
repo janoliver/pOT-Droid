@@ -148,7 +148,7 @@ public class BookmarkFragment extends BaseFragment
                 {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        Utils.toast(getBaseActivity(), getString(R.string.removed_bookmark));
+                        showSuccess(R.string.removed_bookmark);
                         hideLoadingAnimation();
                         restartLoader(BookmarkFragment.this);
                     }

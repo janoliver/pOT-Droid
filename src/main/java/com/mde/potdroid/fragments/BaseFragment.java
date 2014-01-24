@@ -13,6 +13,8 @@ import com.mde.potdroid.R;
 import com.mde.potdroid.SettingsActivity;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.views.IconDrawable;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
@@ -175,7 +177,42 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
      * Display an error
      */
     public void showError(String error) {
-        Utils.toast(getBaseActivity(), error);
+        Crouton.makeText(getBaseActivity(), error, Style.ALERT).show();
+    }
+
+    /**
+     * Display a success message
+     */
+    public void showSuccess(String message) {
+        Crouton.makeText(getBaseActivity(), message, Style.CONFIRM).show();
+    }
+
+    /**
+     * Display a success message
+     */
+    public void showInfo(String message) {
+        Crouton.makeText(getBaseActivity(), message, Style.INFO).show();
+    }
+
+    /**
+     * Display an error
+     */
+    public void showError(int error) {
+        Crouton.makeText(getBaseActivity(), error, Style.ALERT).show();
+    }
+
+    /**
+     * Display a success message
+     */
+    public void showSuccess(int message) {
+        Crouton.makeText(getBaseActivity(), message, Style.CONFIRM).show();
+    }
+
+    /**
+     * Display a success message
+     */
+    public void showInfo(int message) {
+        Crouton.makeText(getBaseActivity(), message, Style.INFO).show();
     }
 
     /**

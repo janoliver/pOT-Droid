@@ -98,7 +98,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
             @Override
             public void onFailure(Bundle result) {
-                Utils.toast(getBaseActivity(), getString(R.string.send_failure));
+                showError(R.string.send_failure);
             }
         });
 
@@ -153,7 +153,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         if (!Utils.isGingerbread()) {
             mWebView.addJavascriptInterface(mJsInterface, "api");
         } else {
-            Utils.toast(getBaseActivity(), getString(R.string.error_gingerbread_js));
+            showInfo(R.string.error_gingerbread_js);
         }
 
         mWebContainer.addView(mWebView);
@@ -368,7 +368,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         Post p = mTopic.getPostById(id);
 
         if (mTopic.isClosed())
-            Utils.toast(getBaseActivity(), getString(R.string.closed_warning));
+            showInfo(R.string.closed_warning);
 
         String text = String.format(getString(R.string.quote),
                 mTopic.getId(), p.getId(), p.getAuthor().getNick(), p.getText());
@@ -401,7 +401,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             getBaseActivity().getRightSidebarFragment().setIconById(p.getIconId());
             getBaseActivity().openRightSidebar();
         } else {
-            Utils.toast(getBaseActivity(), getString(R.string.notyourpost_error));
+            showError(R.string.notyourpost_error);
         }
     }
 
@@ -422,7 +422,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Utils.toast(getBaseActivity(), "Bookmark hinzugefügt.");
+                showSuccess("Bookmark hinzugefügt.");
                 if (d != null)
                     d.cancel();
             }

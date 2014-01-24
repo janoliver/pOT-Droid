@@ -85,12 +85,12 @@ public class MessageFragment extends BaseFragment
             @Override
             public void onSuccess(Bundle result) {
                 getBaseActivity().closeRightSidebar();
-                Utils.toast(getBaseActivity(), getString(R.string.send_successful));
+                showSuccess(R.string.send_successful);
             }
 
             @Override
             public void onFailure(Bundle result) {
-                Utils.toast(getBaseActivity(), getString(R.string.send_failure));
+                showError(R.string.send_failure);
             }
         });
 
@@ -190,7 +190,7 @@ public class MessageFragment extends BaseFragment
         if (!Utils.isGingerbread()) {
             mWebView.addJavascriptInterface(mJsInterface, "api");
         } else {
-            Utils.toast(getBaseActivity(), getString(R.string.error_gingerbread_js));
+            showInfo(R.string.error_gingerbread_js);
         }
 
         mWebContainer.addView(mWebView);

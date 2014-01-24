@@ -71,13 +71,14 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="ComGithubChrisbanesActionbarpulltorefreshExtraAbc093.aar" level="project" />
     <orderEntry type="library" exported="" name="android-async-http-1.4.4" level="project" />
+    <orderEntry type="library" exported="" name="ComGithubChrisbanesActionbarpulltorefreshLibrary092.aar" level="project" />
     <orderEntry type="library" exported="" name="jmustache-1.8" level="project" />
     <orderEntry type="library" exported="" name="ComGithubCastorflexSmoothprogressbarLibrary032.aar" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-19.0.0" level="project" />
-    <orderEntry type="library" exported="" name="ComAndroidSupportAppcompatV71900.aar" level="project" />
-    <orderEntry type="library" exported="" name="ComGithubChrisbanesActionbarpulltorefreshLibrary093.aar" level="project" />
+    <orderEntry type="library" exported="" name="ComGithubChrisbanesActionbarpulltorefreshExtraAbc092.aar" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-19.0.1" level="project" />
+    <orderEntry type="library" exported="" name="ComAndroidSupportAppcompatV71901.aar" level="project" />
+    <orderEntry type="library" exported="" name="crouton-1.8.2" level="project" />
   </component>
 </module>
 

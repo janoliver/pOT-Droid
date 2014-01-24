@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -108,16 +107,6 @@ public class Utils
      */
     public static Bitmap getBitmapIcon(Context cx, Integer id) throws IOException {
         return getBitmapFromAsset(cx, String.format("thread-icons/icon%d.png", id));
-    }
-
-    /**
-     * Show a long toast
-     *
-     * @param cx the context
-     * @param content the message to show in the toast
-     */
-    public static void toast(Context cx, String content) {
-        Toast.makeText(cx, content, Toast.LENGTH_LONG).show();
     }
 
     /**

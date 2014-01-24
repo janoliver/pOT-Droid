@@ -1,13 +1,12 @@
 package com.mde.potdroid.views;
 
-import android.content.Context;
+import android.app.Activity;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.widget.Toast;
-
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.SettingsWrapper;
-import com.mde.potdroid.helpers.Utils;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 /**
  * Simple PreferenceDialog that deletes the stored cookie and username/userid for the user.
@@ -16,14 +15,14 @@ import com.mde.potdroid.helpers.Utils;
 public class LogoutDialog extends DialogPreference
 {
 
-    private Context mContext;
+    private Activity mActivity;
     private SettingsWrapper mSettingsWrapper;
 
-    public LogoutDialog(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public LogoutDialog(Activity activity, AttributeSet attrs) {
+        super(activity, attrs);
 
-        mContext = context;
-        mSettingsWrapper = new SettingsWrapper(mContext);
+        mActivity = activity;
+        mSettingsWrapper = new SettingsWrapper(mActivity);
     }
 
     @Override
@@ -33,7 +32,7 @@ public class LogoutDialog extends DialogPreference
             mSettingsWrapper.clearCookie();
             mSettingsWrapper.clearUsername();
             mSettingsWrapper.clearUserId();
-            Utils.toast(mContext, mContext.getString(R.string.logout_success));
+            Crouton.makeText(mActivity, R.string.logout_success, Style.CONFIRM);
         }
     }
 

@@ -48,6 +48,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     protected EditText mEditTitle;
     protected EditText mEditText;
     protected ImageButton mIconButton;
+    //protected ActionMode mActionMode;
 
     // this holds the kind of form this is. The static fields are defined below.
     public static int MODE_EDIT = 1;
@@ -120,6 +121,22 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             mEditRcpt.setVisibility(View.VISIBLE);
             getActionbar().setTitle("Nachricht verfassen");
         }
+
+        // action mode
+        /*mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    if(mActionMode == null)
+                        mActionMode = getBaseActivity().startSupportActionMode(mActionModeCallback);
+
+                } else {
+                    if(mActionMode != null)
+                        mActionMode.finish();
+                }
+            }
+        });*/
+
 
         return v;
     }
@@ -336,4 +353,46 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             deliverResult(null);
         }
     }
+
+    /*private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            // Inflate a menu resource providing context menu items
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.actionmenu_editor_edit, menu);
+
+            menu.findItem(R.id.bold).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_bold));
+
+            return true;
+        }
+
+        // Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false; // Return false if nothing is done
+        }
+
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.bold:
+                    mEditText.getText().insert(mEditText.getSelectionStart(), "[b]");
+                    mEditText.getText().insert(mEditText.getSelectionEnd(), "[/b]");
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        // Called when the user exits the action mode
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mEditTitle.requestFocus();
+            mActionMode = null;
+        }
+    };*/
 }

@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 
-import com.mde.potdroid.fragments.FormFragment;
 import com.mde.potdroid.fragments.MessageListFragment;
-import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.MessageList;
 
 /**

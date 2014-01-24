@@ -27,7 +27,8 @@
 
         <activity
             android:name=".ForumActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:uiOptions="none">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -66,6 +67,9 @@
 
         <activity android:name=".BookmarkActivity"/>
 
+        <activity android:name=".EditorActivity"
+                  android:uiOptions="none"/>
+
         <activity android:name=".TopicActivity">
 
             <intent-filter>
@@ -82,7 +86,8 @@
 
         </activity>
 
-        <activity android:name=".MessageListActivity">
+        <activity android:name=".MessageListActivity"
+                  android:uiOptions="none">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -98,7 +103,8 @@
 
         </activity>
 
-        <activity android:name=".MessageActivity">
+        <activity android:name=".MessageActivity"
+                  android:uiOptions="none">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

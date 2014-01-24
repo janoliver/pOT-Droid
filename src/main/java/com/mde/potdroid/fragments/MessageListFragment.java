@@ -1,5 +1,6 @@
 package com.mde.potdroid.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -9,16 +10,16 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
+import com.mde.potdroid.EditorActivity;
 import com.mde.potdroid.MessageActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.*;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.MessageList;
 import com.mde.potdroid.parsers.MessageListParser;
+import com.mde.potdroid.views.IconDrawable;
 import org.apache.http.Header;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
@@ -72,6 +73,8 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
         Bundle args = getArguments();
         mMode = args.getString(ARG_MODE);
         mSettings = new SettingsWrapper(getActivity());
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -103,25 +106,49 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
 
         getBaseActivity().enableLeftSidebar();
         getBaseActivity().enableRightSidebar();
-        getBaseActivity().getRightSidebarFragment().setIsMessage(null);
-        getBaseActivity().getRightSidebarFragment().setFormListener(new FormFragment.FormListener()
-        {
-            @Override
-            public void onSuccess(Bundle result) {
-                getBaseActivity().closeRightSidebar();
-                showSuccess(R.string.send_successful);
-            }
-
-            @Override
-            public void onFailure(Bundle result) {
-                showError(R.string.send_failure);
-            }
-        });
 
         mBenderHandler = new BenderHandler(getBaseActivity());
 
         if (mMessageList == null)
             startLoader(this);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.actionmenu_messagelist, menu);
+
+        MenuItem newMessage = menu.findItem(R.id.new_message);
+        newMessage.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.new_message:
+
+                Intent intent = new Intent(getBaseActivity(), EditorActivity.class);
+                intent.putExtra(EditorFragment.ARG_MODE, EditorFragment.MODE_MESSAGE);
+                startActivityForResult(intent, EditorFragment.MODE_MESSAGE);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if( requestCode == EditorFragment.MODE_MESSAGE ) {
+            if(resultCode == Activity.RESULT_OK) {
+                showSuccess(R.string.send_successful);
+            } else {
+                showError(R.string.send_failure);
+            }
+        }
     }
 
     @Override

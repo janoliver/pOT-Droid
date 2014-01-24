@@ -18,10 +18,6 @@ $(document).ready(function() {
         });
     }
 
-    $("div.buttons.reply i.reply").click(function() {
-        api.replyPost();
-    });
-
 });
 
 function loadBender(user_id, path) {

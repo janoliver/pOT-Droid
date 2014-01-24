@@ -1,15 +1,10 @@
 package com.mde.potdroid;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.view.View;
 
-import com.mde.potdroid.fragments.FormFragment;
 import com.mde.potdroid.fragments.TopicFragment;
-import com.mde.potdroid.helpers.Utils;
 
 /**
  * The Activity that contains a TopicFragment. It handles some callbacks of the

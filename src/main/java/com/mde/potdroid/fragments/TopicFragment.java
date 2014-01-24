@@ -1,5 +1,6 @@
 package com.mde.potdroid.fragments;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.mde.potdroid.EditorActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.*;
 import com.mde.potdroid.models.Post;
@@ -84,7 +86,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
         getBaseActivity().enableLeftSidebar();
         getBaseActivity().enableRightSidebar();
-        getBaseActivity().getRightSidebarFragment().setFormListener(new FormFragment.FormListener()
+        /*getBaseActivity().getRightSidebarFragment().setFormListener(new FormFragment.FormListener()
         {
             @Override
             public void onSuccess(Bundle result) {
@@ -100,7 +102,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             public void onFailure(Bundle result) {
                 showError(R.string.send_failure);
             }
-        });
+        });*/
 
         if (mTopic == null)
             startLoader(this);
@@ -216,7 +218,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             getBaseActivity().getLeftSidebarFragment().refreshBookmarks();
 
             // populate the form in the right sidebar
-            getBaseActivity().getRightSidebarFragment().setIsNewPost(mTopic);
+            //getBaseActivity().getRightSidebarFragment().setIsNewPost(mTopic);
 
             // update html
             mWebView.loadDataWithBaseURL("file:///android_asset/",
@@ -373,15 +375,44 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         String text = String.format(getString(R.string.quote),
                 mTopic.getId(), p.getId(), p.getAuthor().getNick(), p.getText());
 
-        getBaseActivity().getRightSidebarFragment().appendText(text);
-        getBaseActivity().openRightSidebar();
+        Intent intent = new Intent(getBaseActivity(), EditorActivity.class);
+        intent.putExtra(EditorFragment.ARG_TOKEN, mTopic.getNewreplytoken());
+        intent.putExtra(EditorFragment.ARG_MODE, EditorFragment.MODE_REPLY);
+        intent.putExtra(EditorFragment.ARG_TOPIC_ID, mTopic.getId());
+        intent.putExtra(EditorFragment.ARG_TEXT, text);
+
+        startActivityForResult(intent, EditorFragment.MODE_REPLY);
     }
 
     /**
      * Open the form for reply
      */
     public void replyPost() {
-        getBaseActivity().openRightSidebar();
+        if (mTopic.isClosed())
+            showInfo(R.string.closed_warning);
+
+        Intent intent = new Intent(getBaseActivity(), EditorActivity.class);
+        intent.putExtra(EditorFragment.ARG_MODE, EditorFragment.MODE_REPLY);
+        intent.putExtra(EditorFragment.ARG_TOPIC_ID, mTopic.getId());
+        intent.putExtra(EditorFragment.ARG_TOKEN, mTopic.getNewreplytoken());
+
+        startActivityForResult(intent, EditorFragment.MODE_REPLY);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if( requestCode == EditorFragment.MODE_REPLY ) {
+            if(resultCode == Activity.RESULT_OK) {
+                goToLastPost(data.getExtras().getInt("post_id"));
+                showSuccess("Antwort erstellt!");
+            }
+        } else if( requestCode == EditorFragment.MODE_EDIT ) {
+            if(resultCode == Activity.RESULT_OK) {
+                refreshPage();
+                showSuccess("Post bearbeitet!");
+            }
+        }
     }
 
     /**
@@ -396,10 +427,16 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
         if (p.getAuthor().getId() == settings.getUserId()) {
 
-            getBaseActivity().getRightSidebarFragment().setIsEditPost(mTopic, p);
-            getBaseActivity().getRightSidebarFragment().appendText(p.getText());
-            getBaseActivity().getRightSidebarFragment().setIconById(p.getIconId());
-            getBaseActivity().openRightSidebar();
+            Intent intent = new Intent(getBaseActivity(), EditorActivity.class);
+            intent.putExtra(EditorFragment.ARG_TOKEN, p.getEdittoken());
+            intent.putExtra(EditorFragment.ARG_MODE, EditorFragment.MODE_EDIT);
+            intent.putExtra(EditorFragment.ARG_TOPIC_ID, mTopic.getId());
+            intent.putExtra(EditorFragment.ARG_POST_ID, p.getId());
+            intent.putExtra(EditorFragment.ARG_TITLE, p.getTitle());
+            intent.putExtra(EditorFragment.ARG_TEXT, p.getText());
+            intent.putExtra(EditorFragment.ARG_ICON, p.getIconId());
+
+            startActivityForResult(intent, EditorFragment.MODE_EDIT);
         } else {
             showError(R.string.notyourpost_error);
         }

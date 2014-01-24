@@ -9,7 +9,6 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import com.mde.potdroid.fragments.FormFragment;
 import com.mde.potdroid.fragments.SidebarFragment;
 import com.mde.potdroid.helpers.CustomExceptionHandler;
 import com.mde.potdroid.helpers.SettingsWrapper;
@@ -27,7 +26,7 @@ public class BaseActivity extends ActionBarActivity
     protected SettingsWrapper mSettings;
     protected Bundle mExtras;
     protected SidebarFragment mLeftSidebar;
-    protected FormFragment mRightSidebar;
+    //protected FormFragment mRightSidebar;
     protected DrawerLayout mDrawerLayout;
     protected ActionBarDrawerToggle mDrawerToggle;
 
@@ -80,10 +79,10 @@ public class BaseActivity extends ActionBarActivity
         if (mLeftSidebar == null)
             mLeftSidebar = SidebarFragment.newInstance();
 
-        mRightSidebar = (FormFragment) getSupportFragmentManager()
+        /*mRightSidebar = (FormFragment) getSupportFragmentManager()
                 .findFragmentByTag(TAG_SIDEBAR_RIGHT);
         if (mRightSidebar == null)
-            mRightSidebar = FormFragment.newInstance();
+            mRightSidebar = FormFragment.newInstance();*/
 
         // add the fragments
         if (savedInstanceState == null) {
@@ -91,8 +90,8 @@ public class BaseActivity extends ActionBarActivity
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.sidebar_container_left, mLeftSidebar, TAG_SIDEBAR_LEFT).commit();
 
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.sidebar_container_right, mRightSidebar, TAG_SIDEBAR_RIGHT).commit();
+            //getSupportFragmentManager().beginTransaction()
+            //        .add(R.id.sidebar_container_right, mRightSidebar, TAG_SIDEBAR_RIGHT).commit();
         }
 
         // disable the fragments first, the extending activities must enable them
@@ -134,8 +133,7 @@ public class BaseActivity extends ActionBarActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        Crouton.cancelAllCroutons();
+        Crouton.clearCroutonsForActivity(this);
     }
 
     public void closeRightSidebar() {
@@ -164,9 +162,9 @@ public class BaseActivity extends ActionBarActivity
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
     }
 
-    public FormFragment getRightSidebarFragment() {
+    /*public FormFragment getRightSidebarFragment() {
         return mRightSidebar;
-    }
+    }*/
 
     public SidebarFragment getLeftSidebarFragment() {
         return mLeftSidebar;

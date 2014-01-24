@@ -67,4 +67,8 @@
     <string name="no_unread_bookmarks">Keine ungelesenen Bookmarks</string>
     <string name="remove_bookmark">Bookmark entfernen</string>
     <string name="refresh">Aktualisieren</string>
+    <string name="action_send">Senden</string>
+    <string name="action_cancel">Abbrechen</string>
+    <string name="action_new_message">Neue Nachricht</string>
+    <string name="action_reply">Antworten</string>
 </resources>

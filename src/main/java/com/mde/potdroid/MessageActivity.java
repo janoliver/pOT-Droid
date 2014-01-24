@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.mde.potdroid.fragments.FormFragment;
 import com.mde.potdroid.fragments.MessageFragment;
-import com.mde.potdroid.helpers.Utils;
 
 /**
  * Activity that displays as MessageFragment showing a PM message

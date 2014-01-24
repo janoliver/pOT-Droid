@@ -1,24 +1,30 @@
 package com.mde.potdroid.fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+import com.mde.potdroid.EditorActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.*;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.parsers.MessageParser;
+import com.mde.potdroid.views.IconDrawable;
 import org.apache.http.Header;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 
 /**
@@ -58,6 +64,13 @@ public class MessageFragment extends BaseFragment
         return f;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
     /**
      * Destroys and detaches the webview.
      */
@@ -79,25 +92,80 @@ public class MessageFragment extends BaseFragment
         super.onActivityCreated(savedInstanceState);
 
         getBaseActivity().enableLeftSidebar();
-        getBaseActivity().enableRightSidebar();
-        getBaseActivity().getRightSidebarFragment().setFormListener(new FormFragment.FormListener()
-        {
-            @Override
-            public void onSuccess(Bundle result) {
-                getBaseActivity().closeRightSidebar();
-                showSuccess(R.string.send_successful);
-            }
-
-            @Override
-            public void onFailure(Bundle result) {
-                showError(R.string.send_failure);
-            }
-        });
-
         getActionbar().setTitle(R.string.loading_message);
 
         if (mMessage == null)
             startLoader(this);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.actionmenu_message, menu);
+
+        MenuItem replyMessage = menu.findItem(R.id.reply);
+        replyMessage.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_reply));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.reply:
+
+                Intent intent = new Intent(getBaseActivity(), EditorActivity.class);
+                intent.putExtra(EditorFragment.ARG_MODE, EditorFragment.MODE_MESSAGE);
+                intent.putExtra(EditorFragment.ARG_RCPT, mMessage.getFrom().getNick());
+
+                // title with or without Re: prefix
+                String prefix = "";
+                if (!mMessage.getTitle().substring(0, 3).equals("Re:"))
+                    prefix = "Re: ";
+
+                // read in the message string as HTML, so <br> is converted into line
+                // breaks and so on.
+                BufferedReader bufReader = new BufferedReader(new StringReader(
+                        Html.fromHtml(mMessage.getText()).toString()));
+
+                // we need to build the message text using a string builder, so
+                // we can prefix each line with a > (for quotes)
+                String line;
+                StringBuilder content = new StringBuilder();
+
+                String ds = new SimpleDateFormat(getString(R.string.standard_time_format)).format
+                        (mMessage.getDate());
+                String quote_line = "> %1$s \n";
+                content.append(String.format(getString(R.string.message_header),
+                        mMessage.getFrom().getNick(), ds));
+                try {
+                    while ((line = bufReader.readLine()) != null)
+                        content.append(String.format(quote_line, line));
+                } catch (IOException e) {
+                    // this will never occur.
+                }
+
+                intent.putExtra(EditorFragment.ARG_TITLE, prefix + mMessage.getTitle());
+                intent.putExtra(EditorFragment.ARG_TEXT, content.toString());
+
+                startActivityForResult(intent, EditorFragment.MODE_MESSAGE);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if( requestCode == EditorFragment.MODE_MESSAGE ) {
+            if(resultCode == Activity.RESULT_OK) {
+                showSuccess(R.string.send_successful);
+            } else {
+                showError(R.string.send_failure);
+            }
+        }
     }
 
     @Override
@@ -128,7 +196,7 @@ public class MessageFragment extends BaseFragment
             getActionbar().setSubtitle(subtitle);
 
             // populate right sidebar
-            getBaseActivity().getRightSidebarFragment().setIsMessage(mMessage);
+            //getBaseActivity().getRightSidebarFragment().setIsMessage(mMessage);
 
         } else {
             showError(getString(R.string.loading_error));

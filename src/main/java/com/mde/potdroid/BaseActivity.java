@@ -9,7 +9,8 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import com.mde.potdroid.fragments.SidebarFragment;
+import com.mde.potdroid.fragments.SidebarLeftFragment;
+import com.mde.potdroid.fragments.SidebarRightFragment;
 import com.mde.potdroid.helpers.CustomExceptionHandler;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
@@ -25,8 +26,8 @@ public class BaseActivity extends ActionBarActivity
     protected static final String TAG_SIDEBAR_RIGHT = "sidebar-right";
     protected SettingsWrapper mSettings;
     protected Bundle mExtras;
-    protected SidebarFragment mLeftSidebar;
-    //protected FormFragment mRightSidebar;
+    protected SidebarLeftFragment mLeftSidebar;
+    protected SidebarRightFragment mRightSidebar;
     protected DrawerLayout mDrawerLayout;
     protected ActionBarDrawerToggle mDrawerToggle;
 
@@ -68,21 +69,27 @@ public class BaseActivity extends ActionBarActivity
                     if (mLeftSidebar.isDirty())
                         mLeftSidebar.refreshBookmarks();
                 }
+
+                // if the right sidebar is opened, refresh boards
+                if (view.getId() == R.id.sidebar_container_right) {
+                    if (mRightSidebar.isDirty())
+                        mRightSidebar.refreshBoards();
+                }
             }
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         // find or create the left sidebar fragment
-        mLeftSidebar = (SidebarFragment) getSupportFragmentManager()
+        mLeftSidebar = (SidebarLeftFragment) getSupportFragmentManager()
                 .findFragmentByTag(TAG_SIDEBAR_LEFT);
         if (mLeftSidebar == null)
-            mLeftSidebar = SidebarFragment.newInstance();
+            mLeftSidebar = SidebarLeftFragment.newInstance();
 
-        /*mRightSidebar = (FormFragment) getSupportFragmentManager()
+        mRightSidebar = (SidebarRightFragment) getSupportFragmentManager()
                 .findFragmentByTag(TAG_SIDEBAR_RIGHT);
         if (mRightSidebar == null)
-            mRightSidebar = FormFragment.newInstance();*/
+            mRightSidebar = SidebarRightFragment.newInstance();
 
         // add the fragments
         if (savedInstanceState == null) {
@@ -90,14 +97,12 @@ public class BaseActivity extends ActionBarActivity
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.sidebar_container_left, mLeftSidebar, TAG_SIDEBAR_LEFT).commit();
 
-            //getSupportFragmentManager().beginTransaction()
-            //        .add(R.id.sidebar_container_right, mRightSidebar, TAG_SIDEBAR_RIGHT).commit();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.sidebar_container_right, mRightSidebar, TAG_SIDEBAR_RIGHT).commit();
         }
 
-        // disable the fragments first, the extending activities must enable them
-        // as needed.
+        // disable the left sidebar first. It will be enabled, if the user is logged in.
         disableLeftSidebar();
-        disableRightSidebar();
 
         if(Utils.isLoggedIn()) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -125,7 +130,6 @@ public class BaseActivity extends ActionBarActivity
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        // Handle your other action bar items...
 
         return super.onOptionsItemSelected(item);
     }
@@ -150,8 +154,7 @@ public class BaseActivity extends ActionBarActivity
     }
 
     public void enableRightSidebar() {
-        if (Utils.isLoggedIn())
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.RIGHT);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.RIGHT);
     }
 
     public void disableLeftSidebar() {
@@ -162,11 +165,11 @@ public class BaseActivity extends ActionBarActivity
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
     }
 
-    /*public FormFragment getRightSidebarFragment() {
+    public SidebarRightFragment getRightSidebarFragment() {
         return mRightSidebar;
-    }*/
+    }
 
-    public SidebarFragment getLeftSidebarFragment() {
+    public SidebarLeftFragment getLeftSidebarFragment() {
         return mLeftSidebar;
     }
 

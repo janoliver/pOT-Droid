@@ -3,7 +3,6 @@
 
     <string name="app_name">pOT-Droid3</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="login_success">Erfolgreich eingeloggt! Die App sollte neu gestartet werden.</string>
     <string name="login_failure">Fehler!</string>
     <string name="logout_success">Daten gelöscht! Die App sollte neu gestartet werden.</string>
@@ -49,6 +48,8 @@
     <string name="message_header">\n\n------------------------\n%1$s schrieb am %2$s:\n</string>
     <string name="forum_title">Forenübersicht</string>
     <string name="last_post"><![CDATA[Letzter Beitrag von <strong>%1$s</strong> (%2$s)]]></string>
+    <string name="last_post_sidebar"><![CDATA[von %1$s (%2$s)]]></string>
+    <string name="strong"><![CDATA[<strong>%1$s</strong>]]></string>
     <string name="closed_warning">Vorsicht, Topic geschlossen!</string>
     <string name="quote">[quote=%1$d,%2$d,"%3$s"][b]\n%4$s\n[/b][/quote]</string>
     <string name="notyourpost_error">Nicht dein Post!</string>
@@ -64,6 +65,7 @@
     <string name="form_title_hint">Titel</string>
     <string name="form_rcpt_hint">Empfänger</string>
     <string name="sidebar_cap_bookmarks">BOOKMARKS</string>
+    <string name="sidebar_cap_boards">BOARDS</string>
     <string name="no_unread_bookmarks">Keine ungelesenen Bookmarks</string>
     <string name="remove_bookmark">Bookmark entfernen</string>
     <string name="refresh">Aktualisieren</string>
@@ -71,4 +73,8 @@
     <string name="action_cancel">Abbrechen</string>
     <string name="action_new_message">Neue Nachricht</string>
     <string name="action_reply">Antworten</string>
+    <string name="no_favorite_boards">Keine Favoriten</string>
+    <string name="remove_success">Erfolgreich entfernt.</string>
+    <string name="remove_favorite_board">Board entfernen</string>
+    <string name="add_favorite_board">Board als Favorit hinzufügen</string>
 </resources>

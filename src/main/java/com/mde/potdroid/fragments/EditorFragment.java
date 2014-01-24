@@ -77,7 +77,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
-        View v = inflater.inflate(R.layout.layout_sidebar_form, container, false);
+        View v = inflater.inflate(R.layout.layout_editor, container, false);
 
         // set the image button listener
         ImageButton icon = (ImageButton) v.findViewById(R.id.button_icon);

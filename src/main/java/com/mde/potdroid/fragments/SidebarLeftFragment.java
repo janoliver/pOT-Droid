@@ -19,7 +19,7 @@ import com.mde.potdroid.views.IconButton;
 /**
  * This is the Sidebar containing a list of unread Bookmarks and the navigation.
  */
-public class SidebarFragment extends BaseFragment
+public class SidebarLeftFragment extends BaseFragment
         implements LoaderManager.LoaderCallbacks<BookmarkParser.BookmarksContainer>
 {
 
@@ -31,13 +31,13 @@ public class SidebarFragment extends BaseFragment
     private Boolean mDirty = true;
 
     /**
-     * Return new instance of SidebarFragment. Although this fragment has no parameters,
+     * Return new instance of SidebarLeftFragment. Although this fragment has no parameters,
      * We provide this method for consistency.
      *
-     * @return SidebarFragment
+     * @return SidebarLeftFragment
      */
-    public static SidebarFragment newInstance() {
-        return new SidebarFragment();
+    public static SidebarLeftFragment newInstance() {
+        return new SidebarLeftFragment();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class SidebarFragment extends BaseFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
-        View v = inflater.inflate(R.layout.layout_sidebar, container, false);
+        View v = inflater.inflate(R.layout.layout_sidebar_left, container, false);
 
         mListAdapter = new BookmarkListAdapter();
 
@@ -75,7 +75,7 @@ public class SidebarFragment extends BaseFragment
         {
             @Override
             public void onClick(View v) {
-                restartLoader(SidebarFragment.this);
+                restartLoader(SidebarLeftFragment.this);
             }
         });
 

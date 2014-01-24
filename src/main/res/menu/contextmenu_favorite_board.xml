@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:potdroid="http://schemas.android.com/apk/res-auto">
+    <group android:id="@+id/right_sidebar">
+        <item
+                android:id="@+id/remove"
+                android:title="@string/remove_favorite_board"
+                potdroid:showAsAction="ifRoom"/>
+    </group>
+</menu>

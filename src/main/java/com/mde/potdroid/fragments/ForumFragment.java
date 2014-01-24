@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.mde.potdroid.BoardActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
+import com.mde.potdroid.helpers.DatabaseWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Category;
@@ -35,6 +36,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
     private Forum mForum;
 
     private ForumListAdapter mListAdapter;
+    private ExpandableListView mListView;
 
     /**
      * Return new instance of ForumFragment. Although this fragment has no parameters,
@@ -58,7 +60,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
         View v = inflater.inflate(R.layout.layout_forum, container, false);
 
         mListAdapter = new ForumListAdapter();
-        ExpandableListView mListView = (ExpandableListView) v.findViewById(R.id.list_content);
+        mListView = (ExpandableListView) v.findViewById(R.id.list_content);
 
         mListView.setGroupIndicator(null);
         mListView.setAdapter(mListAdapter);
@@ -79,10 +81,44 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
             }
         });
 
+        registerForContextMenu(mListView);
+
         getActionbar().setTitle(R.string.forum_title);
 
         return v;
 
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getBaseActivity().getMenuInflater();
+        inflater.inflate(R.menu.contextmenu_board, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if(item.getGroupId() != R.id.forum)
+            return false;
+
+        ExpandableListView.ExpandableListContextMenuInfo info =
+                (ExpandableListView.ExpandableListContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()) {
+            // so far, one can only delete a bookmark through the context menu
+            case R.id.add:
+                DatabaseWrapper db = new DatabaseWrapper(getActivity());
+                Board b = mForum.
+                        getCategories().get(mListView.getPackedPositionGroup(info.packedPosition)).
+                        getBoards().get(mListView.getPackedPositionChild(info.packedPosition));
+
+                db.addBoard(b);
+                showSuccess("Board als Favorit markiert.");
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     @Override
@@ -213,7 +249,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
             TextView descr = (TextView) row.findViewById(R.id.text_description);
             descr.setText(cat.getDescription());
 
-            return (row);
+            return row;
         }
 
         public boolean isChildSelectable(int groupPosition, int childPosition) {

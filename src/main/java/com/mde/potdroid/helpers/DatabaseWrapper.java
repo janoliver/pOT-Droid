@@ -5,13 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.SparseArray;
+import com.mde.potdroid.models.*;
 
-import com.mde.potdroid.models.Board;
-import com.mde.potdroid.models.Bookmark;
-import com.mde.potdroid.models.Post;
-import com.mde.potdroid.models.Topic;
-import com.mde.potdroid.models.User;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -24,6 +22,7 @@ public class DatabaseWrapper
     // Database and table names
     public static final String DATABASE_NAME = "potdroid";
     public static final String BOOKMARKS_TABLE_NAME = "bookmarks";
+    public static final String BOARDS_TABLE_NAME = "boards";
     public static final String BENDER_TABLE_NAME = "benders";
 
     // the database reference
@@ -72,6 +71,145 @@ public class DatabaseWrapper
         } finally {
             mDatabase.endTransaction();
         }
+    }
+
+    /**
+     * Expects an ArrayList of Bookmarks and synchronizes the Bookmarks Database table.
+     *
+     * @param list the Arraylist of Bookmarks
+     */
+    public void refreshBoards(SparseArray<Board> list) {
+        SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        try {
+            mDatabase.beginTransaction();
+
+            // refresh database
+            ContentValues values = new ContentValues();
+            for (int i = 0; i < list.size(); ++i) {
+                Board b = list.valueAt(i);
+
+                if(!isFavoriteBoard(b))
+                    continue;
+
+                values.clear();
+                values.put("board_name", b.getName());
+                values.put("thread_id", b.getLastPost().getTopic().getId());
+                values.put("thread_title", b.getLastPost().getTopic().getTitle());
+                values.put("last_post_id", b.getLastPost().getId());
+                values.put("last_post_date", iso8601Format.format(b.getLastPost().getDate()));
+                values.put("last_post_user_id", b.getLastPost().getAuthor().getId());
+                values.put("last_post_user_nick", b.getLastPost().getAuthor().getNick());
+
+                mDatabase.update(BOARDS_TABLE_NAME, values,
+                        String.format("board_id = %d", b.getId()), null);
+            }
+
+            mDatabase.setTransactionSuccessful();
+        } finally {
+            mDatabase.endTransaction();
+        }
+    }
+
+    public void addBoard(Board b) {
+
+        if(isFavoriteBoard(b))
+            return;
+
+        try {
+            mDatabase.beginTransaction();
+
+            SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            ContentValues values = new ContentValues();
+            values.put("board_id", b.getId());
+            values.put("board_name", b.getName());
+            values.put("thread_id", b.getLastPost().getTopic().getId());
+            values.put("thread_title", b.getLastPost().getTopic().getTitle());
+            values.put("last_post_id", b.getLastPost().getId());
+            values.put("last_post_date", iso8601Format.format(b.getLastPost().getDate()));
+            values.put("last_post_user_id", b.getLastPost().getAuthor().getId());
+            values.put("last_post_user_nick", b.getLastPost().getAuthor().getNick());
+
+            mDatabase.insert(BOARDS_TABLE_NAME, null, values);
+            mDatabase.setTransactionSuccessful();
+        } finally {
+            mDatabase.endTransaction();
+        }
+    }
+
+    public void removeBoard(Board b) {
+
+        if(!isFavoriteBoard(b))
+            return;
+
+        try {
+            mDatabase.beginTransaction();
+            mDatabase.delete(BOARDS_TABLE_NAME, String.format("board_id = %d", b.getId()), null);
+            mDatabase.setTransactionSuccessful();
+        } finally {
+            mDatabase.endTransaction();
+        }
+    }
+
+    public ArrayList<Board> getBoards() {
+
+        SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        ArrayList<Board> ret = new ArrayList<Board>();
+
+        // retrieve bookmarks from Database sorted by board, as in the web
+        Cursor c = mDatabase.query(BOARDS_TABLE_NAME, null, null, null, null, null, "board_id");
+
+        try {
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+                // create the objects and return
+
+                Board b = new Board(c.getInt(c.getColumnIndex("board_id")));
+                b.setName(c.getString(c.getColumnIndex("board_name")));
+
+                Topic thread = new Topic(c.getInt(c.getColumnIndex("thread_id")));
+                thread.setTitle(c.getString(c.getColumnIndex("thread_title")));
+
+                Post p = new Post(c.getInt(c.getColumnIndex("last_post_id")));
+                try {
+                    p.setDate(iso8601Format.parse(c.getString(c.getColumnIndex("last_post_date"))));
+                } catch (ParseException e) {
+                    // will not happen. I hope.
+                }
+
+                User u = new User(c.getInt(c.getColumnIndex("last_post_user_id")));
+                u.setNick(c.getString(c.getColumnIndex("last_post_user_nick")));
+                p.setAuthor(u);
+
+                p.setTopic(thread);
+                thread.setBoard(b);
+                b.setLastPost(p);
+
+                ret.add(b);
+                c.moveToNext();
+            }
+        } finally {
+            c.close();
+        }
+
+        return ret;
+    }
+
+    public boolean isFavoriteBoard(Board b) {
+        Cursor result = mDatabase.query(BOARDS_TABLE_NAME, new String[]{"board_id"},
+                "board_id=?", new String[]{b.getId().toString()}, null, null, null);
+
+        Boolean is_favorite = false;
+
+        try {
+            is_favorite = result.getCount() > 0;
+        } finally {
+            result.close();
+        }
+
+        return is_favorite;
     }
 
     /**
@@ -185,7 +323,7 @@ public class DatabaseWrapper
     public static class BookmarkDatabaseOpenHelper extends SQLiteOpenHelper
     {
 
-        private static final int DATABASE_VERSION = 4;
+        private static final int DATABASE_VERSION = 7;
         private static BookmarkDatabaseOpenHelper mInstance = null;
 
         private static final String BOOKMARKS_TABLE_CREATE =
@@ -200,6 +338,17 @@ public class DatabaseWrapper
                         "board_name TEXT, " +
                         "remove_token TEXT, " +
                         "post_id INTEGER);";
+
+        private static final String BOARDS_TABLE_CREATE =
+                "CREATE TABLE IF NOT EXISTS " + DatabaseWrapper.BOARDS_TABLE_NAME + " (" +
+                        "board_id INTEGER  PRIMARY KEY, " +
+                        "board_name TEXT, " +
+                        "thread_id INTEGER, " +
+                        "thread_title TEXT, " +
+                        "last_post_id INTEGER, " +
+                        "last_post_date TEXT, " +
+                        "last_post_user_id INTEGER," +
+                        "last_post_user_nick TEXT);";
 
         private static final String BENDER_TABLE_CREATE =
                 "CREATE TABLE IF NOT EXISTS " + DatabaseWrapper.BENDER_TABLE_NAME + " (" +
@@ -227,12 +376,15 @@ public class DatabaseWrapper
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(BOOKMARKS_TABLE_CREATE);
             db.execSQL(BENDER_TABLE_CREATE);
+            db.execSQL(BOARDS_TABLE_CREATE);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             db.execSQL(BOOKMARKS_TABLE_CREATE);
             db.execSQL(BENDER_TABLE_CREATE);
+            db.execSQL("DROP TABLE boards;");
+            db.execSQL(BOARDS_TABLE_CREATE);
         }
     }
 }

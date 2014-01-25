@@ -31,7 +31,7 @@ public class SettingsActivity extends PreferenceActivity
 
         mSettings = new SettingsWrapper(this);
 
-        getActionBar().setTitle(R.string.subtitle_settings);
+        setTitle(R.string.subtitle_settings);
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);

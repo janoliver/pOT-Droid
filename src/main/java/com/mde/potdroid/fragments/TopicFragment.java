@@ -10,10 +10,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.ContextMenu;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
@@ -24,6 +21,7 @@ import com.mde.potdroid.helpers.*;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.TopicParser;
+import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.PostActionsDialog;
 import org.apache.http.Header;
 
@@ -83,6 +81,8 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        setHasOptionsMenu(true);
+
         if (mTopic == null)
             startLoader(this);
     }
@@ -108,6 +108,30 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
         return v;
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.actionmenu_topic, menu);
+
+        MenuItem newMessage = menu.findItem(R.id.new_message);
+        newMessage.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.new_message:
+                replyPost();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     /**
      * Set up the webview programmatically, to workaround the kitkat memory leak.

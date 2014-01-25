@@ -16,7 +16,7 @@ import com.samskivert.mustache.Mustache;
 import java.io.*;
 
 /**
- *
+ * Fragment that shows some information of the app
  */
 public class AboutFragment extends BaseFragment {
 
@@ -28,6 +28,15 @@ public class AboutFragment extends BaseFragment {
     public static AboutFragment newInstance() {
         return new AboutFragment();
     }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {

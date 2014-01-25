@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import com.mde.potdroid.fragments.MessageFragment;
+import com.mde.potdroid.helpers.Utils;
 
 /**
  * Activity that displays as MessageFragment showing a PM message
@@ -13,6 +14,9 @@ public class MessageActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(!Utils.isLoggedIn())
+            finish();
 
         Integer mid = 0;
 

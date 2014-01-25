@@ -2,6 +2,7 @@ package com.mde.potdroid;
 
 import android.os.Bundle;
 import com.mde.potdroid.fragments.BookmarkFragment;
+import com.mde.potdroid.helpers.Utils;
 
 /**
  * The Container activity for the bookmark list.
@@ -11,6 +12,9 @@ public class BookmarkActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(!Utils.isLoggedIn())
+            finish();
 
         BookmarkFragment bm = (BookmarkFragment) getSupportFragmentManager()
                 .findFragmentByTag("bookmarks");

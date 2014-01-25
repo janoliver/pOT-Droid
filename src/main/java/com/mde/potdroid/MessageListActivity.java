@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import com.mde.potdroid.fragments.MessageListFragment;
+import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.MessageList;
 
 /**
@@ -15,6 +16,9 @@ public class MessageListActivity extends BaseActivity implements ActionBar.TabLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(!Utils.isLoggedIn())
+            finish();
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);

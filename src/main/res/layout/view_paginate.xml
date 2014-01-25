@@ -11,7 +11,7 @@
             android:id="@+id/button_frwd"
             android:background="@drawable/actionbar_button_background"
             android:textSize="24sp"
-            android:color="@color/white"/>
+            android:textColor="@color/white"/>
 
     <com.mde.potdroid.views.IconButton
             android:layout_width="?attr/actionBarSize"
@@ -20,7 +20,7 @@
             android:id="@+id/button_rwd"
             android:background="@drawable/actionbar_button_background"
             android:textSize="24sp"
-            android:color="@color/white"/>
+            android:textColor="@color/white"/>
 
     <com.mde.potdroid.views.IconButton
             android:layout_width="?attr/actionBarSize"
@@ -29,7 +29,7 @@
             android:id="@+id/button_refresh"
             android:background="@drawable/actionbar_button_background"
             android:textSize="24sp"
-            android:color="@color/white"/>
+            android:textColor="@color/white"/>
 
     <com.mde.potdroid.views.IconButton
             android:layout_width="?attr/actionBarSize"
@@ -38,7 +38,7 @@
             android:id="@+id/button_fwd"
             android:background="@drawable/actionbar_button_background"
             android:textSize="24sp"
-            android:color="@color/white"/>
+            android:textColor="@color/white"/>
 
     <com.mde.potdroid.views.IconButton
             android:layout_width="?attr/actionBarSize"
@@ -47,6 +47,6 @@
             android:id="@+id/button_ffwd"
             android:background="@drawable/actionbar_button_background"
             android:textSize="24sp"
-            android:color="@color/white"/>
+            android:textColor="@color/white"/>
 
 </LinearLayout>

@@ -18,7 +18,7 @@
                 android:id="@+id/button_home"
                 android:background="@drawable/sidebar_button_background"
                 android:textSize="28sp"
-                android:color="@color/white"
+                android:textColor="@color/white"
                 android:layout_weight="1"/>
 
         <com.mde.potdroid.views.IconButton
@@ -28,7 +28,7 @@
                 android:id="@+id/button_pm"
                 android:background="@drawable/sidebar_button_background"
                 android:textSize="24sp"
-                android:color="@color/white"
+                android:textColor="@color/white"
                 android:layout_weight="1"/>
 
         <com.mde.potdroid.views.IconButton
@@ -38,7 +38,7 @@
                 android:id="@+id/button_bookmarks"
                 android:background="@drawable/sidebar_button_background"
                 android:textSize="24sp"
-                android:color="@color/white"
+                android:textColor="@color/white"
                 android:layout_weight="1"/>
 
         <com.mde.potdroid.views.IconButton
@@ -48,7 +48,7 @@
                 android:id="@+id/button_preferences"
                 android:background="@drawable/sidebar_button_background"
                 android:textSize="24sp"
-                android:color="@color/white"
+                android:textColor="@color/white"
                 android:layout_weight="1"/>
 
     </LinearLayout>

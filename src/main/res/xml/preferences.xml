@@ -81,7 +81,7 @@
         <CheckBoxPreference
                 android:key="pref_debug_mode"
                 android:title="Debug Modus"
-                android:defaultValue="true"/>
+                android:defaultValue="false"/>
 
         <PreferenceScreen
                 android:key="pref_about"

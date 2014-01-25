@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v7.app.ActionBar;
-import android.util.DisplayMetrics;
 import android.view.*;
 import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.ForumActivity;
@@ -28,9 +27,6 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
     // this is the ID of the content loader
     protected static final int CONTENT_LOADER_ID = 0;
 
-    // we need this to convert dip to px for the icons
-    protected float mDensity;
-
     // the pulltorefresh instance
     protected PullToRefreshLayout mPullToRefreshLayout;
 
@@ -41,11 +37,6 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
 
         // the fragment instance should persist upon orientation changes.
         setRetainInstance(true);
-
-        // instantiate and calculate the display metrics
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        mDensity = displayMetrics.density;
 
         // Now find the PullToRefreshLayout to setup
         mPullToRefreshLayout = (PullToRefreshLayout) getView().findViewById(R.id.ptr_layout);
@@ -58,15 +49,6 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
                     .setup(mPullToRefreshLayout);
         }
 
-    }
-
-    /**
-     * Returns the density of the display in pt
-     *
-     * @return the density
-     */
-    public int getDensity() {
-        return (int) mDensity;
     }
 
     /**

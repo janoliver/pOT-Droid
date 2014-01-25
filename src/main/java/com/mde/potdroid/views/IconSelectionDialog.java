@@ -74,8 +74,7 @@ public class IconSelectionDialog extends DialogFragment {
 
             try {
                 Drawable dr = Utils.getIcon(getActivity(), icon);
-                dr.setBounds(0, 0, 20 * ((EditorFragment) getTargetFragment()).getDensity(),
-                        20 * ((EditorFragment) getTargetFragment()).getDensity());
+                dr.setBounds(0, 0, (int)name.getTextSize(), (int)name.getTextSize());
                 name.setCompoundDrawables(dr, null, null, null);
 
             } catch (IOException e) {

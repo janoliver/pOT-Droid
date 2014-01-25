@@ -6,31 +6,31 @@
                 android:background="@drawable/sidebar_bookmarkbutton_background">
 
     <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textColor="@color/white"/>
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/white"/>
 
     <TextView
-        android:id="@+id/board"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:layout_below="@+id/title"
-        android:textSize="12sp"
-        android:textColor="@color/darkgrey"/>
+            android:id="@+id/board"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:layout_below="@+id/title"
+            android:textSize="12sp"
+            android:textColor="@color/darkgrey"/>
 
     <TextView
-        android:id="@+id/pages"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
-        android:layout_alignParentRight="true"
-        android:textSize="12sp"
-        android:textColor="@color/darkgrey"/>
+            android:id="@+id/pages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_alignParentRight="true"
+            android:textSize="12sp"
+            android:textColor="@color/darkgrey"/>
 
 </RelativeLayout>

@@ -15,8 +15,7 @@ import java.util.regex.Pattern;
 /**
  * HTML Parser for the PM message list.
  */
-public class MessageListParser
-{
+public class MessageListParser {
 
     public static final String INBOX_URL = "pm/?a=0&cid=1";
     public static final String OUTBOX_URL = "pm/?a=0&cid=2";

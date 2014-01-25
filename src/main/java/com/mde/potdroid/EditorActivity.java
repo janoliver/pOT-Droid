@@ -6,8 +6,7 @@ import com.mde.potdroid.fragments.EditorFragment;
 /**
  * The Forum overview container.
  */
-public class EditorActivity extends BaseActivity
-{
+public class EditorActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

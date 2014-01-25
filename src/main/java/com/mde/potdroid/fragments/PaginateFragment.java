@@ -14,8 +14,7 @@ import com.mde.potdroid.views.IconButton;
  * This Fragment extends BaseFragment and provides some more methods and an interface
  * for those Fragments who have pagination functionality.
  */
-abstract public class PaginateFragment extends BaseFragment
-{
+abstract public class PaginateFragment extends BaseFragment {
 
     public abstract void goToFirstPage();
 
@@ -52,40 +51,35 @@ abstract public class PaginateFragment extends BaseFragment
         IconButton rwdButton = (IconButton) paginateWidget.findViewById(R.id.button_rwd);
         IconButton frwdButton = (IconButton) paginateWidget.findViewById(R.id.button_frwd);
 
-        refreshButton.setOnClickListener(new View.OnClickListener()
-        {
+        refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 refreshPage();
             }
         });
 
-        fwdButton.setOnClickListener(new View.OnClickListener()
-        {
+        fwdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToNextPage();
             }
         });
 
-        ffwdButton.setOnClickListener(new View.OnClickListener()
-        {
+        ffwdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToLastPage();
             }
         });
 
-        rwdButton.setOnClickListener(new View.OnClickListener()
-        {
+        rwdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToPrevPage();
             }
         });
 
-        frwdButton.setOnClickListener(new View.OnClickListener()
-        {
+        frwdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToFirstPage();

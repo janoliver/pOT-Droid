@@ -13,8 +13,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
  * Simple PreferenceDialog that deletes the stored cookie and username/userid for the user.
  * This is equal to a "logout" action.
  */
-public class LogoutDialog extends DialogPreference
-{
+public class LogoutDialog extends DialogPreference {
 
     private Context mContext;
     private SettingsWrapper mSettingsWrapper;
@@ -33,7 +32,7 @@ public class LogoutDialog extends DialogPreference
             mSettingsWrapper.clearCookie();
             mSettingsWrapper.clearUsername();
             mSettingsWrapper.clearUserId();
-            Crouton.makeText((Activity)mContext, R.string.logout_success, Style.CONFIRM).show();
+            Crouton.makeText((Activity) mContext, R.string.msg_logout_success, Style.CONFIRM).show();
         }
     }
 

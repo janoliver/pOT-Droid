@@ -20,8 +20,7 @@ import java.util.Date;
 /**
  * Post model.
  */
-public class Post implements Serializable
-{
+public class Post implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

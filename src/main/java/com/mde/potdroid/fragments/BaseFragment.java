@@ -11,10 +11,8 @@ import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.ForumActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.SettingsActivity;
-import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.views.IconDrawable;
-import com.mde.potdroid.views.UpdateInfoDialog;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
@@ -25,8 +23,7 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
  * The Base Fragment class that all Fragments should inherit. Provides some methods
  * for convenient access of objects and handles loading animations.
  */
-public abstract class BaseFragment extends Fragment implements OnRefreshListener
-{
+public abstract class BaseFragment extends Fragment implements OnRefreshListener {
 
     // this is the ID of the content loader
     protected static final int CONTENT_LOADER_ID = 0;
@@ -53,7 +50,7 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
         // Now find the PullToRefreshLayout to setup
         mPullToRefreshLayout = (PullToRefreshLayout) getView().findViewById(R.id.ptr_layout);
 
-        if(mPullToRefreshLayout != null) {
+        if (mPullToRefreshLayout != null) {
             // Now setup the PullToRefreshLayout
             ActionBarPullToRefresh.from(getActivity())
                     .allChildrenArePullable()
@@ -103,7 +100,7 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
      * Hides the loading message
      */
     public void hideLoadingAnimation() {
-        if(mPullToRefreshLayout != null) {
+        if (mPullToRefreshLayout != null) {
             mPullToRefreshLayout.setRefreshComplete();
         }
         getBaseActivity().setProgressBarIndeterminateVisibility(false);
@@ -127,7 +124,8 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
     /**
      * When the user is not logged in, we add preferences and home to
      * the Actionbar Menu
-     * @param menu the menu
+     *
+     * @param menu     the menu
      * @param inflater the layout inflater
      */
     @Override
@@ -221,7 +219,7 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
      * Shows a "loading" message with a small loading animation
      */
     public void showLoadingAnimation() {
-        if(mPullToRefreshLayout != null) {
+        if (mPullToRefreshLayout != null) {
             mPullToRefreshLayout.setRefreshing(true);
         }
         getBaseActivity().setProgressBarIndeterminateVisibility(true);

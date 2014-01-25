@@ -87,7 +87,7 @@ public class SidebarRightFragment extends BaseFragment implements LoaderManager.
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        if(item.getGroupId() != R.id.right_sidebar)
+        if (item.getGroupId() != R.id.right_sidebar)
             return false;
 
         AdapterView.AdapterContextMenuInfo info =
@@ -97,8 +97,8 @@ public class SidebarRightFragment extends BaseFragment implements LoaderManager.
             // so far, one can only delete a bookmark through the context menu
             case R.id.remove:
                 DatabaseWrapper db = new DatabaseWrapper(getActivity());
-                db.removeBoard(mBoards.get((int)info.id));
-                showSuccess(R.string.remove_success);
+                db.removeBoard(mBoards.get((int) info.id));
+                showSuccess(R.string.msg_remove_success);
                 refreshBoards();
                 return true;
             default:
@@ -149,7 +149,7 @@ public class SidebarRightFragment extends BaseFragment implements LoaderManager.
             mBoards = mDatabase.getBoards();
             mListAdapter.notifyDataSetChanged();
         } else {
-            showError(R.string.loading_error);
+            showError(R.string.msg_loading_error);
         }
     }
 
@@ -205,7 +205,7 @@ public class SidebarRightFragment extends BaseFragment implements LoaderManager.
 
             // the last post author and date
             TextView lastpost = (TextView) row.findViewById(R.id.last_post);
-            String time = new SimpleDateFormat(getString(R.string.standard_time_format)).format(b
+            String time = new SimpleDateFormat(getString(R.string.default_time_format)).format(b
                     .getLastPost().getDate());
             Spanned lastpost_text_line2 = Html.fromHtml(String.format(
                     getString(R.string.last_post_sidebar), b.getLastPost().getAuthor().getNick(), time));

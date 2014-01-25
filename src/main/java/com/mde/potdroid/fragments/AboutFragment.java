@@ -63,7 +63,7 @@ public class AboutFragment extends BaseFragment {
             try {
                 version = mActivity.getPackageManager().getPackageInfo(mActivity.getPackageName(), 0).versionName;
             } catch (PackageManager.NameNotFoundException e) {
-                version = "FEHLER";
+                version = "";
             }
             return version;
         }
@@ -84,7 +84,7 @@ public class AboutFragment extends BaseFragment {
 
         public Integer getDensity() {
             DisplayMetrics metrics = mActivity.getResources().getDisplayMetrics();
-            return (int)(metrics.density * 160f);
+            return (int) (metrics.density * 160f);
         }
     }
 

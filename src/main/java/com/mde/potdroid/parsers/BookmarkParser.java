@@ -1,18 +1,11 @@
 package com.mde.potdroid.parsers;
 
-import android.sax.Element;
-import android.sax.ElementListener;
-import android.sax.RootElement;
-import android.sax.StartElementListener;
-import android.sax.TextElementListener;
+import android.sax.*;
 import android.util.Xml;
-
-import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -25,8 +18,7 @@ import static com.mde.potdroid.helpers.Utils.NotLoggedInException;
  * An XML Handler class to parse the API XML code of the bookmarks.php. A little bit messy,
  * but a long stare at the code should make it clear.
  */
-public class BookmarkParser extends DefaultHandler
-{
+public class BookmarkParser extends DefaultHandler {
 
     public static String TAG = "bookmark";
     public static String NOT_LOGGEDIN_STRING = "<not-logged-in/>";
@@ -53,7 +45,7 @@ public class BookmarkParser extends DefaultHandler
 
     public BookmarksContainer parse(String input) throws NotLoggedInException {
         // check for login
-        if(input.contains(NOT_LOGGEDIN_STRING)) {
+        if (input.contains(NOT_LOGGEDIN_STRING)) {
             throw new NotLoggedInException();
         }
 
@@ -62,8 +54,7 @@ public class BookmarkParser extends DefaultHandler
         final BookmarksContainer container = new BookmarksContainer();
 
         // find the board information
-        bookmarks.setStartElementListener(new StartElementListener()
-        {
+        bookmarks.setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -73,8 +64,7 @@ public class BookmarkParser extends DefaultHandler
         });
 
         Element bm = bookmarks.getChild(TAG);
-        bm.setElementListener(new ElementListener()
-        {
+        bm.setElementListener(new ElementListener() {
 
             @Override
             public void end() {
@@ -91,8 +81,7 @@ public class BookmarkParser extends DefaultHandler
                         (BOOKMARK_ATTRIBUTE_POST))));
             }
         });
-        bm.requireChild(THREAD_TAG).setTextElementListener(new TextElementListener()
-        {
+        bm.requireChild(THREAD_TAG).setTextElementListener(new TextElementListener() {
 
             @Override
             public void end(String body) {
@@ -109,8 +98,7 @@ public class BookmarkParser extends DefaultHandler
                         (THREAD_ATTRIBUTE_PAGES)));
             }
         });
-        bm.requireChild(BOARD_TAG).setTextElementListener(new TextElementListener()
-        {
+        bm.requireChild(BOARD_TAG).setTextElementListener(new TextElementListener() {
 
             @Override
             public void end(String body) {
@@ -125,8 +113,7 @@ public class BookmarkParser extends DefaultHandler
                         (BOARD_ATTRIBUTE_ID)));
             }
         });
-        bm.requireChild(REMOVE_TAG).setStartElementListener(new StartElementListener()
-        {
+        bm.requireChild(REMOVE_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -143,8 +130,7 @@ public class BookmarkParser extends DefaultHandler
         return container;
     }
 
-    public static class BookmarksContainer
-    {
+    public static class BookmarksContainer {
 
         private ArrayList<Bookmark> mBookmarks = new ArrayList<Bookmark>();
         private Integer mNumberOfNewPosts;

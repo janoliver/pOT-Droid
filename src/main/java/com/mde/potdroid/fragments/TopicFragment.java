@@ -34,8 +34,7 @@ import java.util.LinkedList;
  * we have to work around that by adding and deleting it in onPause and onResume. This sucks,
  * I know, but LOLANDROID!
  */
-public class TopicFragment extends PaginateFragment implements LoaderManager.LoaderCallbacks<Topic>
-{
+public class TopicFragment extends PaginateFragment implements LoaderManager.LoaderCallbacks<Topic> {
 
     public static final String ARG_TOPIC_ID = "thread_id";
     public static final String ARG_POST_ID = "post_id";
@@ -63,8 +62,8 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
      * Create a new instance of TopicFragment and set the arguments
      *
      * @param thread_id the thread id of the topic
-     * @param page the displayed page of the topic
-     * @param post_id the post id of the current post
+     * @param page      the displayed page of the topic
+     * @param post_id   the post id of the current post
      * @return TopicFragment instance
      */
     public static TopicFragment newInstance(int thread_id, int page, int post_id) {
@@ -98,11 +97,11 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
         // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
         // of some former TopicFragment, which will be restored on onResume. .
-        if(Utils.isKitkat()) {
+        if (Utils.isKitkat()) {
             mWebViewHolder.add(this);
-            if(mWebViewHolder.size() > 3) {
-                TopicFragment fragment =  mWebViewHolder.removeFirst();
-                if(fragment != null)
+            if (mWebViewHolder.size() > 3) {
+                TopicFragment fragment = mWebViewHolder.removeFirst();
+                if (fragment != null)
                     fragment.destroyWebView();
             }
         }
@@ -135,7 +134,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         if (!Utils.isGingerbread()) {
             mWebView.addJavascriptInterface(mJsInterface, "api");
         } else {
-            showInfo(R.string.error_gingerbread_js);
+            showInfo(R.string.msg_error_gb);
         }
 
         mWebContainer.addView(mWebView);
@@ -164,7 +163,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
      */
     public void destroyWebView() {
 
-        if(mWebView != null && !mDestroyed) {
+        if (mWebView != null && !mDestroyed) {
 
             mWebView.destroy();
             mWebView = null;
@@ -205,7 +204,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
                     mTopic.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);
 
             // set title and subtitle of the ActionBar and reload the OptionsMenu
-            Spanned subtitleText = Html.fromHtml(getString(R.string.paginate_page_indicator,
+            Spanned subtitleText = Html.fromHtml(getString(R.string.subtitle_paginate,
                     mTopic.getPage(), mTopic.getNumberOfPages()));
 
             getBaseActivity().supportInvalidateOptionsMenu();
@@ -213,7 +212,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             getActionbar().setSubtitle(subtitleText);
 
         } else {
-            showError(getString(R.string.loading_error));
+            showError(getString(R.string.msg_loading_error));
         }
     }
 
@@ -309,8 +308,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         menu.show(getBaseActivity().getSupportFragmentManager(), PostActionsDialog.TAG);
     }
 
-    static class AsyncContentLoader extends AsyncHttpLoader<Topic>
-    {
+    static class AsyncContentLoader extends AsyncHttpLoader<Topic> {
 
         AsyncContentLoader(Context cx, int page, int thread_id, int post_id) {
             super(cx, TopicParser.getUrl(thread_id, page, post_id));
@@ -350,7 +348,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         Post p = mTopic.getPostById(id);
 
         if (mTopic.isClosed())
-            showInfo(R.string.closed_warning);
+            showInfo(R.string.msg_topic_closed);
 
         String text = String.format(getString(R.string.quote),
                 mTopic.getId(), p.getId(), p.getAuthor().getNick(), p.getText());
@@ -369,7 +367,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
      */
     public void replyPost() {
         if (mTopic.isClosed())
-            showInfo(R.string.closed_warning);
+            showInfo(R.string.msg_topic_closed);
 
         Intent intent = new Intent(getBaseActivity(), EditorActivity.class);
         intent.putExtra(EditorFragment.ARG_MODE, EditorFragment.MODE_REPLY);
@@ -382,15 +380,15 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if( requestCode == EditorFragment.MODE_REPLY ) {
-            if(resultCode == Activity.RESULT_OK) {
-                goToLastPost(data.getExtras().getInt("post_id"));
-                showSuccess("Antwort erstellt!");
+        if (requestCode == EditorFragment.MODE_REPLY) {
+            if (resultCode == Activity.RESULT_OK) {
+                goToLastPost(data.getExtras().getInt(ARG_POST_ID));
+                showSuccess(R.string.msg_answer_created);
             }
-        } else if( requestCode == EditorFragment.MODE_EDIT ) {
-            if(resultCode == Activity.RESULT_OK) {
+        } else if (requestCode == EditorFragment.MODE_EDIT) {
+            if (resultCode == Activity.RESULT_OK) {
                 refreshPage();
-                showSuccess("Post bearbeitet!");
+                showSuccess(R.string.msg_post_edited);
             }
         }
     }
@@ -418,7 +416,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
             startActivityForResult(intent, EditorFragment.MODE_EDIT);
         } else {
-            showError(R.string.notyourpost_error);
+            showError(R.string.msg_post_notyours);
         }
     }
 
@@ -426,20 +424,19 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
      * Add a bookmark to a post
      *
      * @param id the PID
-     * @param d the Dialog to close, if successful and Dialog exists
+     * @param d  the Dialog to close, if successful and Dialog exists
      */
     public void bookmarkPost(final int id, final Dialog d) {
         Post p = mTopic.getPostById(id);
 
         final String url = Network.getAsyncUrl(
-                "set-bookmark.php?PID=" + p.getId() + "&token=" + p.getBookmarktoken());
+                String.format("set-bookmark.php?PID=%d&token=%s", p.getId(), p.getBookmarktoken()));
 
         Network network = new Network(getActivity());
-        network.get(url, null, new AsyncHttpResponseHandler()
-        {
+        network.get(url, null, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                showSuccess("Bookmark hinzugefügt.");
+                showSuccess(R.string.msg_bookmark_added);
                 if (d != null)
                     d.cancel();
             }
@@ -455,8 +452,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         Post p = mTopic.getPostById(id);
 
         String url = Network.getAbsoluteUrl(
-                "thread.php?PID=" + p.getId() + "&TID=" + mTopic.getId() + "#reply_" + p
-                        .getId());
+                String.format("thread.php?PID=%d&TID=%d#reply_%d", p.getId(), mTopic.getId(), p.getId()));
 
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));

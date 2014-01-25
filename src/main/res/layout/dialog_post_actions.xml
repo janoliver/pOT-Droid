@@ -7,42 +7,42 @@
               android:padding="10dp">
 
     <com.mde.potdroid.views.IconButton
-        android:layout_width="0dp"
-        android:layout_height="48dip"
-        android:text="@string/icon_edit"
-        android:id="@+id/button_edit"
-        android:background="@drawable/transparent_button_background"
-        android:textSize="28sp"
-        android:color="@color/white"
-        android:layout_weight="1"/>
+            android:layout_width="0dp"
+            android:layout_height="48dip"
+            android:text="@string/icon_edit"
+            android:id="@+id/button_edit"
+            android:background="@drawable/transparent_button_background"
+            android:textSize="28sp"
+            android:color="@color/white"
+            android:layout_weight="1"/>
 
     <com.mde.potdroid.views.IconButton
-        android:layout_width="0dp"
-        android:layout_height="48dip"
-        android:text="@string/icon_quote_right"
-        android:id="@+id/button_quote"
-        android:background="@drawable/transparent_button_background"
-        android:textSize="28sp"
-        android:color="@color/white"
-        android:layout_weight="1"/>
+            android:layout_width="0dp"
+            android:layout_height="48dip"
+            android:text="@string/icon_quote_right"
+            android:id="@+id/button_quote"
+            android:background="@drawable/transparent_button_background"
+            android:textSize="28sp"
+            android:color="@color/white"
+            android:layout_weight="1"/>
 
     <com.mde.potdroid.views.IconButton
-        android:layout_width="0dp"
-        android:layout_height="48dip"
-        android:text="@string/icon_bookmark"
-        android:id="@+id/button_bookmark"
-        android:background="@drawable/transparent_button_background"
-        android:textSize="28sp"
-        android:color="@color/white"
-        android:layout_weight="1"/>
+            android:layout_width="0dp"
+            android:layout_height="48dip"
+            android:text="@string/icon_bookmark"
+            android:id="@+id/button_bookmark"
+            android:background="@drawable/transparent_button_background"
+            android:textSize="28sp"
+            android:color="@color/white"
+            android:layout_weight="1"/>
 
     <com.mde.potdroid.views.IconButton
-        android:layout_width="0dp"
-        android:layout_height="48dip"
-        android:text="@string/icon_link"
-        android:id="@+id/button_link"
-        android:background="@drawable/transparent_button_background"
-        android:textSize="28sp"
-        android:color="@color/white"
-        android:layout_weight="1"/>
+            android:layout_width="0dp"
+            android:layout_height="48dip"
+            android:text="@string/icon_link"
+            android:id="@+id/button_link"
+            android:background="@drawable/transparent_button_background"
+            android:textSize="28sp"
+            android:color="@color/white"
+            android:layout_weight="1"/>
 </LinearLayout>

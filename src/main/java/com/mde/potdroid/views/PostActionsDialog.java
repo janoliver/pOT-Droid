@@ -14,8 +14,7 @@ import com.mde.potdroid.helpers.Utils;
 /**
  * This DialogFragment shows a Menu for a Post with some actions
  */
-public class PostActionsDialog extends DialogFragment
-{
+public class PostActionsDialog extends DialogFragment {
 
     public static final String ARG_POST_ID = "post_id";
     public static final String TAG = "postmenu";
@@ -39,9 +38,8 @@ public class PostActionsDialog extends DialogFragment
         AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getBaseActivity());
         View dialog_view = inflater.inflate(R.layout.dialog_post_actions, null);
         builder.setView(dialog_view)
-                .setTitle(R.string.post_actions)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
-                {
+                .setTitle(R.string.dialog_post_actions)
+                .setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                     }
                 });
@@ -50,8 +48,7 @@ public class PostActionsDialog extends DialogFragment
         final Dialog d = builder.create();
 
         IconButton quote_button = (IconButton) dialog_view.findViewById(R.id.button_quote);
-        quote_button.setOnClickListener(new View.OnClickListener()
-        {
+        quote_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment.quotePost(getArguments().getInt(ARG_POST_ID));
@@ -60,8 +57,7 @@ public class PostActionsDialog extends DialogFragment
         });
 
         IconButton edit_button = (IconButton) dialog_view.findViewById(R.id.button_edit);
-        edit_button.setOnClickListener(new View.OnClickListener()
-        {
+        edit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment.editPost(getArguments().getInt(ARG_POST_ID));
@@ -71,8 +67,7 @@ public class PostActionsDialog extends DialogFragment
 
         IconButton bookmark_button = (IconButton) dialog_view.findViewById(R.id
                 .button_bookmark);
-        bookmark_button.setOnClickListener(new View.OnClickListener()
-        {
+        bookmark_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment.bookmarkPost(getArguments().getInt(ARG_POST_ID), d);
@@ -80,8 +75,7 @@ public class PostActionsDialog extends DialogFragment
         });
 
         IconButton url_button = (IconButton) dialog_view.findViewById(R.id.button_link);
-        url_button.setOnClickListener(new View.OnClickListener()
-        {
+        url_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment.linkPost(getArguments().getInt(ARG_POST_ID));
@@ -90,7 +84,7 @@ public class PostActionsDialog extends DialogFragment
         });
 
         // disable the buttons if the user is not logged in
-        if(!Utils.isLoggedIn()) {
+        if (!Utils.isLoggedIn()) {
             quote_button.disable();
             edit_button.disable();
             bookmark_button.disable();

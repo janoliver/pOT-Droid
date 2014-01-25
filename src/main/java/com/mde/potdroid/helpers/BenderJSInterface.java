@@ -3,15 +3,13 @@ package com.mde.potdroid.helpers;
 import android.app.Activity;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
-
 import com.mde.potdroid.models.User;
 
 /**
  * The Javascript interface for WebViews that display Benders. Provides methods to
  * retrieve and Download Benders (via BenderHandler)
  */
-public class BenderJSInterface
-{
+public class BenderJSInterface {
 
     // A reference to the WebView this interface is attached to
     protected WebView mWebView;
@@ -66,9 +64,9 @@ public class BenderJSInterface
     /**
      * Return an url (filepath) to a bender
      *
-     * @param user_id the user id of the User whose Bender is requested
+     * @param user_id     the user id of the User whose Bender is requested
      * @param avatar_file The filename of the respective bender
-     * @param avatar_id the ID of the bender
+     * @param avatar_id   the ID of the bender
      */
     @JavascriptInterface
     public void displayBender(final int user_id, String avatar_file, int avatar_id) {
@@ -80,12 +78,10 @@ public class BenderJSInterface
 
         // The Bender retrieval is asynchroneous, so upon success we
         // have to trigger the Javascript function to display it.
-        mBenderHandler.getAvatar(u, new BenderHandler.BenderListener()
-        {
+        mBenderHandler.getAvatar(u, new BenderHandler.BenderListener() {
             @Override
             public void onSuccess(final String path) {
-                mActivity.runOnUiThread(new Runnable()
-                {
+                mActivity.runOnUiThread(new Runnable() {
                     public void run() {
                         mWebView.loadUrl("javascript:loadBender(" + user_id + ", '" + path + "');");
                     }

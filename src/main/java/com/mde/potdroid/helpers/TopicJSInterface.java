@@ -5,15 +5,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
-
 import com.mde.potdroid.fragments.TopicFragment;
 
 /**
  * The Javascript interface for the Topic Webviews, extended from the Bender js interface.
  * Provides some more API functions.
  */
-public class TopicJSInterface extends BenderJSInterface
-{
+public class TopicJSInterface extends BenderJSInterface {
 
     // this is the post that is currently visible
     private Integer mCurrentVisiblePost;
@@ -93,8 +91,7 @@ public class TopicJSInterface extends BenderJSInterface
      */
     @JavascriptInterface
     public void replyPost() {
-        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
-        {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
             public void run() {
                 mTopicFragment.replyPost();
             }
@@ -108,8 +105,7 @@ public class TopicJSInterface extends BenderJSInterface
      */
     @JavascriptInterface
     public void openTopicMenu(final int post_id) {
-        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
-        {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
             public void run() {
                 mTopicFragment.showPostDialog(post_id);
             }
@@ -123,8 +119,7 @@ public class TopicJSInterface extends BenderJSInterface
      */
     @JavascriptInterface
     public void editPost(final int post_id) {
-        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
-        {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
             public void run() {
                 mTopicFragment.editPost(post_id);
             }
@@ -138,8 +133,7 @@ public class TopicJSInterface extends BenderJSInterface
      */
     @JavascriptInterface
     public void quotePost(final int post_id) {
-        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
-        {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
             public void run() {
                 mTopicFragment.quotePost(post_id);
             }
@@ -153,8 +147,7 @@ public class TopicJSInterface extends BenderJSInterface
      */
     @JavascriptInterface
     public void linkPost(final int post_id) {
-        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
-        {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
             public void run() {
                 mTopicFragment.linkPost(post_id);
             }
@@ -168,8 +161,7 @@ public class TopicJSInterface extends BenderJSInterface
      */
     @JavascriptInterface
     public void bookmarkPost(final int post_id) {
-        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
-        {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
             public void run() {
                 mTopicFragment.bookmarkPost(post_id, null);
             }
@@ -181,8 +173,7 @@ public class TopicJSInterface extends BenderJSInterface
      */
     @JavascriptInterface
     public void frwd() {
-        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
-        {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
             public void run() {
                 mTopicFragment.goToFirstPage();
             }
@@ -194,8 +185,7 @@ public class TopicJSInterface extends BenderJSInterface
      */
     @JavascriptInterface
     public void rwd() {
-        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
-        {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
             public void run() {
                 mTopicFragment.goToPrevPage();
             }
@@ -207,8 +197,7 @@ public class TopicJSInterface extends BenderJSInterface
      */
     @JavascriptInterface
     public void refresh() {
-        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
-        {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
             public void run() {
                 mTopicFragment.refreshPage();
             }
@@ -220,8 +209,7 @@ public class TopicJSInterface extends BenderJSInterface
      */
     @JavascriptInterface
     public void fwd() {
-        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
-        {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
             public void run() {
                 mTopicFragment.goToNextPage();
             }
@@ -233,8 +221,7 @@ public class TopicJSInterface extends BenderJSInterface
      */
     @JavascriptInterface
     public void ffwd() {
-        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable()
-        {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
             public void run() {
                 mTopicFragment.goToLastPage();
             }

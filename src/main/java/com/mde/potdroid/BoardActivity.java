@@ -3,14 +3,12 @@ package com.mde.potdroid;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
 import com.mde.potdroid.fragments.BoardFragment;
 
 /**
  * Activity that wraps the BoardFragment
  */
-public class BoardActivity extends BaseActivity
-{
+public class BoardActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

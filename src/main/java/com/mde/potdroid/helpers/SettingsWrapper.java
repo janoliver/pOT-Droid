@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.cookie.BasicClientCookie;
 
@@ -18,8 +17,7 @@ import java.security.SecureRandom;
  * This class provides access to the preferences of the App. All settings should be
  * retrieved through this class.
  */
-public class SettingsWrapper
-{
+public class SettingsWrapper {
 
     // The keys to the settings
     public static final String PREF_KEY_LOGIN = "pref_login";
@@ -48,8 +46,7 @@ public class SettingsWrapper
         mContext = cx;
 
         // if this is a pre-3 version, delete all the preferences
-        if(!mSharedPreferences.getBoolean("is_v3", false))
-        {
+        if (!mSharedPreferences.getBoolean("is_v3", false)) {
             SharedPreferences.Editor editor = mSharedPreferences.edit();
             editor.clear();
             editor.putBoolean("is_v3", true);
@@ -59,7 +56,7 @@ public class SettingsWrapper
             File ext_root = Environment.getExternalStorageDirectory();
             File dir = new File(ext_root, "Android/data/" + mContext.getPackageName() + "/files/avatare");
 
-            if(dir.exists())
+            if (dir.exists())
                 dir.delete();
         }
     }
@@ -296,6 +293,7 @@ public class SettingsWrapper
 
     /**
      * Return true, if there was an app update
+     *
      * @param cx Context
      * @return update status
      */
@@ -310,6 +308,7 @@ public class SettingsWrapper
 
     /**
      * Save the currently installed app version to the settings
+     *
      * @param cx Context
      */
     public void registerVersion(Context cx) {

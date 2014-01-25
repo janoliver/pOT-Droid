@@ -1,15 +1,12 @@
 package com.mde.potdroid;
 
 import android.os.Bundle;
-
-import com.mde.potdroid.fragments.BookmarkFragment;
 import com.mde.potdroid.fragments.ForumFragment;
 
 /**
  * The Forum overview container.
  */
-public class ForumActivity extends BaseActivity
-{
+public class ForumActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

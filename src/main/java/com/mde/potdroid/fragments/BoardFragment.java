@@ -31,8 +31,7 @@ import java.io.IOException;
 /**
  * The Board Fragment, which contains a list of Topics.
  */
-public class BoardFragment extends PaginateFragment implements LoaderManager.LoaderCallbacks<Board>
-{
+public class BoardFragment extends PaginateFragment implements LoaderManager.LoaderCallbacks<Board> {
 
     // the tags of the fragment arguments
     public static final String ARG_ID = "board_id";
@@ -48,7 +47,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
      * Returns an instance of the BoardFragment and sets required parameters as Arguments
      *
      * @param board_id the id of the board
-     * @param page the currently visible page
+     * @param page     the currently visible page
      * @return BoardFragment object
      */
     public static BoardFragment newInstance(int board_id, int page) {
@@ -73,8 +72,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         mListView.setAdapter(mListAdapter);
 
         // clicking on a topic leads to the topicactivity
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
                 intent.putExtra(TopicFragment.ARG_TOPIC_ID, mBoard.getTopics().get(position)
@@ -84,7 +82,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                 startActivity(intent);
             }
         });
-        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
                 intent.putExtra(TopicFragment.ARG_TOPIC_ID, mBoard.getTopics().get(position)
@@ -139,14 +137,14 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
             // generate subtitle and set title and subtitle of the actionbar
             Spanned subtitle = Html.fromHtml(String.format(getString(
-                    R.string.paginate_page_indicator), mBoard.getPage(),
+                    R.string.subtitle_paginate), mBoard.getPage(),
                     mBoard.getNumberOfPages()));
 
             getActionbar().setTitle(mBoard.getName());
             getActionbar().setSubtitle(subtitle);
 
         } else {
-            showError(getString(R.string.loading_error));
+            showError(getString(R.string.msg_loading_error));
         }
     }
 
@@ -197,8 +195,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     /**
      * The content loader
      */
-    static class AsyncContentLoader extends AsyncHttpLoader<Board>
-    {
+    static class AsyncContentLoader extends AsyncHttpLoader<Board> {
 
         AsyncContentLoader(Context cx, int page, int board_id) {
             super(cx, BoardParser.getUrl(board_id, page));
@@ -225,8 +222,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
     }
 
-    private class BoardListAdapter extends BaseAdapter
-    {
+    private class BoardListAdapter extends BaseAdapter {
 
         public int getCount() {
             if (mBoard == null)

@@ -7,8 +7,7 @@ import java.util.ArrayList;
 /**
  * Forum category model.
  */
-public class Category implements Serializable
-{
+public class Category implements Serializable {
 
     private static final long serialVersionUID = 5L;
 

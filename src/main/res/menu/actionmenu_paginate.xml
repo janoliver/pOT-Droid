@@ -2,7 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:potdroid="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/layout_item"
-        potdroid:actionLayout="@layout/view_paginate"
-        potdroid:showAsAction="always"/>
+            android:id="@+id/layout_item"
+            potdroid:actionLayout="@layout/view_paginate"
+            potdroid:showAsAction="always"
+            android:title="@string/none"/>
 </menu>

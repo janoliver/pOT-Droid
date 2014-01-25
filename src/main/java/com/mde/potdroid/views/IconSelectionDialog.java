@@ -24,8 +24,7 @@ import java.util.Arrays;
 /**
  * The icon selection dialog
  */
-public class IconSelectionDialog extends DialogFragment
-{
+public class IconSelectionDialog extends DialogFragment {
     private ArrayList<String> mIcons = new ArrayList<String>();
 
     @Override
@@ -36,11 +35,12 @@ public class IconSelectionDialog extends DialogFragment
         AssetManager aMan = getActivity().getAssets();
         try {
             mIcons.addAll(Arrays.asList(aMan.list("thread-icons")));
-        } catch (IOException e) {}
+        } catch (IOException e) {
+        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(R.string.icon_selection);
+        builder.setTitle(R.string.dialog_icon_selection);
         builder.setAdapter(new IconListAdapter(getActivity()),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -55,8 +55,7 @@ public class IconSelectionDialog extends DialogFragment
     /**
      * Custom view adapter for the ListView items
      */
-    public class IconListAdapter extends ArrayAdapter<String>
-    {
+    public class IconListAdapter extends ArrayAdapter<String> {
         Activity context;
 
         IconListAdapter(Activity context) {
@@ -79,7 +78,8 @@ public class IconSelectionDialog extends DialogFragment
                         20 * ((EditorFragment) getTargetFragment()).getDensity());
                 name.setCompoundDrawables(dr, null, null, null);
 
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
 
 
             return (row);

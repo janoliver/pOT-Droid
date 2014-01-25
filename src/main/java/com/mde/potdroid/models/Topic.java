@@ -6,8 +6,7 @@ import java.util.ArrayList;
 /**
  * Thread model.
  */
-public class Topic implements Serializable
-{
+public class Topic implements Serializable {
 
     private static final long serialVersionUID = 2L;
 
@@ -68,7 +67,7 @@ public class Topic implements Serializable
 
     public Integer getNumberOfPages() {
         if (mNumberOfPages == null)
-            mNumberOfPages = (mNumberOfPosts-1) / mPostsPerPage + 1;
+            mNumberOfPages = (mNumberOfPosts - 1) / mPostsPerPage + 1;
         return mNumberOfPages;
     }
 

@@ -8,8 +8,7 @@ import android.widget.Button;
 /**
  * This is a button that uses the font awesome font face.
  */
-public class IconButton extends Button
-{
+public class IconButton extends Button {
 
     private static Typeface mFont;
 

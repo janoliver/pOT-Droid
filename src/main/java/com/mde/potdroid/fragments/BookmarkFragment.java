@@ -8,18 +8,11 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.ContextMenu;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.mde.potdroid.R;
 import com.mde.potdroid.TopicActivity;
@@ -29,7 +22,6 @@ import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.BookmarkList;
 import com.mde.potdroid.parsers.BookmarkParser;
-
 import com.mde.potdroid.views.IconDrawable;
 import org.apache.http.Header;
 
@@ -37,8 +29,7 @@ import org.apache.http.Header;
  * The fragment that displays the list of bookmarks
  */
 public class BookmarkFragment extends BaseFragment
-        implements LoaderManager.LoaderCallbacks<BookmarkParser.BookmarksContainer>
-{
+        implements LoaderManager.LoaderCallbacks<BookmarkParser.BookmarksContainer> {
 
     // the bookmark list, Listview and adapter
     private BookmarkList mBookmarkList;
@@ -70,8 +61,7 @@ public class BookmarkFragment extends BaseFragment
         mListAdapter = new BookmarkListAdapter();
         ListView listView = (ListView) v.findViewById(R.id.list_content);
         listView.setAdapter(mListAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
                 intent.putExtra(TopicFragment.ARG_POST_ID, mBookmarkList.getBookmarks()
@@ -84,7 +74,7 @@ public class BookmarkFragment extends BaseFragment
 
         registerForContextMenu(listView);
 
-        getActionbar().setTitle(R.string.bookmarks);
+        getActionbar().setTitle(R.string.title_bookmarks);
 
         return v;
 
@@ -137,16 +127,15 @@ public class BookmarkFragment extends BaseFragment
             case R.id.delete:
                 Bookmark b = mBookmarkList.getBookmarks().get((int) info.id);
                 final String url = Network.getAsyncUrl(
-                        "remove-bookmark.php?BMID=" + b.getId() + "&token=" + b.getRemovetoken());
+                        String.format("remove-bookmark.php?BMID=%s&token=%s", b.getId(), b.getRemovetoken()));
 
                 showLoadingAnimation();
 
                 Network network = new Network(getActivity());
-                network.get(url, null, new AsyncHttpResponseHandler()
-                {
+                network.get(url, null, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        showSuccess(R.string.removed_bookmark);
+                        showSuccess(R.string.msg_bookmark_removed);
                         hideLoadingAnimation();
                         restartLoader(BookmarkFragment.this);
                     }
@@ -180,12 +169,12 @@ public class BookmarkFragment extends BaseFragment
 
             mBookmarkList.refresh(success.getBookmarks(), success.getNumberOfNewPosts());
             mListAdapter.notifyDataSetChanged();
-            Spanned subtitle = Html.fromHtml(String.format(getString(R.string.x_unread_posts),
+            Spanned subtitle = Html.fromHtml(String.format(getString(R.string.subtitle_bookmarks),
                     success.getNumberOfNewPosts()));
             getActionbar().setSubtitle(subtitle);
 
         } else {
-            showError(getString(R.string.loading_error));
+            showError(getString(R.string.msg_loading_error));
         }
     }
 
@@ -194,8 +183,7 @@ public class BookmarkFragment extends BaseFragment
         hideLoadingAnimation();
     }
 
-    private class BookmarkListAdapter extends BaseAdapter
-    {
+    private class BookmarkListAdapter extends BaseAdapter {
 
         public int getCount() {
             if (mBookmarkList == null)
@@ -249,8 +237,7 @@ public class BookmarkFragment extends BaseFragment
         }
     }
 
-    static class AsyncContentLoader extends AsyncHttpLoader<BookmarkParser.BookmarksContainer>
-    {
+    static class AsyncContentLoader extends AsyncHttpLoader<BookmarkParser.BookmarksContainer> {
 
         AsyncContentLoader(Context cx) {
             super(cx, BookmarkParser.URL);
@@ -261,7 +248,7 @@ public class BookmarkFragment extends BaseFragment
             try {
                 BookmarkParser parser = new BookmarkParser();
                 return parser.parse(response);
-            } catch(Utils.NotLoggedInException e) {
+            } catch (Utils.NotLoggedInException e) {
                 Utils.setNotLoggedIn();
                 return null;
             } catch (Exception e) {

@@ -2,7 +2,6 @@ package com.mde.potdroid.helpers;
 
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.ResponseHandlerInterface;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.protocol.HTTP;
@@ -15,8 +14,7 @@ import java.io.UnsupportedEncodingException;
  * for request params. It will probably be added as a feature soon, then this will become
  * obsolete.
  */
-public class EncodingRequestParams extends RequestParams
-{
+public class EncodingRequestParams extends RequestParams {
 
     // default encoding is UTF8
     protected String mEncoding = HTTP.UTF_8;

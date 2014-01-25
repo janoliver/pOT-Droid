@@ -14,8 +14,7 @@ import java.util.regex.Pattern;
 /**
  * HTML Parser for a PM message.
  */
-public class MessageParser
-{
+public class MessageParser {
 
     public static final String URL = "pm/?a=2&mid=";
     public static final String SEND_URL = "pm/?a=6";
@@ -47,7 +46,7 @@ public class MessageParser
             mMessage.setTitle(m.group(1));
             mMessage.setId(message_id);
             mMessage.setText(m.group(6));
-            mMessage.setOutgoing(!m.group(4).equals("Absender"));
+            mMessage.setOutgoing(!m.group(2).equals("Absender"));
 
             try {
                 DateFormat df = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.ENGLISH);

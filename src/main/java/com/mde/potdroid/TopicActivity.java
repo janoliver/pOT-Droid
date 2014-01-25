@@ -3,15 +3,13 @@ package com.mde.potdroid;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
 import com.mde.potdroid.fragments.TopicFragment;
 
 /**
  * The Activity that contains a TopicFragment. It handles some callbacks of the
  * Formlistener after Post submission.
  */
-public class TopicActivity extends BaseActivity
-{
+public class TopicActivity extends BaseActivity {
 
     private TopicFragment mTopicFragment;
 

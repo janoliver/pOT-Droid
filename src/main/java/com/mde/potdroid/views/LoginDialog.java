@@ -21,8 +21,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
  * along with a loading animation (that is shown during the connection) and appropriately handles
  * the cancel button.
  */
-public class LoginDialog extends DialogPreference
-{
+public class LoginDialog extends DialogPreference {
 
     private SettingsWrapper mSettingsWrapper;
     // ui elements
@@ -72,8 +71,7 @@ public class LoginDialog extends DialogPreference
 
         // when the "login" button is clicked, we create a new LoginTask and execute it with the
         // provided credentials
-        mPositiveButton.setOnClickListener(new View.OnClickListener()
-        {
+        mPositiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -81,11 +79,10 @@ public class LoginDialog extends DialogPreference
                 final String user_password = mPassword.getText().toString();
 
                 Network n = new Network(getContext());
-                n.login(user_name, user_password, new Network.LoginCallback()
-                {
+                n.login(user_name, user_password, new Network.LoginCallback() {
                     @Override
                     public void onSuccess() {
-                        Crouton.makeText((Activity)getContext(), R.string.login_success, Style.CONFIRM).show();
+                        Crouton.makeText((Activity) getContext(), R.string.msg_login_success, Style.CONFIRM).show();
 
                         mSettingsWrapper.setUsername(user_name);
                         getDialog().dismiss();
@@ -93,7 +90,7 @@ public class LoginDialog extends DialogPreference
 
                     @Override
                     public void onFailure() {
-                        Crouton.makeText((Activity)getContext(), R.string.login_failure, Style.ALERT).show();
+                        Crouton.makeText((Activity) getContext(), R.string.msg_login_failure, Style.ALERT).show();
                     }
 
                     @Override
@@ -113,8 +110,7 @@ public class LoginDialog extends DialogPreference
         // running,
         // the button cancels it and re-enables the input elements and the login button. If the
         // login process is not running, it simply closes the logindialog.
-        mNegativeButton.setOnClickListener(new View.OnClickListener()
-        {
+        mNegativeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getDialog().dismiss();

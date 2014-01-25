@@ -20,8 +20,7 @@ import com.mde.potdroid.views.IconButton;
  * This is the Sidebar containing a list of unread Bookmarks and the navigation.
  */
 public class SidebarLeftFragment extends BaseFragment
-        implements LoaderManager.LoaderCallbacks<BookmarkParser.BookmarksContainer>
-{
+        implements LoaderManager.LoaderCallbacks<BookmarkParser.BookmarksContainer> {
 
     // the bookmark list and adapter
     private BookmarkList mBookmarkList;
@@ -56,8 +55,7 @@ public class SidebarLeftFragment extends BaseFragment
         ListView listView = (ListView) v.findViewById(R.id.listview_bookmarks);
         listView.setAdapter(mListAdapter);
         listView.setEmptyView(v.findViewById(R.id.empty_bookmarks_text));
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
                 intent.putExtra(TopicFragment.ARG_POST_ID,
@@ -71,8 +69,7 @@ public class SidebarLeftFragment extends BaseFragment
         // below are the navigation and bookmark refresh buttons
 
         Button bookmarkRefreshButton = (Button) v.findViewById(R.id.refresh_bookmarks);
-        bookmarkRefreshButton.setOnClickListener(new View.OnClickListener()
-        {
+        bookmarkRefreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 restartLoader(SidebarLeftFragment.this);
@@ -80,8 +77,7 @@ public class SidebarLeftFragment extends BaseFragment
         });
 
         IconButton home = (IconButton) v.findViewById(R.id.button_home);
-        home.setOnClickListener(new View.OnClickListener()
-        {
+        home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseActivity(), ForumActivity.class);
@@ -90,8 +86,7 @@ public class SidebarLeftFragment extends BaseFragment
         });
 
         IconButton preferences = (IconButton) v.findViewById(R.id.button_preferences);
-        preferences.setOnClickListener(new View.OnClickListener()
-        {
+        preferences.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseActivity(), SettingsActivity.class);
@@ -100,8 +95,7 @@ public class SidebarLeftFragment extends BaseFragment
         });
 
         IconButton bookmarks = (IconButton) v.findViewById(R.id.button_bookmarks);
-        bookmarks.setOnClickListener(new View.OnClickListener()
-        {
+        bookmarks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseActivity(), BookmarkActivity.class);
@@ -110,8 +104,7 @@ public class SidebarLeftFragment extends BaseFragment
         });
 
         IconButton pm = (IconButton) v.findViewById(R.id.button_pm);
-        pm.setOnClickListener(new View.OnClickListener()
-        {
+        pm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseActivity(), MessageListActivity.class);
@@ -150,7 +143,7 @@ public class SidebarLeftFragment extends BaseFragment
     }
 
     public void refreshBookmarks() {
-        if(Utils.isLoggedIn())
+        if (Utils.isLoggedIn())
             restartLoader(this);
     }
 
@@ -169,7 +162,7 @@ public class SidebarLeftFragment extends BaseFragment
             mBookmarkList.refresh(success.getBookmarks(), success.getNumberOfNewPosts());
             mListAdapter.notifyDataSetChanged();
         } else {
-            showError(getString(R.string.loading_error));
+            showError(getString(R.string.msg_loading_error));
         }
     }
 
@@ -193,8 +186,7 @@ public class SidebarLeftFragment extends BaseFragment
         mListAdapter.notifyDataSetChanged();
     }
 
-    private class BookmarkListAdapter extends BaseAdapter
-    {
+    private class BookmarkListAdapter extends BaseAdapter {
 
         public int getCount() {
             if (mBookmarkList == null)

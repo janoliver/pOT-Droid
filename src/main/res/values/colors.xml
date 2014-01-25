@@ -8,4 +8,5 @@
     <color name="bbstyle_darkblue">#222E3A</color>
     <color name="bbstyle_lightblue">#394E63</color>
     <color name="bbstyle_middleblue">#ff414f5c</color>
+    <color name="pressed_bbdarkstyle">#CC33B5E5</color>
 </resources>

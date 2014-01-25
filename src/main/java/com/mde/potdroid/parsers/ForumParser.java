@@ -1,21 +1,9 @@
 package com.mde.potdroid.parsers;
 
-import android.sax.Element;
-import android.sax.ElementListener;
-import android.sax.EndTextElementListener;
-import android.sax.RootElement;
-import android.sax.StartElementListener;
-import android.sax.TextElementListener;
+import android.sax.*;
 import android.util.Xml;
-
 import com.mde.potdroid.helpers.Utils;
-import com.mde.potdroid.models.Board;
-import com.mde.potdroid.models.Category;
-import com.mde.potdroid.models.Forum;
-import com.mde.potdroid.models.Post;
-import com.mde.potdroid.models.Topic;
-import com.mde.potdroid.models.User;
-
+import com.mde.potdroid.models.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -24,8 +12,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * An XML Handler class to parse the API XML code of the boards.php. A little bit messy,
  * but a long stare at the code should make it clear.
  */
-public class ForumParser extends DefaultHandler
-{
+public class ForumParser extends DefaultHandler {
 
     public static String TAG = "category";
     public static String BOARDS_TAG = "boards";
@@ -48,20 +35,18 @@ public class ForumParser extends DefaultHandler
     public Forum parse(String input) {
         RootElement categories = new RootElement(FORUM_TAG);
 
-        categories.setStartElementListener(new StartElementListener()
-        {
+        categories.setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
-                if(Integer.parseInt(attributes.getValue(BoardParser.CURRENT_USER_ID)) == 0) {
+                if (Integer.parseInt(attributes.getValue(BoardParser.CURRENT_USER_ID)) == 0) {
                     Utils.setNotLoggedIn();
                 }
             }
         });
 
         Element category = categories.getChild(TAG);
-        category.setElementListener(new ElementListener()
-        {
+        category.setElementListener(new ElementListener() {
 
             @Override
             public void end() {
@@ -74,16 +59,14 @@ public class ForumParser extends DefaultHandler
                         (ID_ATTRIBUTE)));
             }
         });
-        category.requireChild(NAME_TAG).setEndTextElementListener(new EndTextElementListener()
-        {
+        category.requireChild(NAME_TAG).setEndTextElementListener(new EndTextElementListener() {
 
             @Override
             public void end(String body) {
                 mCurrentCategory.setName(body);
             }
         });
-        category.requireChild(DESCRIPTION_TAG).setEndTextElementListener(new EndTextElementListener()
-        {
+        category.requireChild(DESCRIPTION_TAG).setEndTextElementListener(new EndTextElementListener() {
 
             @Override
             public void end(String body) {
@@ -92,8 +75,7 @@ public class ForumParser extends DefaultHandler
         });
 
         Element board = category.getChild(BOARDS_TAG).getChild(BoardParser.TAG);
-        board.setElementListener(new ElementListener()
-        {
+        board.setElementListener(new ElementListener() {
 
             @Override
             public void end() {
@@ -107,24 +89,21 @@ public class ForumParser extends DefaultHandler
                 mCurrentBoard.setCategory(mCurrentCategory);
             }
         });
-        board.requireChild(BoardParser.NAME_TAG).setEndTextElementListener(new EndTextElementListener()
-        {
+        board.requireChild(BoardParser.NAME_TAG).setEndTextElementListener(new EndTextElementListener() {
 
             @Override
             public void end(String body) {
                 mCurrentBoard.setName(body);
             }
         });
-        board.requireChild(BoardParser.DESCRIPTION_TAG).setEndTextElementListener(new EndTextElementListener()
-        {
+        board.requireChild(BoardParser.DESCRIPTION_TAG).setEndTextElementListener(new EndTextElementListener() {
 
             @Override
             public void end(String body) {
                 mCurrentBoard.setDescription(body);
             }
         });
-        board.requireChild(BoardParser.NUMBER_OF_THREADS_TAG).setStartElementListener(new StartElementListener()
-        {
+        board.requireChild(BoardParser.NUMBER_OF_THREADS_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -132,8 +111,7 @@ public class ForumParser extends DefaultHandler
                         .NUMBER_OF_THREADS_ATTRIBUTE)));
             }
         });
-        board.requireChild(BoardParser.NUMBER_OF_REPLIES_TAG).setStartElementListener(new StartElementListener()
-        {
+        board.requireChild(BoardParser.NUMBER_OF_REPLIES_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -144,8 +122,7 @@ public class ForumParser extends DefaultHandler
 
         // the last post part
         Element last_post = board.getChild(BoardParser.LASTPOST_TAG).getChild(TopicParser.POST_TAG);
-        last_post.setElementListener(new ElementListener()
-        {
+        last_post.setElementListener(new ElementListener() {
 
             @Override
             public void end() {
@@ -158,8 +135,7 @@ public class ForumParser extends DefaultHandler
                 mCurrentPost.setBoard(mCurrentBoard);
             }
         });
-        last_post.requireChild(TopicParser.USER_TAG).setTextElementListener(new TextElementListener()
-        {
+        last_post.requireChild(TopicParser.USER_TAG).setTextElementListener(new TextElementListener() {
 
             @Override
             public void end(String body) {
@@ -173,8 +149,7 @@ public class ForumParser extends DefaultHandler
                         .ID_ATTRIBUTE)));
             }
         });
-        last_post.requireChild(TopicParser.DATE_TAG).setStartElementListener(new StartElementListener()
-        {
+        last_post.requireChild(TopicParser.DATE_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -182,8 +157,7 @@ public class ForumParser extends DefaultHandler
                         (TopicParser.DATE_TIMESTAMP_ATTRIBUTE)));
             }
         });
-        last_post.requireChild(TopicParser.IN_THREAD_TAG).setTextElementListener(new TextElementListener()
-        {
+        last_post.requireChild(TopicParser.IN_THREAD_TAG).setTextElementListener(new TextElementListener() {
 
             @Override
             public void end(String body) {

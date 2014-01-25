@@ -18,8 +18,7 @@ import java.util.regex.Pattern;
  *         They are:
  *         - in Node.toString() the quote hack
  */
-public class BBCodeParser
-{
+public class BBCodeParser {
 
     Pattern mArgsPattern = Pattern.compile("([^,\"]+)|(\"[^\"]+\")");
     // the skeleton regex for the bbcodes. %1$s must be replaced by
@@ -302,8 +301,7 @@ public class BBCodeParser
         return input;
     }
 
-    public interface TextCallback
-    {
+    public interface TextCallback {
 
         public void run(String text);
     }
@@ -313,8 +311,7 @@ public class BBCodeParser
      * instanciated and its members filled. The tag is then registered to the
      * parser via the registerTag() function.
      */
-    public static abstract class BBCodeTag
-    {
+    public static abstract class BBCodeTag {
 
         public static final int RECOVERY_NONE = 0;
         public static final int RECOVERY_STRING = 1;
@@ -387,8 +384,7 @@ public class BBCodeParser
 
     }
 
-    public static class Token
-    {
+    public static class Token {
 
         public static final int TYPE_STRING = 0;
         public static final int TYPE_OPEN = 1;
@@ -435,8 +431,7 @@ public class BBCodeParser
     /**
      * This is one Node in our lexigraphical tree.
      */
-    private class Node
-    {
+    private class Node {
 
         public List<Node> mChildren = new ArrayList<Node>();
         public Node mParent;
@@ -544,8 +539,7 @@ public class BBCodeParser
         }
     }
 
-    public class InvalidTokenException extends Exception
-    {
+    public class InvalidTokenException extends Exception {
 
         private static final long serialVersionUID = 42L;
 
@@ -554,8 +548,7 @@ public class BBCodeParser
         }
     }
 
-    public class InvalidParameterCountException extends Exception
-    {
+    public class InvalidParameterCountException extends Exception {
 
         private static final long serialVersionUID = 44L;
 
@@ -564,8 +557,7 @@ public class BBCodeParser
         }
     }
 
-    public class UnknownErrorException extends Exception
-    {
+    public class UnknownErrorException extends Exception {
 
         private static final long serialVersionUID = 43L;
 

@@ -6,8 +6,7 @@ import java.util.ArrayList;
 /**
  * The Board model.
  */
-public class Board implements Serializable
-{
+public class Board implements Serializable {
 
     private static final long serialVersionUID = 7L;
     private Integer mId;

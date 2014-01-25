@@ -9,8 +9,7 @@ import java.util.ArrayList;
 /**
  * Forum model.
  */
-public class Forum implements Serializable
-{
+public class Forum implements Serializable {
 
     private static final long serialVersionUID = 4L;
     ArrayList<Category> mCategories = new ArrayList<Category>();

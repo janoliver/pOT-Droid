@@ -1,21 +1,10 @@
 package com.mde.potdroid.parsers;
 
 import android.net.Uri;
-import android.sax.Element;
-import android.sax.ElementListener;
-import android.sax.EndTextElementListener;
-import android.sax.RootElement;
-import android.sax.StartElementListener;
-import android.sax.TextElementListener;
+import android.sax.*;
 import android.util.Xml;
-
 import com.mde.potdroid.helpers.Utils;
-import com.mde.potdroid.models.Board;
-import com.mde.potdroid.models.Category;
-import com.mde.potdroid.models.Post;
-import com.mde.potdroid.models.Topic;
-import com.mde.potdroid.models.User;
-
+import com.mde.potdroid.models.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -24,8 +13,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * An XML Handler class to parse the API XML code of a Board. A little bit messy,
  * but a long stare at the code should make it clear.
  */
-public class BoardParser extends DefaultHandler
-{
+public class BoardParser extends DefaultHandler {
 
     public static String TAG = "board";
     public static String DESCRIPTION_TAG = "description";
@@ -62,36 +50,32 @@ public class BoardParser extends DefaultHandler
         RootElement board = new RootElement(TAG);
 
         // find the board information
-        board.setStartElementListener(new StartElementListener()
-        {
+        board.setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
                 mBoard.setId(Integer.parseInt(attributes.getValue(ID_ATTRIBUTE)));
 
-                if(Integer.parseInt(attributes.getValue(CURRENT_USER_ID)) == 0) {
+                if (Integer.parseInt(attributes.getValue(CURRENT_USER_ID)) == 0) {
                     Utils.setNotLoggedIn();
                 }
             }
         });
-        board.requireChild(NAME_TAG).setEndTextElementListener(new EndTextElementListener()
-        {
+        board.requireChild(NAME_TAG).setEndTextElementListener(new EndTextElementListener() {
 
             @Override
             public void end(String body) {
                 mBoard.setName(body);
             }
         });
-        board.requireChild(DESCRIPTION_TAG).setEndTextElementListener(new EndTextElementListener()
-        {
+        board.requireChild(DESCRIPTION_TAG).setEndTextElementListener(new EndTextElementListener() {
 
             @Override
             public void end(String body) {
                 mBoard.setDescription(body);
             }
         });
-        board.requireChild(NUMBER_OF_THREADS_TAG).setStartElementListener(new StartElementListener()
-        {
+        board.requireChild(NUMBER_OF_THREADS_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -99,8 +83,7 @@ public class BoardParser extends DefaultHandler
                         (NUMBER_OF_THREADS_ATTRIBUTE)));
             }
         });
-        board.requireChild(NUMBER_OF_REPLIES_TAG).setStartElementListener(new StartElementListener()
-        {
+        board.requireChild(NUMBER_OF_REPLIES_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -108,8 +91,7 @@ public class BoardParser extends DefaultHandler
                         (NUMBER_OF_REPLIES_ATTRIBUTE)));
             }
         });
-        board.requireChild(IN_CATEGORY_TAG).setStartElementListener(new StartElementListener()
-        {
+        board.requireChild(IN_CATEGORY_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -120,8 +102,7 @@ public class BoardParser extends DefaultHandler
         });
 
         Element threads = board.getChild(THREADS_TAG);
-        threads.setStartElementListener(new StartElementListener()
-        {
+        threads.setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -130,8 +111,7 @@ public class BoardParser extends DefaultHandler
         });
 
         Element thread = threads.getChild(TopicParser.TAG);
-        thread.setElementListener(new ElementListener()
-        {
+        thread.setElementListener(new ElementListener() {
 
             @Override
             public void end() {
@@ -145,24 +125,21 @@ public class BoardParser extends DefaultHandler
                 mCurrentThread.setBoard(mBoard);
             }
         });
-        thread.requireChild(TopicParser.TITLE_TAG).setEndTextElementListener(new EndTextElementListener()
-        {
+        thread.requireChild(TopicParser.TITLE_TAG).setEndTextElementListener(new EndTextElementListener() {
 
             @Override
             public void end(String body) {
                 mCurrentThread.setTitle(body);
             }
         });
-        thread.requireChild(TopicParser.SUBTITLE_TAG).setEndTextElementListener(new EndTextElementListener()
-        {
+        thread.requireChild(TopicParser.SUBTITLE_TAG).setEndTextElementListener(new EndTextElementListener() {
 
             @Override
             public void end(String body) {
                 mCurrentThread.setSubTitle(body);
             }
         });
-        thread.requireChild(TopicParser.NUMBER_OF_HITS_TAG).setStartElementListener(new StartElementListener()
-        {
+        thread.requireChild(TopicParser.NUMBER_OF_HITS_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -170,8 +147,7 @@ public class BoardParser extends DefaultHandler
                         .NUMBER_OF_HITS_ATTRIBUTE)));
             }
         });
-        thread.requireChild(TopicParser.NUMBER_OF_REPLIES_TAG).setStartElementListener(new StartElementListener()
-        {
+        thread.requireChild(TopicParser.NUMBER_OF_REPLIES_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -179,8 +155,7 @@ public class BoardParser extends DefaultHandler
                         .NUMBER_OF_REPLIES_ATTRIBUTE)));
             }
         });
-        thread.requireChild(TopicParser.NUMBER_OF_PAGES_TAG).setStartElementListener(new StartElementListener()
-        {
+        thread.requireChild(TopicParser.NUMBER_OF_PAGES_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -190,8 +165,7 @@ public class BoardParser extends DefaultHandler
         });
         Element first_post = thread.getChild(TopicParser.FIRSTPOST_TAG).getChild(TopicParser
                 .POST_TAG);
-        first_post.setElementListener(new ElementListener()
-        {
+        first_post.setElementListener(new ElementListener() {
 
             @Override
             public void end() {
@@ -205,8 +179,7 @@ public class BoardParser extends DefaultHandler
                 mCurrentPost.setTopic(mCurrentThread);
             }
         });
-        first_post.requireChild(TopicParser.DATE_TAG).setStartElementListener(new StartElementListener()
-        {
+        first_post.requireChild(TopicParser.DATE_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -214,8 +187,7 @@ public class BoardParser extends DefaultHandler
                         (TopicParser.DATE_TIMESTAMP_ATTRIBUTE)));
             }
         });
-        first_post.getChild(TopicParser.ICON_TAG).setTextElementListener(new TextElementListener()
-        {
+        first_post.getChild(TopicParser.ICON_TAG).setTextElementListener(new TextElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -228,8 +200,7 @@ public class BoardParser extends DefaultHandler
                 mCurrentPost.setIconFile(body);
             }
         });
-        first_post.requireChild(TopicParser.USER_TAG).setTextElementListener(new TextElementListener()
-        {
+        first_post.requireChild(TopicParser.USER_TAG).setTextElementListener(new TextElementListener() {
 
             @Override
             public void end(String body) {
@@ -246,8 +217,7 @@ public class BoardParser extends DefaultHandler
 
         Element flags = thread.getChild(TopicParser.FLAGS_TAG);
 
-        flags.requireChild(TopicParser.IS_CLOSED_TAG).setStartElementListener(new StartElementListener()
-        {
+        flags.requireChild(TopicParser.IS_CLOSED_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -255,8 +225,7 @@ public class BoardParser extends DefaultHandler
                         .equals("1"));
             }
         });
-        flags.requireChild(TopicParser.IS_STICKY_TAG).setStartElementListener(new StartElementListener()
-        {
+        flags.requireChild(TopicParser.IS_STICKY_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -264,8 +233,7 @@ public class BoardParser extends DefaultHandler
                         .equals("1"));
             }
         });
-        flags.requireChild(TopicParser.IS_ANNOUNCEMENT_TAG).setStartElementListener(new StartElementListener()
-        {
+        flags.requireChild(TopicParser.IS_ANNOUNCEMENT_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -273,8 +241,7 @@ public class BoardParser extends DefaultHandler
                         .IS_ANNOUNCEMENT_ATTRIBUTE).equals("1"));
             }
         });
-        flags.requireChild(TopicParser.IS_IMPORTANT_TAG).setStartElementListener(new StartElementListener()
-        {
+        flags.requireChild(TopicParser.IS_IMPORTANT_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -282,8 +249,7 @@ public class BoardParser extends DefaultHandler
                         .IS_IMPORTANT_ATTRIBUTE).equals("1"));
             }
         });
-        flags.requireChild(TopicParser.IS_GLOBAL_TAG).setStartElementListener(new StartElementListener()
-        {
+        flags.requireChild(TopicParser.IS_GLOBAL_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {

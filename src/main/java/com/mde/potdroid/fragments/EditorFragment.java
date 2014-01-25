@@ -30,8 +30,7 @@ import java.util.regex.Pattern;
  * PM message form. Activities must implement the FormListener, to be notified on
  * finishing, success and failure of the form.
  */
-public class EditorFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Bundle>
-{
+public class EditorFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Bundle> {
 
     protected static final String ARG_MODE = "mode";
     protected static final String ARG_TOPIC_ID = "topic_id";
@@ -48,7 +47,6 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     protected EditText mEditTitle;
     protected EditText mEditText;
     protected ImageButton mIconButton;
-    //protected ActionMode mActionMode;
 
     // this holds the kind of form this is. The static fields are defined below.
     public static int MODE_EDIT = 1;
@@ -82,8 +80,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
         // set the image button listener
         ImageButton icon = (ImageButton) v.findViewById(R.id.button_icon);
-        icon.setOnClickListener(new View.OnClickListener()
-        {
+        icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 IconSelectionDialog id = new IconSelectionDialog();
@@ -99,44 +96,28 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         mIconButton = (ImageButton) v.findViewById(R.id.button_icon);
 
         // fill the form
-        if(getArguments().getString(ARG_TEXT) != null)
+        if (getArguments().getString(ARG_TEXT) != null)
             mEditText.setText(getArguments().getString(ARG_TEXT));
 
-        if(getArguments().getString(ARG_TITLE) != null)
+        if (getArguments().getString(ARG_TITLE) != null)
             mEditTitle.setText(getArguments().getString(ARG_TITLE));
 
-        if(getArguments().getInt(ARG_ICON, 0) > 0)
+        if (getArguments().getInt(ARG_ICON, 0) > 0)
             setIconById(getArguments().getInt(ARG_ICON));
 
-        if(getArguments().getString(ARG_RCPT) != null)
+        if (getArguments().getString(ARG_RCPT) != null)
             mEditRcpt.setText(getArguments().getString(ARG_RCPT));
 
         // set the title
-        if(getArguments().getInt(ARG_MODE, MODE_REPLY) == MODE_REPLY)
-            getActionbar().setTitle("Antwort verfassen");
-        else if(getArguments().getInt(ARG_MODE, MODE_REPLY) == MODE_EDIT)
-            getActionbar().setTitle("Post bearbeiten");
-        else if(getArguments().getInt(ARG_MODE, MODE_REPLY) == MODE_MESSAGE) {
+        if (getArguments().getInt(ARG_MODE, MODE_REPLY) == MODE_REPLY)
+            getActionbar().setTitle(R.string.subtitle_form_write_post);
+        else if (getArguments().getInt(ARG_MODE, MODE_REPLY) == MODE_EDIT)
+            getActionbar().setTitle(R.string.subtitle_form_edit_post);
+        else if (getArguments().getInt(ARG_MODE, MODE_REPLY) == MODE_MESSAGE) {
             mIconButton.setVisibility(View.GONE);
             mEditRcpt.setVisibility(View.VISIBLE);
-            getActionbar().setTitle("Nachricht verfassen");
+            getActionbar().setTitle(R.string.subtitle_form_write_pm);
         }
-
-        // action mode
-        /*mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    if(mActionMode == null)
-                        mActionMode = getBaseActivity().startSupportActionMode(mActionModeCallback);
-
-                } else {
-                    if(mActionMode != null)
-                        mActionMode.finish();
-                }
-            }
-        });*/
-
 
         return v;
     }
@@ -203,7 +184,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             getActivity().setResult(result.getInt(ARG_STATUS, Activity.RESULT_CANCELED), intent);
             getActivity().finish();
         } else {
-            showError(getString(R.string.loading_error));
+            showError(getString(R.string.msg_loading_error));
         }
     }
 
@@ -220,6 +201,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
     /**
      * Set the icon by providing its id
+     *
      * @param iconId the icon id
      */
     public void setIconById(Integer iconId) {
@@ -230,11 +212,11 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             Bitmap bm = Bitmap.createScaledBitmap(icon, 80, 80, true);
             mIconButton.setImageBitmap(bm);
             mIconId = iconId;
-        } catch (IOException e) {}
+        } catch (IOException e) {
+        }
     }
 
-    static class AsyncPostSubmitter extends AsyncHttpLoader<Bundle>
-    {
+    static class AsyncPostSubmitter extends AsyncHttpLoader<Bundle> {
 
         protected int mMode;
 
@@ -301,8 +283,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         }
     }
 
-    static class AsyncMessageSubmitter extends AsyncHttpLoader<Bundle>
-    {
+    static class AsyncMessageSubmitter extends AsyncHttpLoader<Bundle> {
 
         protected int mMode;
 
@@ -354,45 +335,4 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         }
     }
 
-    /*private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-
-        // Called when the action mode is created; startActionMode() was called
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            // Inflate a menu resource providing context menu items
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.actionmenu_editor_edit, menu);
-
-            menu.findItem(R.id.bold).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_bold));
-
-            return true;
-        }
-
-        // Called each time the action mode is shown. Always called after onCreateActionMode, but
-        // may be called multiple times if the mode is invalidated.
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false; // Return false if nothing is done
-        }
-
-        // Called when the user selects a contextual menu item
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.bold:
-                    mEditText.getText().insert(mEditText.getSelectionStart(), "[b]");
-                    mEditText.getText().insert(mEditText.getSelectionEnd(), "[/b]");
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        // Called when the user exits the action mode
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            mEditTitle.requestFocus();
-            mActionMode = null;
-        }
-    };*/
 }

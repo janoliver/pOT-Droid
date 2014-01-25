@@ -15,7 +15,10 @@ import android.webkit.WebView;
 import android.widget.FrameLayout;
 import com.mde.potdroid.EditorActivity;
 import com.mde.potdroid.R;
-import com.mde.potdroid.helpers.*;
+import com.mde.potdroid.helpers.AsyncHttpLoader;
+import com.mde.potdroid.helpers.MessageBuilder;
+import com.mde.potdroid.helpers.Network;
+import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.parsers.MessageParser;
 import com.mde.potdroid.views.IconDrawable;
@@ -33,8 +36,7 @@ import java.util.LinkedList;
  * I know, but LOLANDROID!
  */
 public class MessageFragment extends BaseFragment
-        implements LoaderManager.LoaderCallbacks<Message>
-{
+        implements LoaderManager.LoaderCallbacks<Message> {
 
     // the tags of the fragment arguments
     public static final String ARG_ID = "message_id";
@@ -76,7 +78,7 @@ public class MessageFragment extends BaseFragment
      */
     public void destroyWebView() {
 
-        if(mWebView != null && !mDestroyed) {
+        if (mWebView != null && !mDestroyed) {
 
             mWebView.destroy();
             mWebView = null;
@@ -91,7 +93,7 @@ public class MessageFragment extends BaseFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getActionbar().setTitle(R.string.loading_message);
+        getActionbar().setTitle(R.string.msg_message_loading);
 
         if (mMessage == null)
             startLoader(this);
@@ -118,11 +120,6 @@ public class MessageFragment extends BaseFragment
                 intent.putExtra(EditorFragment.ARG_MODE, EditorFragment.MODE_MESSAGE);
                 intent.putExtra(EditorFragment.ARG_RCPT, mMessage.getFrom().getNick());
 
-                // title with or without Re: prefix
-                String prefix = "";
-                if (!mMessage.getTitle().substring(0, 3).equals("Re:"))
-                    prefix = "Re: ";
-
                 // read in the message string as HTML, so <br> is converted into line
                 // breaks and so on.
                 BufferedReader bufReader = new BufferedReader(new StringReader(
@@ -133,9 +130,8 @@ public class MessageFragment extends BaseFragment
                 String line;
                 StringBuilder content = new StringBuilder();
 
-                String ds = new SimpleDateFormat(getString(R.string.standard_time_format)).format
-                        (mMessage.getDate());
-                String quote_line = "> %1$s \n";
+                String ds = new SimpleDateFormat(getString(R.string.default_time_format)).format(mMessage.getDate());
+                String quote_line = "> %s \n";
                 content.append(String.format(getString(R.string.message_header),
                         mMessage.getFrom().getNick(), ds));
                 try {
@@ -145,7 +141,8 @@ public class MessageFragment extends BaseFragment
                     // this will never occur.
                 }
 
-                intent.putExtra(EditorFragment.ARG_TITLE, prefix + mMessage.getTitle());
+                intent.putExtra(EditorFragment.ARG_TITLE, String.format("%s%s",
+                        mMessage.isReply() ? "Re: " : "", mMessage.getTitle()));
                 intent.putExtra(EditorFragment.ARG_TEXT, content.toString());
 
                 startActivityForResult(intent, EditorFragment.MODE_MESSAGE);
@@ -158,11 +155,11 @@ public class MessageFragment extends BaseFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if( requestCode == EditorFragment.MODE_MESSAGE ) {
-            if(resultCode == Activity.RESULT_OK) {
-                showSuccess(R.string.send_successful);
+        if (requestCode == EditorFragment.MODE_MESSAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                showSuccess(R.string.msg_send_successful);
             } else {
-                showError(R.string.send_failure);
+                showError(R.string.msg_send_failure);
             }
         }
     }
@@ -189,16 +186,13 @@ public class MessageFragment extends BaseFragment
                     mMessage.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);
 
             // generate and set title and subtitle
-            Spanned subtitle = Html.fromHtml(String.format(getString(R.string.message_subtitle),
+            Spanned subtitle = Html.fromHtml(String.format(getString(R.string.subtitle_message),
                     mMessage.isOutgoing() ? "an" : "von", mMessage.getFrom().getNick()));
             getActionbar().setTitle(mMessage.getTitle());
             getActionbar().setSubtitle(subtitle);
 
-            // populate right sidebar
-            //getBaseActivity().getRightSidebarFragment().setIsMessage(mMessage);
-
         } else {
-            showError(getString(R.string.loading_error));
+            showError(getString(R.string.msg_loading_error));
         }
     }
 
@@ -216,11 +210,11 @@ public class MessageFragment extends BaseFragment
 
         // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
         // of some former MessageFragment, which will be restored on onResume. .
-        if(Utils.isKitkat()) {
+        if (Utils.isKitkat()) {
             mWebViewHolder.add(this);
-            if(mWebViewHolder.size() > 3) {
-                MessageFragment fragment =  mWebViewHolder.removeFirst();
-                if(fragment != null)
+            if (mWebViewHolder.size() > 3) {
+                MessageFragment fragment = mWebViewHolder.removeFirst();
+                if (fragment != null)
                     fragment.destroyWebView();
             }
         }
@@ -260,8 +254,7 @@ public class MessageFragment extends BaseFragment
         }
     }
 
-    static class AsyncContentLoader extends AsyncHttpLoader<Message>
-    {
+    static class AsyncContentLoader extends AsyncHttpLoader<Message> {
 
         private Integer mMessageId;
 

@@ -5,8 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by oli on 11/9/13.
  */
-public class MessageList
-{
+public class MessageList {
 
     private static final long serialVersionUID = 10L;
 

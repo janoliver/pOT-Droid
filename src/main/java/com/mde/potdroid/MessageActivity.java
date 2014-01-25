@@ -3,14 +3,12 @@ package com.mde.potdroid;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
 import com.mde.potdroid.fragments.MessageFragment;
 
 /**
  * Activity that displays as MessageFragment showing a PM message
  */
-public class MessageActivity extends BaseActivity
-{
+public class MessageActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

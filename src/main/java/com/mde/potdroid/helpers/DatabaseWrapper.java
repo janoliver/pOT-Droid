@@ -16,8 +16,7 @@ import java.util.Date;
 /**
  * This Class provides convenient access to the Apps SQLite Database.
  */
-public class DatabaseWrapper
-{
+public class DatabaseWrapper {
 
     // Database and table names
     public static final String DATABASE_NAME = "potdroid";
@@ -89,7 +88,7 @@ public class DatabaseWrapper
             for (int i = 0; i < list.size(); ++i) {
                 Board b = list.valueAt(i);
 
-                if(!isFavoriteBoard(b))
+                if (!isFavoriteBoard(b))
                     continue;
 
                 values.clear();
@@ -113,7 +112,7 @@ public class DatabaseWrapper
 
     public void addBoard(Board b) {
 
-        if(isFavoriteBoard(b))
+        if (isFavoriteBoard(b))
             return;
 
         try {
@@ -140,7 +139,7 @@ public class DatabaseWrapper
 
     public void removeBoard(Board b) {
 
-        if(!isFavoriteBoard(b))
+        if (!isFavoriteBoard(b))
             return;
 
         try {
@@ -320,8 +319,7 @@ public class DatabaseWrapper
      * The Helper that creates and opens the SQLite Database. It is stored as a Singleton
      * as suggested by the Android dev docs.
      */
-    public static class BookmarkDatabaseOpenHelper extends SQLiteOpenHelper
-    {
+    public static class BookmarkDatabaseOpenHelper extends SQLiteOpenHelper {
 
         private static final int DATABASE_VERSION = 7;
         private static BookmarkDatabaseOpenHelper mInstance = null;
@@ -383,7 +381,6 @@ public class DatabaseWrapper
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             db.execSQL(BOOKMARKS_TABLE_CREATE);
             db.execSQL(BENDER_TABLE_CREATE);
-            db.execSQL("DROP TABLE boards;");
             db.execSQL(BOARDS_TABLE_CREATE);
         }
     }

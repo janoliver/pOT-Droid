@@ -45,6 +45,7 @@
                 android:textCursorDrawable="@null"/>
 
         <ImageButton
+                android:contentDescription="@string/none"
                 android:id="@+id/button_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

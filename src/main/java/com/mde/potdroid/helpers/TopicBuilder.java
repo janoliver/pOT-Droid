@@ -1,33 +1,22 @@
 package com.mde.potdroid.helpers;
 
 import android.content.Context;
-
 import com.mde.potdroid.R;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.samskivert.mustache.Mustache;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * This class generates the Topic HTML from a Topic object.
  */
-public class TopicBuilder
-{
+public class TopicBuilder {
 
     // context reference
     private Context mContext;
@@ -104,8 +93,7 @@ public class TopicBuilder
     /**
      * A wrapper object for JMoustache, providing some getters for the Topic object
      */
-    class TopicContext
-    {
+    class TopicContext {
 
         private Topic mTopic;
 
@@ -124,8 +112,7 @@ public class TopicBuilder
     /**
      * A wrapper object for JMoustache, providing some getters for the Post object
      */
-    class PostContext
-    {
+    class PostContext {
 
         private Post mPost;
 
@@ -161,7 +148,7 @@ public class TopicBuilder
         }
 
         public String getDate() {
-            return new SimpleDateFormat(mContext.getString(R.string.standard_time_format))
+            return new SimpleDateFormat(mContext.getString(R.string.default_time_format))
                     .format(mPost.getDate());
         }
 
@@ -198,8 +185,7 @@ public class TopicBuilder
         // the tags allowed in links
         String inLinks = "string, b, u, s, i, mod, img, url, list, table, m";
 
-        class SimpleTag extends BBCodeParser.BBCodeTag
-        {
+        class SimpleTag extends BBCodeParser.BBCodeTag {
 
             public SimpleTag(String tag, String name) {
                 super(tag, name);
@@ -218,56 +204,49 @@ public class TopicBuilder
             }
         }
 
-        mParser.registerTag(new SimpleTag("b", "bold")
-        {
+        mParser.registerTag(new SimpleTag("b", "bold") {
             @Override
             public String html(String content, List<String> args) {
                 return String.format("<strong>%1$s</strong>", content);
             }
         });
 
-        mParser.registerTag(new SimpleTag("m", "monotype", "string")
-        {
+        mParser.registerTag(new SimpleTag("m", "monotype", "string") {
             @Override
             public String html(String content, List<String> args) {
                 return String.format("<pre class=\"inline\">%1$s</pre>", content);
             }
         });
 
-        mParser.registerTag(new SimpleTag("u", "underline")
-        {
+        mParser.registerTag(new SimpleTag("u", "underline") {
             @Override
             public String html(String content, List<String> args) {
                 return String.format("<u>%1$s</u>", content);
             }
         });
 
-        mParser.registerTag(new SimpleTag("s", "strike")
-        {
+        mParser.registerTag(new SimpleTag("s", "strike") {
             @Override
             public String html(String content, List<String> args) {
                 return String.format("<span class=\"strike\">%1$s</span>", content);
             }
         });
 
-        mParser.registerTag(new SimpleTag("i", "italic")
-        {
+        mParser.registerTag(new SimpleTag("i", "italic") {
             @Override
             public String html(String content, List<String> args) {
                 return String.format("<em>%1$s</em>", content);
             }
         });
 
-        mParser.registerTag(new SimpleTag("code", "code", "string")
-        {
+        mParser.registerTag(new SimpleTag("code", "code", "string") {
             @Override
             public String html(String content, List<String> args) {
                 return String.format("<span class=\"code\">%1$s</span>", content);
             }
         });
 
-        mParser.registerTag(new SimpleTag("spoiler", "spoiler")
-        {
+        mParser.registerTag(new SimpleTag("spoiler", "spoiler") {
             @Override
             public String html(String content, List<String> args) {
                 return String.format("<div class=\"spoiler\"><i class=\"fa fa-warning\"></i>" +
@@ -275,24 +254,21 @@ public class TopicBuilder
             }
         });
 
-        mParser.registerTag(new SimpleTag("mod", "mod")
-        {
+        mParser.registerTag(new SimpleTag("mod", "mod") {
             @Override
             public String html(String content, List<String> args) {
                 return String.format("<span class=\"mod\">%1$s</span>", content);
             }
         });
 
-        mParser.registerTag(new SimpleTag("trigger", "trigger")
-        {
+        mParser.registerTag(new SimpleTag("trigger", "trigger") {
             @Override
             public String html(String content, List<String> args) {
                 return String.format("<span class=\"trigger\">%1$s</span>", content);
             }
         });
 
-        BBCodeParser.BBCodeTag list = new BBCodeParser.BBCodeTag("list", "list", "*")
-        {
+        BBCodeParser.BBCodeTag list = new BBCodeParser.BBCodeTag("list", "list", "*") {
             @Override
             public String html(String content, List<String> args) {
                 return String.format("<ul>%1$s</ul>", content);
@@ -304,11 +280,10 @@ public class TopicBuilder
         list.setInvalidRecoveryTag("*");
         mParser.registerTag(list);
 
-        BBCodeParser.BBCodeTag item = new BBCodeParser.BBCodeTag("*", "listitem")
-        {
+        BBCodeParser.BBCodeTag item = new BBCodeParser.BBCodeTag("*", "listitem") {
             @Override
             public String html(String content, List<String> args) {
-                if(content.replace("<br />", "").trim().length() == 0)
+                if (content.replace("<br />", "").trim().length() == 0)
                     return "";
                 else
                     return String.format("<li>%1$s</li>", content);
@@ -318,8 +293,7 @@ public class TopicBuilder
         item.setInvalidEndRecovery(BBCodeParser.BBCodeTag.RECOVERY_CLOSE);
         mParser.registerTag(item);
 
-        mParser.registerTag(new BBCodeParser.BBCodeTag("url", "link", inLinks)
-        {
+        mParser.registerTag(new BBCodeParser.BBCodeTag("url", "link", inLinks) {
             @Override
             public String html(String content, List<String> args) {
 
@@ -347,8 +321,7 @@ public class TopicBuilder
             }
         });
 
-        mParser.registerTag(new SimpleTag("quote", "quote")
-        {
+        mParser.registerTag(new SimpleTag("quote", "quote") {
             @Override
             public String html(String content, List<String> args) {
                 if (args.size() == 3)
@@ -360,8 +333,7 @@ public class TopicBuilder
             }
         });
 
-        mParser.registerTag(new SimpleTag("img", "image", "string")
-        {
+        mParser.registerTag(new SimpleTag("img", "image", "string") {
             @Override
             public String html(String content, List<String> args) {
                 String extension = content.substring(content.length() - 3).toLowerCase();
@@ -373,8 +345,7 @@ public class TopicBuilder
             }
         });
 
-        mParser.registerTag(new SimpleTag("tex", "latex", "string")
-        {
+        mParser.registerTag(new SimpleTag("tex", "latex", "string") {
             @Override
             public String html(String content, List<String> args) {
                 String code = content;
@@ -391,8 +362,7 @@ public class TopicBuilder
             }
         });
 
-        BBCodeParser.BBCodeTag table = new BBCodeParser.BBCodeTag("table", "table", "--")
-        {
+        BBCodeParser.BBCodeTag table = new BBCodeParser.BBCodeTag("table", "table", "--") {
             @Override
             public String html(String content, List<String> args) {
                 return String.format("<table>%1$s</table>", content);
@@ -404,8 +374,7 @@ public class TopicBuilder
         table.setInvalidEndRecovery(BBCodeParser.BBCodeTag.RECOVERY_CLOSE);
         mParser.registerTag(table);
 
-        BBCodeParser.BBCodeTag row = new BBCodeParser.BBCodeTag("--", "tablerow", "||")
-        {
+        BBCodeParser.BBCodeTag row = new BBCodeParser.BBCodeTag("--", "tablerow", "||") {
             @Override
             public String html(String content, List<String> args) {
                 return String.format("<tr>%1$s</tr>", content);
@@ -417,8 +386,7 @@ public class TopicBuilder
         row.setInvalidEndRecovery(BBCodeParser.BBCodeTag.RECOVERY_CLOSE);
         mParser.registerTag(row);
 
-        BBCodeParser.BBCodeTag col = new BBCodeParser.BBCodeTag("||", "tablecol")
-        {
+        BBCodeParser.BBCodeTag col = new BBCodeParser.BBCodeTag("||", "tablecol") {
             @Override
             public String html(String content, List<String> args) {
                 return String.format("<td>%1$s</td>", content);

@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:potdroid="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/delete"
-        android:title="@string/remove_bookmark"
-        potdroid:showAsAction="ifRoom"/>
+            android:id="@+id/delete"
+            android:title="@string/action_remove_bookmark"
+            potdroid:showAsAction="ifRoom"/>
 </menu>

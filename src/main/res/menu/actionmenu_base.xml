@@ -4,13 +4,13 @@
 
     <group android:id="@+id/loggedout">
         <item
-            android:id="@+id/preferences"
-            android:title="@string/action_settings"
-            potdroid:showAsAction="always"/>
+                android:id="@+id/preferences"
+                android:title="@string/menu_settings"
+                potdroid:showAsAction="always"/>
         <item
-            android:id="@+id/forumact"
-            android:title="@string/forum_title"
-            potdroid:showAsAction="always"/>
+                android:id="@+id/forumact"
+                android:title="@string/menu_forum"
+                potdroid:showAsAction="always"/>
     </group>
 
 </menu>

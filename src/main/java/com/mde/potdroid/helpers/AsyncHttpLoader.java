@@ -3,10 +3,8 @@ package com.mde.potdroid.helpers;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.content.Loader;
-
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
 import org.apache.http.Header;
 
 import java.io.UnsupportedEncodingException;
@@ -19,8 +17,7 @@ import java.io.UnsupportedEncodingException;
  * <p/>
  * The HTTP Client from the Network class is used, so that headers and cookies are in place.
  */
-public abstract class AsyncHttpLoader<E> extends Loader<E>
-{
+public abstract class AsyncHttpLoader<E> extends Loader<E> {
 
     // request type codes
     public static final Integer GET = 0;
@@ -42,8 +39,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E>
      * This is the respoonse handler of the asynchroneous network call, from the
      * android-async-http library.
      */
-    private AsyncHttpResponseHandler mHandler = new AsyncHttpResponseHandler()
-    {
+    private AsyncHttpResponseHandler mHandler = new AsyncHttpResponseHandler() {
 
         @Override
         public void onProgress(int bytesWritten, int totalSize) {
@@ -108,7 +104,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E>
      * Constructor
      *
      * @param context The application context to use
-     * @param url The request URL WITHOUT the base (forum.mods.de/bb)
+     * @param url     The request URL WITHOUT the base (forum.mods.de/bb)
      */
     public AsyncHttpLoader(Context context, String url) {
         this(context, url, GET, null);
@@ -118,8 +114,8 @@ public abstract class AsyncHttpLoader<E> extends Loader<E>
      * Constructor
      *
      * @param context The application context to use
-     * @param url The request URL WITHOUT the base (forum.mods.de/bb)
-     * @param mode The request mode, GET or POST
+     * @param url     The request URL WITHOUT the base (forum.mods.de/bb)
+     * @param mode    The request mode, GET or POST
      */
     public AsyncHttpLoader(Context context, String url, Integer mode) {
         this(context, url, mode, null);
@@ -129,9 +125,9 @@ public abstract class AsyncHttpLoader<E> extends Loader<E>
      * Constructor
      *
      * @param context The application context to use
-     * @param url The request URL WITHOUT the base (forum.mods.de/bb)
-     * @param mode The request mode, GET or POST
-     * @param params Request params, mostly for POST
+     * @param url     The request URL WITHOUT the base (forum.mods.de/bb)
+     * @param mode    The request mode, GET or POST
+     * @param params  Request params, mostly for POST
      */
     public AsyncHttpLoader(Context context, String url, Integer mode, RequestParams params) {
         this(context, url, mode, params, DEFAULT_ENCODING);
@@ -140,10 +136,10 @@ public abstract class AsyncHttpLoader<E> extends Loader<E>
     /**
      * Constructor
      *
-     * @param context The application context to use
-     * @param url The request URL WITHOUT the base (forum.mods.de/bb)
-     * @param mode The request mode, GET or POST
-     * @param params Request params, mostly for POST
+     * @param context  The application context to use
+     * @param url      The request URL WITHOUT the base (forum.mods.de/bb)
+     * @param mode     The request mode, GET or POST
+     * @param params   Request params, mostly for POST
      * @param encoding Which encoding to use to decode the response
      */
     public AsyncHttpLoader(Context context, String url, Integer mode, RequestParams params,
@@ -260,10 +256,10 @@ public abstract class AsyncHttpLoader<E> extends Loader<E>
     /**
      * Called upon failure of the network Request.
      *
-     * @param statusCode the HTTP status Code
-     * @param headers The header list
+     * @param statusCode   the HTTP status Code
+     * @param headers      The header list
      * @param responseBody The response Body, already decoded
-     * @param error A throwable with the error
+     * @param error        A throwable with the error
      */
     protected void onNetworkFailure(int statusCode, Header[] headers,
                                     String responseBody, Throwable error) {
@@ -285,7 +281,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E>
      * Called upon progress update of the network request.
      *
      * @param bytesWritten The number of bytes written
-     * @param bytesTotal The number of total bytes
+     * @param bytesTotal   The number of total bytes
      */
     protected void onNetworkProgress(int bytesWritten, int bytesTotal) {
     }
@@ -317,8 +313,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E>
     /**
      * This AsyncTask calls the processNetworkResponse in a separate thread.
      */
-    protected class ResponseTask extends AsyncTask<String, Void, E>
-    {
+    protected class ResponseTask extends AsyncTask<String, Void, E> {
 
         protected E doInBackground(String... response) {
             return processNetworkResponse(response[0]);

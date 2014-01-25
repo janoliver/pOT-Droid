@@ -3,7 +3,6 @@ package com.mde.potdroid.helpers;
 import android.content.Context;
 import android.os.Environment;
 import android.text.TextUtils;
-
 import com.loopj.android.http.BinaryHttpResponseHandler;
 import com.mde.potdroid.models.User;
 
@@ -18,8 +17,7 @@ import java.util.Date;
  * This class handles the Bender downloading and storing the User <-> Bender
  * information in the database.
  */
-public class BenderHandler
-{
+public class BenderHandler {
 
     protected static final String BENDER_STORAGE_DIR = "/files/avatars";
 
@@ -52,7 +50,7 @@ public class BenderHandler
      * this is taken (and, if needed, downloaded). If not, we look for the last seen
      * avatar of this user in the Database. If this is not available either, return null.
      *
-     * @param user User object
+     * @param user     User object
      * @param callback Callback
      */
     public void getAvatar(User user, BenderListener callback) {
@@ -91,7 +89,7 @@ public class BenderHandler
      * method of the callback.
      *
      * @param callback The BenderListener callback implementation
-     * @param user the user object
+     * @param user     the user object
      */
     public void downloadBender(final BenderListener callback, final User user) {
         Network network = new Network(mContext);
@@ -107,8 +105,7 @@ public class BenderHandler
 
         // perform the download.
         String[] allowedContentTypes = new String[]{"image/png", "image/jpeg", "image/gif"};
-        network.get(url, null, new BinaryHttpResponseHandler(allowedContentTypes)
-        {
+        network.get(url, null, new BinaryHttpResponseHandler(allowedContentTypes) {
             @Override
             public void onSuccess(byte[] fileData) {
                 try {
@@ -182,8 +179,7 @@ public class BenderHandler
     /**
      * The interface to implement for notification of success or failure of bender downloads.
      */
-    public interface BenderListener
-    {
+    public interface BenderListener {
 
         public abstract void onSuccess(String path);
 

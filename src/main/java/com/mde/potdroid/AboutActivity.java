@@ -1,7 +1,5 @@
 package com.mde.potdroid;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import com.mde.potdroid.fragments.AboutFragment;
 
@@ -9,8 +7,7 @@ import com.mde.potdroid.fragments.AboutFragment;
  * The Activity that contains a AboutFragment. It handles some callbacks of the
  * Formlistener after Post submission.
  */
-public class AboutActivity extends BaseActivity
-{
+public class AboutActivity extends BaseActivity {
 
     private AboutFragment mAboutFragment;
 

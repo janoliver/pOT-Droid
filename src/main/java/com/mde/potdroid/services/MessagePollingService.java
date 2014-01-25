@@ -7,8 +7,7 @@ import android.os.IBinder;
 /**
  * This Service starts and stops the Alarm of the Message polling
  */
-public class MessagePollingService extends Service
-{
+public class MessagePollingService extends Service {
 
     MessagePollingAlarm alarm = new MessagePollingAlarm();
 

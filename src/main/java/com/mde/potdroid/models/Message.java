@@ -5,8 +5,7 @@ import java.util.Date;
 /**
  * Created by oli on 11/9/13.
  */
-public class Message
-{
+public class Message {
 
     private static final long serialVersionUID = 9L;
 
@@ -93,5 +92,8 @@ public class Message
         mSystem = system;
     }
 
+    public boolean isReply() {
+        return getTitle().substring(0, 3).equals("Re:");
+    }
 
 }

@@ -30,8 +30,7 @@ import java.text.SimpleDateFormat;
  * boards as children. The loading of the xml is done via an AsyncTaskLoader which
  * preserves data on configuration changes.
  */
-public class ForumFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Forum>
-{
+public class ForumFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Forum> {
 
     private Forum mForum;
 
@@ -64,8 +63,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
         mListView.setGroupIndicator(null);
         mListView.setAdapter(mListAdapter);
-        mListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener()
-        {
+        mListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
                                         int childPosition, long id) {
 
@@ -83,7 +81,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
         registerForContextMenu(mListView);
 
-        getActionbar().setTitle(R.string.forum_title);
+        getActionbar().setTitle(R.string.title_forum);
 
         return v;
 
@@ -99,7 +97,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        if(item.getGroupId() != R.id.forum)
+        if (item.getGroupId() != R.id.forum)
             return false;
 
         ExpandableListView.ExpandableListContextMenuInfo info =
@@ -114,7 +112,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
                         getBoards().get(mListView.getPackedPositionChild(info.packedPosition));
 
                 db.addBoard(b);
-                showSuccess("Board als Favorit markiert.");
+                showSuccess(R.string.msg_marked_favorite);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -172,7 +170,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
             mForum = data;
             mListAdapter.notifyDataSetChanged();
         } else {
-            showError(getString(R.string.loading_error));
+            showError(getString(R.string.msg_loading_error));
         }
     }
 
@@ -181,8 +179,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
         hideLoadingAnimation();
     }
 
-    public class ForumListAdapter extends BaseExpandableListAdapter
-    {
+    public class ForumListAdapter extends BaseExpandableListAdapter {
 
         public Object getChild(int groupPosition, int childPosition) {
             return mForum.getCategories().get(groupPosition).getBoards().get(childPosition);
@@ -211,7 +208,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
             descr.setText(b.getDescription());
 
             TextView lastpost = (TextView) row.findViewById(R.id.last_post);
-            String time = new SimpleDateFormat(getString(R.string.standard_time_format)).format(b
+            String time = new SimpleDateFormat(getString(R.string.default_time_format)).format(b
                     .getLastPost().getDate());
             Spanned lastpost_text = Html.fromHtml(String.format(
                     getString(R.string.last_post), b.getLastPost().getAuthor().getNick(), time));
@@ -260,8 +257,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
     }
 
-    static class AsyncContentLoader extends AsyncHttpLoader<Forum>
-    {
+    static class AsyncContentLoader extends AsyncHttpLoader<Forum> {
 
         AsyncContentLoader(Context cx) {
             super(cx, ForumParser.URL);
@@ -280,7 +276,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
         @Override
         protected void onNetworkFailure(int statusCode, Header[] headers,
-                         String responseBody, Throwable error) {
+                                        String responseBody, Throwable error) {
 
             Utils.printException(error);
             deliverResult(null);

@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
-
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.mde.potdroid.MessageActivity;
 import com.mde.potdroid.MessageListActivity;
@@ -21,7 +20,6 @@ import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.MessageList;
 import com.mde.potdroid.parsers.MessageListParser;
-
 import org.apache.http.Header;
 
 import java.io.IOException;
@@ -31,8 +29,7 @@ import java.util.ArrayList;
 /**
  * Sets and disables the Alarm that periodically checks for new messages.
  */
-public class MessagePollingAlarm extends BroadcastReceiver
-{
+public class MessagePollingAlarm extends BroadcastReceiver {
 
     public static final int NOTIFICATION_ID = 1337;
 
@@ -40,8 +37,7 @@ public class MessagePollingAlarm extends BroadcastReceiver
     public void onReceive(final Context context, Intent intent) {
 
         Network network = new Network(context);
-        network.get(MessageListParser.INBOX_URL, null, new AsyncHttpResponseHandler()
-        {
+        network.get(MessageListParser.INBOX_URL, null, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String stringResult;
@@ -83,7 +79,7 @@ public class MessagePollingAlarm extends BroadcastReceiver
                 ((BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_launcher))
                         .getBitmap()
         );
-        builder.setContentTitle(String.format(context.getString(R.string.newpm_notification),
+        builder.setContentTitle(String.format(context.getString(R.string.msg_newpm),
                 list.getNumberOfUnreadMessages()));
         builder.setAutoCancel(true);
         builder.setOnlyAlertOnce(true);
@@ -147,7 +143,7 @@ public class MessagePollingAlarm extends BroadcastReceiver
         SettingsWrapper settings = new SettingsWrapper(context);
 
         // return, if polling is disabled
-        if(settings.pollMessagesInterval().equals(0))
+        if (settings.pollMessagesInterval().equals(0))
             return;
 
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

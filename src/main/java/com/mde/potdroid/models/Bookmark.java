@@ -5,8 +5,7 @@ import java.io.Serializable;
 /**
  * The Bookmark model.
  */
-public class Bookmark implements Serializable
-{
+public class Bookmark implements Serializable {
 
     private static final long serialVersionUID = 6L;
     private Integer mId;

@@ -4,7 +4,7 @@
     <group android:id="@+id/forum">
         <item
                 android:id="@+id/add"
-                android:title="@string/add_favorite_board"
+                android:title="@string/action_add_favorite_board"
                 potdroid:showAsAction="ifRoom"/>
     </group>
 </menu>

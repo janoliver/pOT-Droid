@@ -30,8 +30,7 @@ import java.text.SimpleDateFormat;
  * This fragment displays a list of messages below a Tab bar for the inbox/outbox folders.
  */
 public class MessageListFragment extends BaseFragment implements LoaderManager
-        .LoaderCallbacks<MessageList>, OnRefreshListener
-{
+        .LoaderCallbacks<MessageList>, OnRefreshListener {
 
     // the tags of the fragment arguments
     public static final String ARG_MODE = "mode";
@@ -84,8 +83,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
         mListAdapter = new MessageListAdapter();
         ListView mListView = (ListView) v.findViewById(R.id.list_content);
         mListView.setAdapter(mListAdapter);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getBaseActivity(), MessageActivity.class);
                 intent.putExtra(MessageFragment.ARG_ID, mMessageList.getMessages().get(position)
@@ -94,8 +92,8 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
             }
         });
 
-        getActionbar().setTitle(R.string.messages);
-        getActionbar().setSubtitle(mMode.equals(MODE_INBOX) ? R.string.inbox : R.string.outbox);
+        getActionbar().setTitle(R.string.title_messages);
+        getActionbar().setSubtitle(mMode.equals(MODE_INBOX) ? R.string.tab_inbox : R.string.tab_outbox);
 
         return v;
     }
@@ -139,11 +137,11 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if( requestCode == EditorFragment.MODE_MESSAGE ) {
-            if(resultCode == Activity.RESULT_OK) {
-                showSuccess(R.string.send_successful);
+        if (requestCode == EditorFragment.MODE_MESSAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                showSuccess(R.string.msg_send_successful);
             } else {
-                showError(R.string.send_failure);
+                showError(R.string.msg_send_failure);
             }
         }
     }
@@ -164,7 +162,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
 
             getBaseActivity().supportInvalidateOptionsMenu();
         } else {
-            showError(getString(R.string.loading_error));
+            showError(getString(R.string.msg_loading_error));
         }
     }
 
@@ -179,8 +177,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
         restartLoader(this);
     }
 
-    private class MessageListAdapter extends BaseAdapter
-    {
+    private class MessageListAdapter extends BaseAdapter {
 
         public int getCount() {
             if (mMessageList == null)
@@ -205,12 +202,15 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
             title.setText(m.getTitle());
 
             // last post information
-            String author = m.isSystem() ? "System" : m.getFrom().getNick();
+            String author = m.isSystem() ?
+                    getActivity().getString(R.string.pm_author_system) :
+                    m.getFrom().getNick();
 
             TextView description = (TextView) row.findViewById(R.id.pages);
             Spanned content = Html.fromHtml(getString(R.string.message_description,
+                    mMode.equals(MessageList.TAG_INBOX) ? "von" : "an",
                     author, mMode.equals(MessageList.TAG_INBOX) ? "erhalten" : "gesendet",
-                    new SimpleDateFormat(getString(R.string.standard_time_format)).format(m
+                    new SimpleDateFormat(getString(R.string.default_time_format)).format(m
                             .getDate())));
             description.setText(content);
 
@@ -239,8 +239,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
                     bender_img.setVisibility(View.GONE);
                 }
 
-                mBenderHandler.getAvatar(m.getFrom(), new BenderHandler.BenderListener()
-                {
+                mBenderHandler.getAvatar(m.getFrom(), new BenderHandler.BenderListener() {
                     @Override
                     public void onSuccess(String path) {
                         bender_img.setImageURI(Uri.parse(path));
@@ -258,8 +257,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
         }
     }
 
-    static class AsyncContentLoader extends AsyncHttpLoader<MessageList>
-    {
+    static class AsyncContentLoader extends AsyncHttpLoader<MessageList> {
 
         AsyncContentLoader(Context cx, String mode) {
             super(cx, MessageListParser.getUrl(mode), GET, null, Network.ENCODING_ISO);

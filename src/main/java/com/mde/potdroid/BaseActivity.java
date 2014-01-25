@@ -20,8 +20,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 /**
  * The Class all activities should extend. It mainly handles the sidebar(s)
  */
-public class BaseActivity extends ActionBarActivity
-{
+public class BaseActivity extends ActionBarActivity {
 
     protected static final String TAG_SIDEBAR_LEFT = "sidebar-left";
     protected static final String TAG_SIDEBAR_RIGHT = "sidebar-right";
@@ -60,9 +59,10 @@ public class BaseActivity extends ActionBarActivity
         // find our drawerlayout. If it does not exist, we are in large mode.
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
+                R.drawable.ic_drawer, R.string.none, R.string.none) {
 
-            public void onDrawerClosed(View view) {}
+            public void onDrawerClosed(View view) {
+            }
 
             public void onDrawerOpened(View view) {
                 // if the left sidebar is opened, refresh bookmarks
@@ -102,7 +102,7 @@ public class BaseActivity extends ActionBarActivity
                     .add(R.id.sidebar_container_right, mRightSidebar, TAG_SIDEBAR_RIGHT).commit();
         }
 
-        if(Utils.isLoggedIn()) {
+        if (Utils.isLoggedIn()) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         } else {
@@ -111,7 +111,7 @@ public class BaseActivity extends ActionBarActivity
 
         // first start info
         SettingsWrapper settings = new SettingsWrapper(this);
-        if(settings.isVersionUpdate(this)) {
+        if (settings.isVersionUpdate(this)) {
             settings.registerVersion(this);
 
             UpdateInfoDialog d = new UpdateInfoDialog();

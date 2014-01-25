@@ -17,8 +17,7 @@ import java.util.regex.Pattern;
  * Network functionality class. Provides convenience methods for Get and Post
  * requests, login and some URLs.
  */
-public class Network
-{
+public class Network {
 
     // this is the AsyncHttpClient we use for the network interaction
     private AsyncHttpClient mHttpClient = new AsyncHttpClient();
@@ -111,8 +110,7 @@ public class Network
         params.put("login_password", password);
         params.put("login_lifetime", COOKIE_LIFETIME);
 
-        mHttpClient.post(LOGIN_URL, params, new AsyncHttpResponseHandler()
-        {
+        mHttpClient.post(LOGIN_URL, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Pattern pattern = Pattern.compile("http://forum.mods.de/SSO.php\\?UID=([0-9]+)" +
@@ -127,8 +125,7 @@ public class Network
 
                     final PersistentCookieStore cStore = new PersistentCookieStore(mContext);
                     mHttpClient.setCookieStore(cStore);
-                    mHttpClient.get(m.group(0), null, new AsyncHttpResponseHandler()
-                    {
+                    mHttpClient.get(m.group(0), null, new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers,
                                               byte[] responseBody) {
@@ -205,8 +202,7 @@ public class Network
     /**
      * A callback Class for the login function.
      */
-    public interface LoginCallback
-    {
+    public interface LoginCallback {
 
         /**
          * Called on login success

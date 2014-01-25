@@ -14,8 +14,7 @@ import java.io.InputStream;
 /**
  * Class that provides some static helper methods.
  */
-public class Utils
-{
+public class Utils {
 
     // the logcat tag
     public static final String LOG_TAG = "pOT Droid";
@@ -34,7 +33,7 @@ public class Utils
     /**
      * Get a drawable asset file
      *
-     * @param cx the context
+     * @param cx      the context
      * @param strName the filename
      * @return Drawable asset
      * @throws IOException
@@ -50,7 +49,7 @@ public class Utils
     /**
      * Get a drawable Icon from the assets folder
      *
-     * @param cx the context
+     * @param cx      the context
      * @param icon_id the icon id
      * @return Drawable of the icon
      * @throws IOException
@@ -62,7 +61,7 @@ public class Utils
     /**
      * Get a drawable Icon from the assets folder
      *
-     * @param cx the context
+     * @param cx       the context
      * @param filename the icon filename
      * @return Drawable of the icon
      * @throws IOException
@@ -74,7 +73,7 @@ public class Utils
     /**
      * Get a drawable asset file
      *
-     * @param cx the context
+     * @param cx      the context
      * @param strName the filename
      * @return Bitmap asset
      * @throws IOException
@@ -88,7 +87,7 @@ public class Utils
     /**
      * Get a drawable Icon from the assets folder
      *
-     * @param cx the context
+     * @param cx       the context
      * @param filename the icon filename
      * @return Drawable of the icon
      * @throws IOException
@@ -160,10 +159,11 @@ public class Utils
 
     /**
      * Get the static application context
+     *
      * @return the Context
      */
     public static Context getApplicationContext() {
-        if(mContext == null)
+        if (mContext == null)
             throw new NullPointerException("No application context saved.");
         return mContext;
     }
@@ -172,12 +172,11 @@ public class Utils
         e.printStackTrace();
 
         SettingsWrapper s = new SettingsWrapper(getApplicationContext());
-        if(s.isDebug())
+        if (s.isDebug())
             CustomExceptionHandler.writeExceptionToSdCard(e);
     }
 
-    public static class NotLoggedInException extends Exception
-    {
+    public static class NotLoggedInException extends Exception {
 
     }
 }

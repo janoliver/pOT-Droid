@@ -3,7 +3,6 @@ package com.mde.potdroid;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
-
 import com.mde.potdroid.fragments.MessageListFragment;
 import com.mde.potdroid.models.MessageList;
 
@@ -11,8 +10,7 @@ import com.mde.potdroid.models.MessageList;
  * The Container Activity for the MessageList, containing a TabBar for the
  * inbox and outbox folders.
  */
-public class MessageListActivity extends BaseActivity implements ActionBar.TabListener
-{
+public class MessageListActivity extends BaseActivity implements ActionBar.TabListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,11 +20,11 @@ public class MessageListActivity extends BaseActivity implements ActionBar.TabLi
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         actionBar.addTab(
-                actionBar.newTab().setText("Posteingang").setTag(MessageList.TAG_INBOX)
+                actionBar.newTab().setText(R.string.tab_inbox).setTag(MessageList.TAG_INBOX)
                         .setTabListener(this)
         );
         actionBar.addTab(
-                actionBar.newTab().setText("Postausgang").setTag(MessageList.TAG_OUTBOX)
+                actionBar.newTab().setText(R.string.tab_outbox).setTag(MessageList.TAG_OUTBOX)
                         .setTabListener(this)
         );
     }

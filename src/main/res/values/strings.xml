@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">pOT-Droid3</string>
-    <string name="action_settings">Settings</string>
-    <string name="login_success">Erfolgreich eingeloggt! Die App sollte neu gestartet werden.</string>
-    <string name="login_failure">Fehler!</string>
-    <string name="logout_success">Daten gelöscht! Die App sollte neu gestartet werden.</string>
-    <string name="login_dialog_warning">Das Passwort wird NICHT gespeichert! Es wird lediglich ein
-        Cookie erstellt.</string>
-    <string name="login_dialog_username_hint">Username</string>
-    <string name="login_dialog_password_hint">Passwort</string>
+    <!-- Preferences -->
     <string name="pref_state_benders_shown">Bender werden angezeigt.</string>
     <string name="pref_state_benders_notshown">Bender werden nicht angezeigt.</string>
     <string name="pref_state_images_never">Bilder werden nie heruntergeladen.</string>
@@ -20,65 +11,92 @@
     <string name="pref_state_benders_always">Bender werden immer heruntergeladen.</string>
     <string name="pref_state_notloggedin">Nicht eingeloggt!</string>
     <string name="pref_state_loggedin">Eingeloggt als:</string>
-    <string name="subtitle_settings">Settings</string>
     <string name="pref_state_messages_poll">Es wird nach PMs gecheckt.</string>
     <string name="pref_state_messages_nopoll">Es wird nicht nach PMs gecheckt.</string>
     <string name="pref_state_debug_active">Debug modus ist aktiv.</string>
     <string name="pref_state_debug_inactive">Debug modus ist nicht aktiv.</string>
     <string name="pref_state_vibrate_active">Vibration aktiv.</string>
     <string name="pref_state_vibrate_inactive">Vibration nicht aktiv.</string>
-    <string name="icon_selection">Icon auswählen.</string>
-    <string name="paginate_page_indicator"><![CDATA[Seite <strong>%1$d</strong> von <strong>%2$d</strong>]]></string>
-    <string name="topic_additional_information"><![CDATA[<strong>%1$d</strong> Posts, <strong>%2$d</strong> Seiten]]></string>
-    <string name="new_posts_description"><![CDATA[<strong>%1$d</strong> neue Posts, <strong>%2$d</strong> Seiten]]></string>
-    <string name="x_unread_posts"><![CDATA[<strong>%1$d</strong> Ungelesene Bookmarks.]]></string>
-    <string name="standard_time_format">dd.MM.yyyy, HH:mm</string>
-    <string name="loading_error">Fehler beim Laden der Daten.</string>
-    <string name="removed_bookmark">Bookmark entfernt.</string>
-    <string name="write_answer">Antwort verfassen</string>
-    <string name="loading_message">Lade Nachricht</string>
-    <string name="message_subtitle"><![CDATA[%1$s <strong>%2$s</strong>]]></string>
-    <string name="edit_post">Post bearbeiten</string>
-    <string name="write_message">PM verfassen</string>
-    <string name="messages">PM Nachrichten</string>
-    <string name="inbox">Posteingang</string>
-    <string name="outbox">Postausgang</string>
-    <string name="bookmarks">Bookmarks</string>
-    <string name="message_description"><![CDATA[von <strong>%1$s</strong>, %2$s: %3$s]]></string>
-    <string name="message_header">\n\n------------------------\n%1$s schrieb am %2$s:\n</string>
-    <string name="forum_title">Forenübersicht</string>
-    <string name="last_post"><![CDATA[Letzter Beitrag von <strong>%1$s</strong> (%2$s)]]></string>
-    <string name="last_post_sidebar"><![CDATA[von %1$s (%2$s)]]></string>
+
+    <!-- general strings, App related -->
+    <string name="app_name">pOT-Droid3</string>
+    <string name="none"> </string>
+    <string name="pm_author_system">System</string>
+    <string name="default_time_format">dd.MM.yyyy, HH:mm</string>
     <string name="strong"><![CDATA[<strong>%1$s</strong>]]></string>
-    <string name="closed_warning">Vorsicht, Topic geschlossen!</string>
-    <string name="quote">[quote=%1$d,%2$d,"%3$s"][b]\n%4$s\n[/b][/quote]</string>
-    <string name="notyourpost_error">Nicht dein Post!</string>
-    <string name="post_actions">Aktionen</string>
-    <string name="cancel">Abbrechen</string>
-    <string name="error_gingerbread_js">Durch einen Bug in Android 2.3 sind einige Topic Features nicht verfügbar.</string>
-    <string name="newpm_notification">%1$d neue PMs!</string>
-    <string name="send_successful">Erfolgreich gesendet</string>
-    <string name="send_failure">Fehlgeschlagen</string>
-    <string name="drawer_open">Sidebar öffnen</string>
-    <string name="drawer_close">Sidebar schließen</string>
-    <string name="form_text_hint">Text</string>
-    <string name="form_title_hint">Titel</string>
-    <string name="form_rcpt_hint">Empfänger</string>
-    <string name="sidebar_cap_bookmarks">BOOKMARKS</string>
-    <string name="sidebar_cap_boards">BOARDS</string>
-    <string name="no_unread_bookmarks">Keine ungelesenen Bookmarks</string>
-    <string name="remove_bookmark">Bookmark entfernen</string>
-    <string name="refresh">Aktualisieren</string>
+    <string name="update_info">Dies ist eine neue Version von pOT-Droid. Kurze Einführung oder Changelog gefällig?</string>
+    <string name="update_info_about">Über die App</string>
+    <string name="update_info_cancel">Lass mich in Ruhe!</string>
+
+    <!-- actions -->
+    <string name="action_remove_bookmark">Bookmark entfernen</string>
+    <string name="action_refresh">Aktualisieren</string>
     <string name="action_send">Senden</string>
     <string name="action_cancel">Abbrechen</string>
     <string name="action_new_message">Neue Nachricht</string>
     <string name="action_reply">Antworten</string>
+    <string name="action_remove_favorite_board">Board entfernen</string>
+    <string name="action_add_favorite_board">Board als Favorit hinzufügen</string>
+
+    <!-- messages -->
+    <string name="msg_login_success">Erfolgreich eingeloggt! Die App sollte neu gestartet werden.</string>
+    <string name="msg_login_failure">Fehler!</string>
+    <string name="msg_logout_success">Daten gelöscht! Die App sollte neu gestartet werden.</string>
+    <string name="msg_login_dialog_warning">Das Passwort wird NICHT gespeichert! Es wird lediglich ein Cookie erstellt.</string>
+    <string name="msg_loading_error">Fehler beim Laden der Daten.</string>
+    <string name="msg_bookmark_removed">Bookmark entfernt.</string>
+    <string name="msg_bookmark_added">Bookmark hinzugefügt.</string>
+    <string name="msg_message_loading">Lade Nachricht</string>
+    <string name="msg_topic_closed">Vorsicht, Topic geschlossen!</string>
+    <string name="msg_post_notyours">Nicht dein Post!</string>
+    <string name="msg_send_successful">Erfolgreich gesendet</string>
+    <string name="msg_send_failure">Fehlgeschlagen</string>
+    <string name="msg_error_gb">Durch einen Bug in Android 2.3 sind einige Topic Features nicht verfügbar.</string>
+    <string name="msg_remove_success">Erfolgreich entfernt.</string>
+    <string name="msg_newpm">%1$d neue PMs!</string>
+    <string name="msg_marked_favorite">Board als Favorit markiert.</string>
+    <string name="msg_answer_created">Antwort erstellt!</string>
+    <string name="msg_post_edited">Post bearbeitet!</string>
+
+    <!-- menu items -->
+    <string name="menu_settings">Settings</string>
+    <string name="menu_forum">Forenübersicht</string>
+
+    <!-- titles and subtitles -->
+    <string name="subtitle_settings">Settings</string>
+    <string name="subtitle_message"><![CDATA[%1$s <strong>%2$s</strong>]]></string>
+    <string name="subtitle_paginate"><![CDATA[Seite <strong>%1$d</strong> von <strong>%2$d</strong>]]></string>
+    <string name="subtitle_bookmarks"><![CDATA[<strong>%1$d</strong> Ungelesene Bookmarks.]]></string>
+    <string name="subtitle_form_write_post">Antwort verfassen</string>
+    <string name="subtitle_form_edit_post">Post bearbeiten</string>
+    <string name="subtitle_form_write_pm">Nachricht verfassen</string>
+    <string name="title_messages">PM Nachrichten</string>
+    <string name="tab_inbox">Posteingang</string>
+    <string name="tab_outbox">Postausgang</string>
+    <string name="title_bookmarks">Bookmarks</string>
+    <string name="title_forum">Forenübersicht</string>
+    <string name="dialog_post_actions">Aktionen</string>
+
+    <!-- forms -->
+    <string name="dialog_username_hint">Username</string>
+    <string name="dialog_password_hint">Passwort</string>
+    <string name="dialog_icon_selection">Icon auswählen.</string>
+    <string name="form_text_hint">Text</string>
+    <string name="form_title_hint">Titel</string>
+    <string name="form_rcpt_hint">Empfänger</string>
+
+    <!-- vies -->
+    <string name="topic_additional_information"><![CDATA[<strong>%1$d</strong> Posts, <strong>%2$d</strong> Seiten]]></string>
+    <string name="new_posts_description"><![CDATA[<strong>%1$d</strong> neue Posts, <strong>%2$d</strong> Seiten]]></string>
+    <string name="message_description"><![CDATA[%1$s <strong>%2$s</strong>, %3$s: %4$s]]></string>
+    <string name="message_header">\n\n------------------------\n%1$s schrieb am %2$s:\n</string>
+    <string name="last_post"><![CDATA[Letzter Beitrag von <strong>%1$s</strong> (%2$s)]]></string>
+    <string name="last_post_sidebar"><![CDATA[von %1$s (%2$s)]]></string>
+    <string name="quote">[quote=%1$d,%2$d,"%3$s"][b]\n%4$s\n[/b][/quote]</string>
+    <string name="sidebar_cap_bookmarks">BOOKMARKS</string>
+    <string name="sidebar_cap_boards">BOARDS</string>
+    <string name="no_unread_bookmarks">Keine ungelesenen Bookmarks</string>
     <string name="no_favorite_boards">Keine Favoriten</string>
-    <string name="remove_success">Erfolgreich entfernt.</string>
-    <string name="remove_favorite_board">Board entfernen</string>
-    <string name="add_favorite_board">Board als Favorit hinzufügen</string>
-    <string name="update_info">Dies ist eine neue Version von pOT-Droid. Kurze Einführung oder Changelog gefällig?</string>
-    <string name="update_info_about">Über die App</string>
-    <string name="update_info_cancel">Lass mich in Ruhe!</string>
     <string name="thread_author"><![CDATA[von <strong>%1$s</strong>]]></string>
+
 </resources>

@@ -1,15 +1,12 @@
 package com.mde.potdroid;
 
 import android.os.Bundle;
-
 import com.mde.potdroid.fragments.BookmarkFragment;
-import com.mde.potdroid.fragments.TopicFragment;
 
 /**
  * The Container activity for the bookmark list.
  */
-public class BookmarkActivity extends BaseActivity
-{
+public class BookmarkActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

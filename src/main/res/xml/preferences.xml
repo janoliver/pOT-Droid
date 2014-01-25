@@ -83,6 +83,13 @@
             android:title="Debug Modus"
             android:defaultValue="true"/>
 
+        <PreferenceScreen
+                android:key="pref_about"
+                android:title="Über die App"
+                android:summary="Changelog, Infos, uvm.">
+            <intent android:action=".AboutActivity" />
+        </PreferenceScreen>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

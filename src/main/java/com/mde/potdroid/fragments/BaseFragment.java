@@ -11,8 +11,10 @@ import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.ForumActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.SettingsActivity;
+import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.views.IconDrawable;
+import com.mde.potdroid.views.UpdateInfoDialog;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
@@ -57,8 +59,8 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
                     .allChildrenArePullable()
                     .listener(this)
                     .setup(mPullToRefreshLayout);
-
         }
+
     }
 
     /**

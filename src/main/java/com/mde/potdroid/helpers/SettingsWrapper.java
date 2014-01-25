@@ -2,6 +2,7 @@ package com.mde.potdroid.helpers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -291,5 +292,34 @@ public class SettingsWrapper
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(PREF_KEY_UAGENT, uAgent);
         editor.commit();
+    }
+
+    /**
+     * Return true, if there was an app update
+     * @param cx Context
+     * @return update status
+     */
+    public boolean isVersionUpdate(Context cx) {
+        try {
+            int versionCode = cx.getPackageManager().getPackageInfo(cx.getPackageName(), 0).versionCode;
+            return mSharedPreferences.getInt("installed_version", 0) < versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            return true;
+        }
+    }
+
+    /**
+     * Save the currently installed app version to the settings
+     * @param cx Context
+     */
+    public void registerVersion(Context cx) {
+        try {
+            int versionCode = cx.getPackageManager().getPackageInfo(cx.getPackageName(), 0).versionCode;
+            SharedPreferences.Editor editor = mSharedPreferences.edit();
+            editor.putInt("installed_version", versionCode);
+            editor.commit();
+        } catch (PackageManager.NameNotFoundException e) {
+            // shouldn't happen
+        }
     }
 }

@@ -14,6 +14,7 @@ import com.mde.potdroid.fragments.SidebarRightFragment;
 import com.mde.potdroid.helpers.CustomExceptionHandler;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
+import com.mde.potdroid.views.UpdateInfoDialog;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 /**
@@ -107,6 +108,15 @@ public class BaseActivity extends ActionBarActivity
         if(Utils.isLoggedIn()) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
+        }
+
+        // first start info
+        SettingsWrapper settings = new SettingsWrapper(this);
+        if(settings.isVersionUpdate(this)) {
+            settings.registerVersion(this);
+
+            UpdateInfoDialog d = new UpdateInfoDialog();
+            d.show(getSupportFragmentManager(), "update_dialog");
         }
     }
 

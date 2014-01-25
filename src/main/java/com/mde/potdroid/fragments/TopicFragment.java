@@ -84,26 +84,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getBaseActivity().enableLeftSidebar();
-        getBaseActivity().enableRightSidebar();
-        /*getBaseActivity().getRightSidebarFragment().setFormListener(new FormFragment.FormListener()
-        {
-            @Override
-            public void onSuccess(Bundle result) {
-                getBaseActivity().closeRightSidebar();
-
-                if (result.getInt("mode") == FormFragment.MODE_EDIT)
-                    refreshPage();
-                else
-                    goToLastPost(result.getInt("post_id"));
-            }
-
-            @Override
-            public void onFailure(Bundle result) {
-                showError(R.string.send_failure);
-            }
-        });*/
-
         if (mTopic == null)
             startLoader(this);
     }

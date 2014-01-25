@@ -43,14 +43,6 @@ public class AboutFragment extends BaseFragment {
         return v;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        getBaseActivity().enableLeftSidebar();
-        getBaseActivity().enableRightSidebar();
-    }
-
     public String getAboutHtml() throws IOException {
         InputStream is = getActivity().getResources().getAssets().open("about.html");
         Reader reader = new InputStreamReader(is);

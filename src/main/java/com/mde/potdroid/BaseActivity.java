@@ -102,12 +102,11 @@ public class BaseActivity extends ActionBarActivity
                     .add(R.id.sidebar_container_right, mRightSidebar, TAG_SIDEBAR_RIGHT).commit();
         }
 
-        // disable the left sidebar first. It will be enabled, if the user is logged in.
-        disableLeftSidebar();
-
         if(Utils.isLoggedIn()) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
+        } else {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT);
         }
 
         // first start info
@@ -150,45 +149,12 @@ public class BaseActivity extends ActionBarActivity
         Crouton.clearCroutonsForActivity(this);
     }
 
-    public void closeRightSidebar() {
-        mDrawerLayout.closeDrawer(Gravity.RIGHT);
-    }
-
-    public void closeLeftSidebar() {
-        mDrawerLayout.closeDrawer(Gravity.RIGHT);
-    }
-
-    public void enableLeftSidebar() {
-        if (Utils.isLoggedIn())
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.LEFT);
-    }
-
-    public void enableRightSidebar() {
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.RIGHT);
-    }
-
-    public void disableLeftSidebar() {
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT);
-    }
-
-    public void disableRightSidebar() {
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
-    }
-
     public SidebarRightFragment getRightSidebarFragment() {
         return mRightSidebar;
     }
 
     public SidebarLeftFragment getLeftSidebarFragment() {
         return mLeftSidebar;
-    }
-
-    public void openLeftSidebar() {
-        mDrawerLayout.openDrawer(Gravity.RIGHT);
-    }
-
-    public void openRightSidebar() {
-        mDrawerLayout.openDrawer(Gravity.RIGHT);
     }
 
 }

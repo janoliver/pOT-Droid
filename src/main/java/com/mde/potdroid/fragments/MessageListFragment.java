@@ -104,9 +104,6 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getBaseActivity().enableLeftSidebar();
-        getBaseActivity().enableRightSidebar();
-
         mBenderHandler = new BenderHandler(getBaseActivity());
 
         if (mMessageList == null)

@@ -91,7 +91,6 @@ public class MessageFragment extends BaseFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getBaseActivity().enableLeftSidebar();
         getActionbar().setTitle(R.string.loading_message);
 
         if (mMessage == null)
@@ -251,16 +250,6 @@ public class MessageFragment extends BaseFragment
         mWebView.loadData("", "text/html", "utf-8");
         mWebView.setBackgroundColor(0x00000000);
 
-        MessageJSInterface mJsInterface = new MessageJSInterface(mWebView, getBaseActivity(), this);
-
-        // 2.3 has a bug that prevents adding JS interfaces.
-        // see here: http://code.google.com/p/android/issues/detail?id=12987
-        if (!Utils.isGingerbread()) {
-            mWebView.addJavascriptInterface(mJsInterface, "api");
-        } else {
-            showInfo(R.string.error_gingerbread_js);
-        }
-
         mWebContainer.addView(mWebView);
 
         if (mMessage != null) {
@@ -269,13 +258,6 @@ public class MessageFragment extends BaseFragment
         } else {
             mWebView.loadData("", "text/html", Network.ENCODING_UTF8);
         }
-    }
-
-    /**
-     * Open the form for reply
-     */
-    public void replyPost() {
-        getBaseActivity().openRightSidebar();
     }
 
     static class AsyncContentLoader extends AsyncHttpLoader<Message>

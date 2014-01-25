@@ -125,8 +125,6 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getBaseActivity().enableLeftSidebar();
-
         if (mForum == null)
             startLoader(this);
     }

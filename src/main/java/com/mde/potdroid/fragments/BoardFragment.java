@@ -106,8 +106,6 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getBaseActivity().enableLeftSidebar();
-
         if (mBoard == null)
             startLoader(this);
     }

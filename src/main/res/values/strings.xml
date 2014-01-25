@@ -37,6 +37,9 @@
     <string name="action_reply">Antworten</string>
     <string name="action_remove_favorite_board">Board entfernen</string>
     <string name="action_add_favorite_board">Board als Favorit hinzufügen</string>
+    <string name="action_unveil">Posts sichtbar machen</string>
+    <string name="action_last_own_post">Zum letzten eigenen Post</string>
+    <string name="action_load_all_images">Alle Bilder laden</string>
 
     <!-- messages -->
     <string name="msg_login_success">Erfolgreich eingeloggt! Die App sollte neu gestartet werden.</string>

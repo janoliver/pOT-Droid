@@ -31,23 +31,7 @@ $(document).ready(function() {
     // the visible position is not changed
     // also, we don't really need to see the pictures above.
     if(api.isLoadImages()) {
-        var all = [];
-        if(api.getScroll() > 0) {
-            var self = $('a[name="' + api.getScroll() + '"]').parent().find('div.img i, div.img-link i.img');
-            var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.img i, div.img-link i.img');
-            all = $.merge(self, after);
-        } else {
-            all = $('div.img i, div.img-link i.img');
-        }
-        all.each(function() {
-            var href = $(this).parent().attr("data-href");
-            if(typeof href === "undefined") {
-                replaceImage($(this), "");
-            } else {
-                replaceImage($(this), href);
-            }
-
-        });
+        loadAllImages();
     }
 
     // manual image loader
@@ -167,4 +151,40 @@ function replaceImage(icon, link_target) {
 function loadBender(user_id, path) {
     var el = $("section[data-user-id='"+user_id+"']");
     el.find("div.bender").css("background-image","url("+path+")");
+}
+
+// unveil dimmed posts
+function unveil() {
+    $("*").css({ opacity: 1.0 });
+    window.scrollTo(0,0);
+}
+
+// scroll to the last post of UID uid
+function scrollToLastPostByUID(uid) {
+    var href = $("section[data-user-id="+uid+"]").last().find("a").first().attr("name");
+    if(typeof href === "undefined")
+        api.error("Kein Post auf dieser Seite");
+    else
+        document.location.href = "#" + href;
+}
+
+// load all images
+function loadAllImages() {
+    var all = [];
+    if(api.getScroll() > 0) {
+        var self = $('a[name="' + api.getScroll() + '"]').parent().find('div.img i, div.img-link i.img');
+        var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.img i, div.img-link i.img');
+        all = $.merge(self, after);
+    } else {
+        all = $('div.img i, div.img-link i.img');
+    }
+    all.each(function() {
+        var href = $(this).parent().attr("data-href");
+        if(typeof href === "undefined") {
+            replaceImage($(this), "");
+        } else {
+            replaceImage($(this), href);
+        }
+
+    });
 }

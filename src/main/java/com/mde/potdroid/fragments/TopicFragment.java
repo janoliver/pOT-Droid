@@ -115,8 +115,16 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
         inflater.inflate(R.menu.actionmenu_topic, menu);
 
-        MenuItem newMessage = menu.findItem(R.id.new_message);
-        newMessage.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
+        menu.findItem(R.id.new_message).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
+        menu.findItem(R.id.load_images).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_picture));
+        menu.findItem(R.id.unveil).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_eye_open));
+        menu.findItem(R.id.last_own_post).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_search));
+
+        if (!Utils.isLoggedIn()) {
+            menu.setGroupVisible(R.id.loggedout_topic, false);
+        } else {
+            menu.setGroupVisible(R.id.loggedout_topic, true);
+        }
     }
 
     @Override
@@ -126,6 +134,15 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         switch (item.getItemId()) {
             case R.id.new_message:
                 replyPost();
+                return true;
+            case R.id.unveil:
+                mJsInterface.unveil();
+                return true;
+            case R.id.last_own_post:
+                mJsInterface.scrollToLastOwnPost();
+                return true;
+            case R.id.load_images:
+                mJsInterface.loadAllImages();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -219,9 +236,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
             // Refresh the bookmarks after the topic loaded
             getBaseActivity().getLeftSidebarFragment().refreshBookmarks();
-
-            // populate the form in the right sidebar
-            //getBaseActivity().getRightSidebarFragment().setIsNewPost(mTopic);
 
             // update html
             mWebView.loadDataWithBaseURL("file:///android_asset/",

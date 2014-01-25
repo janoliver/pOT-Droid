@@ -5,4 +5,18 @@
             android:id="@+id/new_message"
             android:title="@string/action_reply"
             potdroid:showAsAction="always"/>
+    <item
+            android:id="@+id/unveil"
+            android:title="@string/action_unveil"
+            potdroid:showAsAction="never"/>
+    <group android:id="@+id/loggedout_topic">
+        <item
+                android:id="@+id/last_own_post"
+                android:title="@string/action_last_own_post"
+                potdroid:showAsAction="never"/>
+    </group>
+    <item
+            android:id="@+id/load_images"
+            android:title="@string/action_load_all_images"
+            potdroid:showAsAction="never"/>
 </menu>

@@ -37,6 +37,48 @@ public class TopicJSInterface extends BenderJSInterface {
     }
 
     /**
+     * Show an error
+     *
+     * @param msg the message to display
+     */
+    @JavascriptInterface
+    public void error(final String msg) {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                mTopicFragment.showError(msg);
+            }
+        });
+    }
+
+    /**
+     * Show a success message
+     *
+     * @param msg the message to display
+     */
+    @JavascriptInterface
+    public void success(final String msg) {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                mTopicFragment.showSuccess(msg);
+            }
+        });
+    }
+
+    /**
+     * Show an information
+     *
+     * @param msg the message to display
+     */
+    @JavascriptInterface
+    public void info(final String msg) {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                mTopicFragment.showInfo(msg);
+            }
+        });
+    }
+
+    /**
      * Get the last or currently visible post id
      *
      * @return post id
@@ -238,6 +280,32 @@ public class TopicJSInterface extends BenderJSInterface {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         mActivity.startActivity(i);
+    }
+
+    public void unveil() {
+        mActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                mWebView.loadUrl("javascript:unveil();");
+            }
+        });
+    }
+
+    public void scrollToLastOwnPost() {
+        if(mSettings.hasUsername() && mSettings.getUserId() > 0)
+            mActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                    mWebView.loadUrl(String.format("javascript:scrollToLastPostByUID(%d);",
+                            mSettings.getUserId()));
+                }
+            });
+    }
+
+    public void loadAllImages() {
+        mActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                mWebView.loadUrl("javascript:loadAllImages();");
+        }
+            });
     }
 
 }

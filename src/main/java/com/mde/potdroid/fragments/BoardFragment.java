@@ -16,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.mde.potdroid.R;
 import com.mde.potdroid.TopicActivity;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
@@ -28,7 +27,6 @@ import com.mde.potdroid.parsers.BoardParser;
 import org.apache.http.Header;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 
 /**
  * The Board Fragment, which contains a list of Topics.
@@ -265,11 +263,10 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                     t.getNumberOfPosts(), t.getNumberOfPages()));
             pages.setText(pages_content);
 
-            // date
-            TextView date = (TextView) row.findViewById(R.id.date);
-            String ds = new SimpleDateFormat(getString(R.string.standard_time_format))
-                    .format(t.getFirstPost().getDate());
-            date.setText(ds);
+            // author
+            TextView author = (TextView) row.findViewById(R.id.author);
+            author.setText(Html.fromHtml(String.format(
+                    getString(R.string.thread_author), t.getFirstPost().getAuthor().getNick())));
 
             // icon
             if (t.getIconId() != null) {

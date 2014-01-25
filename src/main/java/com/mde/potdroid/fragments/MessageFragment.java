@@ -15,10 +15,7 @@ import android.webkit.WebView;
 import android.widget.FrameLayout;
 import com.mde.potdroid.EditorActivity;
 import com.mde.potdroid.R;
-import com.mde.potdroid.helpers.AsyncHttpLoader;
-import com.mde.potdroid.helpers.MessageBuilder;
-import com.mde.potdroid.helpers.Network;
-import com.mde.potdroid.helpers.Utils;
+import com.mde.potdroid.helpers.*;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.parsers.MessageParser;
 import com.mde.potdroid.views.IconDrawable;
@@ -243,6 +240,16 @@ public class MessageFragment extends BaseFragment
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.loadData("", "text/html", "utf-8");
         mWebView.setBackgroundColor(0x00000000);
+
+        BenderJSInterface mJsInterface = new BenderJSInterface(mWebView, getBaseActivity());
+
+        // 2.3 has a bug that prevents adding JS interfaces.
+        // see here: http://code.google.com/p/android/issues/detail?id=12987
+        if (!Utils.isGingerbread()) {
+            mWebView.addJavascriptInterface(mJsInterface, "api");
+        } else {
+            showInfo(R.string.msg_error_gb);
+        }
 
         mWebContainer.addView(mWebView);
 

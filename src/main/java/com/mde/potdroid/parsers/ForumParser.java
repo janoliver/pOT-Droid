@@ -177,6 +177,7 @@ public class ForumParser extends DefaultHandler {
         try {
             Xml.parse(input, categories.getContentHandler());
         } catch (SAXException e) {
+            Utils.printException(e);
             return null;
         }
         return mForum;

@@ -122,6 +122,7 @@ public class BoardParser extends DefaultHandler {
             public void start(Attributes attributes) {
                 mCurrentThread = new Topic(Integer.parseInt(attributes.getValue(TopicParser
                         .ID_ATTRIBUTE)));
+                mCurrentThread.setNumberOfPages(1);
                 mCurrentThread.setBoard(mBoard);
             }
         });
@@ -155,7 +156,7 @@ public class BoardParser extends DefaultHandler {
                         .NUMBER_OF_REPLIES_ATTRIBUTE)));
             }
         });
-        thread.requireChild(TopicParser.NUMBER_OF_PAGES_TAG).setStartElementListener(new StartElementListener() {
+        thread.getChild(TopicParser.NUMBER_OF_PAGES_TAG).setStartElementListener(new StartElementListener() {
 
             @Override
             public void start(Attributes attributes) {
@@ -261,6 +262,7 @@ public class BoardParser extends DefaultHandler {
         try {
             Xml.parse(input, board.getContentHandler());
         } catch (SAXException e) {
+            Utils.printException(e);
             return null;
         }
 

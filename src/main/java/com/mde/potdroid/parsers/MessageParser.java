@@ -1,5 +1,6 @@
 package com.mde.potdroid.parsers;
 
+import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.User;
 
@@ -52,6 +53,7 @@ public class MessageParser {
                 DateFormat df = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.ENGLISH);
                 mMessage.setDate(df.parse(m.group(5)));
             } catch (ParseException e) {
+                Utils.printException(e);
             }
 
             return mMessage;

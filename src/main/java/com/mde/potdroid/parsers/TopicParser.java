@@ -363,6 +363,7 @@ public class TopicParser extends DefaultHandler {
         try {
             Xml.parse(input, thread.getContentHandler());
         } catch (SAXException e) {
+            Utils.printException(e);
             return null;
         }
 

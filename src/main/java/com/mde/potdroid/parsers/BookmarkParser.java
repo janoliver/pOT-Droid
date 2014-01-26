@@ -2,6 +2,7 @@ package com.mde.potdroid.parsers;
 
 import android.sax.*;
 import android.util.Xml;
+import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.Post;
@@ -124,6 +125,7 @@ public class BookmarkParser extends DefaultHandler {
         try {
             Xml.parse(input, bookmarks.getContentHandler());
         } catch (SAXException e) {
+            Utils.printException(e);
             return null;
         }
 

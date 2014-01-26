@@ -227,11 +227,11 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         public int getCount() {
             if (mBoard == null)
                 return 0;
-            return mBoard.getTopics().size();
+            return mBoard.getFilteredTopics(getActivity()).size();
         }
 
         public Object getItem(int position) {
-            return mBoard.getTopics().get(position);
+            return mBoard.getFilteredTopics(getActivity()).get(position);
         }
 
         public long getItemId(int position) {

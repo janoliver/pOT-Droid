@@ -27,6 +27,12 @@
             android:key="pref_style_settings">
 
         <CheckBoxPreference
+                android:key="pref_hide_global"
+                android:title="Globale Threads ausblenden"
+                android:summary="Blendet Threads und Ankündigungen aus, die global oder wichtig."
+                android:defaultValue="false"/>
+
+        <CheckBoxPreference
                 android:key="pref_show_postinfo"
                 android:title="Post-Titel und Zeit anzeigen"
                 android:defaultValue="true"/>

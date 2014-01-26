@@ -1,5 +1,8 @@
 package com.mde.potdroid.models;
 
+import android.content.Context;
+import com.mde.potdroid.helpers.SettingsWrapper;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -109,6 +112,20 @@ public class Board implements Serializable {
 
     public ArrayList<Topic> getTopics() {
         return mTopics;
+    }
+
+    public ArrayList<Topic> getFilteredTopics(Context cx) {
+        SettingsWrapper s = new SettingsWrapper(cx);
+        if(!s.hideGlobalTopics())
+            return mTopics;
+
+        ArrayList<Topic> t = new ArrayList<Topic>();
+
+        for(Topic topic: mTopics) {
+            if(!topic.isAnnouncement() && !topic.isGlobal() && !topic.isImportant())
+                t.add(topic);
+        }
+        return t;
     }
 
     public void setTopics(ArrayList<Topic> topics) {

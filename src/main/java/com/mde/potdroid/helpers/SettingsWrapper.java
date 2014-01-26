@@ -38,6 +38,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_NOTIFICATION_SOUND = "pref_notification_sound";
     public static final String PREF_KEY_POSTINFO = "pref_show_postinfo";
     public static final String PREF_KEY_DARKEN = "pref_darken_old_posts";
+    public static final String PREF_KEY_HIDE_GLOBAL = "pref_hide_global";
 
     // some references
     private SharedPreferences mSharedPreferences;
@@ -137,6 +138,15 @@ public class SettingsWrapper {
      */
     public Boolean showPostInfo() {
         return mSharedPreferences.getBoolean(PREF_KEY_POSTINFO, true);
+    }
+
+    /**
+     * Check if global threads should be hidden
+     *
+     * @return true if so
+     */
+    public Boolean hideGlobalTopics() {
+        return mSharedPreferences.getBoolean(PREF_KEY_HIDE_GLOBAL, false);
     }
 
     /**

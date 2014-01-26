@@ -2,6 +2,10 @@
 
 ## Version 3
 
+### Changelog 3.0.2
+
+  * Bugfix
+
 ### Changelog 3.0.1
 
   * Startactivity wieder konfigurierbar

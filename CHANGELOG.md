@@ -2,7 +2,12 @@
 
 ## Version 3
 
-### Changelog 3.1a
+### Changelog 3.0.1
+
+  * Startactivity wieder konfigurierbar
+  * diverse neue Settings
+
+### Changelog 3.0.0
 
   * Komplett neu geschrieben
   * Fragment basiert

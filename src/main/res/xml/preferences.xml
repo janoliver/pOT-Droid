@@ -104,8 +104,8 @@
 
         <ListPreference
                 android:title="Startforum"
-                android:summary="Nur wichtig, falls 'Startseite' auf 'Forum' steht"
-                android:key="startForum"
+                android:summary="Nur wichtig, falls 'Startscreen' auf 'Forum' steht"
+                android:key="pref_start_forum"
                 android:defaultValue="14"
                 android:entries="@array/pref_start_forum"
                 android:entryValues="@array/pref_start_forum_values"/>

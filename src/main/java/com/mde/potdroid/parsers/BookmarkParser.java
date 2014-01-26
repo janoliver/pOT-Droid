@@ -59,7 +59,7 @@ public class BookmarkParser extends DefaultHandler {
             @Override
             public void start(Attributes attributes) {
                 container.setNumberOfNewPosts(Integer.parseInt(attributes.getValue
-                        (BOOKMARKS_ATTRIBUTE_COUNT)));
+                        (BOOKMARKS_ATTRIBUTE_NEW)));
             }
         });
 

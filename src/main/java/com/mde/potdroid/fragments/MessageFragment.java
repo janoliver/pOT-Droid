@@ -243,13 +243,7 @@ public class MessageFragment extends BaseFragment
 
         BenderJSInterface mJsInterface = new BenderJSInterface(mWebView, getBaseActivity());
 
-        // 2.3 has a bug that prevents adding JS interfaces.
-        // see here: http://code.google.com/p/android/issues/detail?id=12987
-        if (!Utils.isGingerbread()) {
-            mWebView.addJavascriptInterface(mJsInterface, "api");
-        } else {
-            showInfo(R.string.msg_error_gb);
-        }
+        mWebView.addJavascriptInterface(mJsInterface, "api");
 
         mWebContainer.addView(mWebView);
 

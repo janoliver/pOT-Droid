@@ -13,7 +13,7 @@
             android:id="@+id/button_edit"
             android:background="@drawable/transparent_button_background"
             android:textSize="28sp"
-            android:color="@color/white"
+            android:textColor="@color/white"
             android:layout_weight="1"/>
 
     <com.mde.potdroid.views.IconButton
@@ -23,7 +23,7 @@
             android:id="@+id/button_quote"
             android:background="@drawable/transparent_button_background"
             android:textSize="28sp"
-            android:color="@color/white"
+            android:textColor="@color/white"
             android:layout_weight="1"/>
 
     <com.mde.potdroid.views.IconButton
@@ -33,7 +33,7 @@
             android:id="@+id/button_bookmark"
             android:background="@drawable/transparent_button_background"
             android:textSize="28sp"
-            android:color="@color/white"
+            android:textColor="@color/white"
             android:layout_weight="1"/>
 
     <com.mde.potdroid.views.IconButton
@@ -43,6 +43,6 @@
             android:id="@+id/button_link"
             android:background="@drawable/transparent_button_background"
             android:textSize="28sp"
-            android:color="@color/white"
+            android:textColor="@color/white"
             android:layout_weight="1"/>
 </LinearLayout>

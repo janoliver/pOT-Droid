@@ -81,6 +81,7 @@ public class SidebarLeftFragment extends BaseFragment
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseActivity(), ForumActivity.class);
+                intent.putExtra("overview", true);
                 startActivity(intent);
             }
         });

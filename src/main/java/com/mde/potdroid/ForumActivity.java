@@ -21,12 +21,13 @@ public class ForumActivity extends BaseActivity {
         String tag;
 
         SettingsWrapper s = new SettingsWrapper(this);
-        if(s.getStartActivity() == SettingsWrapper.START_FORUM) {
+        if(!getIntent().hasExtra("overview") && s.getStartActivity() == SettingsWrapper.START_FORUM) {
             tag = "board";
             bm = getSupportFragmentManager().findFragmentByTag(tag);
             if (bm == null)
                 bm = BoardFragment.newInstance(s.getStartForum(), 1);
-        } else if(s.getStartActivity() == SettingsWrapper.START_BOOKMARKS && Utils.isLoggedIn()) {
+        } else if(!getIntent().hasExtra("overview") &&
+                s.getStartActivity() == SettingsWrapper.START_BOOKMARKS && Utils.isLoggedIn()) {
             tag = "bookmarks";
             bm = getSupportFragmentManager().findFragmentByTag(tag);
             if (bm == null)

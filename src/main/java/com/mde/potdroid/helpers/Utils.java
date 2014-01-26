@@ -109,16 +109,6 @@ public class Utils {
     }
 
     /**
-     * Check if the current device version is Gingerbread (2.3.x)
-     *
-     * @return true if GB
-     */
-    public static boolean isGingerbread() {
-        return !(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.GINGERBREAD ||
-                android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1);
-    }
-
-    /**
      * Check if the current device version is Kitkat (4.4.x)
      *
      * @return true if Kitkat

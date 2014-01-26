@@ -75,9 +75,9 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
-                intent.putExtra(TopicFragment.ARG_TOPIC_ID, mBoard.getTopics().get(position)
+                intent.putExtra(TopicFragment.ARG_TOPIC_ID, mBoard.getFilteredTopics(getActivity()).get(position)
                         .getId());
-                intent.putExtra(TopicFragment.ARG_PAGE, mBoard.getTopics().get(position)
+                intent.putExtra(TopicFragment.ARG_PAGE, mBoard.getFilteredTopics(getActivity()).get(position)
                         .getNumberOfPages());
                 startActivity(intent);
             }
@@ -85,7 +85,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
-                intent.putExtra(TopicFragment.ARG_TOPIC_ID, mBoard.getTopics().get(position)
+                intent.putExtra(TopicFragment.ARG_TOPIC_ID, mBoard.getFilteredTopics(getActivity()).get(position)
                         .getId());
                 intent.putExtra(TopicFragment.ARG_PAGE, 1);
                 startActivity(intent);

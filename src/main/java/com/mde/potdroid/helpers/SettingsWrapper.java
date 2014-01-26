@@ -37,6 +37,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_NOTIFICATION_VIBRATE = "pref_notification_vibrate";
     public static final String PREF_KEY_NOTIFICATION_SOUND = "pref_notification_sound";
     public static final String PREF_KEY_POSTINFO = "pref_show_postinfo";
+    public static final String PREF_KEY_DARKEN = "pref_darken_old_posts";
 
     // some references
     private SharedPreferences mSharedPreferences;
@@ -136,6 +137,15 @@ public class SettingsWrapper {
      */
     public Boolean showPostInfo() {
         return mSharedPreferences.getBoolean(PREF_KEY_POSTINFO, true);
+    }
+
+    /**
+     * Check if old posts should appear darkened
+     *
+     * @return true if so
+     */
+    public Boolean darkenOldPosts() {
+        return mSharedPreferences.getBoolean(PREF_KEY_DARKEN, false);
     }
 
     /**

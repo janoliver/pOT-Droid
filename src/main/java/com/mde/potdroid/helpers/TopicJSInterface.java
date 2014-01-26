@@ -99,6 +99,16 @@ public class TopicJSInterface extends BenderJSInterface {
     }
 
     /**
+     * Check if old posts should be darkened
+     *
+     * @return true if yes
+     */
+    @JavascriptInterface
+    public boolean isDarkenOldPosts() {
+        return mSettings.darkenOldPosts();
+    }
+
+    /**
      * Check if User is logged in
      *
      * @return true if yes

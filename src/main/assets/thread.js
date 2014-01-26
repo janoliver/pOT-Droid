@@ -121,8 +121,9 @@ $(document).ready(function() {
     setTimeout(function() {
         if(api.getScroll() > 0) {
             document.location.href = "#" + api.getScroll();
-            var before = $('a[name="' + api.getScroll() + '"]').parent().prevAll();
-            before.css({ opacity: 0.5 });
+            if(api.isDarkenOldPosts()) {
+                $('a[name="' + api.getScroll() + '"]').parent().prevAll().css({ opacity: 0.5 });
+            }
         } else {
             window.scrollTo(0,0);
         }

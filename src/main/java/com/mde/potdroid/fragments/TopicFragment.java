@@ -11,7 +11,6 @@ import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -149,7 +148,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         }
     }
 
-
     /**
      * Set up the webview programmatically, to workaround the kitkat memory leak.
      */
@@ -160,8 +158,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         // create a webview
         mWebView = new WebView(getBaseActivity());
         mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.getSettings().setDomStorageEnabled(true);
-        mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         mWebView.getSettings().setAllowFileAccess(true);
         mWebView.getSettings().setUseWideViewPort(true);
         mWebView.getSettings().setLoadWithOverviewMode(true);

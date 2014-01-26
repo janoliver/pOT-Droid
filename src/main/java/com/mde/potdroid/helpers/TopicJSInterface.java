@@ -313,9 +313,9 @@ public class TopicJSInterface extends BenderJSInterface {
     public void loadAllImages() {
         mActivity.runOnUiThread(new Runnable() {
                 public void run() {
-                mWebView.loadUrl("javascript:loadAllImages();");
-        }
-            });
+                    mWebView.loadUrl("javascript:loadAllImages();");
+                }
+        });
     }
 
 }

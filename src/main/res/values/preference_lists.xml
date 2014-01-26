@@ -54,4 +54,118 @@
         <item>alle zwölf Stunden</item>
         <item>alle 24 Stunden</item>
     </string-array>
+    <string-array name="pref_start_activity">
+        <item>Forenübersicht</item>
+        <item>Bookmarks</item>
+        <item>Forum</item>
+    </string-array>
+    <string-array name="pref_start_activity_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="pref_start_forum">
+        <item><![CDATA[3DSupply.de]]></item>
+        <item><![CDATA[MTA-Lan]]></item>
+        <item><![CDATA[Public Offtopic]]></item>
+        <item><![CDATA[Offtopic- und Funforum]]></item>
+        <item><![CDATA[Hauptforum]]></item>
+        <item><![CDATA[CS-Help]]></item>
+        <item><![CDATA[Half-Life 2/Portal]]></item>
+        <item><![CDATA[Team Fortress 2]]></item>
+        <item><![CDATA[Left 4 Dead]]></item>
+        <item><![CDATA[Config/Alias/Bind/Scripts Forum]]></item>
+        <item><![CDATA[Taktik, Bots und Crosshairs]]></item>
+        <item><![CDATA[Server OP Forum]]></item>
+        <item><![CDATA[Let\'s play im pOT]]></item>
+        <item><![CDATA[Clanforum]]></item>
+        <item><![CDATA[Lanparty-Forum]]></item>
+        <item><![CDATA[MMORPG / Browsergames]]></item>
+        <item><![CDATA[Rollenspieler]]></item>
+        <item><![CDATA[codnation.de]]></item>
+        <item><![CDATA[Stammtisch Battlefield]]></item>
+        <item><![CDATA[Battlefield Helpforum]]></item>
+        <item><![CDATA[Windows]]></item>
+        <item><![CDATA[Linux]]></item>
+        <item><![CDATA[Hardware & Netzwerk]]></item>
+        <item><![CDATA[Benderforum]]></item>
+        <item><![CDATA[Bender Request]]></item>
+        <item><![CDATA[Webdesign & Coding]]></item>
+        <item><![CDATA[Sound/GFX/Modcoding]]></item>
+        <item><![CDATA[Modelling & Skinning]]></item>
+        <item><![CDATA[Mapping -> Half-Life]]></item>
+        <item><![CDATA[Mapping -> Half-Life2]]></item>
+        <item><![CDATA[Mapping -> Pimpage]]></item>
+        <item><![CDATA[Baden-Württemberg]]></item>
+        <item><![CDATA[Bayern]]></item>
+        <item><![CDATA[Berlin]]></item>
+        <item><![CDATA[Brandenburg]]></item>
+        <item><![CDATA[Bremen]]></item>
+        <item><![CDATA[Hamburg]]></item>
+        <item><![CDATA[Hessen]]></item>
+        <item><![CDATA[Mecklenburg-Vorpommern]]></item>
+        <item><![CDATA[Niedersachsen]]></item>
+        <item><![CDATA[Nordrhein-Westfalen]]></item>
+        <item><![CDATA[Österreich]]></item>
+        <item><![CDATA[Rheinland-Pfalz]]></item>
+        <item><![CDATA[Saarland]]></item>
+        <item><![CDATA[Sachsen]]></item>
+        <item><![CDATA[Sachsen-Anhalt]]></item>
+        <item><![CDATA[Schleswig-Holstein]]></item>
+        <item><![CDATA[Schweiz]]></item>
+        <item><![CDATA[Thüringen]]></item>
+        <item><![CDATA[Bender Battles]]></item>
+    </string-array>
+    <string-array name="pref_start_forum_values">
+        <item>95</item>
+        <item>69</item>
+        <item>14</item>
+        <item>16</item>
+        <item>18</item>
+        <item>19</item>
+        <item>70</item>
+        <item>113</item>
+        <item>122</item>
+        <item>20</item>
+        <item>44</item>
+        <item>42</item>
+        <item>134</item>
+        <item>9</item>
+        <item>13</item>
+        <item>97</item>
+        <item>66</item>
+        <item>99</item>
+        <item>31</item>
+        <item>101</item>
+        <item>86</item>
+        <item>87</item>
+        <item>10</item>
+        <item>91</item>
+        <item>92</item>
+        <item>43</item>
+        <item>23</item>
+        <item>45</item>
+        <item>25</item>
+        <item>96</item>
+        <item>29</item>
+        <item>46</item>
+        <item>47</item>
+        <item>48</item>
+        <item>49</item>
+        <item>50</item>
+        <item>51</item>
+        <item>52</item>
+        <item>53</item>
+        <item>54</item>
+        <item>55</item>
+        <item>67</item>
+        <item>56</item>
+        <item>57</item>
+        <item>58</item>
+        <item>59</item>
+        <item>60</item>
+        <item>68</item>
+        <item>61</item>
+        <item>102</item>
+    </string-array>
 </resources>

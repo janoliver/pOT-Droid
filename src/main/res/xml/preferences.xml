@@ -94,6 +94,22 @@
             android:title="System"
             android:key="pref_system_settings">
 
+        <ListPreference
+                android:title="Startscreen"
+                android:summary="Was soll beim Starten der App angezeigt werden?"
+                android:key="pref_start_activity"
+                android:defaultValue="0"
+                android:entries="@array/pref_start_activity"
+                android:entryValues="@array/pref_start_activity_values" />
+
+        <ListPreference
+                android:title="Startforum"
+                android:summary="Nur wichtig, falls 'Startseite' auf 'Forum' steht"
+                android:key="startForum"
+                android:defaultValue="14"
+                android:entries="@array/pref_start_forum"
+                android:entryValues="@array/pref_start_forum_values"/>
+
         <CheckBoxPreference
                 android:key="pref_debug_mode"
                 android:title="Debug Modus"

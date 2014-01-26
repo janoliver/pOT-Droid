@@ -39,6 +39,12 @@ public class SettingsWrapper {
     public static final String PREF_KEY_POSTINFO = "pref_show_postinfo";
     public static final String PREF_KEY_DARKEN = "pref_darken_old_posts";
     public static final String PREF_KEY_HIDE_GLOBAL = "pref_hide_global";
+    public static final String PREF_KEY_START_ACTIVITY = "pref_start_activity";
+    public static final String PREF_KEY_START_FORUM = "pref_start_forum";
+
+    public static final int START_BOARDS = 0;
+    public static final int START_BOOKMARKS = 1;
+    public static final int START_FORUM = 2;
 
     // some references
     private SharedPreferences mSharedPreferences;
@@ -165,6 +171,16 @@ public class SettingsWrapper {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(PREF_KEY_USERNAME, username);
         editor.commit();
+    }
+
+    public int getStartActivity() {
+        return Integer.parseInt(
+                mSharedPreferences.getString(PREF_KEY_START_ACTIVITY,
+                        new Integer(START_BOARDS).toString()));
+    }
+
+    public int getStartForum() {
+        return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_START_FORUM, "14"));
     }
 
     /**

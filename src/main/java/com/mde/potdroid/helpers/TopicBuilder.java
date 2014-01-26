@@ -129,7 +129,7 @@ public class TopicBuilder {
         }
 
         public String getIcon() {
-            if (mPost.getIconId() != null)
+            if (mSettings.showPostInfo() && mPost.getIconId() != null)
                 return String.format("<img class=\"posticon\" src=\"thread-icons/icon%1$d.png\" />",
                         mPost.getIconId());
             return "";
@@ -148,11 +148,15 @@ public class TopicBuilder {
         }
 
         public String getDate() {
+            if(!mSettings.showPostInfo())
+                return "";
             return new SimpleDateFormat(mContext.getString(R.string.default_time_format))
                     .format(mPost.getDate());
         }
 
         public String getTitle() {
+            if(!mSettings.showPostInfo())
+                return "";
             return mPost.getTitle();
         }
 

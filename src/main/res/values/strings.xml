@@ -95,7 +95,7 @@
     <string name="message_header">\n\n------------------------\n%1$s schrieb am %2$s:\n</string>
     <string name="last_post"><![CDATA[Letzter Beitrag von <strong>%1$s</strong> (%2$s)]]></string>
     <string name="last_post_sidebar"><![CDATA[von %1$s (%2$s)]]></string>
-    <string name="quote">[quote=%1$d,%2$d,"%3$s"][b]\n%4$s\n[/b][/quote]</string>
+    <string name="quote"><![CDATA[[quote=%1$d,%2$d,\"%3$s\"][b]\n%4$s\n[/b][/quote]]]></string>
     <string name="sidebar_cap_bookmarks">BOOKMARKS</string>
     <string name="sidebar_cap_boards">BOARDS</string>
     <string name="no_unread_bookmarks">Keine ungelesenen Bookmarks</string>

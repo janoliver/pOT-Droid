@@ -36,6 +36,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_POLL_MESSAGES = "pref_message_polling_interval";
     public static final String PREF_KEY_NOTIFICATION_VIBRATE = "pref_notification_vibrate";
     public static final String PREF_KEY_NOTIFICATION_SOUND = "pref_notification_sound";
+    public static final String PREF_KEY_POSTINFO = "pref_show_postinfo";
 
     // some references
     private SharedPreferences mSharedPreferences;
@@ -126,6 +127,15 @@ public class SettingsWrapper {
         String lb = mSharedPreferences.getString(PREF_KEY_LOAD_IMAGES, "0");
         return !(lb.equals("0") || (lb.equals("1") &&
                 Network.getConnectionType(mContext) != Network.NETWORK_WIFI));
+    }
+
+    /**
+     * Check if post information should be shown
+     *
+     * @return true if so
+     */
+    public Boolean showPostInfo() {
+        return mSharedPreferences.getBoolean(PREF_KEY_POSTINFO, true);
     }
 
     /**

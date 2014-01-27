@@ -25,8 +25,9 @@ public class BBCodeParser {
     // the allowed bbcodes
     private String mRegexSkeleton =
             "(.*?)((\\[\\s*(%1$s)\\s*(=((\\s*((\"[^\"]+?\")|" +
-                    "([^,\\]\"]+?))\\s*,)*(\\s*((\"[^\"]+?\")|([^,\"\\]]+?))\\s*)))?\\])|" +
-                    "(\\[/\\s*((%1$s))\\s*\\]))";
+            "([^,\\]\"]+?))\\s*,)*(\\s*((\"[^\"]+?\")|([^,\"\\]]+?))\\s*)))?\\])|" +
+            "(\\[/\\s*((%1$s))\\s*\\]))";
+
     // this map holds our registered tags
     private Map<String, BBCodeTag> mTags = new HashMap<String, BBCodeTag>();
 
@@ -46,15 +47,22 @@ public class BBCodeParser {
             tags += Pattern.quote(entry.getKey()) + "|";
         tags = tags.substring(0, tags.length() - 1);
 
-        Pattern pattern = Pattern.compile(String.format(mRegexSkeleton, tags),
+        return Pattern.compile(String.format(mRegexSkeleton, tags),
                 Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE);
-        return pattern;
     }
 
     // parse the input
     public String parse(String input) throws UnknownErrorException {
         Integer lastMatched = 0;
         List<Token> tokens = new ArrayList<Token>();
+
+        // fix for the Rufus syndrome of incredibly long posts.
+        int start_bbcode = input.indexOf('[');
+        int end_bbcode = input.lastIndexOf(']');
+
+        String beginning = input.substring(0, start_bbcode);
+        String end = input.substring(end_bbcode+1);
+        input = input.substring(start_bbcode, end_bbcode+1);
 
         Pattern pattern = generatePattern();
         Matcher matcher = pattern.matcher(input);
@@ -215,7 +223,7 @@ public class BBCodeParser {
         }
 
         // build the string and return
-        return root.toString();
+        return beginning + root.toString() + end;
     }
 
     public Node add_string(Node current, String str) throws InvalidTokenException {

@@ -138,7 +138,25 @@ public class BenderHandler {
      * @return path
      */
     public String getAvatarFilePath(User user) {
+        if(getAvatarFile(user) != null)
+            return "file://" + getAvatarFile(user).getAbsolutePath();
+        else
+            return null;
+    }
+
+    /**
+     * This function returns the theoretical path of a User's avatar, regardless of
+     * whether it exists or not.
+     *
+     * @param user user object
+     * @return path
+     */
+    public String getAvatarFilePathIfExists(User user) {
+        File f = getAvatarFile(user);
+        if(f == null || !f.exists())
+            return null;
         return "file://" + getAvatarFile(user).getAbsolutePath();
+
     }
 
     /**
@@ -151,8 +169,8 @@ public class BenderHandler {
     public File getAvatarFile(User user) {
         // if the information is not known in the user object, try to retrieve it
         // from the database
-        if ((user.getAvatarFile() == null || user.getAvatarFile().equals("") || user.getAvatarId
-                () == 0) &&
+        if ((user.getAvatarFile() == null || user.getAvatarFile().equals("") ||
+                user.getAvatarId() == 0) &&
                 !mDatabase.setCurrentBenderInformation(user))
             return null;
 

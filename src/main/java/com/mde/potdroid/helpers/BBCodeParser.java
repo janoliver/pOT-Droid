@@ -60,9 +60,16 @@ public class BBCodeParser {
         int start_bbcode = input.indexOf('[');
         int end_bbcode = input.lastIndexOf(']');
 
-        String beginning = input.substring(0, start_bbcode);
-        String end = input.substring(end_bbcode+1);
-        input = input.substring(start_bbcode, end_bbcode+1);
+        String beginning = "";
+        String end = "";
+
+        try {
+            beginning = input.substring(0, start_bbcode);
+            end = input.substring(end_bbcode+1);
+            input = input.substring(start_bbcode, end_bbcode+1);
+        } catch(Exception e) {
+            // never mind, then we match against the original string.
+        }
 
         Pattern pattern = generatePattern();
         Matcher matcher = pattern.matcher(input);

@@ -19,7 +19,7 @@
     <string name="pref_state_vibrate_inactive">Vibration nicht aktiv.</string>
 
     <!-- general strings, App related -->
-    <string name="app_name">pOT-Droid3</string>
+    <string name="app_name">pOT-Droid</string>
     <string name="none"> </string>
     <string name="pm_author_system">System</string>
     <string name="default_time_format">dd.MM.yyyy, HH:mm</string>

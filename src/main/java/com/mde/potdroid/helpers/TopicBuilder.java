@@ -30,10 +30,13 @@ public class TopicBuilder {
     // a BBCodeParser reference
     private static BBCodeParser mParser;
 
+    protected BenderHandler mBenderHandler;
+
 
     public TopicBuilder(Context cx) {
         mContext = cx;
         mSettings = new SettingsWrapper(cx);
+        mBenderHandler = new BenderHandler(cx);
 
         // smileys
         mSmileys.put(":bang:", "banghead.gif");
@@ -133,6 +136,14 @@ public class TopicBuilder {
                 return String.format("<img class=\"posticon\" src=\"thread-icons/icon%1$d.png\" />",
                         mPost.getIconId());
             return "";
+        }
+
+        public String getAvatarBackground() {
+            if(mBenderHandler.getAvatarFilePathIfExists(mPost.getAuthor()) == null)
+                return "";
+            else
+                return String.format("style=\"background-image:url(%s)\"",
+                    mBenderHandler.getAvatarFilePath(mPost.getAuthor()));
         }
 
         public Integer getAuthorId() {

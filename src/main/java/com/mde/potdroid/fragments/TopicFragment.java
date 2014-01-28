@@ -11,6 +11,7 @@ import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -160,11 +161,12 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setAllowFileAccess(true);
         mWebView.getSettings().setUseWideViewPort(true);
+        mWebView.getSettings().setAppCacheEnabled(false);
+        mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         mWebView.getSettings().setLoadWithOverviewMode(true);
         mWebView.setBackgroundColor(0x00000000);
 
         mJsInterface = new TopicJSInterface(mWebView, getBaseActivity(), this);
-        mJsInterface.registerScroll(getArguments().getInt(ARG_POST_ID, 0));
 
         mWebView.addJavascriptInterface(mJsInterface, "api");
 
@@ -227,7 +229,11 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             // Refresh the bookmarks after the topic loaded
             getBaseActivity().getLeftSidebarFragment().refreshBookmarks();
 
+            // register scrolling position if needed
+            mJsInterface.registerScroll(getArguments().getInt(ARG_POST_ID, 0));
+
             // update html
+            mWebView.loadData("", "text/html", Network.ENCODING_UTF8);
             mWebView.loadDataWithBaseURL("file:///android_asset/",
                     mTopic.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);
 
@@ -257,7 +263,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         // whether there is a next page was checked in onCreateOptionsMenu
         getArguments().putInt(ARG_PAGE, mTopic.getPage() + 1);
         getArguments().remove(ARG_POST_ID);
-        mJsInterface.registerScroll(0);
         restartLoader(this);
     }
 
@@ -265,7 +270,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         // whether there is a previous page was checked in onCreateOptionsMenu
         getArguments().putInt(ARG_PAGE, mTopic.getPage() - 1);
         getArguments().remove(ARG_POST_ID);
-        mJsInterface.registerScroll(0);
         restartLoader(this);
     }
 
@@ -273,7 +277,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         // whether there is a previous page was checked in onCreateOptionsMenu
         getArguments().putInt(ARG_PAGE, 1);
         getArguments().remove(ARG_POST_ID);
-        mJsInterface.registerScroll(0);
         restartLoader(this);
     }
 
@@ -297,7 +300,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         // whether there is a previous page was checked in onCreateOptionsMenu
         getArguments().putInt(ARG_PAGE, mTopic.getNumberOfPages());
         getArguments().remove(ARG_POST_ID);
-        mJsInterface.registerScroll(0);
         restartLoader(this);
     }
 
@@ -305,7 +307,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         // whether there is a previous page was checked in onCreateOptionsMenu
         getArguments().putInt(ARG_POST_ID, pid);
         getArguments().remove(ARG_PAGE);
-        mJsInterface.registerScroll(pid);
         restartLoader(this);
     }
 

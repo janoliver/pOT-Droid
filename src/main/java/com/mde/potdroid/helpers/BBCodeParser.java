@@ -64,8 +64,8 @@ public class BBCodeParser {
         String end = "";
 
         try {
-            beginning = input.substring(0, start_bbcode);
-            end = input.substring(end_bbcode+1);
+            beginning = strToHtml(input.substring(0, start_bbcode));
+            end = strToHtml(input.substring(end_bbcode+1));
             input = input.substring(start_bbcode, end_bbcode+1);
         } catch(Exception e) {
             // never mind, then we match against the original string.

@@ -93,7 +93,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
         mWebContainer = (FrameLayout) v.findViewById(R.id.web_container);
 
-        setupWebView();
+        //setupWebView();
 
         // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
         // of some former TopicFragment, which will be restored on onResume. .
@@ -167,6 +167,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         mWebView.setBackgroundColor(0x00000000);
 
         mJsInterface = new TopicJSInterface(mWebView, getBaseActivity(), this);
+        mJsInterface.registerScroll(getArguments().getInt(ARG_POST_ID, 0));
 
         mWebView.addJavascriptInterface(mJsInterface, "api");
 
@@ -222,20 +223,15 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     public void onLoadFinished(Loader<Topic> loader, Topic data) {
         hideLoadingAnimation();
 
-        if (mWebView != null && data != null) {
+        if (data != null) {
             // update the topic data
             mTopic = data;
 
             // Refresh the bookmarks after the topic loaded
             getBaseActivity().getLeftSidebarFragment().refreshBookmarks();
 
-            // register scrolling position if needed
-            mJsInterface.registerScroll(getArguments().getInt(ARG_POST_ID, 0));
-
-            // update html
-            mWebView.loadData("", "text/html", Network.ENCODING_UTF8);
-            mWebView.loadDataWithBaseURL("file:///android_asset/",
-                    mTopic.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);
+            destroyWebView();
+            setupWebView();
 
             // set title and subtitle of the ActionBar and reload the OptionsMenu
             Spanned subtitleText = Html.fromHtml(getString(R.string.subtitle_paginate,

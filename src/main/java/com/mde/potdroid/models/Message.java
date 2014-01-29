@@ -93,7 +93,7 @@ public class Message {
     }
 
     public boolean isReply() {
-        return getTitle().substring(0, 3).equals("Re:");
+        return mTitle.length() > 3 && mTitle.substring(0, 3).equals("Re:");
     }
 
 }

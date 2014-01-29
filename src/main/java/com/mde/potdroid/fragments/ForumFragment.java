@@ -207,12 +207,15 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
             TextView descr = (TextView) row.findViewById(R.id.text_description);
             descr.setText(b.getDescription());
 
-            TextView lastpost = (TextView) row.findViewById(R.id.last_post);
-            String time = new SimpleDateFormat(getString(R.string.default_time_format)).format(b
-                    .getLastPost().getDate());
-            Spanned lastpost_text = Html.fromHtml(String.format(
-                    getString(R.string.last_post), b.getLastPost().getAuthor().getNick(), time));
-            lastpost.setText(lastpost_text);
+
+            if(b.getLastPost() != null) {
+                TextView lastpost = (TextView) row.findViewById(R.id.last_post);
+                String time = new SimpleDateFormat(getString(R.string.default_time_format)).format(b
+                        .getLastPost().getDate());
+                Spanned lastpost_text = Html.fromHtml(String.format(
+                        getString(R.string.last_post), b.getLastPost().getAuthor().getNick(), time));
+                lastpost.setText(lastpost_text);
+            }
 
             return (row);
 

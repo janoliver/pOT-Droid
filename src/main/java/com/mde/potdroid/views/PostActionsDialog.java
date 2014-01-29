@@ -83,11 +83,21 @@ public class PostActionsDialog extends DialogFragment {
             }
         });
 
+        IconButton pm_button = (IconButton) dialog_view.findViewById(R.id.button_pm);
+        pm_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment.pmToAuthor(getArguments().getInt(ARG_POST_ID));
+                d.cancel();
+            }
+        });
+
         // disable the buttons if the user is not logged in
         if (!Utils.isLoggedIn()) {
             quote_button.disable();
             edit_button.disable();
             bookmark_button.disable();
+            pm_button.disable();
         }
 
 

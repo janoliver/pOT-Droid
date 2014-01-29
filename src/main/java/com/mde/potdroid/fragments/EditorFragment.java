@@ -131,9 +131,6 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         MenuItem send = menu.findItem(R.id.send);
         send.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_ok));
 
-        MenuItem cancel = menu.findItem(R.id.cancel);
-        cancel.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_remove));
-
     }
 
     @Override

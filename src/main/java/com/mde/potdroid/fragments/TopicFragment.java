@@ -484,4 +484,18 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         startActivity(i);
     }
 
+    /**
+     * write a pm to the author
+     *
+     * @param id the PID
+     */
+    public void pmToAuthor(final int id) {
+        Post p = mTopic.getPostById(id);
+
+        Intent intent = new Intent(getBaseActivity(), EditorActivity.class);
+        intent.putExtra(EditorFragment.ARG_MODE, EditorFragment.MODE_MESSAGE);
+        intent.putExtra(EditorFragment.ARG_RCPT, p.getAuthor().getNick());
+        startActivityForResult(intent, EditorFragment.MODE_MESSAGE);
+    }
+
 }

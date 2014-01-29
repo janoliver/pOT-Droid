@@ -47,7 +47,6 @@ public class MessageParser {
             mMessage.setTitle(m.group(1));
             mMessage.setId(message_id);
             mMessage.setText(m.group(6));
-            Utils.log(mMessage.getText());
             mMessage.setOutgoing(!m.group(2).equals("Absender"));
 
             try {

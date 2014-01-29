@@ -47,6 +47,10 @@ public class SettingsActivity extends PreferenceActivity
         setPreferenceDescription(SettingsWrapper.PREF_KEY_SHOW_BENDERS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_IMAGES);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_POLL_MESSAGES);
+        setPreferenceDescription(SettingsWrapper.PREF_KEY_MATA);
+        setPreferenceDescription(SettingsWrapper.PREF_KEY_MATA_FORUM);
+        setPreferenceDescription(SettingsWrapper.PREF_KEY_START_ACTIVITY);
+        setPreferenceDescription(SettingsWrapper.PREF_KEY_START_FORUM);
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);

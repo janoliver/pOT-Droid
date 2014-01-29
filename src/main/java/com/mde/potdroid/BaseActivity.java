@@ -1,5 +1,6 @@
 package com.mde.potdroid;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -9,6 +10,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import com.mde.potdroid.fragments.BoardFragment;
 import com.mde.potdroid.fragments.SidebarLeftFragment;
 import com.mde.potdroid.fragments.SidebarRightFragment;
 import com.mde.potdroid.helpers.CustomExceptionHandler;
@@ -58,11 +60,11 @@ public class BaseActivity extends ActionBarActivity {
 
         // find our drawerlayout. If it does not exist, we are in large mode.
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.drawable.ic_drawer, R.string.none, R.string.none) {
 
-            public void onDrawerClosed(View view) {
-            }
+            public void onDrawerClosed(View view) {}
 
             public void onDrawerOpened(View view) {
                 // if the left sidebar is opened, refresh bookmarks
@@ -134,9 +136,33 @@ public class BaseActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-        return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        if(mSettings.getMataAction() == SettingsWrapper.START_SIDEBAR) {
+            // Pass the event to ActionBarDrawerToggle, if it returns
+            // true, then it has handled the app icon touch event
+            return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        } else {
+            switch (item.getItemId())
+            {
+                case android.R.id.home:
+                    if(mSettings.getMataAction() == SettingsWrapper.START_FORUM) {
+                        Intent intent = new Intent(this, BoardActivity.class);
+                        intent.putExtra(BoardFragment.ARG_ID, mSettings.getMataForum());
+                        intent.putExtra(BoardFragment.ARG_PAGE, 1);
+                        startActivity(intent);
+                    } else if(mSettings.getMataAction() == SettingsWrapper.START_BOOKMARKS &&
+                            Utils.isLoggedIn()) {
+                        Intent intent = new Intent(this, BookmarkActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(this, ForumActivity.class);
+                        intent.putExtra("overview", true);
+                        startActivity(intent);
+                    }
+                    return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
+        }
     }
 
     @Override

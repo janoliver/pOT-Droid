@@ -91,8 +91,8 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="System"
-            android:key="pref_system_settings">
+            android:title="Verhalten"
+            android:key="pref_behaviour_settings">
 
         <ListPreference
                 android:title="Startscreen"
@@ -110,6 +110,26 @@
                 android:entries="@array/pref_start_forum"
                 android:entryValues="@array/pref_start_forum_values"/>
 
+        <ListPreference
+                android:title="Ziel mata Button"
+                android:summary="Was soll beim Druck auf den Mata Button passieren?"
+                android:key="pref_mata"
+                android:defaultValue="0"
+                android:entries="@array/pref_mata"
+                android:entryValues="@array/pref_mata_values" />
+
+        <ListPreference
+                android:title="Mata Forum"
+                android:summary="Nur wichtig, falls 'Ziel mata Button' auf 'Forum' steht"
+                android:key="pref_mata_forum"
+                android:defaultValue="14"
+                android:entries="@array/pref_start_forum"
+                android:entryValues="@array/pref_start_forum_values"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="System"
+            android:key="pref_system_settings">
         <CheckBoxPreference
                 android:key="pref_debug_mode"
                 android:title="Debug Modus"

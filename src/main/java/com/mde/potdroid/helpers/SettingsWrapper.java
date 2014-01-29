@@ -41,10 +41,13 @@ public class SettingsWrapper {
     public static final String PREF_KEY_HIDE_GLOBAL = "pref_hide_global";
     public static final String PREF_KEY_START_ACTIVITY = "pref_start_activity";
     public static final String PREF_KEY_START_FORUM = "pref_start_forum";
+    public static final String PREF_KEY_MATA = "pref_mata";
+    public static final String PREF_KEY_MATA_FORUM = "pref_mata_forum";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;
     public static final int START_FORUM = 2;
+    public static final int START_SIDEBAR = 3;
 
     // some references
     private SharedPreferences mSharedPreferences;
@@ -175,12 +178,20 @@ public class SettingsWrapper {
 
     public int getStartActivity() {
         return Integer.parseInt(
-                mSharedPreferences.getString(PREF_KEY_START_ACTIVITY,
-                        new Integer(START_BOARDS).toString()));
+                mSharedPreferences.getString(PREF_KEY_START_ACTIVITY, Integer.toString(START_BOARDS)));
     }
 
     public int getStartForum() {
         return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_START_FORUM, "14"));
+    }
+
+    public int getMataAction() {
+        return Integer.parseInt(
+                mSharedPreferences.getString(PREF_KEY_MATA, Integer.toString(START_SIDEBAR)));
+    }
+
+    public int getMataForum() {
+        return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_MATA_FORUM, "14"));
     }
 
     /**

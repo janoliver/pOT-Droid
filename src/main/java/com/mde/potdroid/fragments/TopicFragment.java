@@ -159,12 +159,12 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         // create a webview
         mWebView = new WebView(getBaseActivity());
         mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.setBackgroundColor(0x00000000);
         mWebView.getSettings().setAllowFileAccess(true);
         mWebView.getSettings().setUseWideViewPort(true);
         mWebView.getSettings().setAppCacheEnabled(false);
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         mWebView.getSettings().setLoadWithOverviewMode(true);
-        mWebView.setBackgroundColor(0x00000000);
 
         mJsInterface = new TopicJSInterface(mWebView, getBaseActivity(), this);
         mJsInterface.registerScroll(getArguments().getInt(ARG_POST_ID, 0));

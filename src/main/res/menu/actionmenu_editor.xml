@@ -5,8 +5,4 @@
             android:id="@+id/send"
             android:title="@string/action_send"
             potdroid:showAsAction="always"/>
-    <item
-            android:id="@+id/cancel"
-            android:title="@string/action_cancel"
-            potdroid:showAsAction="always"/>
 </menu>

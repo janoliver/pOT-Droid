@@ -153,11 +153,6 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
                 startLoader(EditorFragment.this, args);
                 return true;
-            case R.id.cancel:
-                stopLoader();
-                hideKeyboard();
-                getActivity().finish();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

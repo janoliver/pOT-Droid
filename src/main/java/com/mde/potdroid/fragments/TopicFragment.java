@@ -313,7 +313,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         // offer to open the image with an image application
         WebView.HitTestResult hitTestResult = mWebView.getHitTestResult();
         if (hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE ||
-                hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+            hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
 
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);

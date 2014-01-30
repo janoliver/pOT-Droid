@@ -123,6 +123,13 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     }
 
     @Override
+    public void onActivityCreated (Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        hideLoadingAnimation();
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
@@ -200,8 +207,9 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
         Bitmap icon;
         try {
+            int size = (int)(mEditTitle.getTextSize() * 1.5);
             icon = Utils.getBitmapIcon(getActivity(), iconId);
-            Bitmap bm = Bitmap.createScaledBitmap(icon, 80, 80, true);
+            Bitmap bm = Bitmap.createScaledBitmap(icon, size, size, true);
             mIconButton.setImageBitmap(bm);
             mIconId = iconId;
         } catch (IOException e) {

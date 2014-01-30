@@ -43,6 +43,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_START_FORUM = "pref_start_forum";
     public static final String PREF_KEY_MATA = "pref_mata";
     public static final String PREF_KEY_MATA_FORUM = "pref_mata_forum";
+    public static final String PREF_KEY_SHOW_MENU = "pref_show_menu";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;
@@ -89,6 +90,15 @@ public class SettingsWrapper {
      */
     public Integer benderPosition() {
         return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_SHOW_BENDERS, "0"));
+    }
+
+    /**
+     * Show the post menu.
+     *
+     * @return 1 -> always shown, 2 -> always icon, 3 -> orientation dependent
+     */
+    public Integer showMenu() {
+        return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_SHOW_MENU, "3"));
     }
 
     /**

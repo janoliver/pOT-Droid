@@ -26,14 +26,14 @@
     <RelativeLayout
             android:id="@+id/title_icon_bar"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="5pt">
 
         <EditText
                 android:id="@+id/edit_title"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="5pt"
                 android:background="@color/white"
                 android:hint="@string/form_title_hint"
                 android:layout_toLeftOf="@+id/button_icon"
@@ -49,13 +49,13 @@
                 android:id="@+id/button_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5pt"
                 android:layout_marginRight="5pt"
                 android:scaleType="fitCenter"
                 android:layout_marginBottom="5pt"
-                android:layout_marginLeft="0dp"
+                android:layout_marginLeft="5dp"
                 android:layout_gravity="center"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/actionbar_button_background"
                 android:src="@drawable/ic_action_icon"/>
 

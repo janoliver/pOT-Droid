@@ -79,6 +79,16 @@ public class TopicJSInterface extends BenderJSInterface {
     }
 
     /**
+     * Return the menu status
+     *
+     * @return 1 -> show always, 2 -> show icon, 3 -> orientation dependent
+     */
+    @JavascriptInterface
+    public int getShowMenu() {
+        return mSettings.showMenu();
+    }
+
+    /**
      * Get the last or currently visible post id
      *
      * @return post id
@@ -202,6 +212,20 @@ public class TopicJSInterface extends BenderJSInterface {
         mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
             public void run() {
                 mTopicFragment.linkPost(post_id);
+            }
+        });
+    }
+
+    /**
+     * send a PM to the author
+     *
+     * @param post_id the post id
+     */
+    @JavascriptInterface
+    public void pmAuthor(final int post_id) {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                mTopicFragment.pmToAuthor(post_id);
             }
         });
     }

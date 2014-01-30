@@ -76,6 +76,7 @@ header i,
     height:1em;
     text-align:center;
     padding-left:10px;
+    display:none;
 }
 
 header i:active,
@@ -182,15 +183,4 @@ article div table tr td {
     -webkit-animation-iteration-count: infinite;
     -webkit-animation-timing-function: linear;
     -webkit-animation-duration: 1s;
-}
-
-@media (max-device-width : 400px) {
-    div.landscape, i.landscape { display: none; }
-    div.bender.portrait { display: block; }
-}
-
-@media (min-device-width : 401px) {
-    div.portrait, i.portrait { display: none; }
-    header div.date { float:left; }
-    div.bender.landscape { display: block; }
 }

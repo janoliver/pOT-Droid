@@ -51,6 +51,14 @@
                 android:entryValues="@array/show_benders_values"/>
 
         <ListPreference
+                android:key="pref_show_menu"
+                android:title="Post-Menü anzeigen"
+                android:summary="Wie soll das Post-Menü angezeigt werden?"
+                android:defaultValue="3"
+                android:entries="@array/show_menu"
+                android:entryValues="@array/show_menu_values"/>
+
+        <ListPreference
                 android:key="pref_load_benders"
                 android:title="Bender downloaden"
                 android:summary="Wann sollen Bender mit heruntergeladen werden"

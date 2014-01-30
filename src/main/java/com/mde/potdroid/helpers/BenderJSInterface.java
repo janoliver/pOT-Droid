@@ -52,6 +52,16 @@ public class BenderJSInterface {
     }
 
     /**
+     * Return if Benders can be downloaded
+     *
+     * @return true if enabled
+     */
+    @JavascriptInterface
+    public boolean downloadBenders() {
+        return mSettings.downloadBenders();
+    }
+
+    /**
      * Return the bender position
      *
      * @return 0 -> never, 1 -> always posthead, 2 -> always postbody, 3 -> orientation dependent

@@ -93,7 +93,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
         mWebContainer = (FrameLayout) v.findViewById(R.id.web_container);
 
-        //setupWebView();
+        setupWebView();
 
         // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
         // of some former TopicFragment, which will be restored on onResume. .
@@ -230,8 +230,10 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             // Refresh the bookmarks after the topic loaded
             getBaseActivity().getLeftSidebarFragment().refreshBookmarks();
 
-            destroyWebView();
-            setupWebView();
+            //destroyWebView();
+            //setupWebView();
+            mWebView.loadDataWithBaseURL("file:///android_asset/",
+                        mTopic.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);
 
             // set title and subtitle of the ActionBar and reload the OptionsMenu
             Spanned subtitleText = Html.fromHtml(getString(R.string.subtitle_paginate,

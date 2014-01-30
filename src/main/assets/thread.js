@@ -1,30 +1,19 @@
 $(document).ready(function() {
 
+    setupStyle();
+    $(window).resize(function() {
+        setupStyle();
+    });
+
     // bender loading
-    if(api.isBenderEnabled()) {
-
-        if(api.getBenderPosition() == 1) {
-            $("header .bender").show();
-        } else if(api.getBenderPosition() == 2) {
-            $("article .bender").show();
-        } else if(api.getBenderPosition() == 3) {
-            $("header .bender").addClass("portrait");
-            $("article .bender").addClass("landscape");
-        }
-
+    if(api.isBenderEnabled() && api.downloadBenders()) {
         $(".bender:not([style])").each(function() {
             var bender = $(this).parents("section").first();
             var user_id = bender.attr("data-user-id");
             var user_avatar_id = bender.attr("data-user-avatar-id");
             var user_avatar_file = bender.attr("data-user-avatar");
-            api.log(user_id);
             api.displayBender(parseInt(user_id,10), user_avatar_file, parseInt(user_avatar_id,10));
         });
-    }
-
-    // login shit
-    if(!api.isLoggedIn()) {
-        $(".login").hide();
     }
 
     // automatic image loader
@@ -79,6 +68,11 @@ $(document).ready(function() {
         api.linkPost(post_id);
     });
 
+    $('i.menu-pm').click(function(e) {
+        var post_id = parseInt($(this).closest('section').attr('data-id'));
+        api.pmAuthor(post_id);
+    });
+
     $("div.buttons.reply i.reply").click(function() {
         api.replyPost();
     });
@@ -111,12 +105,6 @@ $(document).ready(function() {
         $("div.buttons.paginate i.rwd, div.buttons.paginate i.frwd").css('visibility','hidden');
     }
 
-    // register waypoints while scrolling over them
-    // should be the last thing executed!
-    $("header").waypoint(function() {
-        api.registerScroll(parseInt($(this).parent().attr("data-id"),10));
-    });
-
     // scroll to the last post, when there was one
     // to ensure correct scrolling, this should be the last JS call.
     setTimeout(function() {
@@ -128,8 +116,16 @@ $(document).ready(function() {
         } else {
             window.scrollTo(0,0);
         }
-    }, 100);
 
+        // register waypoints while scrolling over them
+        // should be the last thing executed!
+        $("header").waypoint(function() {
+            api.registerScroll(parseInt($(this).parent().attr("data-id"),10));
+        },{
+            continuous: false,
+        });
+
+    }, 100);
 
 });
 
@@ -152,8 +148,6 @@ function replaceImage(icon, link_target) {
 // load the bender of user_id
 function loadBender(user_id, path) {
     var el = $("section[data-user-id='"+user_id+"']");
-    api.log(path);
-    api.log(user_id);
     el.find("div.bender").css("background-image","url("+path+")");
 }
 
@@ -189,6 +183,42 @@ function loadAllImages() {
         } else {
             replaceImage($(this), href);
         }
-
     });
+}
+
+
+function setupStyle() {
+
+    if(api.isBenderEnabled()) {
+        if(api.getBenderPosition() == 1) {
+            $("header .bender").show();
+        } else if(api.getBenderPosition() == 2) {
+            $("article .bender").show();
+        } else if($(window).width() > 400) {
+            $("header .bender").hide();
+            $("article .bender").show();
+        } else {
+            $("header .bender").show();
+            $("article .bender").hide();
+        }
+    }
+
+    if(api.getShowMenu() == 1) {
+        $(".menu").show();
+        $(".menu-icon").hide();
+    } else if(api.getShowMenu() == 2) {
+        $(".menu-icon").show();
+        $(".menu").hide();
+    } else if($(window).width() > 400) {
+        $(".menu").show();
+        $(".menu-icon").hide();
+    } else {
+        $(".menu-icon").show();
+        $(".menu").hide();
+    }
+
+    // login shit
+    if(!api.isLoggedIn()) {
+        $(".login").hide();
+    }
 }

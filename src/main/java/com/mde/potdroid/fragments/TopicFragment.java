@@ -261,6 +261,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         // whether there is a next page was checked in onCreateOptionsMenu
         getArguments().putInt(ARG_PAGE, mTopic.getPage() + 1);
         getArguments().remove(ARG_POST_ID);
+        mJsInterface.registerScroll(0);
         restartLoader(this);
     }
 
@@ -268,6 +269,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         // whether there is a previous page was checked in onCreateOptionsMenu
         getArguments().putInt(ARG_PAGE, mTopic.getPage() - 1);
         getArguments().remove(ARG_POST_ID);
+        mJsInterface.registerScroll(0);
         restartLoader(this);
     }
 
@@ -275,6 +277,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         // whether there is a previous page was checked in onCreateOptionsMenu
         getArguments().putInt(ARG_PAGE, 1);
         getArguments().remove(ARG_POST_ID);
+        mJsInterface.registerScroll(0);
         restartLoader(this);
     }
 
@@ -393,6 +396,9 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
      * Open the form for reply
      */
     public void replyPost() {
+        if(mTopic == null)
+            return;
+
         if (mTopic.isClosed())
             showInfo(R.string.msg_topic_closed);
 

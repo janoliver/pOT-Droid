@@ -73,38 +73,6 @@ $(document).ready(function() {
         api.pmAuthor(post_id);
     });
 
-    $("div.buttons.reply i.reply").click(function() {
-        api.replyPost();
-    });
-
-    $("div.buttons.paginate i.frwd").click(function() {
-        api.frwd();
-    });
-
-    $("div.buttons.paginate i.rwd").click(function() {
-        api.rwd();
-    });
-
-    $("div.buttons.paginate i.refresh").click(function() {
-        api.refresh();
-    });
-
-    $("div.buttons.paginate i.fwd").click(function() {
-        api.fwd();
-    });
-
-    $("div.buttons.paginate i.ffwd").click(function() {
-        api.ffwd();
-    });
-
-    // hide the paginate buttons
-    if(api.isLastPage()) {
-        $("div.buttons.paginate i.fwd, div.buttons.paginate i.ffwd").css('visibility','hidden');
-    }
-    if(api.isFirstPage()) {
-        $("div.buttons.paginate i.rwd, div.buttons.paginate i.frwd").css('visibility','hidden');
-    }
-
     // scroll to the last post, when there was one
     // to ensure correct scrolling, this should be the last JS call.
     setTimeout(function() {
@@ -170,6 +138,7 @@ function scrollToLastPostByUID(uid) {
 function loadAllImages() {
     var all = [];
     if(api.getScroll() > 0) {
+        console.log("lool"+api.getScroll());
         var self = $('a[name="' + api.getScroll() + '"]').parent().find('div.img i, div.img-link i.img');
         var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.img i, div.img-link i.img');
         all = $.merge(self, after);

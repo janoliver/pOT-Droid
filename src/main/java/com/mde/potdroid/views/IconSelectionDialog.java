@@ -32,6 +32,7 @@ public class IconSelectionDialog extends DialogFragment {
         final EditorFragment fragment = ((EditorFragment) getTargetFragment());
 
         // find all icons
+        mIcons.add("Kein icon");
         AssetManager aMan = getActivity().getAssets();
         try {
             mIcons.addAll(Arrays.asList(aMan.list("thread-icons")));
@@ -44,9 +45,13 @@ public class IconSelectionDialog extends DialogFragment {
         builder.setAdapter(new IconListAdapter(getActivity()),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Integer icon_id = Integer
-                                .parseInt(mIcons.get(which).substring(4).split("\\.")[0]);
-                        fragment.setIconById(icon_id);
+                        try {
+                            Integer icon_id = Integer
+                                    .parseInt(mIcons.get(which).substring(4).split("\\.")[0]);
+                            fragment.setIconById(icon_id);
+                        } catch (NumberFormatException e) {
+                            fragment.setIconById(-1);
+                        }
                     }
                 });
         return builder.create();
@@ -77,8 +82,7 @@ public class IconSelectionDialog extends DialogFragment {
                 dr.setBounds(0, 0, (int)name.getTextSize(), (int)name.getTextSize());
                 name.setCompoundDrawables(dr, null, null, null);
 
-            } catch (IOException e) {
-            }
+            } catch (IOException e) {}
 
 
             return (row);

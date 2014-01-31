@@ -204,15 +204,19 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
      * @param iconId the icon id
      */
     public void setIconById(Integer iconId) {
-
-        Bitmap icon;
-        try {
-            int size = (int)(mEditTitle.getTextSize() * 1.5);
-            icon = Utils.getBitmapIcon(getActivity(), iconId);
-            Bitmap bm = Bitmap.createScaledBitmap(icon, size, size, true);
-            mIconButton.setImageBitmap(bm);
-            mIconId = iconId;
-        } catch (IOException e) {
+        if(iconId < 0) {
+            mIconId = 0;
+            mIconButton.setImageResource(R.drawable.ic_action_icon);
+        } else {
+            Bitmap icon;
+            try {
+                int size = (int)(mEditTitle.getTextSize() * 1.5);
+                icon = Utils.getBitmapIcon(getActivity(), iconId);
+                Bitmap bm = Bitmap.createScaledBitmap(icon, size, size, true);
+                mIconButton.setImageBitmap(bm);
+                mIconId = iconId;
+            } catch (IOException e) {
+            }
         }
     }
 

@@ -163,6 +163,15 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
     }
 
     /**
+     * Change the timout
+     *
+     * @param seconds the timeout
+     */
+    public void setTimeout(Integer seconds) {
+        mNetwork.setTimeout(seconds);
+    }
+
+    /**
      * Update the request parameters
      *
      * @param p The new request parameters.

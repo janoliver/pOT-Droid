@@ -228,6 +228,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             EncodingRequestParams r = new EncodingRequestParams();
 
             r.setEncoding(Network.ENCODING_ISO);
+            setTimeout(300);
 
             // this must resemble the same form on the website
             r.add("message", args.getString(ARG_TEXT));
@@ -291,6 +292,8 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             super(cx, MessageParser.SEND_URL, AsyncHttpLoader.POST);
 
             mMode = args.getInt(ARG_MODE);
+
+            setTimeout(300);
 
             EncodingRequestParams r = new EncodingRequestParams();
 

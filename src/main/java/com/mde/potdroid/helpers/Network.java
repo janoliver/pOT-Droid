@@ -85,6 +85,13 @@ public class Network {
     }
 
     /**
+     * Change timeout
+     */
+    public void setTimeout(Integer seconds) {
+        mHttpClient.setTimeout(seconds * 1000);
+    }
+
+    /**
      * Given username and password, try to login. We do not use AsyncHttpLoader here
      * because we generate new user agents and do not use cookie storage here.
      *

@@ -199,7 +199,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
 
             // set the name, striked if closed
             TextView title = (TextView) row.findViewById(R.id.title);
-            title.setText(m.getTitle());
+            title.setText(Html.fromHtml(m.getTitle()));
 
             // last post information
             String author = m.isSystem() ?

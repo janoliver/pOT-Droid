@@ -187,7 +187,7 @@ public class MessageFragment extends BaseFragment
             // generate and set title and subtitle
             Spanned subtitle = Html.fromHtml(String.format(getString(R.string.subtitle_message),
                     mMessage.isOutgoing() ? "an" : "von", mMessage.getFrom().getNick()));
-            getActionbar().setTitle(mMessage.getTitle());
+            getActionbar().setTitle(Html.fromHtml(mMessage.getTitle()));
             getActionbar().setSubtitle(subtitle);
 
         } else {

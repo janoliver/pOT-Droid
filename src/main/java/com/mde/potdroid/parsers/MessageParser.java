@@ -26,6 +26,7 @@ public class MessageParser {
             " class='hh'><b>([0-9:\\. ]+)</td>.*<td colspan='[23]' class='b'>(.+)</td> </tr>  <tr> " +
             "<td colspan='[23]' class='h'></td> </tr>.*</table>", Pattern.DOTALL | Pattern.MULTILINE);
 
+
     public MessageParser() {
         mMessage = new Message();
     }
@@ -46,7 +47,7 @@ public class MessageParser {
 
             mMessage.setTitle(m.group(1));
             mMessage.setId(message_id);
-            mMessage.setText(m.group(6));
+            mMessage.setText(m.group(6).replaceAll("<img src='/bb/pm/img/smilies/", "<img src='message-icons/"));
             mMessage.setOutgoing(!m.group(2).equals("Absender"));
 
             try {

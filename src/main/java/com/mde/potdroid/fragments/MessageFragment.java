@@ -117,10 +117,12 @@ public class MessageFragment extends BaseFragment
                 intent.putExtra(EditorFragment.ARG_MODE, EditorFragment.MODE_MESSAGE);
                 intent.putExtra(EditorFragment.ARG_RCPT, mMessage.getFrom().getNick());
 
+                String toQuote = Html.fromHtml(mMessage.getText()
+                    .replaceAll("<img src='message-icons/[^']+' alt='([^']+)' class='smiley'>", "$1")).toString();
+
                 // read in the message string as HTML, so <br> is converted into line
                 // breaks and so on.
-                BufferedReader bufReader = new BufferedReader(new StringReader(
-                        Html.fromHtml(mMessage.getText()).toString()));
+                BufferedReader bufReader = new BufferedReader(new StringReader(toQuote));
 
                 // we need to build the message text using a string builder, so
                 // we can prefix each line with a > (for quotes)

@@ -42,7 +42,7 @@
                 <data
                         android:scheme="http"
                         android:host="forum.mods.de"
-                        android:pathPrefix="/bb/index.php"/>
+                        android:pathPattern="/bb/index\\.php.*"/>
             </intent-filter>
 
         </activity>
@@ -58,7 +58,7 @@
                 <data
                         android:scheme="http"
                         android:host="forum.mods.de"
-                        android:pathPrefix="/bb/board.php"/>
+                        android:pathPattern="/bb/board\\.php.*"/>
             </intent-filter>
 
         </activity>
@@ -81,7 +81,7 @@
                 <data
                         android:scheme="http"
                         android:host="forum.mods.de"
-                        android:pathPrefix="/bb/thread.php"/>
+                        android:pathPattern="/bb/thread\\.php.*"/>
             </intent-filter>
 
         </activity>
@@ -99,28 +99,12 @@
                 <data
                         android:scheme="http"
                         android:host="forum.mods.de"
-                        android:pathPrefix="/bb/pm/"/>
+                        android:pathPattern="/bb/pm/.*"/>
             </intent-filter>
 
         </activity>
 
-        <activity
-                android:name=".MessageActivity"
-                android:uiOptions="none">
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data
-                        android:scheme="http"
-                        android:host="forum.mods.de"
-                        android:pathPrefix="/bb/pm/?a=2"/>
-            </intent-filter>
-
-        </activity>
+        <activity android:name=".MessageActivity" android:uiOptions="none"/>
 
         <activity android:name=".SettingsActivity"/>
 

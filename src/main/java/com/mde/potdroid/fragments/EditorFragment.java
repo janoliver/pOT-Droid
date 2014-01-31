@@ -183,7 +183,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             getActivity().setResult(result.getInt(ARG_STATUS, Activity.RESULT_CANCELED), intent);
             getActivity().finish();
         } else {
-            showError(getString(R.string.msg_loading_error));
+            showError(getString(R.string.msg_posting_error));
         }
     }
 

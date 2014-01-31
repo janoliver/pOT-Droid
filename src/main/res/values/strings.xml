@@ -47,6 +47,7 @@
     <string name="msg_logout_success">Daten gelöscht! Die App sollte neu gestartet werden.</string>
     <string name="msg_login_dialog_warning">Das Passwort wird NICHT gespeichert! Es wird lediglich ein Cookie erstellt.</string>
     <string name="msg_loading_error">Fehler beim Laden der Daten.</string>
+    <string name="msg_posting_error">Fehler beim Posten. Vorsicht! Ggf. wurde trotzdem erfolgreich gesendet!</string>
     <string name="msg_bookmark_removed">Bookmark entfernt.</string>
     <string name="msg_bookmark_added">Bookmark hinzugefügt.</string>
     <string name="msg_message_loading">Lade Nachricht</string>

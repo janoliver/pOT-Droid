@@ -30,6 +30,7 @@ public class Topic implements Serializable {
     private String mNewreplytoken;
     private Integer mLastFetchedPage;
     private Post mFirstPost;
+    private Post mLastPost;
     private ArrayList<Post> mPosts = new ArrayList<Post>();
     private String mHtmlCache;
 
@@ -106,6 +107,15 @@ public class Topic implements Serializable {
     public Post getFirstPost() {
         return mFirstPost;
     }
+
+    public void setLastPost(Post post) {
+        mLastPost = post;
+    }
+
+    public Post getLastPost() {
+        return mLastPost;
+    }
+    
 
     public Integer getIconId() {
         return mFirstPost.getIconId();

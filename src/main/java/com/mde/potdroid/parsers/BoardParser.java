@@ -216,6 +216,58 @@ public class BoardParser extends DefaultHandler {
             }
         });
 
+        Element last_post = thread.getChild(TopicParser.LASTPOST_TAG).getChild(TopicParser
+                .POST_TAG);
+        last_post.setElementListener(new ElementListener() {
+
+            @Override
+            public void end() {
+                mCurrentThread.setLastPost(mCurrentPost);
+            }
+
+            @Override
+            public void start(Attributes attributes) {
+                mCurrentPost = new Post();
+                mCurrentPost.setBoard(mBoard);
+                mCurrentPost.setTopic(mCurrentThread);
+            }
+        });
+        last_post.requireChild(TopicParser.DATE_TAG).setStartElementListener(new StartElementListener() {
+
+            @Override
+            public void start(Attributes attributes) {
+                mCurrentPost.setDateFromTimestamp(Integer.parseInt(attributes.getValue
+                        (TopicParser.DATE_TIMESTAMP_ATTRIBUTE)));
+            }
+        });
+        last_post.getChild(TopicParser.ICON_TAG).setTextElementListener(new TextElementListener() {
+
+            @Override
+            public void start(Attributes attributes) {
+                mCurrentPost.setIconId(Integer.parseInt(attributes.getValue(TopicParser
+                        .ICON_ATTRIBUTE)));
+            }
+
+            @Override
+            public void end(String body) {
+                mCurrentPost.setIconFile(body);
+            }
+        });
+        last_post.requireChild(TopicParser.USER_TAG).setTextElementListener(new TextElementListener() {
+
+            @Override
+            public void end(String body) {
+                mCurrentUser.setNick(body);
+                mCurrentPost.setAuthor(mCurrentUser);
+            }
+
+            @Override
+            public void start(Attributes attributes) {
+                mCurrentUser = new User(Integer.parseInt(attributes.getValue(TopicParser
+                        .ID_ATTRIBUTE)));
+            }
+        });
+
         Element flags = thread.getChild(TopicParser.FLAGS_TAG);
 
         flags.requireChild(TopicParser.IS_CLOSED_TAG).setStartElementListener(new StartElementListener() {

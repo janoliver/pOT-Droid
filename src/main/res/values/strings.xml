@@ -101,6 +101,6 @@
     <string name="sidebar_cap_boards">BOARDS</string>
     <string name="no_unread_bookmarks">Keine ungelesenen Bookmarks</string>
     <string name="no_favorite_boards">Keine Favoriten</string>
-    <string name="thread_author"><![CDATA[von <strong>%1$s</strong>]]></string>
+    <string name="thread_lastpost"><![CDATA[<strong>%1$s</strong>, %2$s Uhr]]></string>
 
 </resources>

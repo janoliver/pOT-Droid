@@ -27,6 +27,7 @@ import com.mde.potdroid.parsers.BoardParser;
 import org.apache.http.Header;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 /**
  * The Board Fragment, which contains a list of Topics.
@@ -259,10 +260,15 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                     t.getNumberOfPosts(), t.getNumberOfPages()));
             pages.setText(pages_content);
 
-            // author
-            TextView author = (TextView) row.findViewById(R.id.author);
-            author.setText(Html.fromHtml(String.format(
-                    getString(R.string.thread_author), t.getFirstPost().getAuthor().getNick())));
+            // lastpost
+            if(t.getLastPost() != null) {
+                TextView lastpost = (TextView) row.findViewById(R.id.author);
+                String time = new SimpleDateFormat(getString(R.string.default_time_format)).format(t
+                        .getLastPost().getDate());
+                lastpost.setText(Html.fromHtml(String.format(
+                        getString(R.string.thread_lastpost), t.getLastPost().getAuthor().getNick(),
+                        time)));
+            }
 
             // icon
             if (t.getIconId() != null) {

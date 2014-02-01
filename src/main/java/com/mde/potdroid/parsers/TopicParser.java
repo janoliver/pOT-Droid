@@ -22,6 +22,7 @@ public class TopicParser extends DefaultHandler {
     public static String SUBTITLE_TAG = "subtitle";
     public static String TITLE_TAG = "title";
     public static String FIRSTPOST_TAG = "firstpost";
+    public static String LASTPOST_TAG = "lastpost";
     public static String ID_ATTRIBUTE = "id";
     public static String FLAGS_TAG = "flags";
     public static String POSTS_TAG = "posts";

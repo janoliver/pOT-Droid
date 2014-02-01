@@ -119,6 +119,16 @@ public class TopicJSInterface extends BenderJSInterface {
     }
 
     /**
+     * Check if new posts should be marked
+     *
+     * @return true if yes
+     */
+    @JavascriptInterface
+    public boolean isMarkNewPosts() {
+        return mSettings.markNewPosts();
+    }
+
+    /**
      * Check if User is logged in
      *
      * @return true if yes

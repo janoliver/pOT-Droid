@@ -44,6 +44,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_MATA = "pref_mata";
     public static final String PREF_KEY_MATA_FORUM = "pref_mata_forum";
     public static final String PREF_KEY_SHOW_MENU = "pref_show_menu";
+    public static final String PREF_KEY_MARK_NEW_POSTS = "pref_mark_new_posts";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;
@@ -175,6 +176,15 @@ public class SettingsWrapper {
      */
     public Boolean darkenOldPosts() {
         return mSharedPreferences.getBoolean(PREF_KEY_DARKEN, false);
+    }
+
+    /**
+     * Check if new posts should be marked
+     *
+     * @return true if so
+     */
+    public Boolean markNewPosts() {
+        return mSharedPreferences.getBoolean(PREF_KEY_MARK_NEW_POSTS, false);
     }
 
     /**

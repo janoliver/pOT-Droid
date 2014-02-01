@@ -42,6 +42,12 @@
                 android:title="Gelesene Posts abdunkeln"
                 android:defaultValue="false"/>
 
+        <CheckBoxPreference
+                android:key="pref_mark_new_posts"
+                android:title="Neue posts markieren"
+                android:summary="Verhält sich wie in pOT-Droid 2"
+                android:defaultValue="false"/>
+
         <ListPreference
                 android:key="pref_bender_position"
                 android:title="Bender anzeigen"

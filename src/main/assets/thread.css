@@ -13,6 +13,14 @@ section {
     border-radius: 4px;
 }
 
+section.oldpost {
+    opacity: 0.5;
+}
+
+section.newpost header {
+    border-left:3px solid yellow;
+}
+
 header {
     background-color:#091827;
     font-weight:bold;

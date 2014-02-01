@@ -80,7 +80,10 @@ $(document).ready(function() {
         if(api.getScroll() > 0) {
             document.location.href = "#" + api.getScroll();
             if(api.isDarkenOldPosts()) {
-                $('a[name="' + api.getScroll() + '"]').parent().prevAll().css({ opacity: 0.5 });
+                $('a[name="' + api.getScroll() + '"]').parent().prevAll().addClass("oldpost");
+            }
+            if(api.isMarkNewPosts()) {
+                $('a[name="' + api.getScroll() + '"]').parent().nextAll().addClass("newpost");
             }
         } else {
             window.scrollTo(0,0);

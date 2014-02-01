@@ -32,7 +32,7 @@ public class BBCodeParser {
     private Map<String, BBCodeTag> mTags = new HashMap<String, BBCodeTag>();
 
     public static String getAllTags() {
-        return "string, b, u, s, i, mod, spoiler, code, img, quote, url, list, table, m";
+        return "string, b, u, s, i, mod, spoiler, code, img, quote, url, list, table, m, tex";
     }
 
     // register a new tag

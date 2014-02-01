@@ -24,7 +24,7 @@
     <string name="pm_author_system">System</string>
     <string name="default_time_format">dd.MM.yyyy, HH:mm</string>
     <string name="strong"><![CDATA[<strong>%1$s</strong>]]></string>
-    <string name="update_info">Dies ist eine neue Version von pOT-Droid. Kurze Einführung oder Changelog gefällig?</string>
+    <string name="update_info">Dies ist eine neue Version von pOT-Droid. Kurze Einführung oder Changelog gefällig? Du erfährst auch etwas über die pOT-Droid Spendenaktion!</string>
     <string name="update_info_about">Über die App</string>
     <string name="update_info_cancel">Lass mich in Ruhe!</string>
 

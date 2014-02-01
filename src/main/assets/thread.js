@@ -1,10 +1,5 @@
 $(document).ready(function() {
 
-    setupStyle();
-    $(window).resize(function() {
-        setupStyle();
-    });
-
     // bender loading
     if(api.isBenderEnabled() && api.downloadBenders()) {
         $(".bender:not([style])").each(function() {
@@ -76,6 +71,12 @@ $(document).ready(function() {
     // scroll to the last post, when there was one
     // to ensure correct scrolling, this should be the last JS call.
     setTimeout(function() {
+
+        setupStyle();
+        $(window).resize(function() {
+            setupStyle();
+        });
+
         if(api.getScroll() > 0) {
             document.location.href = "#" + api.getScroll();
             if(api.isDarkenOldPosts()) {
@@ -92,6 +93,7 @@ $(document).ready(function() {
         },{
             continuous: false,
         });
+
 
     }, 100);
 

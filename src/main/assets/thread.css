@@ -68,8 +68,7 @@ header div.date {
     font-weight:normal;
 }
 
-header i,
-.buttons i {
+header .icons i.fa {
     font-size:1.5em;
     color:#394E63;
     width:1em;
@@ -79,8 +78,7 @@ header i,
     display:none;
 }
 
-header i:active,
-.buttons i:active {
+header i:active {
     color:#ffffff;
 }
 

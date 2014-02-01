@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.mde.potdroid"
-          android:versionCode="42"
-          android:versionName="3.0.6">
+          android:versionCode="43"
+          android:versionName="3.0.7">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -69,7 +69,8 @@
                 android:name=".EditorActivity"
                 android:uiOptions="none"/>
 
-        <activity android:name=".TopicActivity"
+        <activity
+                android:name=".TopicActivity"
                 android:configChanges="orientation|screenSize|keyboard">
 
             <intent-filter>
@@ -104,7 +105,9 @@
 
         </activity>
 
-        <activity android:name=".MessageActivity" android:uiOptions="none"/>
+        <activity
+                android:name=".MessageActivity"
+                android:uiOptions="none"/>
 
         <activity android:name=".SettingsActivity"/>
 

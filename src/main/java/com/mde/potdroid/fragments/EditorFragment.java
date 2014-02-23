@@ -35,9 +35,12 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     protected static final String ARG_MODE = "mode";
     protected static final String ARG_TOPIC_ID = "topic_id";
     protected static final String ARG_POST_ID = "post_id";
+    protected static final String ARG_BOARD_ID = "baord_id";
     protected static final String ARG_TOKEN = "token";
     protected static final String ARG_ICON = "icon";
     protected static final String ARG_RCPT = "rcpt";
+    protected static final String ARG_SUBTITLE = "subtitle";
+    protected static final String ARG_TAGS = "tags";
     protected static final String ARG_TEXT = "text";
     protected static final String ARG_TITLE = "title";
     protected static final String ARG_STATUS = "status";
@@ -45,6 +48,8 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     // the input title and text views
     protected EditText mEditRcpt;
     protected EditText mEditTitle;
+    protected EditText mEditSubtitle;
+    protected EditText mEditTags;
     protected EditText mEditText;
     protected ImageButton mIconButton;
 
@@ -52,6 +57,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     public static int MODE_EDIT = 1;
     public static int MODE_REPLY = 2;
     public static int MODE_MESSAGE = 3;
+    public static int MODE_THREAD = 4;
 
     // the array of icons
     private int mIconId;
@@ -78,9 +84,15 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_editor, container, false);
 
-        // set the image button listener
-        ImageButton icon = (ImageButton) v.findViewById(R.id.button_icon);
-        icon.setOnClickListener(new View.OnClickListener() {
+        // assign some views
+        mEditText = (EditText) v.findViewById(R.id.edit_content);
+        mEditTitle = (EditText) v.findViewById(R.id.edit_title);
+        mEditRcpt = (EditText) v.findViewById(R.id.edit_rcpt);
+        mEditSubtitle = (EditText) v.findViewById(R.id.edit_subtitle);
+        mEditTags = (EditText) v.findViewById(R.id.edit_tags);
+        mIconButton = (ImageButton) v.findViewById(R.id.button_icon);
+
+        mIconButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 IconSelectionDialog id = new IconSelectionDialog();
@@ -88,12 +100,6 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
                 id.show(getBaseActivity().getSupportFragmentManager(), "icondialog");
             }
         });
-
-        // assign some views
-        mEditText = (EditText) v.findViewById(R.id.edit_content);
-        mEditTitle = (EditText) v.findViewById(R.id.edit_title);
-        mEditRcpt = (EditText) v.findViewById(R.id.edit_rcpt);
-        mIconButton = (ImageButton) v.findViewById(R.id.button_icon);
 
         // fill the form
         if (getArguments().getString(ARG_TEXT) != null)
@@ -117,6 +123,10 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             mIconButton.setVisibility(View.GONE);
             mEditRcpt.setVisibility(View.VISIBLE);
             getActionbar().setTitle(R.string.subtitle_form_write_pm);
+        } else if (getArguments().getInt(ARG_MODE, MODE_REPLY) == MODE_THREAD) {
+            mEditSubtitle.setVisibility(View.VISIBLE);
+            mEditTags.setVisibility(View.VISIBLE);
+            getActionbar().setTitle(R.string.subtitle_form_write_thread);
         }
 
         return v;
@@ -151,6 +161,8 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
                 Bundle args = new Bundle(getArguments());
                 args.putString(ARG_RCPT, mEditRcpt.getText().toString());
+                args.putString(ARG_SUBTITLE, mEditSubtitle.getText().toString());
+                args.putString(ARG_TAGS, mEditTags.getText().toString());
                 args.putString(ARG_TEXT, mEditText.getText().toString());
                 args.putString(ARG_TITLE, mEditTitle.getText().toString());
                 args.putInt(ARG_ICON, mIconId);
@@ -169,8 +181,13 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
         if (getArguments().getInt(ARG_MODE) == MODE_MESSAGE)
             return new AsyncMessageSubmitter(getBaseActivity(), args);
-        else
+        else if(getArguments().getInt(ARG_MODE) == MODE_REPLY ||
+                getArguments().getInt(ARG_MODE) == MODE_EDIT)
             return new AsyncPostSubmitter(getBaseActivity(), args);
+        else if(getArguments().getInt(ARG_MODE) == MODE_THREAD)
+            return new AsyncThreadSubmitter(getBaseActivity(), args);
+
+        return null;
     }
 
     @Override
@@ -216,6 +233,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
                 mIconButton.setImageBitmap(bm);
                 mIconId = iconId;
             } catch (IOException e) {
+                // nothing.
             }
         }
     }
@@ -237,7 +255,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             // this must resemble the same form on the website
             r.add("message", args.getString(ARG_TEXT));
             r.add("submit", "Eintragen");
-            r.add("TID", "" + args.getInt(ARG_TOPIC_ID));
+            r.add("TID", new Integer(args.getInt(ARG_TOPIC_ID)).toString());
             r.add("token", args.getString(ARG_TOKEN));
 
             if (mMode == MODE_EDIT) {
@@ -272,6 +290,64 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             if (m.find()) {
                 result.putInt(ARG_STATUS, Activity.RESULT_OK);
                 result.putInt(ARG_POST_ID, Integer.parseInt(m.group(2)));
+            } else {
+                result.putInt(ARG_STATUS, Activity.RESULT_CANCELED);
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onNetworkFailure(int statusCode, Header[] headers,
+                                        String responseBody, Throwable error) {
+
+            Utils.printException(error);
+            deliverResult(null);
+        }
+    }
+
+    static class AsyncThreadSubmitter extends AsyncHttpLoader<Bundle> {
+
+        protected int mMode;
+
+        AsyncThreadSubmitter(Context cx, Bundle args) {
+            super(cx, Network.BOARD_URL_THREAD, AsyncHttpLoader.POST);
+
+            mMode = args.getInt(ARG_MODE);
+
+            EncodingRequestParams r = new EncodingRequestParams();
+
+            r.setEncoding(Network.ENCODING_ISO);
+            setTimeout(300);
+
+            // this must resemble the same form on the website
+            r.add("message", args.getString(ARG_TEXT));
+            r.add("submit", "Eintragen");
+            r.add("BID", new Integer(args.getInt(ARG_BOARD_ID)).toString());
+            r.add("thread_subtitle", args.getString(ARG_SUBTITLE));
+            r.add("thread_title", args.getString(ARG_TITLE));
+            r.add("thread_icon", new Integer(args.getInt(ARG_ICON)).toString());
+            r.add("thread_converturls", "1");
+            r.add("thread_tags", args.getString(ARG_TAGS));
+            r.add("token", args.getString(ARG_TOKEN));
+
+            setParams(r);
+
+        }
+
+        @Override
+        public Bundle processNetworkResponse(String response) {
+            // check if the correct success website is displayed
+
+            Pattern pattern = Pattern.compile("thread.php\\?TID=([0-9]+)");
+            Matcher m = pattern.matcher(response);
+
+            Bundle result = new Bundle();
+            result.putInt(ARG_MODE, mMode);
+
+            if (m.find()) {
+                result.putInt(ARG_STATUS, Activity.RESULT_OK);
+                result.putInt(ARG_TOPIC_ID, Integer.parseInt(m.group(1)));
             } else {
                 result.putInt(ARG_STATUS, Activity.RESULT_CANCELED);
             }

@@ -29,6 +29,8 @@ public class BoardParser extends DefaultHandler {
     public static String NUMBER_OF_THREADS_ATTRIBUTE = "value";
     public static String NUMBER_OF_REPLIES_TAG = "number-of-replies";
     public static String NUMBER_OF_REPLIES_ATTRIBUTE = "value";
+    public static String TOKEN_NEWTHREAD_TAG = "token-newthread";
+    public static String TOKEN_NEWTHREAD_ATTRIBUTE = "value";
     public static String URL = "xml/board.php";
     private Post mCurrentPost;
     private User mCurrentUser;
@@ -89,6 +91,13 @@ public class BoardParser extends DefaultHandler {
             public void start(Attributes attributes) {
                 mBoard.setNumberOfReplies(Integer.parseInt(attributes.getValue
                         (NUMBER_OF_REPLIES_ATTRIBUTE)));
+            }
+        });
+        board.getChild(TOKEN_NEWTHREAD_TAG).setStartElementListener(new StartElementListener() {
+
+            @Override
+            public void start(Attributes attributes) {
+                mBoard.setNewthreadtoken(attributes.getValue(TOKEN_NEWTHREAD_ATTRIBUTE));
             }
         });
         board.requireChild(IN_CATEGORY_TAG).setStartElementListener(new StartElementListener() {

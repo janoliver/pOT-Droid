@@ -1,5 +1,6 @@
 package com.mde.potdroid.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -9,13 +10,12 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.mde.potdroid.EditorActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.TopicActivity;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
@@ -25,6 +25,7 @@ import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.BoardParser;
+import com.mde.potdroid.views.IconDrawable;
 import org.apache.http.Header;
 
 import java.io.IOException;
@@ -105,8 +106,66 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        setHasOptionsMenu(true);
+
         if (mBoard == null)
             startLoader(this);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.actionmenu_board, menu);
+
+        menu.findItem(R.id.new_thread).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
+
+        if (!Utils.isLoggedIn()) {
+            menu.setGroupVisible(R.id.loggedout_board, false);
+        } else {
+            menu.setGroupVisible(R.id.loggedout_board, true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.new_thread:
+                newThread();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /**
+     * Open the form for a new thread
+     */
+    public void newThread() {
+        if(mBoard == null)
+            return;
+
+        Intent intent = new Intent(getBaseActivity(), EditorActivity.class);
+        intent.putExtra(EditorFragment.ARG_MODE, EditorFragment.MODE_THREAD);
+        intent.putExtra(EditorFragment.ARG_BOARD_ID, mBoard.getId());
+        intent.putExtra(EditorFragment.ARG_TOKEN, mBoard.getNewthreadtoken());
+
+        startActivityForResult(intent, EditorFragment.MODE_THREAD);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == EditorFragment.MODE_THREAD) {
+            if (resultCode == Activity.RESULT_OK) {
+                Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
+                intent.putExtra(TopicFragment.ARG_TOPIC_ID, data.getExtras().getInt(EditorFragment.ARG_TOPIC_ID));
+                intent.putExtra(TopicFragment.ARG_PAGE, 1);
+                startActivity(intent);
+            }
+        }
     }
 
     @Override

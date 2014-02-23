@@ -19,6 +19,7 @@ public class Board implements Serializable {
     private Integer mPage;
     private String mName;
     private String mDescription;
+    private String mNewthreadtoken;
     private ArrayList<Topic> mTopics = new ArrayList<Topic>();
     private Category mCategory;
     private Post mLastPost;
@@ -76,6 +77,14 @@ public class Board implements Serializable {
 
     public Integer getNumberOfPages() {
         return mNumberOfThreads / mThreadsPerPage + 1;
+    }
+
+    public String getNewthreadtoken() {
+        return mNewthreadtoken;
+    }
+
+    public void setNewthreadtoken(String newthreadtoken) {
+        mNewthreadtoken = newthreadtoken;
     }
 
     public Integer getNumberOfReplies() {

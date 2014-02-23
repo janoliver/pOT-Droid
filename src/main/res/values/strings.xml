@@ -34,6 +34,7 @@
     <string name="action_send">Senden</string>
     <string name="action_cancel">Abbrechen</string>
     <string name="action_new_message">Neue Nachricht</string>
+    <string name="action_new_thread">Neuer Thread</string>
     <string name="action_reply">Antworten</string>
     <string name="action_remove_favorite_board">Board entfernen</string>
     <string name="action_add_favorite_board">Board als Favorit hinzufügen</string>
@@ -75,6 +76,8 @@
     <string name="subtitle_form_write_post">Antwort verfassen</string>
     <string name="subtitle_form_edit_post">Post bearbeiten</string>
     <string name="subtitle_form_write_pm">Nachricht verfassen</string>
+    <string name="subtitle_form_write_thread">Thread verfassen</string>
+    <string name="subtitle_form_edit_thread">Thread bearbeiten</string>
     <string name="title_messages">PM Nachrichten</string>
     <string name="tab_inbox">Posteingang</string>
     <string name="tab_outbox">Postausgang</string>
@@ -89,6 +92,8 @@
     <string name="form_text_hint">Text</string>
     <string name="form_title_hint">Titel</string>
     <string name="form_rcpt_hint">Empfänger</string>
+    <string name="form_subtitle_hint">Untertitel</string>
+    <string name="form_tags_hint">Tag1, Tag2, …</string>
 
     <!-- vies -->
     <string name="topic_additional_information"><![CDATA[<strong>%1$d</strong> Posts, <strong>%2$d</strong> Seiten]]></string>

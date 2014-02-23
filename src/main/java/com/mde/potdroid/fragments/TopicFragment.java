@@ -1,14 +1,11 @@
 package com.mde.potdroid.fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
@@ -24,6 +21,7 @@ import com.mde.potdroid.helpers.*;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.TopicParser;
+import com.mde.potdroid.views.ChoosePageDialog;
 import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.PostActionsDialog;
 import org.apache.http.Header;
@@ -126,8 +124,10 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
         if (!Utils.isLoggedIn()) {
             menu.setGroupVisible(R.id.loggedout_topic, false);
+            menu.setGroupVisible(R.id.loggedout_topic2, false);
         } else {
             menu.setGroupVisible(R.id.loggedout_topic, true);
+            menu.setGroupVisible(R.id.loggedout_topic2, true);
         }
     }
 
@@ -143,7 +143,8 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
                 mJsInterface.unveil();
                 return true;
             case R.id.topage:
-                ChoosePageDialog d = new ChoosePageDialog();
+                ChoosePageDialog d = ChoosePageDialog.getInstance(mTopic.getNumberOfPages());
+                d.setTargetFragment(this, 0);
                 d.show(getFragmentManager(), "pagedialog");
                 return true;
             case R.id.last_own_post:
@@ -523,24 +524,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         startActivityForResult(intent, EditorFragment.MODE_MESSAGE);
     }
 
-    public class ChoosePageDialog extends DialogFragment {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            CharSequence[] items = new CharSequence[mTopic.getNumberOfPages()];
-            for(int i=0; i < items.length; ++i) {
-                items[i] = "Seite "+(i+1);
-            }
 
-            builder.setTitle(R.string.action_topage)
-                    .setItems(items, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            goToPage(which + 1);
-                        }
-                    });
-            return builder.create();
-        }
-    }
 
 
 }

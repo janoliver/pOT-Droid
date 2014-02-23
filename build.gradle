@@ -16,20 +16,27 @@ repositories {
 dependencies {
     compile 'com.android.support:support-v4:19.0.1'
     compile 'com.android.support:appcompat-v7:19.0.1'
-    compile 'com.samskivert:jmustache:1.8'
+    compile 'com.samskivert:jmustache:1.9'
     compile 'com.loopj.android:android-async-http:1.4.4'
-    compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abc:0.9.2'
-    compile 'com.github.castorflex.smoothprogressbar:library:0.3.2'
-    compile 'de.keyboardsurfer.android.widget:crouton:1.8.2'
+    compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abc:0.9.3'
+    compile 'com.github.castorflex.smoothprogressbar:library:0.3.3'
+    compile 'de.keyboardsurfer.android.widget:crouton:1.8.3'
 }
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19'
+    buildToolsVersion "19.0.2"
 
     defaultConfig {
         minSdkVersion 7
         targetSdkVersion 19
+    }
+
+    buildTypes {
+        release {
+            runProguard true
+            proguardFile getDefaultProguardFile('proguard-android.txt')
+        }
     }
 
 }

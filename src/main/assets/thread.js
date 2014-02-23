@@ -68,6 +68,15 @@ $(document).ready(function() {
         api.pmAuthor(post_id);
     });
 
+    $('a.author').click(function(e) {
+        if($("a[name=" + getURLParameter(this, 'PID') + "]").length > 0) {
+            e.preventDefault();
+            $("*").css({ opacity: 1.0 });
+            location.hash = "#";
+            location.hash = "#" + getURLParameter(this, 'PID');
+        }
+    });
+
     // scroll to the last post, when there was one
     // to ensure correct scrolling, this should be the last JS call.
     setTimeout(function() {
@@ -196,3 +205,10 @@ function setupStyle() {
         $(".login").hide();
     }
 }
+
+function getURLParameter(a, name) {
+    return decodeURI(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(a.search)||[,null])[1]
+    );
+}
+

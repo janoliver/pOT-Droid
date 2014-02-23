@@ -340,8 +340,8 @@ public class TopicBuilder {
             @Override
             public String html(String content, List<String> args) {
                 if (args.size() == 3)
-                    return String.format("<blockquote><div class=\"author\">%1$s</div>" +
-                            "<div class=\"content\">%2$s</div></blockquote>", args.get(2), content);
+                    return String.format("<blockquote><a href=\"http://forum.mods.de/bb/thread.php?TID=%3$s&PID=%4$s\" class=\"author\">%1$s</a>" +
+                            "<div class=\"content\">%2$s</div></blockquote>", args.get(2), content, args.get(0), args.get(1));
                 else
                     return String.format("<blockquote><div " +
                             "class=\"content\">%1$s</div></blockquote>", content);

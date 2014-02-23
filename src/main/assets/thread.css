@@ -56,6 +56,7 @@ article div.bender {
 header div.author {
     color:#fff;
     font-size:1.0em;
+    display:block;
 }
 
 header div.title {
@@ -124,11 +125,13 @@ article div blockquote {
     margin:0;
 }
 
-article div blockquote div.author {
+article div blockquote a.author {
     background:rgba(9, 24, 39, 0.35);
     font-weight:bold;
     padding:5px;
     color:#fff;
+    text-decoration:none;
+    display:block;
 }
 
 article div blockquote div.content {

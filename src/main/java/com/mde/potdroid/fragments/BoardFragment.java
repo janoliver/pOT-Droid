@@ -22,6 +22,7 @@ import com.mde.potdroid.helpers.AsyncHttpLoader;
 import com.mde.potdroid.helpers.DatabaseWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Board;
+import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.BoardParser;
 import org.apache.http.Header;
@@ -261,14 +262,17 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             pages.setText(pages_content);
 
             // lastpost
+            Post displayPost;
+
             if(t.getLastPost() != null) {
-                TextView lastpost = (TextView) row.findViewById(R.id.author);
-                String time = new SimpleDateFormat(getString(R.string.default_time_format)).format(t
-                        .getLastPost().getDate());
-                lastpost.setText(Html.fromHtml(String.format(
-                        getString(R.string.thread_lastpost), t.getLastPost().getAuthor().getNick(),
-                        time)));
+                displayPost = t.getLastPost();
+            } else {
+                displayPost = t.getFirstPost();
             }
+            TextView lastpost = (TextView) row.findViewById(R.id.author);
+            String time = new SimpleDateFormat(getString(R.string.default_time_format)).format(displayPost.getDate());
+            lastpost.setText(Html.fromHtml(String.format(
+                    getString(R.string.thread_lastpost), displayPost.getAuthor().getNick(), time)));
 
             // icon
             if (t.getIconId() != null) {

@@ -38,6 +38,7 @@
     <string name="action_remove_favorite_board">Board entfernen</string>
     <string name="action_add_favorite_board">Board als Favorit hinzufügen</string>
     <string name="action_unveil">Zum Beginn der Seite</string>
+    <string name="action_topage">Gehe zu Seite…</string>
     <string name="action_last_own_post">Zum letzten eigenen Post</string>
     <string name="action_load_all_images">Alle Bilder laden</string>
 

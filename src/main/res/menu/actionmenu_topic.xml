@@ -9,6 +9,10 @@
             android:id="@+id/unveil"
             android:title="@string/action_unveil"
             potdroid:showAsAction="never"/>
+    <item
+            android:id="@+id/topage"
+            android:title="@string/action_topage"
+            potdroid:showAsAction="never"/>
     <group android:id="@+id/loggedout_topic">
         <item
                 android:id="@+id/last_own_post"

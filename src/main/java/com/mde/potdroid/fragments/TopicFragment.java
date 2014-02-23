@@ -1,11 +1,14 @@
 package com.mde.potdroid.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
@@ -118,6 +121,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         menu.findItem(R.id.new_message).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
         menu.findItem(R.id.load_images).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_picture));
         menu.findItem(R.id.unveil).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_eye_open));
+        menu.findItem(R.id.topage).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_arrow_right));
         menu.findItem(R.id.last_own_post).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_search));
 
         if (!Utils.isLoggedIn()) {
@@ -137,6 +141,10 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
                 return true;
             case R.id.unveil:
                 mJsInterface.unveil();
+                return true;
+            case R.id.topage:
+                ChoosePageDialog d = new ChoosePageDialog();
+                d.show(getFragmentManager(), "pagedialog");
                 return true;
             case R.id.last_own_post:
                 mJsInterface.scrollToLastOwnPost();
@@ -263,6 +271,15 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         getArguments().remove(ARG_POST_ID);
         mJsInterface.registerScroll(0);
         restartLoader(this);
+    }
+
+    public void goToPage(int page) {
+        if(page != mTopic.getPage()) {
+            getArguments().putInt(ARG_PAGE, page);
+            getArguments().remove(ARG_POST_ID);
+            mJsInterface.registerScroll(0);
+            restartLoader(this);
+        }
     }
 
     public void goToPrevPage() {
@@ -505,5 +522,25 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         intent.putExtra(EditorFragment.ARG_RCPT, p.getAuthor().getNick());
         startActivityForResult(intent, EditorFragment.MODE_MESSAGE);
     }
+
+    public class ChoosePageDialog extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            CharSequence[] items = new CharSequence[mTopic.getNumberOfPages()];
+            for(int i=0; i < items.length; ++i) {
+                items[i] = "Seite "+(i+1);
+            }
+
+            builder.setTitle(R.string.action_topage)
+                    .setItems(items, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            goToPage(which + 1);
+                        }
+                    });
+            return builder.create();
+        }
+    }
+
 
 }

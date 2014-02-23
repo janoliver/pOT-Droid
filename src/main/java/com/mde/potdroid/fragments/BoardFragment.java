@@ -42,6 +42,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     private Board mBoard;
     // the topic list adapter
     private BoardListAdapter mListAdapter;
+    private ListView mListView;
     // bookmark database handler
     private DatabaseWrapper mDatabase;
 
@@ -70,7 +71,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         View v = inflater.inflate(R.layout.layout_board, container, false);
 
         mListAdapter = new BoardListAdapter();
-        ListView mListView = (ListView) v.findViewById(R.id.list_content);
+        mListView = (ListView) v.findViewById(R.id.list_content);
         mListView.setAdapter(mListAdapter);
 
         // clicking on a topic leads to the topicactivity
@@ -144,6 +145,9 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
             getActionbar().setTitle(mBoard.getName());
             getActionbar().setSubtitle(subtitle);
+
+            // scroll to top
+            mListView.setSelectionAfterHeaderView();
 
         } else {
             showError(getString(R.string.msg_loading_error));

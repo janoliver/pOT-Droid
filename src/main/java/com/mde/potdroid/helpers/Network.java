@@ -67,14 +67,22 @@ public class Network {
      * Get a xml document from the mods.de api
      */
     public void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        mHttpClient.get(getAbsoluteUrl(url), params, responseHandler);
+        try {
+            mHttpClient.get(getAbsoluteUrl(url), params, responseHandler);
+        } catch(Exception e) {
+            responseHandler.onFailure(0, null, null, e);
+        }
     }
 
     /**
      * Post to the mods.de website.
      */
     public void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        mHttpClient.post(getAbsoluteUrl(url), params, responseHandler);
+        try {
+            mHttpClient.post(getAbsoluteUrl(url), params, responseHandler);
+        } catch(Exception e) {
+            responseHandler.onFailure(0, null, null, e);
+        }
     }
 
     /**

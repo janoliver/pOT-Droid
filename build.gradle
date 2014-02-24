@@ -34,8 +34,13 @@ android {
 
     buildTypes {
         release {
-            runProguard true
-            proguardFile getDefaultProguardFile('proguard-android.txt')
+            runProguard false
+            proguardFile 'proguard-potdroid.txt'
+        }
+
+        debug {
+            runProguard false
+            proguardFile 'proguard-potdroid.txt'
         }
     }
 

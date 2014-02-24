@@ -73,6 +73,7 @@ public class TopicBuilder {
         Reader reader = new InputStreamReader(is);
         StringWriter sw = new StringWriter();
         Mustache.compiler().compile(reader).execute(new TopicContext(topic), sw);
+        Utils.log(sw.toString());
         return sw.toString();
     }
 

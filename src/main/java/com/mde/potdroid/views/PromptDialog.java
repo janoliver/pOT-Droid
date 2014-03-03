@@ -23,22 +23,36 @@ public class PromptDialog extends DialogFragment {
     protected Boolean mExpandable;
     protected String mTitle;
 
-    public PromptDialog(String title, String hint, int code) {
 
-        mNumberInputs = 1;
-        mHints = new String[] {hint};
-        mExpandable = false;
-        mCode = code;
-        mTitle = title;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mNumberInputs = getArguments().getInt("num_items",1);
+        mHints = getArguments().getStringArray("hints");
+        mExpandable = getArguments().getBoolean("expandable", false);
+        mCode = getArguments().getInt("code", 0);
+        mTitle = getArguments().getString("title");
     }
 
-    public PromptDialog(String title, int number_inputs, String[] hints, boolean expandable, int code) {
-        mNumberInputs = number_inputs;
-        mHints = hints;
-        mExpandable = expandable;
-        mCode = code;
-        mTitle = title;
+    public static PromptDialog newInstance(String title, int number_inputs, String[] hints,
+                                                  boolean expandable, int code) {
+        PromptDialog f = new PromptDialog();
+
+        Bundle args = new Bundle();
+        args.putBoolean("expandable", expandable);
+        args.putInt("num_items", number_inputs);
+        args.putString("title", title);
+        args.putInt("code", code);
+        args.putStringArray("hints", hints);
+        f.setArguments(args);
+
+        return f;
     }
+
+    public static PromptDialog newInstance(String title, String hint, int code) {
+        return newInstance(title, 1, new String[] {hint}, false, code);
+    }
+
 
     public void setCallback(SuccessCallback callback) {
         mCallback = callback;

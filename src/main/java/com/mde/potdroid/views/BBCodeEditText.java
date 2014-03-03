@@ -145,22 +145,22 @@ public class BBCodeEditText extends EditText
                 PromptDialog d;
                 switch (item.getItemId()) {
                     case R.id.smiley:
-                        IconSelectionDialog id = new IconSelectionDialog(true);
+                        IconSelectionDialog id = IconSelectionDialog.newInstance(true);
                         id.setCallback(this);
                         id.show(mActivity.getSupportFragmentManager(), "icondialog");
                         return true;
                     case R.id.image:
-                        d = new PromptDialog("Bild einfügen", "URL...", R.id.image);
+                        d = PromptDialog.newInstance("Bild einfügen", "URL...", R.id.image);
                         d.setCallback(this);
                         d.show(mActivity.getSupportFragmentManager(), "imgedialog");
                         return true;
                     case R.id.list:
-                        d = new PromptDialog("Liste einfügen", 3, new String[] {"a, 1, leer", "Item...", "Item..."}, true, R.id.list);
+                        d = PromptDialog.newInstance("Liste einfügen", 3, new String[] {"a, 1, leer", "Item...", "Item..."}, true, R.id.list);
                         d.setCallback(this);
                         d.show(mActivity.getSupportFragmentManager(), "listdialog");
                         return true;
                     case R.id.url:
-                        d = new PromptDialog("Link einfügen", 2, new String[] {"Text", "URL..."}, false, R.id.url);
+                        d = PromptDialog.newInstance("Link einfügen", 2, new String[] {"Text", "URL..."}, false, R.id.url);
                         d.setCallback(this);
                         d.show(mActivity.getSupportFragmentManager(), "linkdialog");
 

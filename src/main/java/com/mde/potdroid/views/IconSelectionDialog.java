@@ -55,9 +55,22 @@ public class IconSelectionDialog extends DialogFragment {
         mSmileys.put("icon18.gif", ":roll:");
     }
 
-    public IconSelectionDialog(boolean smileys) {
-        mIsSmileys = smileys;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mIsSmileys = getArguments().getBoolean("smileys",false);
     }
+
+    public static IconSelectionDialog newInstance(boolean smileys) {
+        IconSelectionDialog f = new IconSelectionDialog();
+
+        Bundle args = new Bundle();
+        args.putBoolean("smileys", smileys);
+        f.setArguments(args);
+
+        return f;
+    }
+
 
     public void setCallback(IconSelectedCallback callback) {
         mCallback = callback;

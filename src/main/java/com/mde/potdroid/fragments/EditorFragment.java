@@ -97,7 +97,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         mIconButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IconSelectionDialog id = new IconSelectionDialog(false);
+                IconSelectionDialog id = IconSelectionDialog.newInstance(false);
                 id.setCallback(EditorFragment.this);
                 id.show(getBaseActivity().getSupportFragmentManager(), "icondialog");
             }

@@ -155,7 +155,7 @@ public class BBCodeEditText extends EditText
                         d.show(mActivity.getSupportFragmentManager(), "imgedialog");
                         return true;
                     case R.id.list:
-                        d = new PromptDialog("Liste einfügen", 5, new String[] {"a, 1, leer", "Item...", "Item..."}, true, R.id.list);
+                        d = new PromptDialog("Liste einfügen", 3, new String[] {"a, 1, leer", "Item...", "Item..."}, true, R.id.list);
                         d.setCallback(this);
                         d.show(mActivity.getSupportFragmentManager(), "listdialog");
                         return true;

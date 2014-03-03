@@ -93,7 +93,7 @@
             android:textCursorDrawable="@null"
             android:layout_margin="5pt"/>
 
-    <EditText
+    <com.mde.potdroid.views.BBCodeEditText
             android:id="@+id/edit_content"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -109,7 +109,7 @@
             android:padding="3pt"
             android:scrollbars="vertical|horizontal"
             android:textColor="@color/bbstyle_darkblue"
-            android:textSize="12sp"
+            android:textSize="13sp"
             android:cursorVisible="true"
             android:textCursorDrawable="@null"/>
 

@@ -17,6 +17,7 @@ import com.mde.potdroid.helpers.EncodingRequestParams;
 import com.mde.potdroid.helpers.Network;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.parsers.MessageParser;
+import com.mde.potdroid.views.BBCodeEditText;
 import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.IconSelectionDialog;
 import org.apache.http.Header;
@@ -30,7 +31,8 @@ import java.util.regex.Pattern;
  * PM message form. Activities must implement the FormListener, to be notified on
  * finishing, success and failure of the form.
  */
-public class EditorFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Bundle> {
+public class EditorFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Bundle>,
+   IconSelectionDialog.IconSelectedCallback{
 
     protected static final String ARG_MODE = "mode";
     protected static final String ARG_TOPIC_ID = "topic_id";
@@ -50,7 +52,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     protected EditText mEditTitle;
     protected EditText mEditSubtitle;
     protected EditText mEditTags;
-    protected EditText mEditText;
+    protected BBCodeEditText mEditText;
     protected ImageButton mIconButton;
 
     // this holds the kind of form this is. The static fields are defined below.
@@ -85,7 +87,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         View v = inflater.inflate(R.layout.layout_editor, container, false);
 
         // assign some views
-        mEditText = (EditText) v.findViewById(R.id.edit_content);
+        mEditText = (BBCodeEditText) v.findViewById(R.id.edit_content);
         mEditTitle = (EditText) v.findViewById(R.id.edit_title);
         mEditRcpt = (EditText) v.findViewById(R.id.edit_rcpt);
         mEditSubtitle = (EditText) v.findViewById(R.id.edit_subtitle);
@@ -95,8 +97,8 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         mIconButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IconSelectionDialog id = new IconSelectionDialog();
-                id.setTargetFragment(EditorFragment.this, 0);
+                IconSelectionDialog id = new IconSelectionDialog(false);
+                id.setCallback(EditorFragment.this);
                 id.show(getBaseActivity().getSupportFragmentManager(), "icondialog");
             }
         });
@@ -122,6 +124,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         else if (getArguments().getInt(ARG_MODE, MODE_REPLY) == MODE_MESSAGE) {
             mIconButton.setVisibility(View.GONE);
             mEditRcpt.setVisibility(View.VISIBLE);
+            mEditText.disable();
             getActionbar().setTitle(R.string.subtitle_form_write_pm);
         } else if (getArguments().getInt(ARG_MODE, MODE_REPLY) == MODE_THREAD) {
             mEditSubtitle.setVisibility(View.VISIBLE);
@@ -235,6 +238,18 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             } catch (IOException e) {
                 // nothing.
             }
+        }
+    }
+
+    @Override
+    public void selected(String filename, String smiley) {
+        try {
+
+            Integer icon_id = Integer
+                    .parseInt(filename.substring(4).split("\\.")[0]);
+            setIconById(icon_id);
+        } catch (NumberFormatException e) {
+            setIconById(-1);
         }
     }
 

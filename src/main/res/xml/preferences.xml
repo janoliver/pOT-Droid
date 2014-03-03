@@ -139,6 +139,12 @@
                 android:defaultValue="14"
                 android:entries="@array/pref_start_forum"
                 android:entryValues="@array/pref_start_forum_values"/>
+
+        <CheckBoxPreference
+                android:key="pref_bbcode_editor"
+                android:title="BBCode Editor aktivieren"
+                android:summary="Nutze experimentellen BBCode Editor"
+                android:defaultValue="false"/>
     </PreferenceCategory>
 
     <PreferenceCategory

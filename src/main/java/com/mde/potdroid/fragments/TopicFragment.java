@@ -4,12 +4,18 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.Html;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.style.CharacterStyle;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.*;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -523,8 +529,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         intent.putExtra(EditorFragment.ARG_RCPT, p.getAuthor().getNick());
         startActivityForResult(intent, EditorFragment.MODE_MESSAGE);
     }
-
-
 
 
 }

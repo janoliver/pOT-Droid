@@ -71,6 +71,18 @@ public class Utils {
     }
 
     /**
+     * Get a drawable Smiley from the assets folder
+     *
+     * @param cx       the context
+     * @param filename the icon filename
+     * @return Drawable of the icon
+     * @throws IOException
+     */
+    public static Drawable getSmiley(Context cx, String filename) throws IOException {
+        return getDrawableFromAsset(cx, "smileys/" + filename);
+    }
+
+    /**
      * Get a drawable asset file
      *
      * @param cx      the context

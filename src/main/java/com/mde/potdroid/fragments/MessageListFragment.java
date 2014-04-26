@@ -140,8 +140,6 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
         if (requestCode == EditorFragment.MODE_MESSAGE) {
             if (resultCode == Activity.RESULT_OK) {
                 showSuccess(R.string.msg_send_successful);
-            } else {
-                showError(R.string.msg_send_failure);
             }
         }
     }

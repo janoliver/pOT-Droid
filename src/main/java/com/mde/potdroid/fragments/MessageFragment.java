@@ -157,8 +157,6 @@ public class MessageFragment extends BaseFragment
         if (requestCode == EditorFragment.MODE_MESSAGE) {
             if (resultCode == Activity.RESULT_OK) {
                 showSuccess(R.string.msg_send_successful);
-            } else {
-                showError(R.string.msg_send_failure);
             }
         }
     }
@@ -276,6 +274,7 @@ public class MessageFragment extends BaseFragment
                 m.setHtmlCache(b.parse(m));
                 return m;
             } catch (Exception e) {
+                e.printStackTrace();
                 return null;
             }
         }

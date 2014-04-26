@@ -61,5 +61,14 @@
     @android.webkit.JavascriptInterface <methods>;
 }
 
--keep class com.mde.potdroid.helpers.** { *; }
--keepclassmembers class com.mde.potdroid.helpers.** { *; }
+-keep class com.mde.potdroid.helpers.TopicBuilder$PostContext { *; }
+-keepclassmembers class com.mde.potdroid.helpers.TopicBuilder$PostContext { *; }
+
+-keep class com.mde.potdroid.helpers.TopicBuilder$TopicContext { *; }
+-keepclassmembers class com.mde.potdroid.helpers.TopicBuilder$TopicContext { *; }
+
+-keep class com.mde.potdroid.helpers.MessageBuilder$MessageContext { *; }
+-keepclassmembers class com.mde.potdroid.helpers.MessageBuilder$MessageContext { *; }
+
+-keep class com.mde.potdroid.fragments.AboutFragment$AboutContext { *; }
+-keepclassmembers class com.mde.potdroid.fragments.AboutFragment$AboutContext { *; }

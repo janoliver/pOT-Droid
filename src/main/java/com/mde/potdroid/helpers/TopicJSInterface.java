@@ -109,6 +109,16 @@ public class TopicJSInterface extends BenderJSInterface {
     }
 
     /**
+     * Check if images should be loaded right now
+     *
+     * @return true if yes
+     */
+    @JavascriptInterface
+    public boolean isLoadVideos() {
+        return mSettings.downloadVideos();
+    }
+
+    /**
      * Check if old posts should be darkened
      *
      * @return true if yes

@@ -397,10 +397,12 @@ public class TopicBuilder {
             @Override
             public String html(String content, List<String> args) {
                 if(content.contains("youtube") || content.contains("youtu.be")) {
-                    return String.format("<div class=\"video yt\" data-src=\"%1$s\"><i class=\"fa " +
+                    return String.format("<div class=\"video yt\" data-src=\"%1$s\">" +
+                            "<i class=\"link fa fa-external-link-square\"></i><i class=\"fa vid " +
                             "fa-youtube\"></i></div>", content);
                 } else {
-                    return String.format("<div class=\"video\" data-src=\"%1$s\"><i class=\"fa " +
+                    return String.format("<div class=\"video\" data-src=\"%1$s\">" +
+                            "<i class=\"link fa fa-external-link-square\"></i><i class=\"fa vid " +
                             "fa-video-camera\"></i></div>", content);
                 }
             }

@@ -19,14 +19,23 @@ $(document).ready(function() {
         loadAllImages();
     }
 
+    if(api.isLoadVideos()) {
+        loadAllVideos();
+    }
+
     // manual image loader
     $("div.img i").click(function() {
         replaceImage($(this), "");
     });
 
     // manual image loader
-    $("div.video i").click(function() {
+    $("div.video i.vid").click(function() {
         replaceVideo($(this));
+    });
+
+    // manual video loader
+    $("div.video i.link").click(function() {
+        api.openUrl($(this).parent().attr('data-src'));
     });
 
     // manual image with link loader
@@ -187,7 +196,6 @@ function scrollToLastPostByUID(uid) {
 function loadAllImages() {
     var all = [];
     if(api.getScroll() > 0) {
-        console.log("lool"+api.getScroll());
         var self = $('a[name="' + api.getScroll() + '"]').parent().find('div.img i, div.img-link i.img');
         var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.img i, div.img-link i.img');
         all = $.merge(self, after);
@@ -201,6 +209,21 @@ function loadAllImages() {
         } else {
             replaceImage($(this), href);
         }
+    });
+}
+
+// load all videos
+function loadAllVideos() {
+    var all = [];
+    if(api.getScroll() > 0) {
+        var self = $('a[name="' + api.getScroll() + '"]').parent().find('div.video i.vid');
+        var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.video i.vid');
+        all = $.merge(self, after);
+    } else {
+        all = $('div.video i.vid');
+    }
+    all.each(function() {
+        replaceVideo($(this), $(this).parent().attr("data-src"));
     });
 }
 

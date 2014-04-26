@@ -33,6 +33,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_DEBUG = "pref_debug_mode";
     public static final String PREF_KEY_LOAD_BENDERS = "pref_load_benders";
     public static final String PREF_KEY_LOAD_IMAGES = "pref_load_images";
+    public static final String PREF_KEY_LOAD_VIDEOS = "pref_load_videos";
     public static final String PREF_KEY_POLL_MESSAGES = "pref_message_polling_interval";
     public static final String PREF_KEY_NOTIFICATION_VIBRATE = "pref_notification_vibrate";
     public static final String PREF_KEY_NOTIFICATION_SOUND = "pref_notification_sound";
@@ -131,6 +132,15 @@ public class SettingsWrapper {
     }
 
     /**
+     * Never, always or only in Wifi images
+     *
+     * @return 0 -> never, 1 -> only wifi, 2 -> always
+     */
+    public String loadVideos() {
+        return mSharedPreferences.getString(PREF_KEY_LOAD_VIDEOS, "0");
+    }
+
+    /**
      * Check if, given the current network state, Benders should be loaded.
      *
      * @return true if loaded
@@ -148,6 +158,17 @@ public class SettingsWrapper {
      */
     public Boolean downloadImages() {
         String lb = mSharedPreferences.getString(PREF_KEY_LOAD_IMAGES, "0");
+        return !(lb.equals("0") || (lb.equals("1") &&
+                Network.getConnectionType(mContext) != Network.NETWORK_WIFI));
+    }
+
+    /**
+     * Check if, given the current network state, Images should be loaded.
+     *
+     * @return true if loaded
+     */
+    public Boolean downloadVideos() {
+        String lb = mSharedPreferences.getString(PREF_KEY_LOAD_VIDEOS, "0");
         return !(lb.equals("0") || (lb.equals("1") &&
                 Network.getConnectionType(mContext) != Network.NETWORK_WIFI));
     }

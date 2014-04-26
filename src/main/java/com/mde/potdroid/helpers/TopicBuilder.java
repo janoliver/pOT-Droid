@@ -22,7 +22,7 @@ public class TopicBuilder {
     private Context mContext;
 
     // a HashMap with the smileys
-    private static HashMap<String, String> mSmileys = new HashMap<String, String>();
+    public static HashMap<String, String> mSmileys = new HashMap<String, String>();
     {
         mSmileys.put(":bang:", "banghead.gif");
         mSmileys.put(":D", "biggrin.gif");
@@ -52,7 +52,7 @@ public class TopicBuilder {
         mSmileys.put(":tourette:", "tourette.gif");
     }
 
-    private static HashMap<String, Integer> mIcons = new HashMap<String, Integer>();
+    public static HashMap<String, Integer> mIcons = new HashMap<String, Integer>();
     {
         mIcons.put("icon2.gif", 32);
         mIcons.put("icon11.gif", 40);
@@ -389,6 +389,19 @@ public class TopicBuilder {
                         icon = "fa-film";
                     return String.format("<div class=\"img\" data-src=\"%1$s\"><i class=\"fa " +
                             "%2$s\"></i></div>", content, icon);
+                }
+            }
+        });
+
+        mParser.registerTag(new SimpleTag("video", "video", "string") {
+            @Override
+            public String html(String content, List<String> args) {
+                if(content.contains("youtube") || content.contains("youtu.be")) {
+                    return String.format("<div class=\"video yt\" data-src=\"%1$s\"><i class=\"fa " +
+                            "fa-youtube\"></i></div>", content);
+                } else {
+                    return String.format("<div class=\"video\" data-src=\"%1$s\"><i class=\"fa " +
+                            "fa-video-camera\"></i></div>", content);
                 }
             }
         });

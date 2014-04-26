@@ -14,12 +14,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.mde.potdroid.R;
+import com.mde.potdroid.helpers.TopicBuilder;
 import com.mde.potdroid.helpers.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The icon selection dialog
@@ -29,31 +30,6 @@ public class IconSelectionDialog extends DialogFragment {
     private Boolean mIsSmileys;
     private IconSelectedCallback mCallback;
 
-    public static HashMap<String, String> mSmileys;
-    static {
-        mSmileys = new HashMap<String, String>();
-
-        mSmileys.put("banghead.gif", ":bang:");
-        mSmileys.put("biggrin.gif", ":D");
-        mSmileys.put("confused.gif", ":confused:");
-        mSmileys.put("freaked.gif", ":huch:");
-        mSmileys.put("hm.gif", ":hm:");
-        mSmileys.put("mata.gif", ":mata:");
-        mSmileys.put("sceptic.gif", ":what:");
-        mSmileys.put("smiley-pillepalle.gif", ":moo:");
-        mSmileys.put("urgs.gif", ":wurgs:");
-        mSmileys.put("wink.gif", ";)");
-        mSmileys.put("icon1.gif", ":zyklop:");
-        mSmileys.put("icon2.gif", ":P");
-        mSmileys.put("icon5.gif", "^^");
-        mSmileys.put("icon7.gif", ":)");
-        mSmileys.put("icon8.gif", ":|");
-        mSmileys.put("icon12.gif", ":(");
-        mSmileys.put("icon13.gif", ":mad:");
-        mSmileys.put("icon15.gif", ":eek:");
-        mSmileys.put("icon16.gif", ":o");
-        mSmileys.put("icon18.gif", ":roll:");
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +62,7 @@ public class IconSelectionDialog extends DialogFragment {
                 mIcons.addAll(Arrays.asList(aMan.list("thread-icons")));
             } else {
                 mIcons.addAll(Arrays.asList(aMan.list("smileys")));
+                mIcons.remove("tourette.gif");
             }
 
         } catch (IOException e) { }
@@ -98,7 +75,7 @@ public class IconSelectionDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         if(mCallback != null) {
                             if(mIsSmileys)
-                                mCallback.selected(mIcons.get(which), mSmileys.get(mIcons.get(which)));
+                                mCallback.selected(mIcons.get(which), getKeyByValue(TopicBuilder.mSmileys, mIcons.get(which)));
                             else
                                 mCallback.selected(mIcons.get(which), null);
                         }
@@ -126,7 +103,7 @@ public class IconSelectionDialog extends DialogFragment {
             String icon;
 
             if(mIsSmileys)
-                icon = mSmileys.get(mIcons.get(position));
+                icon = getKeyByValue(TopicBuilder.mSmileys, mIcons.get(position));
             else
                 icon = mIcons.get(position);
 
@@ -151,5 +128,14 @@ public class IconSelectionDialog extends DialogFragment {
 
     public interface IconSelectedCallback {
         public void selected(String filename, String smiley);
+    }
+
+    public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
+        for (Map.Entry<T, E> entry : map.entrySet()) {
+            if (value.equals(entry.getValue())) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 }

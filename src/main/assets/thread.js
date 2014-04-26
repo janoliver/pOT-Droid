@@ -24,6 +24,11 @@ $(document).ready(function() {
         replaceImage($(this), "");
     });
 
+    // manual image loader
+    $("div.video i").click(function() {
+        replaceVideo($(this));
+    });
+
     // manual image with link loader
     $("div.img-link i.link").click(function() {
         api.openUrl($(this).parent().attr('data-href'));
@@ -125,6 +130,36 @@ function replaceImage(icon, link_target) {
         }
 
     });
+}
+
+function youtube_parser(url){
+    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    var match = url.match(regExp);
+    if (match&&match[2].length==11){
+        return match[2];
+    } else {
+        // error
+    }
+}
+
+function replaceVideo(icon) {
+    var el = icon.parent();
+    var src = el.attr('data-src');
+
+    if(el.hasClass("yt")) {
+        var id = youtube_parser(src);
+        var wrapper = $("<div class=\"videoWrapper\"></div>");
+        var iframe = $("<iframe type=\"text/html\" frameborder=\"0\" allowfullscreen></iframe>")
+            .attr("src", "http://www.youtube.com/embed/" + id);
+        wrapper.append(iframe);
+        el.replaceWith(wrapper);
+    } else {
+        var wrapper = $('<video controls width="100%"></video>').attr('src', src);
+        var link = $("<a target='_blank'></a>").attr('href', src).text(src);
+        wrapper.append(link);
+        el.replaceWith(wrapper);
+    }
+
 }
 
 // load the bender of user_id

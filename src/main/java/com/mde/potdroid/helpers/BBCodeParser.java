@@ -24,7 +24,7 @@ public class BBCodeParser {
     // the skeleton regex for the bbcodes. %1$s must be replaced by
     // the allowed bbcodes
     private String mRegexSkeleton =
-            "(.*?)((\\[\\s*(%1$s)\\s*(=((\\s*((\"[^\"]+?\")|" +
+            "(.*?)((\\[\\s*(%1$s)\\s*([= ]((\\s*((\"[^\"]+?\")|" +
             "([^,\\]\"]+?))\\s*,)*(\\s*((\"[^\"]+?\")|([^,\"\\]]+?))\\s*)))?\\])|" +
             "(\\[/\\s*((%1$s))\\s*\\]))";
 

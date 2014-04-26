@@ -143,6 +143,7 @@ article div blockquote div.content {
 }
 
 div.img i,
+div.video i,
 div.spoiler i,
 div.img-link i {
     font-size:2em;
@@ -151,12 +152,14 @@ div.img-link i {
 }
 
 div.img i:active,
+div.video i:active,
 div.spoiler i:active,
 div.img-link i:active {
     color:#fff;
 }
 
 div.img,
+div.video,
 div.spoiler,
 div.img-link {
     border:1px solid #000;
@@ -164,6 +167,20 @@ div.img-link {
     padding:3px;
     text-align:center;
     margin:5px;
+}
+
+.videoWrapper {
+	position: relative;
+	padding-bottom: 56.25%; /* 16:9 */
+	padding-top: 25px;
+	height: 0;
+}
+.videoWrapper iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 }
 
 div.spoiler div {

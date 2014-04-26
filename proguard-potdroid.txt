@@ -61,6 +61,5 @@
     @android.webkit.JavascriptInterface <methods>;
 }
 
--keep class com.mde.potdroid.helpers.TopicBuilder.*Context {
-    *;
-}
+-keep class com.mde.potdroid.helpers.** { *; }
+-keepclassmembers class com.mde.potdroid.helpers.** { *; }

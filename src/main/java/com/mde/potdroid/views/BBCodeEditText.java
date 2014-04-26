@@ -116,6 +116,7 @@ public class BBCodeEditText extends EditText
             menu.findItem(R.id.code).setIcon(IconDrawable.getIconDrawable(getContext(), R.string.icon_code));
             menu.findItem(R.id.spoiler).setIcon(IconDrawable.getIconDrawable(getContext(), R.string.icon_eye_close));
             menu.findItem(R.id.image).setIcon(IconDrawable.getIconDrawable(getContext(), R.string.icon_picture));
+            menu.findItem(R.id.image).setIcon(IconDrawable.getIconDrawable(getContext(), R.string.icon_facetime_video));
             menu.findItem(R.id.url).setIcon(IconDrawable.getIconDrawable(getContext(), R.string.icon_link));
             menu.findItem(R.id.list).setIcon(IconDrawable.getIconDrawable(getContext(), R.string.icon_list_ol));
             menu.findItem(R.id.smiley).setIcon(IconDrawable.getIconDrawable(getContext(), R.string.icon_smile));
@@ -154,6 +155,11 @@ public class BBCodeEditText extends EditText
                         d.setCallback(this);
                         d.show(mActivity.getSupportFragmentManager(), "imgedialog");
                         return true;
+                    case R.id.video:
+                        d = PromptDialog.newInstance("Video einfügen", "URL...", R.id.video);
+                        d.setCallback(this);
+                        d.show(mActivity.getSupportFragmentManager(), "videodialog");
+                        return true;
                     case R.id.list:
                         d = PromptDialog.newInstance("Liste einfügen", 3, new String[] {"a, 1, leer", "Item...", "Item..."}, true, R.id.list);
                         d.setCallback(this);
@@ -186,6 +192,10 @@ public class BBCodeEditText extends EditText
             switch (code) {
                 case R.id.image:
                     insert = String.format("[img]%s[/img]", input.get(0));
+                    mEditText.getText().insert(mEditText.getSelectionStart(), insert);
+                    return;
+                case R.id.video:
+                    insert = String.format("[video]%s[/video]", input.get(0));
                     mEditText.getText().insert(mEditText.getSelectionStart(), insert);
                     return;
                 case R.id.url:

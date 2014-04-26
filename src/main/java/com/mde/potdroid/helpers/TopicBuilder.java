@@ -22,23 +22,8 @@ public class TopicBuilder {
     private Context mContext;
 
     // a HashMap with the smileys
-    private HashMap<String, String> mSmileys = new HashMap<String, String>();
-
-    // a reference to the Settings class
-    private SettingsWrapper mSettings;
-
-    // a BBCodeParser reference
-    private static BBCodeParser mParser;
-
-    protected BenderHandler mBenderHandler;
-
-
-    public TopicBuilder(Context cx) {
-        mContext = cx;
-        mSettings = new SettingsWrapper(cx);
-        mBenderHandler = new BenderHandler(cx);
-
-        // smileys
+    private static HashMap<String, String> mSmileys = new HashMap<String, String>();
+    {
         mSmileys.put(":bang:", "banghead.gif");
         mSmileys.put(":D", "biggrin.gif");
         mSmileys.put(":confused:", "confused.gif");
@@ -64,6 +49,43 @@ public class TopicBuilder {
         mSmileys.put(":ugly:", "ugly.gif");
         mSmileys.put(":xx:", "icon11.gif");
         mSmileys.put(":zzz:", "sleepy.gif");
+        mSmileys.put(":tourette:", "tourette.gif");
+    }
+
+    private static HashMap<String, Integer> mIcons = new HashMap<String, Integer>();
+    {
+        mIcons.put("icon2.gif", 32);
+        mIcons.put("icon11.gif", 40);
+        mIcons.put("icon4.gif", 34);
+        mIcons.put("icon3.gif", 33);
+        mIcons.put("icon12.gif", 41);
+        mIcons.put("thumbsup.gif", 2);
+        mIcons.put("thumbsdown.gif", 1);
+        mIcons.put("pfeil.gif", 54);
+        mIcons.put("icon8.gif", 38);
+        mIcons.put("icon5.gif", 35);
+        mIcons.put("icon9.gif", 28);
+        mIcons.put("icon13.gif", 42);
+        mIcons.put("icon6.gif", 36);
+        mIcons.put("icon10.gif", 39);
+        mIcons.put("icon7.gif", 37);
+    }
+
+
+
+    // a reference to the Settings class
+    private SettingsWrapper mSettings;
+
+    // a BBCodeParser reference
+    private static BBCodeParser mParser;
+
+    protected BenderHandler mBenderHandler;
+
+
+    public TopicBuilder(Context cx) {
+        mContext = cx;
+        mSettings = new SettingsWrapper(cx);
+        mBenderHandler = new BenderHandler(cx);
     }
 
     /**
@@ -356,12 +378,18 @@ public class TopicBuilder {
         mParser.registerTag(new SimpleTag("img", "image", "string") {
             @Override
             public String html(String content, List<String> args) {
-                String extension = content.substring(content.length() - 3).toLowerCase();
-                String icon = "fa-picture-o";
-                if (extension.equals("gif"))
-                    icon = "fa-film";
-                return String.format("<div class=\"img\" data-src=\"%1$s\"><i class=\"fa " +
-                        "%2$s\"></i></div>", content, icon);
+                if(content.contains("forum.mods.de/bb/img/icons")) {
+                    String icon = content.substring( content.lastIndexOf('/')+1, content.length() );
+                    return String.format("<img src=\"thread-icons/icon%1$d.png\" alt=\"icon%1$d.png\" />",
+                            mIcons.get(icon));
+                } else {
+                    String extension = content.substring(content.length() - 3).toLowerCase();
+                    String icon = "fa-picture-o";
+                    if (extension.equals("gif"))
+                        icon = "fa-film";
+                    return String.format("<div class=\"img\" data-src=\"%1$s\"><i class=\"fa " +
+                            "%2$s\"></i></div>", content, icon);
+                }
             }
         });
 

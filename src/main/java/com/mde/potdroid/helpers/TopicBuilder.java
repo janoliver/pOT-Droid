@@ -50,7 +50,7 @@ public class TopicBuilder {
         mSmileys.put(":wurgs:", "urgs.gif");
         mSmileys.put(";)", "wink.gif");
         mSmileys.put(":zyklop:", "icon1.gif");
-        mSmileys.put(":P", "icon2.gif");
+        mSmileys.put(":p", "icon2.gif");
         mSmileys.put("^^", "icon5.gif");
         mSmileys.put(":)", "icon7.gif");
         mSmileys.put(":|", "icon8.gif");
@@ -59,6 +59,11 @@ public class TopicBuilder {
         mSmileys.put(":eek:", "icon15.gif");
         mSmileys.put(":o", "icon16.gif");
         mSmileys.put(":roll:", "icon18.gif");
+        mSmileys.put("8|", "icon3.gif");
+        mSmileys.put(":0:", "icon4.gif");
+        mSmileys.put(":ugly:", "ugly.gif");
+        mSmileys.put(":xx:", "icon11.gif");
+        mSmileys.put(":zzz:", "sleepy.gif");
     }
 
     /**

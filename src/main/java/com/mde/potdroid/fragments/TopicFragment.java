@@ -200,6 +200,23 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
         if (mDestroyed && Utils.isKitkat()) {
             setupWebView();
+        } else {
+
+            if(Build.VERSION.SDK_INT >= 11)
+                mWebView.onResume();
+            else
+                try {
+                    Class.forName("android.webkit.WebView").getMethod("onResume", (Class[]) null)
+                            .invoke(mWebView, (Object[]) null);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
         }
     }
 

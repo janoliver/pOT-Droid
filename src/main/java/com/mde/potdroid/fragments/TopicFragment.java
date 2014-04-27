@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -26,6 +27,7 @@ import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.PostActionsDialog;
 import org.apache.http.Header;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 
 /**
@@ -201,6 +203,28 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if(Build.VERSION.SDK_INT >= 11)
+            mWebView.onPause();
+        else
+            try {
+                Class.forName("android.webkit.WebView").getMethod("onPause", (Class[]) null)
+                        .invoke(mWebView, (Object[]) null);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+    }
+
     /**
      * Destroys and detaches the webview.
      */
@@ -208,10 +232,10 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
         if (mWebView != null && !mDestroyed) {
 
+            mWebContainer.removeAllViews();
+
             mWebView.destroy();
             mWebView = null;
-
-            mWebContainer.removeAllViews();
 
             mDestroyed = true;
         }

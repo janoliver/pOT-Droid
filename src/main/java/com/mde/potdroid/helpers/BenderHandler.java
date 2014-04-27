@@ -61,15 +61,8 @@ public class BenderHandler {
         if (avatar == null) {
 
             callback.onFailure();
-            return;
 
         } else if (avatar.exists()) {
-
-            // update the last_seen time
-            Date date = new Date();
-            mDatabase.updateBender(user.getAvatarId(), user.getId(),
-                    user.getAvatarFile(), new Timestamp(date.getTime()));
-
             callback.onSuccess(getAvatarFilePath(user));
 
         } else if (!isWritable()) {
@@ -77,7 +70,6 @@ public class BenderHandler {
             callback.onFailure();
 
         } else if (mSettings.downloadBenders()) {
-
             downloadBender(callback, user);
 
         }
@@ -177,7 +169,17 @@ public class BenderHandler {
         String[] parts = user.getAvatarFile().split("\\.");
         String filename = user.getAvatarId() + "." + parts[parts.length - 1];
 
-        return new File(getBenderStorageDir(), filename);
+        File res = new File(getBenderStorageDir(), filename);
+
+        if(res.exists())
+        {
+            Date date = new Date();
+            mDatabase.updateBender(user.getAvatarId(), user.getId(),
+                    user.getAvatarFile(), new Timestamp(date.getTime()));
+
+        }
+
+        return res;
     }
 
     /**

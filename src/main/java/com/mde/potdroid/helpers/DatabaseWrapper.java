@@ -265,7 +265,7 @@ public class DatabaseWrapper {
         values.put("user_id", user_id);
         values.put("bender_filename", filename);
         values.put("last_seen", last_seen.getTime() * 1000.);
-        mDatabase.replace(BENDER_TABLE_NAME, null, values);
+        long res = mDatabase.replace(BENDER_TABLE_NAME, null, values);
     }
 
     /**

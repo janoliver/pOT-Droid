@@ -154,10 +154,20 @@ public class Network {
                             }
                             callback.onFailure();
                         }
+
+                        @Override
+                        public void onFailure(int statusCode, org.apache.http.Header[] headers, byte[] binaryData, java.lang.Throwable error) {
+                            callback.onFailure();
+                        }
                     });
                 } else {
                     callback.onFailure();
                 }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                callback.onFailure();
             }
 
             @Override

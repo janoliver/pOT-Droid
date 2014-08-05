@@ -99,14 +99,13 @@ public class BenderHandler {
         String[] allowedContentTypes = new String[]{"image/png", "image/jpeg", "image/gif"};
         network.get(url, null, new BinaryHttpResponseHandler(allowedContentTypes) {
             @Override
-            public void onSuccess(byte[] fileData) {
+            public void onSuccess(int statusCode, org.apache.http.Header[] headers, byte[] fileData) {
                 try {
                     getBenderStorageDir().mkdirs();
 
                     FileOutputStream fos = new FileOutputStream(getAvatarFile(user));
                     fos.write(fileData);
                     fos.close();
-
 
                     Date date = new Date();
                     mDatabase.updateBender(user.getAvatarId(), user.getId(),
@@ -117,6 +116,11 @@ public class BenderHandler {
                     callback.onFailure();
                 }
 
+            }
+
+            @Override
+            public void onFailure(int statusCode, org.apache.http.Header[] headers, byte[] binaryData, java.lang.Throwable error) {
+                callback.onFailure();
             }
         });
 

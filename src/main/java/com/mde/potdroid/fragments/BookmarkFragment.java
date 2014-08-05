@@ -138,6 +138,11 @@ public class BookmarkFragment extends BaseFragment
                         hideLoadingAnimation();
                         restartLoader(BookmarkFragment.this);
                     }
+
+                    @Override
+                    public void onFailure(int statusCode, org.apache.http.Header[] headers, byte[] binaryData, java.lang.Throwable error) {
+                        hideLoadingAnimation();
+                    }
                 });
 
                 return true;

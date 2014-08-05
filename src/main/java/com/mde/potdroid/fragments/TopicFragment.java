@@ -531,6 +531,11 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
                 if (d != null)
                     d.cancel();
             }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                // Response failed :(
+            }
         });
     }
 

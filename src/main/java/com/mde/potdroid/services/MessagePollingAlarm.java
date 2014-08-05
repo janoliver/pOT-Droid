@@ -57,6 +57,11 @@ public class MessagePollingAlarm extends BroadcastReceiver {
                 }
 
             }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                // Response failed :(
+            }
         });
 
     }

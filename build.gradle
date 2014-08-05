@@ -3,33 +3,46 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.9.+'
+        classpath 'com.android.tools.build:gradle:0.12.2'
     }
 }
 
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:19.1.0'
-    compile 'com.android.support:appcompat-v7:19.1.0'
-    compile 'com.samskivert:jmustache:1.9'
-    compile 'com.loopj.android:android-async-http:1.4.4'
-    compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abc:0.9.2'
-    compile 'com.github.castorflex.smoothprogressbar:library:0.3.3'
-    compile 'de.keyboardsurfer.android.widget:crouton:1.8.4'
+    compile 'com.android.support:support-v4:20.0.0'
+    compile 'com.android.support:appcompat-v7:20.0.0'
+    compile('com.samskivert:jmustache:1.9') {
+        exclude group: 'com.android.support', module:'support-v4'
+        exclude group: 'com.android.support', module:'appcompat-v7'
+    }
+    compile('com.loopj.android:android-async-http:1.4.5') {
+        exclude group: 'com.android.support', module:'support-v4'
+        exclude group: 'com.android.support', module:'appcompat-v7'
+    }
+    compile('com.github.chrisbanes.actionbarpulltorefresh:extra-abc:0.9.9') {
+        exclude group: 'com.android.support', module:'support-v4'
+        exclude group: 'com.android.support', module:'appcompat-v7'
+    }
+    compile('com.github.castorflex.smoothprogressbar:library:0.5.+') {
+        exclude group: 'com.android.support', module:'support-v4'
+    }
+    compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
+        exclude group: 'com.google.android', module: 'support-v4'
+    }
 }
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "19.0.3"
+    compileSdkVersion 20
+    buildToolsVersion "20.0.0"
 
     defaultConfig {
-        minSdkVersion 7
-        targetSdkVersion 19
+        minSdkVersion 8
+        targetSdkVersion 20
     }
 
     buildTypes {

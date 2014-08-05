@@ -95,7 +95,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
         }
 
         @Override
-        public void onRetry() {
+        public void onRetry(int retryNumber) {
             AsyncHttpLoader.this.onNetworkRetry();
         }
     };

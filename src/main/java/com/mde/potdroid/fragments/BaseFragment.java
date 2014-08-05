@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.view.*;
 import com.mde.potdroid.BaseActivity;
@@ -14,21 +15,18 @@ import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.views.IconDrawable;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
-import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 /**
  * The Base Fragment class that all Fragments should inherit. Provides some methods
  * for convenient access of objects and handles loading animations.
  */
-public abstract class BaseFragment extends Fragment implements OnRefreshListener {
+public abstract class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     // this is the ID of the content loader
     protected static final int CONTENT_LOADER_ID = 0;
 
     // the pulltorefresh instance
-    protected PullToRefreshLayout mPullToRefreshLayout;
+    protected SwipeRefreshLayout mPullToRefreshLayout;
 
 
     @Override
@@ -39,14 +37,14 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
         setRetainInstance(true);
 
         // Now find the PullToRefreshLayout to setup
-        mPullToRefreshLayout = (PullToRefreshLayout) getView().findViewById(R.id.ptr_layout);
+        mPullToRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.ptr_layout);
 
         if (mPullToRefreshLayout != null) {
-            // Now setup the PullToRefreshLayout
-            ActionBarPullToRefresh.from(getActivity())
-                    .allChildrenArePullable()
-                    .listener(this)
-                    .setup(mPullToRefreshLayout);
+            mPullToRefreshLayout.setOnRefreshListener(this);
+            mPullToRefreshLayout.setColorSchemeResources(R.color.white,
+                    R.color.bbstyle_lightblue,
+                    R.color.bbstyle_middleblue,
+                    R.color.bbstyle_darkblue);
         }
 
     }
@@ -83,13 +81,13 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
      */
     public void hideLoadingAnimation() {
         if (mPullToRefreshLayout != null) {
-            mPullToRefreshLayout.setRefreshComplete();
+            mPullToRefreshLayout.setRefreshing(false);
         }
         getBaseActivity().setProgressBarIndeterminateVisibility(false);
     }
 
     @Override
-    public void onRefreshStarted(View view) {
+    public void onRefresh() {
 
     }
 

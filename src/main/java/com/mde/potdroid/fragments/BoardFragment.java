@@ -179,8 +179,8 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     }
 
     @Override
-    public void onRefreshStarted(View view) {
-        super.onRefreshStarted(view);
+    public void onRefresh() {
+        super.onRefresh();
         restartLoader(this);
     }
 

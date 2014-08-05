@@ -13,14 +13,6 @@
         <item name="android:indeterminate">true</item>
     </style>
 
-    <style name="PotDroidDark" parent="Theme.Bbdarkstyle">
-        <item name="ptrHeaderStyle">@style/Widget.Custom.PtrHeader</item>
-    </style>
-
-    <style name="Widget.Custom.PtrHeader" parent="android:Widget">
-        <!-- Color to tint the progress bar -->
-        <item name="ptrProgressBarColor">@color/white</item>
-
-    </style>
+    <style name="PotDroidDark" parent="Theme.Bbdarkstyle" />
 
 </resources>

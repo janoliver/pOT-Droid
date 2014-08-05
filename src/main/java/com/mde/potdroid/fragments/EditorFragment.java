@@ -11,9 +11,9 @@ import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import com.loopj.android.http.RequestParams;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
-import com.mde.potdroid.helpers.EncodingRequestParams;
 import com.mde.potdroid.helpers.Network;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.parsers.MessageParser;
@@ -262,9 +262,9 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
             mMode = args.getInt(ARG_MODE);
 
-            EncodingRequestParams r = new EncodingRequestParams();
+            RequestParams r = new RequestParams();
 
-            r.setEncoding(Network.ENCODING_ISO);
+            r.setContentEncoding(Network.ENCODING_ISO);
             setTimeout(300);
 
             // this must resemble the same form on the website
@@ -330,9 +330,9 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
             mMode = args.getInt(ARG_MODE);
 
-            EncodingRequestParams r = new EncodingRequestParams();
+            RequestParams r = new RequestParams();
 
-            r.setEncoding(Network.ENCODING_ISO);
+            r.setContentEncoding(Network.ENCODING_ISO);
             setTimeout(300);
 
             // this must resemble the same form on the website
@@ -390,9 +390,9 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
             setTimeout(300);
 
-            EncodingRequestParams r = new EncodingRequestParams();
+            RequestParams r = new RequestParams();
 
-            r.setEncoding(Network.ENCODING_ISO);
+            r.setContentEncoding(Network.ENCODING_ISO);
 
             r.add("rcpts", "0");
             r.add("rcpt", args.getString("rcpt"));

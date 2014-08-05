@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
@@ -21,7 +22,6 @@ import com.mde.potdroid.models.MessageList;
 import com.mde.potdroid.parsers.MessageListParser;
 import com.mde.potdroid.views.IconDrawable;
 import org.apache.http.Header;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -30,7 +30,7 @@ import java.text.SimpleDateFormat;
  * This fragment displays a list of messages below a Tab bar for the inbox/outbox folders.
  */
 public class MessageListFragment extends BaseFragment implements LoaderManager
-        .LoaderCallbacks<MessageList>, OnRefreshListener {
+        .LoaderCallbacks<MessageList>, SwipeRefreshLayout.OnRefreshListener {
 
     // the tags of the fragment arguments
     public static final String ARG_MODE = "mode";
@@ -170,8 +170,8 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
     }
 
     @Override
-    public void onRefreshStarted(View view) {
-        super.onRefreshStarted(view);
+    public void onRefresh() {
+        super.onRefresh();
         restartLoader(this);
     }
 

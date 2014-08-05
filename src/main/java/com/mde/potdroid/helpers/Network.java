@@ -116,8 +116,8 @@ public class Network {
         mHttpClient.setUserAgent(mSettings.getUserAgent());
 
         // add login data
-        EncodingRequestParams params = new EncodingRequestParams();
-        params.setEncoding(Network.ENCODING_ISO);
+        RequestParams params = new RequestParams();
+        params.setContentEncoding(Network.ENCODING_ISO);
 
         if (username.equals("") || password.equals(""))
             callback.onFailure();
@@ -129,8 +129,7 @@ public class Network {
         mHttpClient.post(LOGIN_URL, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Pattern pattern = Pattern.compile("http://forum.mods.de/SSO.php\\?UID=([0-9]+)" +
-                        "[^']*");
+                Pattern pattern = Pattern.compile("http://forum.mods.de/SSO.php\\?UID=([0-9]+)[^']*");
 
                 // check if the login worked, e.g. one was redirected to SSO.php..
                 Matcher m = pattern.matcher(new String(responseBody));

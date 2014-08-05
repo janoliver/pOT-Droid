@@ -152,8 +152,8 @@ public class BookmarkFragment extends BaseFragment
     }
 
     @Override
-    public void onRefreshStarted(View view) {
-        super.onRefreshStarted(view);
+    public void onRefresh() {
+        super.onRefresh();
         restartLoader(this);
     }
 

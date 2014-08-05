@@ -138,8 +138,8 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
     }
 
     @Override
-    public void onRefreshStarted(View view) {
-        super.onRefreshStarted(view);
+    public void onRefresh() {
+        super.onRefresh();
         restartLoader(this);
     }
 

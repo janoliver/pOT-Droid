@@ -21,8 +21,8 @@ public class MessageParser {
     public static final String SEND_URL = "pm/?a=6";
     private Message mMessage;
     private Pattern mMessagePattern = Pattern.compile("Betreff</td> <td class='hh'><b>([^<]+)" +
-            "</td>.*<td class='h'>(Absender|Empf&auml;nger)</td> <td class='hh'>.*<a " +
-            "href='http://my.mods.de/([0-9]+)' target='_blank'.*?>([^<]+?)</a>.*Gesendet</td> <td" +
+            "</td>.*<td class='h'>(Absender|Empf&auml;nger)</td> <td class='hh'>.*(<a " +
+            "href='http://my.mods.de/([0-9]+)' target='_blank'.*?>([^<]+?)</a>|System).*Gesendet</td> <td" +
             " class='hh'><b>([0-9:\\. ]+)</td>.*<td colspan='[23]' class='b'>(.+)</td> </tr>  <tr> " +
             "<td colspan='[23]' class='h'></td> </tr>.*</table>", Pattern.DOTALL | Pattern.MULTILINE);
 
@@ -41,18 +41,23 @@ public class MessageParser {
 
         if (m.find()) {
 
-            User from = new User(Integer.parseInt(m.group(3)));
-            from.setNick(m.group(4));
-            mMessage.setFrom(from);
+            if(m.group(4) != null) {
+
+                User from = new User(Integer.parseInt(m.group(4)));
+                from.setNick(m.group(5));
+                mMessage.setFrom(from);
+            } else {
+                mMessage.setSystem(true);
+            }
 
             mMessage.setTitle(m.group(1));
             mMessage.setId(message_id);
-            mMessage.setText(m.group(6).replaceAll("<img src='/bb/pm/img/smilies/", "<img src='message-icons/"));
+            mMessage.setText(m.group(7).replaceAll("<img src='/bb/pm/img/smilies/", "<img src='message-icons/"));
             mMessage.setOutgoing(!m.group(2).equals("Absender"));
 
             try {
                 DateFormat df = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.ENGLISH);
-                mMessage.setDate(df.parse(m.group(5)));
+                mMessage.setDate(df.parse(m.group(6)));
             } catch (ParseException e) {
                 Utils.printException(e);
             }

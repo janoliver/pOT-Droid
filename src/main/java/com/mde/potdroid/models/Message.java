@@ -16,7 +16,7 @@ public class Message {
     private User mFrom;
     private Boolean mOutgoing;
     private Boolean mUnread;
-    private Boolean mSystem;
+    private Boolean mSystem = false;
     private String mHtmlCache;
 
     public Integer getId() {

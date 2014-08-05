@@ -50,10 +50,14 @@ public class MessageBuilder {
         }
 
         public String getAuthor() {
+            if(mMessage.isSystem())
+                return "System";
             return mMessage.getFrom().getNick();
         }
 
         public Integer getAuthorId() {
+            if(mMessage.isSystem())
+                return 0;
             return mMessage.getFrom().getId();
         }
 

@@ -107,6 +107,17 @@ public class MessageFragment extends BaseFragment
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        // only show the paginate buttons if there are before or after the current
+        if (mMessage != null && mMessage.isSystem()) {
+            menu.removeItem(R.id.reply);
+        }
+
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         // Handle item selection
@@ -183,10 +194,18 @@ public class MessageFragment extends BaseFragment
                     mMessage.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);
 
             // generate and set title and subtitle
-            Spanned subtitle = Html.fromHtml(String.format(getString(R.string.subtitle_message),
-                    mMessage.isOutgoing() ? "an" : "von", mMessage.getFrom().getNick()));
+            Spanned subtitle;
+            if(mMessage.isSystem()) {
+                subtitle = Html.fromHtml("<b>Systemnachricht</b>");
+            } else {
+
+                subtitle = Html.fromHtml(String.format(getString(R.string.subtitle_message),
+                        mMessage.isOutgoing() ? "an" : "von", mMessage.getFrom().getNick()));
+            }
             getActionbar().setTitle(Html.fromHtml(mMessage.getTitle()));
             getActionbar().setSubtitle(subtitle);
+
+            getActivity().supportInvalidateOptionsMenu();
 
         } else {
             showError(getString(R.string.msg_loading_error));

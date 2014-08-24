@@ -98,9 +98,6 @@ public class BenderHandler {
             return;
         }
 
-        // perform the download.
-        String[] allowedContentTypes = new String[]{"image/png", "image/jpeg", "image/gif"};
-
         network.get(url, new Callback() {
 
             @Override
@@ -110,6 +107,11 @@ public class BenderHandler {
 
             @Override
             public void onResponse(Response response) throws IOException {
+                if(!response.body().contentType().type().equals("image")) {
+                    callback.onFailure();
+                    return;
+                }
+
                 try {
                     getBenderStorageDir().mkdirs();
 
@@ -123,6 +125,7 @@ public class BenderHandler {
 
                     callback.onSuccess(getAvatarFilePath(user));
                 } catch (Exception e) {
+                    e.printStackTrace();
                     callback.onFailure();
                 }
             }

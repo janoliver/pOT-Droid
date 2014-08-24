@@ -108,5 +108,6 @@
     <string name="no_unread_bookmarks">Keine ungelesenen Bookmarks</string>
     <string name="no_favorite_boards">Keine Favoriten</string>
     <string name="thread_lastpost"><![CDATA[<strong>%1$s</strong>, %2$s Uhr]]></string>
+    <string name="notloggedin">Nicht eingeloggt!</string>
 
 </resources>

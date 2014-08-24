@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.mde.potdroid.R;
 import com.mde.potdroid.TopicActivity;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
@@ -23,7 +22,12 @@ import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.BookmarkList;
 import com.mde.potdroid.parsers.BookmarkParser;
 import com.mde.potdroid.views.IconDrawable;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import org.apache.http.Header;
+
+import java.io.IOException;
 
 /**
  * The fragment that displays the list of bookmarks
@@ -131,16 +135,16 @@ public class BookmarkFragment extends BaseFragment
                 showLoadingAnimation();
 
                 Network network = new Network(getActivity());
-                network.get(url, null, new AsyncHttpResponseHandler() {
+                network.get(url, new Callback() {
                     @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    public void onResponse(Response response) {
                         showSuccess(R.string.msg_bookmark_removed);
                         hideLoadingAnimation();
                         restartLoader(BookmarkFragment.this);
                     }
 
                     @Override
-                    public void onFailure(int statusCode, org.apache.http.Header[] headers, byte[] binaryData, java.lang.Throwable error) {
+                    public void onFailure(Request request, IOException error) {
                         hideLoadingAnimation();
                     }
                 });
@@ -178,7 +182,10 @@ public class BookmarkFragment extends BaseFragment
             getActionbar().setSubtitle(subtitle);
 
         } else {
-            showError(getString(R.string.msg_loading_error));
+            if(Utils.isLoggedIn())
+                showError(getString(R.string.msg_loading_error));
+            else
+                showError(getString(R.string.notloggedin));
         }
     }
 

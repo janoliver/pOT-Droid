@@ -15,7 +15,6 @@ import android.view.*;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.mde.potdroid.EditorActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.*;
@@ -25,8 +24,12 @@ import com.mde.potdroid.parsers.TopicParser;
 import com.mde.potdroid.views.ChoosePageDialog;
 import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.PostActionsDialog;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import org.apache.http.Header;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 
@@ -524,16 +527,16 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
                 String.format("set-bookmark.php?PID=%d&token=%s", p.getId(), p.getBookmarktoken()));
 
         Network network = new Network(getActivity());
-        network.get(url, null, new AsyncHttpResponseHandler() {
+        network.get(url, new Callback() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onResponse(Response response) {
                 showSuccess(R.string.msg_bookmark_added);
                 if (d != null)
                     d.cancel();
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            public void onFailure(Request request, IOException error) {
                 // Response failed :(
             }
         });

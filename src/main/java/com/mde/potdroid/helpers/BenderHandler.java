@@ -3,11 +3,14 @@ package com.mde.potdroid.helpers;
 import android.content.Context;
 import android.os.Environment;
 import android.text.TextUtils;
-import com.loopj.android.http.BinaryHttpResponseHandler;
 import com.mde.potdroid.models.User;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
@@ -97,14 +100,21 @@ public class BenderHandler {
 
         // perform the download.
         String[] allowedContentTypes = new String[]{"image/png", "image/jpeg", "image/gif"};
-        network.get(url, null, new BinaryHttpResponseHandler(allowedContentTypes) {
+
+        network.get(url, new Callback() {
+
             @Override
-            public void onSuccess(int statusCode, org.apache.http.Header[] headers, byte[] fileData) {
+            public void onFailure(Request request, IOException e) {
+                callback.onFailure();
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
                 try {
                     getBenderStorageDir().mkdirs();
 
                     FileOutputStream fos = new FileOutputStream(getAvatarFile(user));
-                    fos.write(fileData);
+                    fos.write(response.body().bytes());
                     fos.close();
 
                     Date date = new Date();
@@ -115,12 +125,6 @@ public class BenderHandler {
                 } catch (Exception e) {
                     callback.onFailure();
                 }
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, org.apache.http.Header[] headers, byte[] binaryData, java.lang.Throwable error) {
-                callback.onFailure();
             }
         });
 

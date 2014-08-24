@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.Html;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.mde.potdroid.MessageActivity;
 import com.mde.potdroid.MessageListActivity;
 import com.mde.potdroid.R;
@@ -20,10 +19,11 @@ import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.MessageList;
 import com.mde.potdroid.parsers.MessageListParser;
-import org.apache.http.Header;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 /**
@@ -37,29 +37,20 @@ public class MessagePollingAlarm extends BroadcastReceiver {
     public void onReceive(final Context context, Intent intent) {
 
         Network network = new Network(context);
-        network.get(MessageListParser.INBOX_URL, null, new AsyncHttpResponseHandler() {
+        network.get(MessageListParser.INBOX_URL, new Callback() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String stringResult;
-
-                try {
-                    stringResult = new String(responseBody, Network.ENCODING_ISO);
-                } catch (UnsupportedEncodingException e) {
-                    stringResult = new String(responseBody);
-                }
-
+            public void onResponse(Response response) {
                 try {
                     MessageListParser p = new MessageListParser();
-                    MessageList list = p.parse(stringResult);
+                    MessageList list = p.parse(response.body().string());
                     handleNotification(list, context);
                 } catch (IOException e) {
                     // @TODO: Not logged in should cancel the service.
                 }
-
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            public void onFailure(Request request, IOException error) {
                 // Response failed :(
             }
         });

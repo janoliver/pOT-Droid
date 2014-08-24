@@ -22,7 +22,7 @@ import static com.mde.potdroid.helpers.Utils.NotLoggedInException;
 public class BookmarkParser extends DefaultHandler {
 
     public static String TAG = "bookmark";
-    public static String NOT_LOGGEDIN_STRING = "<not-logged-in/>";
+    public static String NOT_LOGGEDIN_STRING = "<not-logged-in";
     public static String BOOKMARK_ATTRIBUTE_ID = "BMID";
     public static String BOOKMARK_ATTRIBUTE_NEW = "newposts";
     public static String BOOKMARK_ATTRIBUTE_POST = "PID";

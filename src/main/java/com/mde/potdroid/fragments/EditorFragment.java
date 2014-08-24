@@ -11,7 +11,6 @@ import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import com.loopj.android.http.RequestParams;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
 import com.mde.potdroid.helpers.Network;
@@ -20,6 +19,7 @@ import com.mde.potdroid.parsers.MessageParser;
 import com.mde.potdroid.views.BBCodeEditText;
 import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.IconSelectionDialog;
+import com.squareup.okhttp.FormEncodingBuilder;
 import org.apache.http.Header;
 
 import java.io.IOException;
@@ -262,9 +262,11 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
             mMode = args.getInt(ARG_MODE);
 
-            RequestParams r = new RequestParams();
+            FormEncodingBuilder r = new FormEncodingBuilder();
 
-            r.setContentEncoding(Network.ENCODING_ISO);
+            //RequestParams r = new RequestParams();
+
+            //r.setContentEncoding(Network.ENCODING_ISO);
             setTimeout(300);
 
             // this must resemble the same form on the website
@@ -288,7 +290,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
                 setUrl(Network.BOARD_URL_POST);
             }
 
-            setParams(r);
+            setParams(r.build());
 
         }
 
@@ -330,9 +332,11 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
             mMode = args.getInt(ARG_MODE);
 
-            RequestParams r = new RequestParams();
+            FormEncodingBuilder r = new FormEncodingBuilder();
 
-            r.setContentEncoding(Network.ENCODING_ISO);
+            //RequestParams r = new RequestParams();
+
+            //r.setContentEncoding(Network.ENCODING_ISO);
             setTimeout(300);
 
             // this must resemble the same form on the website
@@ -346,7 +350,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             r.add("thread_tags", args.getString(ARG_TAGS));
             r.add("token", args.getString(ARG_TOKEN));
 
-            setParams(r);
+            setParams(r.build());
 
         }
 
@@ -390,9 +394,10 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
             setTimeout(300);
 
-            RequestParams r = new RequestParams();
+            FormEncodingBuilder r = new FormEncodingBuilder();
+            //RequestParams r = new RequestParams();
 
-            r.setContentEncoding(Network.ENCODING_ISO);
+            //r.setContentEncoding(Network.ENCODING_ISO);
 
             r.add("rcpts", "0");
             r.add("rcpt", args.getString("rcpt"));
@@ -401,7 +406,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             r.add("mf_sc", "1");
             r.add("submit", "Senden");
 
-            setParams(r);
+            setParams(r.build());
 
         }
 

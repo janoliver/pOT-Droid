@@ -1,15 +1,16 @@
 package com.mde.potdroid.helpers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
-import org.apache.http.Header;
-import org.apache.http.cookie.Cookie;
+import android.os.Environment;
+import com.squareup.okhttp.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.CookieHandler;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,11 +19,14 @@ import java.util.regex.Pattern;
  * requests, login and some URLs.
  */
 public class Network {
+    private static OkHttpClient mHttpClient;
+
+    private static final String CACHE_DIR = "cache";
 
     // this is the AsyncHttpClient we use for the network interaction
-    private AsyncHttpClient mHttpClient = new AsyncHttpClient();
+    private Headers mHeaders;
 
-    public static final int DEFAULT_TIMEOUT = 20 * 1000;
+    public static final int DEFAULT_TIMEOUT = 60; // s
 
     // a reference to the Context
     private Context mContext;
@@ -51,53 +55,58 @@ public class Network {
     public static final int NETWORK_ELSE = 2;
 
     public Network(Context context) {
+        if(mHttpClient == null) {
+            mHttpClient = new OkHttpClient();
+            mHttpClient.setConnectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+        }
         mContext = context;
         mSettings = new SettingsWrapper(mContext);
-        mHttpClient.setUserAgent(mSettings.getUserAgent());
-        mHttpClient.addHeader("Accept-Encoding", "gzip");
-        mHttpClient.setTimeout(DEFAULT_TIMEOUT);
+        initHttpClient();
+    }
 
-        if (mSettings.hasLoginCookie()) {
-            PersistentCookieStore cStore = new PersistentCookieStore(mContext);
-            cStore.addCookie(mSettings.getLoginCookie());
-            mHttpClient.setCookieStore(cStore);
-        }
+    void initHttpClient() {
+        mHeaders = new Headers.Builder()
+                .add("User-Agent", mSettings.getUserAgent())
+                .build();
+        mHttpClient.setCookieHandler(CookieHandler.getDefault());
     }
 
     /**
      * Get a xml document from the mods.de api
      */
-    public void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        try {
-            mHttpClient.get(getAbsoluteUrl(url), params, responseHandler);
-        } catch(Exception e) {
-            responseHandler.onFailure(0, null, null, e);
-        }
+    public void get(String url, Callback responseHandler) {
+        Request request = new Request.Builder()
+                .url(getAbsoluteUrl(url))
+                .headers(mHeaders)
+                .build();
+        mHttpClient.newCall(request).enqueue(responseHandler);
     }
 
     /**
-     * Post to the mods.de website.
+     * Get a xml document from the mods.de api
      */
-    public void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        try {
-            mHttpClient.post(getAbsoluteUrl(url), params, responseHandler);
-        } catch(Exception e) {
-            responseHandler.onFailure(0, null, null, e);
-        }
+    public void post(String url, RequestBody params, Callback responseHandler) {
+
+        Request request = new Request.Builder()
+                .url(getAbsoluteUrl(url))
+                .headers(mHeaders)
+                .post(params)
+                .build();
+        mHttpClient.newCall(request).enqueue(responseHandler);
     }
 
     /**
      * Try to cancel the current loading of the httpclient
      */
     public void cancelLoad() {
-        mHttpClient.cancelRequests(mContext, true);
+        mHttpClient.cancel(null);
     }
 
     /**
      * Change timeout
      */
     public void setTimeout(Integer seconds) {
-        mHttpClient.setTimeout(seconds * 1000);
+        mHttpClient.setConnectTimeout(seconds, TimeUnit.SECONDS);
     }
 
     /**
@@ -113,72 +122,59 @@ public class Network {
         // first, create new random user agent, since the mde login system partly
         // works with User agents
         mSettings.generateUniqueUserAgent();
-        mHttpClient.setUserAgent(mSettings.getUserAgent());
-
-        // add login data
-        RequestParams params = new RequestParams();
-        params.setContentEncoding(Network.ENCODING_ISO);
+        initHttpClient();
 
         if (username.equals("") || password.equals(""))
             callback.onFailure();
 
-        params.put("login_username", username);
-        params.put("login_password", password);
-        params.put("login_lifetime", COOKIE_LIFETIME);
+        // add login data
+        RequestBody formBody = new FormEncodingBuilder()
+                .add("login_username", username)
+                .add("login_password", password)
+                .add("login_lifetime", COOKIE_LIFETIME)
+                .build();
 
-        mHttpClient.post(LOGIN_URL, params, new AsyncHttpResponseHandler() {
+        post(LOGIN_URL, formBody, new Callback() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onFailure(Request request, IOException throwable) {
+                throwable.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
                 Pattern pattern = Pattern.compile("http://forum.mods.de/SSO.php\\?UID=([0-9]+)[^']*");
 
                 // check if the login worked, e.g. one was redirected to SSO.php..
-                Matcher m = pattern.matcher(new String(responseBody));
+                Matcher m = pattern.matcher(response.body().string());
 
                 if (m.find()) {
                     // set user id
                     mSettings.setUserId(Integer.valueOf(m.group(1)));
 
-                    final PersistentCookieStore cStore = new PersistentCookieStore(mContext);
-                    mHttpClient.setCookieStore(cStore);
-                    mHttpClient.get(m.group(0), null, new AsyncHttpResponseHandler() {
+                    get(m.group(0), new Callback() {
                         @Override
-                        public void onSuccess(int statusCode, Header[] headers,
-                                              byte[] responseBody) {
-                            for (Cookie cookie : cStore.getCookies()) {
-                                if (cookie.getName().equals("MDESID")) {
-                                    mSettings.setLoginCookie(cookie);
-                                    callback.onSuccess();
-                                    return;
-                                }
-                            }
+                        public void onFailure(Request request, IOException throwable) {
                             callback.onFailure();
                         }
 
                         @Override
-                        public void onFailure(int statusCode, org.apache.http.Header[] headers, byte[] binaryData, java.lang.Throwable error) {
-                            callback.onFailure();
+                        public void onResponse(Response response) throws IOException {
+                            // do nothing, cookie was hopefully saved... :)
+                            ((Activity) mContext).runOnUiThread(new Runnable() {
+                                public void run() {
+                                    callback.onSuccess();
+                                }
+                            });
                         }
                     });
                 } else {
                     callback.onFailure();
                 }
             }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                callback.onFailure();
-            }
-
-            @Override
-            public void onFinish() {
-                callback.onStop();
-            }
-
-            @Override
-            public void onStart() {
-                callback.onStart();
-            }
         });
+
     }
 
 
@@ -211,6 +207,8 @@ public class Network {
      * @return the shaped url
      */
     public static String getAbsoluteUrl(String relativeUrl) {
+        if(relativeUrl.startsWith("http://"))
+            return relativeUrl;
         return BASE_URL + relativeUrl;
     }
 
@@ -221,7 +219,14 @@ public class Network {
      * @return the shaped url
      */
     public static String getAsyncUrl(String relativeUrl) {
+        if(relativeUrl.startsWith("http://"))
+            return relativeUrl;
         return ASYNC_URL + relativeUrl;
+    }
+
+    public static File getCacheDir(Context context) {
+        File ext_root = Environment.getExternalStorageDirectory();
+        return new File(ext_root, "Android/data/" + context.getPackageName() + CACHE_DIR);
     }
 
     /**

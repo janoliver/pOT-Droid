@@ -36,6 +36,8 @@ public class BaseActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         // this must be called first to fix a crash in API 7
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 

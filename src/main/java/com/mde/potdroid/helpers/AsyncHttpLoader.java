@@ -3,10 +3,13 @@ package com.mde.potdroid.helpers;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.content.Loader;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 import org.apache.http.Header;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -14,7 +17,6 @@ import java.io.UnsupportedEncodingException;
  * One should extend this class to provide the abstract method "parseContent", in which some
  * postprocessing can be done. This, as well as the loading, runs asynchroneously in a separate
  * thread.
- * <p/>
  * The HTTP Client from the Network class is used, so that headers and cookies are in place.
  */
 public abstract class AsyncHttpLoader<E> extends Loader<E> {
@@ -23,80 +25,45 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
     public static final Integer GET = 0;
     public static final Integer POST = 1;
     public static final String DEFAULT_ENCODING = "UTF-8";
+
     // the instance of the Network class
     protected Network mNetwork;
+
     // request URL (without (!) the Network.BASE_URL part)
     protected String mRequestUrl;
+
     // request mode, GET or POST (see above)
     protected Integer mMode;
+
     // the parameters for the request, mostly required for POST requests
-    protected RequestParams mParams;
+    protected RequestBody mParams;
+
     // the encoding to use when decoding the response
     protected String mEncoding;
+
     // the data cache
     protected E mData;
-    /**
-     * This is the respoonse handler of the asynchroneous network call, from the
-     * android-async-http library.
-     */
-    private AsyncHttpResponseHandler mHandler = new AsyncHttpResponseHandler() {
 
+    private Callback mHandler = new Callback() {
         @Override
-        public void onProgress(int bytesWritten, int totalSize) {
-            AsyncHttpLoader.this.onNetworkProgress(bytesWritten, totalSize);
-        }
-
-        /**
-         * the following few methods simply forward their calls to the API of
-         * the AsyncHttpLoader class.
-         */
-        @Override
-        public void onStart() {
-            AsyncHttpLoader.this.onNetworkStarted();
+        public void onFailure(Request request, IOException throwable) {
+            AsyncHttpLoader.this.onNetworkFailure(0, null, "", throwable);
+            throwable.printStackTrace();
         }
 
         @Override
-        public void onFinish() {
-            AsyncHttpLoader.this.onNetworkFinished();
-        }
+        public void onResponse(Response response) throws IOException {
+            if (!response.isSuccessful())
+                throw new IOException("Unexpected code " + response);
 
-        /**
-         * Try to decode the responseBody and trigger the post processing with
-         * processResponse
-         */
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
             String stringResult;
-
             try {
-                stringResult = new String(responseBody, mEncoding);
+                stringResult = new String(response.body().bytes(), mEncoding);
             } catch (UnsupportedEncodingException e) {
-                stringResult = new String(responseBody);
+                stringResult = response.body().string();
             }
 
             AsyncHttpLoader.this.processResponse(stringResult);
-        }
-
-        @Override
-        public void onFailure(int statusCode, Header[] headers, byte[] responseBody,
-                              Throwable error) {
-            String stringResult;
-
-            // try to decode the response again
-            try {
-                stringResult = new String(responseBody, mEncoding);
-            } catch (UnsupportedEncodingException e) {
-                stringResult = new String(responseBody);
-            } catch (NullPointerException e) {
-                stringResult = "";
-            }
-
-            AsyncHttpLoader.this.onNetworkFailure(statusCode, headers, stringResult, error);
-        }
-
-        @Override
-        public void onRetry(int retryNumber) {
-            AsyncHttpLoader.this.onNetworkRetry();
         }
     };
 
@@ -129,7 +96,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
      * @param mode    The request mode, GET or POST
      * @param params  Request params, mostly for POST
      */
-    public AsyncHttpLoader(Context context, String url, Integer mode, RequestParams params) {
+    public AsyncHttpLoader(Context context, String url, Integer mode, RequestBody params) {
         this(context, url, mode, params, DEFAULT_ENCODING);
     }
 
@@ -142,7 +109,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
      * @param params   Request params, mostly for POST
      * @param encoding Which encoding to use to decode the response
      */
-    public AsyncHttpLoader(Context context, String url, Integer mode, RequestParams params,
+    public AsyncHttpLoader(Context context, String url, Integer mode, RequestBody params,
                            String encoding) {
         super(context);
 
@@ -176,7 +143,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
      *
      * @param p The new request parameters.
      */
-    public void setParams(RequestParams p) {
+    public void setParams(RequestBody p) {
         mParams = p;
     }
 
@@ -223,10 +190,11 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
     protected void onForceLoad() {
         super.onForceLoad();
 
-        if (mMode.equals(GET))
-            mNetwork.get(mRequestUrl, mParams, mHandler);
-        else if (mMode.equals(POST))
+        if (mMode.equals(GET)) {
+            mNetwork.get(mRequestUrl, mHandler);
+        } else if (mMode.equals(POST)) {
             mNetwork.post(mRequestUrl, mParams, mHandler);
+        }
     }
 
     /**

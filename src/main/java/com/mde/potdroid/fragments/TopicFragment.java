@@ -1,5 +1,6 @@
 package com.mde.potdroid.fragments;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -30,7 +31,6 @@ import com.squareup.okhttp.Response;
 import org.apache.http.Header;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 
 /**
@@ -97,22 +97,42 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_topic, container, false);
 
-        mWebContainer = (FrameLayout) v.findViewById(R.id.web_container);
+        //mWebContainer = (FrameLayout) v.findViewById(R.id.web_container);
+        mWebView = (WebView)v.findViewById(R.id.webview);
 
-        setupWebView();
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setAllowFileAccess(true);
+        mWebView.getSettings().setUseWideViewPort(true);
+        mWebView.getSettings().setAppCacheEnabled(false);
+        mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        mWebView.getSettings().setLoadWithOverviewMode(true);
+
+        mJsInterface = new TopicJSInterface(mWebView, getBaseActivity(), this);
+        mJsInterface.registerScroll(getArguments().getInt(ARG_POST_ID, 0));
+
+        mWebView.addJavascriptInterface(mJsInterface, "api");
+
+        registerForContextMenu(mWebView);
+
+        if (mTopic != null) {
+            mWebView.loadDataWithBaseURL("file:///android_asset/",
+                    mTopic.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);
+        } else {
+            mWebView.loadData("", "text/html", Network.ENCODING_UTF8);
+        }
 
         // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
         // of some former TopicFragment, which will be restored on onResume. .
         if (Utils.isKitkat()) {
-            mWebViewHolder.add(this);
-            if (mWebViewHolder.size() > 3) {
-                TopicFragment fragment = mWebViewHolder.removeFirst();
-                if (fragment != null)
-                    fragment.destroyWebView();
-            }
+            disableHardwareAcc();
         }
 
         return v;
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    protected void disableHardwareAcc() {
+        mWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
     @Override
@@ -160,104 +180,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-        }
-    }
-
-    /**
-     * Set up the webview programmatically, to workaround the kitkat memory leak.
-     */
-    public void setupWebView() {
-
-        mDestroyed = false;
-
-        // create a webview
-        mWebView = new WebView(getBaseActivity());
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.setBackgroundColor(0x00000000);
-        mWebView.getSettings().setAllowFileAccess(true);
-        mWebView.getSettings().setUseWideViewPort(true);
-        mWebView.getSettings().setAppCacheEnabled(false);
-        mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        mWebView.getSettings().setLoadWithOverviewMode(true);
-
-        mJsInterface = new TopicJSInterface(mWebView, getBaseActivity(), this);
-        mJsInterface.registerScroll(getArguments().getInt(ARG_POST_ID, 0));
-
-        mWebView.addJavascriptInterface(mJsInterface, "api");
-
-        mWebContainer.addView(mWebView);
-
-        registerForContextMenu(mWebView);
-
-        if (mTopic != null) {
-            mWebView.loadDataWithBaseURL("file:///android_asset/",
-                    mTopic.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);
-        } else {
-            mWebView.loadData("", "text/html", Network.ENCODING_UTF8);
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (mDestroyed && Utils.isKitkat()) {
-            setupWebView();
-        } else {
-
-            if(Build.VERSION.SDK_INT >= 11)
-                mWebView.onResume();
-            else
-                try {
-                    Class.forName("android.webkit.WebView").getMethod("onResume", (Class[]) null)
-                            .invoke(mWebView, (Object[]) null);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        if(Build.VERSION.SDK_INT >= 11)
-            mWebView.onPause();
-        else
-            try {
-                Class.forName("android.webkit.WebView").getMethod("onPause", (Class[]) null)
-                        .invoke(mWebView, (Object[]) null);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
-    }
-
-    /**
-     * Destroys and detaches the webview.
-     */
-    public void destroyWebView() {
-
-        if (mWebView != null && !mDestroyed) {
-
-            mWebContainer.removeAllViews();
-
-            mWebView.destroy();
-            mWebView = null;
-
-            mDestroyed = true;
         }
     }
 
@@ -571,6 +493,4 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         intent.putExtra(EditorFragment.ARG_RCPT, p.getAuthor().getNick());
         startActivityForResult(intent, EditorFragment.MODE_MESSAGE);
     }
-
-
 }

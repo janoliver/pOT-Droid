@@ -523,7 +523,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     public void bookmarkPost(final int id, final Dialog d) {
         Post p = mTopic.getPostById(id);
 
-        final String url = Network.getAsyncUrl(
+        final String url = Utils.getAsyncUrl(
                 String.format("set-bookmark.php?PID=%d&token=%s", p.getId(), p.getBookmarktoken()));
 
         Network network = new Network(getActivity());
@@ -550,7 +550,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     public void linkPost(final int id) {
         Post p = mTopic.getPostById(id);
 
-        String url = Network.getAbsoluteUrl(
+        String url = Utils.getAbsoluteUrl(
                 String.format("thread.php?PID=%d&TID=%d#reply_%d", p.getId(), mTopic.getId(), p.getId()));
 
         Intent i = new Intent(Intent.ACTION_VIEW);

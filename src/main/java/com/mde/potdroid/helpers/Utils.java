@@ -6,8 +6,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Environment;
 import android.util.Log;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -18,6 +22,13 @@ public class Utils {
 
     // the logcat tag
     public static final String LOG_TAG = "pOT Droid";
+    // some URLs.
+    public static final String BASE_URL = "http://forum.mods.de/bb/";
+    public static final String ASYNC_URL = "async/";
+    public static final int NETWORK_NONE = 0;
+    public static final int NETWORK_WIFI = 1;
+    public static final int NETWORK_ELSE = 2;
+    private static final String CACHE_DIR = "cache";
     // some static reference to any context for settings retrieval
     protected static Context mContext;
 
@@ -176,6 +187,57 @@ public class Utils {
         SettingsWrapper s = new SettingsWrapper(getApplicationContext());
         if (s.isDebug())
             CustomExceptionHandler.writeExceptionToSdCard(e);
+    }
+
+    /**
+     * Returns the state of the network connection
+     *
+     * @param context A context object
+     * @return 0 -> not connected, 1 -> wifi, 2 -> else
+     */
+    public static int getConnectionType(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (activeNetworkInfo == null) {
+            return NETWORK_NONE;
+        }
+
+        if (activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            return NETWORK_WIFI;
+        }
+
+        return NETWORK_ELSE;
+    }
+
+    /**
+     * Given a relative URL, return the absolute one to http://forum.mods.de/..
+     *
+     * @param relativeUrl the URL to shape
+     * @return the shaped url
+     */
+    public static String getAbsoluteUrl(String relativeUrl) {
+        if(relativeUrl.startsWith("http://"))
+            return relativeUrl;
+        return BASE_URL + relativeUrl;
+    }
+
+    /**
+     * Given a URL relative to /async, attach async/
+     *
+     * @param relativeUrl the URL to shape
+     * @return the shaped url
+     */
+    public static String getAsyncUrl(String relativeUrl) {
+        if(relativeUrl.startsWith("http://"))
+            return relativeUrl;
+        return ASYNC_URL + relativeUrl;
+    }
+
+    public static File getCacheDir(Context context) {
+        File ext_root = Environment.getExternalStorageDirectory();
+        return new File(ext_root, "Android/data/" + context.getPackageName() + CACHE_DIR);
     }
 
     public static class NotLoggedInException extends Exception {

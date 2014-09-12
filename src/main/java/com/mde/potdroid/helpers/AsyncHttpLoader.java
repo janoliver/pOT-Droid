@@ -24,7 +24,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
     // request type codes
     public static final Integer GET = 0;
     public static final Integer POST = 1;
-    public static final String DEFAULT_ENCODING = "UTF-8";
+    public static final String DEFAULT_ENCODING = Network.ENCODING_UTF8;
 
     // the instance of the Network class
     protected Network mNetwork;
@@ -205,7 +205,6 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
         super.onStopLoading();
 
         mNetwork.cancelLoad();
-        //mProcessResponseTask.cancel(true);
     }
 
     /**
@@ -240,33 +239,6 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
      */
     protected void onNetworkFailure(int statusCode, Header[] headers,
                                     String responseBody, Throwable error) {
-    }
-
-    /**
-     * Called, when the network request is started.
-     */
-    protected void onNetworkStarted() {
-    }
-
-    /**
-     * Called, when the network request is retried
-     */
-    protected void onNetworkRetry() {
-    }
-
-    /**
-     * Called upon progress update of the network request.
-     *
-     * @param bytesWritten The number of bytes written
-     * @param bytesTotal   The number of total bytes
-     */
-    protected void onNetworkProgress(int bytesWritten, int bytesTotal) {
-    }
-
-    /**
-     * Called, when the network request is finished.
-     */
-    protected void onNetworkFinished() {
     }
 
     /**

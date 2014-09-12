@@ -129,7 +129,7 @@ public class BookmarkFragment extends BaseFragment
             // so far, one can only delete a bookmark through the context menu
             case R.id.delete:
                 Bookmark b = mBookmarkList.getBookmarks().get((int) info.id);
-                final String url = Network.getAsyncUrl(
+                final String url = Utils.getAsyncUrl(
                         String.format("remove-bookmark.php?BMID=%s&token=%s", b.getId(), b.getRemovetoken()));
 
                 showLoadingAnimation();

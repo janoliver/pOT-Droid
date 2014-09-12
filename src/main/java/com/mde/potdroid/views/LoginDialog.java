@@ -92,16 +92,6 @@ public class LoginDialog extends DialogPreference {
                     public void onFailure() {
                         Crouton.makeText((Activity) getContext(), R.string.msg_login_failure, Style.ALERT).show();
                     }
-
-                    @Override
-                    public void onStart() {
-                        setIsLoading(true);
-                    }
-
-                    @Override
-                    public void onStop() {
-                        setIsLoading(false);
-                    }
                 });
             }
         });

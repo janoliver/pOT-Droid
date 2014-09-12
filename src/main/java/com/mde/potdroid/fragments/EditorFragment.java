@@ -13,13 +13,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
+import com.mde.potdroid.helpers.FormEncodingBuilder;
 import com.mde.potdroid.helpers.Network;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.parsers.MessageParser;
 import com.mde.potdroid.views.BBCodeEditText;
 import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.IconSelectionDialog;
-import com.squareup.okhttp.FormEncodingBuilder;
 import org.apache.http.Header;
 
 import java.io.IOException;
@@ -33,6 +33,10 @@ import java.util.regex.Pattern;
  */
 public class EditorFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Bundle>,
    IconSelectionDialog.IconSelectedCallback{
+
+    public static final String BOARD_URL_POST = "newreply.php";
+    public static final String BOARD_URL_THREAD = "newthread.php";
+    public static final String BOARD_URL_EDITPOST = "editreply.php";
 
     protected static final String ARG_MODE = "mode";
     protected static final String ARG_TOPIC_ID = "topic_id";
@@ -258,16 +262,11 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         protected int mMode;
 
         AsyncPostSubmitter(Context cx, Bundle args) {
-            super(cx, Network.BOARD_URL_POST, AsyncHttpLoader.POST);
+            super(cx, BOARD_URL_POST, AsyncHttpLoader.POST);
 
             mMode = args.getInt(ARG_MODE);
 
-            FormEncodingBuilder r = new FormEncodingBuilder();
-
-            //RequestParams r = new RequestParams();
-
-            //r.setContentEncoding(Network.ENCODING_ISO);
-            setTimeout(300);
+            FormEncodingBuilder r = new FormEncodingBuilder(Network.ENCODING_ISO);
 
             // this must resemble the same form on the website
             r.add("message", args.getString(ARG_TEXT));
@@ -280,14 +279,14 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
                 r.add("edit_title", args.getString(ARG_TITLE));
                 r.add("edit_icon", new Integer(args.getInt(ARG_ICON)).toString());
                 r.add("edit_converturls", "1");
-                setUrl(Network.BOARD_URL_EDITPOST);
+                setUrl(BOARD_URL_EDITPOST);
             } else if (mMode == MODE_REPLY) {
                 r.add("SID", "");
                 r.add("PID", "");
                 r.add("post_title", args.getString(ARG_TITLE));
                 r.add("post_icon", new Integer(args.getInt(ARG_ICON)).toString());
                 r.add("post_converturls", "1");
-                setUrl(Network.BOARD_URL_POST);
+                setUrl(BOARD_URL_POST);
             }
 
             setParams(r.build());
@@ -317,7 +316,6 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         @Override
         protected void onNetworkFailure(int statusCode, Header[] headers,
                                         String responseBody, Throwable error) {
-
             Utils.printException(error);
             deliverResult(null);
         }
@@ -328,16 +326,11 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         protected int mMode;
 
         AsyncThreadSubmitter(Context cx, Bundle args) {
-            super(cx, Network.BOARD_URL_THREAD, AsyncHttpLoader.POST);
+            super(cx, BOARD_URL_THREAD, AsyncHttpLoader.POST);
 
             mMode = args.getInt(ARG_MODE);
 
-            FormEncodingBuilder r = new FormEncodingBuilder();
-
-            //RequestParams r = new RequestParams();
-
-            //r.setContentEncoding(Network.ENCODING_ISO);
-            setTimeout(300);
+            FormEncodingBuilder r = new FormEncodingBuilder(Network.ENCODING_ISO);
 
             // this must resemble the same form on the website
             r.add("message", args.getString(ARG_TEXT));
@@ -392,12 +385,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
             mMode = args.getInt(ARG_MODE);
 
-            setTimeout(300);
-
-            FormEncodingBuilder r = new FormEncodingBuilder();
-            //RequestParams r = new RequestParams();
-
-            //r.setContentEncoding(Network.ENCODING_ISO);
+            FormEncodingBuilder r = new FormEncodingBuilder(Network.ENCODING_ISO);
 
             r.add("rcpts", "0");
             r.add("rcpt", args.getString("rcpt"));

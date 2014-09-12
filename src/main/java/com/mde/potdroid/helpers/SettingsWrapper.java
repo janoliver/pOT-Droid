@@ -148,7 +148,7 @@ public class SettingsWrapper {
     public Boolean downloadBenders() {
         String lb = mSharedPreferences.getString(PREF_KEY_LOAD_BENDERS, "0");
         return !(lb.equals("0") || (lb.equals("1") &&
-                Network.getConnectionType(mContext) != Network.NETWORK_WIFI));
+                Utils.getConnectionType(mContext) != Utils.NETWORK_WIFI));
     }
 
     /**
@@ -159,7 +159,7 @@ public class SettingsWrapper {
     public Boolean downloadImages() {
         String lb = mSharedPreferences.getString(PREF_KEY_LOAD_IMAGES, "0");
         return !(lb.equals("0") || (lb.equals("1") &&
-                Network.getConnectionType(mContext) != Network.NETWORK_WIFI));
+                Utils.getConnectionType(mContext) != Utils.NETWORK_WIFI));
     }
 
     /**
@@ -170,7 +170,7 @@ public class SettingsWrapper {
     public Boolean downloadVideos() {
         String lb = mSharedPreferences.getString(PREF_KEY_LOAD_VIDEOS, "0");
         return !(lb.equals("0") || (lb.equals("1") &&
-                Network.getConnectionType(mContext) != Network.NETWORK_WIFI));
+                Utils.getConnectionType(mContext) != Utils.NETWORK_WIFI));
     }
 
     /**

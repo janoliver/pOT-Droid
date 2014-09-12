@@ -1,6 +1,7 @@
 package com.mde.potdroid.helpers;
 
 import android.content.Context;
+import android.webkit.URLUtil;
 import com.mde.potdroid.R;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
@@ -378,7 +379,9 @@ public class TopicBuilder {
         mParser.registerTag(new SimpleTag("img", "image", "string") {
             @Override
             public String html(String content, List<String> args) {
-                if(content.contains("forum.mods.de/bb/img/icons")) {
+                if (!URLUtil.isValidUrl(content)) {
+                    return content;
+                } else if(content.contains("forum.mods.de/bb/img/icons")) {
                     String icon = content.substring( content.lastIndexOf('/')+1, content.length() );
                     return String.format("<img src=\"thread-icons/icon%1$d.png\" alt=\"icon%1$d.png\" />",
                             mIcons.get(icon));

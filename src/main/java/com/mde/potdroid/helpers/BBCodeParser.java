@@ -535,11 +535,6 @@ public class BBCodeParser {
                 return String.format("%s" + res + "%s", mRawStart, mRawEnd);
             }
 
-            // replace the arguments if there are some
-            int num_args = 0;
-            if (mArgs != null)
-                num_args = mArgs.size();
-
             // this is a hack for the potdroid app: if the current tag
             // is [quote] and the containing string starts with [b] and ends
             // with [/b], remove the bold tags.
@@ -548,9 +543,7 @@ public class BBCodeParser {
                 res = res.substring(8, res.length() - 9);
 
             // create the html
-            String html = mTag.html(res, mArgs);
-
-            return html;
+            return mTag.html(res, mArgs);
         }
     }
 

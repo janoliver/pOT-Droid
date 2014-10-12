@@ -15,7 +15,6 @@ import android.text.Spanned;
 import android.view.*;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.FrameLayout;
 import com.mde.potdroid.EditorActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.*;
@@ -49,9 +48,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
     // the webview which is attached to the WebContainer
     private WebView mWebView;
-
-    // the webcontainer
-    private FrameLayout mWebContainer;
 
     // we need to invoke some functions on this one outside of the
     // webview initialization, so keep a reference here.
@@ -94,6 +90,30 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
+        // of some former TopicFragment, which will be restored on onResume. .
+        if (Utils.isKitkat()) {
+            enableHardwareAcc();
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
+        // of some former TopicFragment, which will be restored on onResume. .
+        if (Utils.isKitkat()) {
+            disableHardwareAcc();
+        }
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_topic, container, false);
 
@@ -101,6 +121,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         mWebView = (WebView)v.findViewById(R.id.webview);
 
         mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.setBackgroundColor(0x00000000);
         mWebView.getSettings().setAllowFileAccess(true);
         mWebView.getSettings().setUseWideViewPort(true);
         mWebView.getSettings().setAppCacheEnabled(false);
@@ -121,18 +142,17 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             mWebView.loadData("", "text/html", Network.ENCODING_UTF8);
         }
 
-        // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
-        // of some former TopicFragment, which will be restored on onResume. .
-        if (Utils.isKitkat()) {
-            disableHardwareAcc();
-        }
-
         return v;
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected void disableHardwareAcc() {
         mWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    protected void enableHardwareAcc() {
+        mWebView.setLayerType(View.LAYER_TYPE_NONE, null);
     }
 
     @Override

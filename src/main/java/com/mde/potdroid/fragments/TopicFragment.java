@@ -1,5 +1,6 @@
 package com.mde.potdroid.fragments;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
@@ -84,6 +85,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         super.onActivityCreated(savedInstanceState);
 
         setHasOptionsMenu(true);
+        mPullToRefreshLayout.setSwipeDown(false);
 
         if (mTopic == null)
             startLoader(this);
@@ -114,6 +116,13 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     }
 
     @Override
+    public void onRefresh() {
+        super.onRefresh();
+        restartLoader(this);
+    }
+
+    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_topic, container, false);
 
@@ -136,8 +145,12 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         registerForContextMenu(mWebView);
 
         if (mTopic != null) {
-            mWebView.loadDataWithBaseURL("file:///android_asset/",
-                    mTopic.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);
+            mWebView.loadDataWithBaseURL(
+                    "file:///android_asset/",
+                    mTopic.getHtmlCache(),
+                    "text/html",
+                    Network.ENCODING_UTF8,
+                    null);
         } else {
             mWebView.loadData("", "text/html", Network.ENCODING_UTF8);
         }

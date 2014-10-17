@@ -4,15 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.ForumActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.SettingsActivity;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.views.IconDrawable;
+import com.mde.potdroid.views.SwipeRefreshLayout;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -83,7 +86,7 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         if (mPullToRefreshLayout != null) {
             mPullToRefreshLayout.setRefreshing(false);
         }
-        getBaseActivity().setProgressBarIndeterminateVisibility(false);
+        //getBaseActivity().setProgressBarIndeterminateVisibility(false);
     }
 
     @Override
@@ -202,7 +205,7 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         if (mPullToRefreshLayout != null) {
             mPullToRefreshLayout.setRefreshing(true);
         }
-        getBaseActivity().setProgressBarIndeterminateVisibility(true);
+        //getBaseActivity().setProgressBarIndeterminateVisibility(true);
     }
 
     /**

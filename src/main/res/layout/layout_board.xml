@@ -7,19 +7,26 @@
 
     <include layout="@layout/toolbar"/>
 
-    <com.mde.potdroid.views.SwipeRefreshLayout
-            android:id="@+id/ptr_layout"
+    <FrameLayout
+            android:id="@+id/main_group"
             android:layout_below="@+id/main_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <ListView
-                android:id="@+id/forum_list_content"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:divider="@color/bbstyle_darkblue"
-                android:dividerHeight="1dp"/>
-    </com.mde.potdroid.views.SwipeRefreshLayout>
 
-    <include layout="@layout/view_paginate"/>
+        <com.mde.potdroid.views.SwipeRefreshLayout
+                android:id="@+id/ptr_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <ListView
+                    android:id="@+id/forum_list_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:divider="@color/bbstyle_darkblue"
+                    android:dividerHeight="1dp"/>
+        </com.mde.potdroid.views.SwipeRefreshLayout>
+
+        <include layout="@layout/view_paginate"/>
+    </FrameLayout>
 </RelativeLayout>

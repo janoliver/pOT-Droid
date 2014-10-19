@@ -82,7 +82,11 @@ public class LoginDialog extends DialogPreference {
                 n.login(user_name, user_password, new Network.LoginCallback() {
                     @Override
                     public void onSuccess() {
-                        Crouton.makeText((Activity) getContext(), R.string.msg_login_success, Style.CONFIRM).show();
+                        Style style = new Style.Builder()
+                                .setBackgroundColorValue(Style.holoGreenLight)
+                                .setHeightDimensionResId(R.dimen.notification_height_fallback)
+                                .build();
+                        Crouton.makeText((Activity) getContext(), R.string.msg_login_success, style).show();
 
                         mSettingsWrapper.setUsername(user_name);
                         getDialog().dismiss();
@@ -90,7 +94,11 @@ public class LoginDialog extends DialogPreference {
 
                     @Override
                     public void onFailure() {
-                        Crouton.makeText((Activity) getContext(), R.string.msg_login_failure, Style.ALERT).show();
+                        Style style = new Style.Builder()
+                                .setBackgroundColorValue(Style.holoRedLight)
+                                .setHeightDimensionResId(R.dimen.notification_height_fallback)
+                                .build();
+                        Crouton.makeText((Activity) getContext(), R.string.msg_login_failure, style).show();
                     }
                 });
             }

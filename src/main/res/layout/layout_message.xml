@@ -8,8 +8,15 @@
     <include layout="@layout/toolbar"/>
 
     <FrameLayout
-            android:id="@+id/web_container"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@color/black"/>
+            android:id="@+id/main_group"
+            android:layout_below="@+id/main_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <FrameLayout
+                android:id="@+id/web_container"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/black"/>
+    </FrameLayout>
 </LinearLayout>

@@ -32,7 +32,11 @@ public class LogoutDialog extends DialogPreference {
             mSettingsWrapper.clearCookie();
             mSettingsWrapper.clearUsername();
             mSettingsWrapper.clearUserId();
-            Crouton.makeText((Activity) mContext, R.string.msg_logout_success, Style.CONFIRM).show();
+            Style style = new Style.Builder()
+                    .setBackgroundColorValue(Style.holoGreenLight)
+                    .setHeightDimensionResId(R.dimen.notification_height_fallback)
+                    .build();
+            Crouton.makeText((Activity) getContext(), R.string.msg_logout_success, style).show();
         }
     }
 

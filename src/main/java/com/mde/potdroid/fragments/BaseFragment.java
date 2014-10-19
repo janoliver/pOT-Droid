@@ -156,46 +156,62 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         getLoaderManager().restartLoader(CONTENT_LOADER_ID, null, l);
     }
 
+    protected void showGenericNotification(String message, int s) {
+        Style style = new Style.Builder()
+                .setBackgroundColorValue(s)
+                .setHeight(getActionbar().getHeight())
+                .build();
+        Crouton.makeText(getBaseActivity(), message,  style, R.id.main_group).show();
+    }
+
+    protected void showGenericNotification(int message, int s) {
+        Style style = new Style.Builder()
+                .setBackgroundColorValue(s)
+                .setHeight(getActionbar().getHeight())
+                .build();
+        Crouton.makeText(getBaseActivity(), message,  style, R.id.main_group).show();
+    }
+
     /**
      * Display an error
      */
     public void showError(String error) {
-        Crouton.makeText(getBaseActivity(), error, Style.ALERT).show();
+        showGenericNotification(error, Style.holoRedLight);
     }
 
     /**
      * Display a success message
      */
     public void showSuccess(String message) {
-        Crouton.makeText(getBaseActivity(), message, Style.CONFIRM).show();
+        showGenericNotification(message, Style.holoGreenLight);
     }
 
     /**
      * Display a success message
      */
     public void showInfo(String message) {
-        Crouton.makeText(getBaseActivity(), message, Style.INFO).show();
+        showGenericNotification(message, Style.holoBlueLight);
     }
 
     /**
      * Display an error
      */
     public void showError(int error) {
-        Crouton.makeText(getBaseActivity(), error, Style.ALERT).show();
+        showGenericNotification(error, Style.holoRedLight);
     }
 
     /**
      * Display a success message
      */
     public void showSuccess(int message) {
-        Crouton.makeText(getBaseActivity(), message, Style.CONFIRM).show();
+        showGenericNotification(message, Style.holoGreenLight);
     }
 
     /**
      * Display a success message
      */
     public void showInfo(int message) {
-        Crouton.makeText(getBaseActivity(), message, Style.INFO).show();
+        showGenericNotification(message, Style.holoBlueLight);
     }
 
     /**

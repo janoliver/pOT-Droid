@@ -1,11 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/paginate_view"
-              android:layout_width="wrap_content"
+              android:layout_width="match_parent"
               android:layout_centerHorizontal="true"
-              android:layout_marginBottom="5dp"
               android:layout_height="wrap_content"
-              android:background="@drawable/rounded_background"
+              android:background="@color/bbstyle_darkblue_semi"
               android:orientation="horizontal"
+              android:gravity="center_vertical|center_horizontal"
               android:layout_alignParentBottom="true">
 
     <com.mde.potdroid.views.IconButton
@@ -14,6 +14,8 @@
             android:text="@string/icon_fast_backward"
             android:id="@+id/button_frwd"
             android:textSize="24sp"
+            android:visibility="invisible"
+            android:background="@drawable/background_transparent_clickable"
             android:textColor="@color/white"/>
 
     <com.mde.potdroid.views.IconButton
@@ -21,6 +23,8 @@
             android:layout_height="45dp"
             android:text="@string/icon_backward"
             android:id="@+id/button_rwd"
+            android:visibility="invisible"
+            android:background="@drawable/background_transparent_clickable"
             android:textSize="24sp"
             android:textColor="@color/white"/>
 
@@ -36,7 +40,9 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:text="@string/icon_forward"
+            android:background="@drawable/background_transparent_clickable"
             android:id="@+id/button_fwd"
+            android:visibility="invisible"
             android:textSize="24sp"
             android:textColor="@color/white"/>
 
@@ -44,7 +50,9 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:text="@string/icon_fast_forward"
+            android:background="@drawable/background_transparent_clickable"
             android:id="@+id/button_ffwd"
+            android:visibility="invisible"
             android:textSize="24sp"
             android:textColor="@color/white"/>
 

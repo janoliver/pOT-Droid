@@ -97,11 +97,17 @@ abstract public class PaginateFragment extends BaseFragment {
         if (isLastPage()) {
             fwdButton.setVisibility(View.INVISIBLE);
             ffwdButton.setVisibility(View.INVISIBLE);
+        } else {
+            fwdButton.setVisibility(View.VISIBLE);
+            ffwdButton.setVisibility(View.VISIBLE);
         }
 
         if (isFirstPage()) {
             rwdButton.setVisibility(View.INVISIBLE);
             frwdButton.setVisibility(View.INVISIBLE);
+        } else {
+            rwdButton.setVisibility(View.VISIBLE);
+            frwdButton.setVisibility(View.VISIBLE);
         }
 
     }

@@ -1,8 +1,12 @@
 package com.mde.potdroid;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerTabStrip;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import com.mde.potdroid.fragments.MessageListFragment;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.MessageList;
@@ -11,7 +15,8 @@ import com.mde.potdroid.models.MessageList;
  * The Container Activity for the MessageList, containing a TabBar for the
  * inbox and outbox folders.
  */
-public class MessageListActivity extends BaseActivity implements ActionBar.TabListener {
+public class MessageListActivity extends BaseActivity {
+    FragmentPagerAdapter adapterViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,36 +25,70 @@ public class MessageListActivity extends BaseActivity implements ActionBar.TabLi
         if(!Utils.isLoggedIn())
             finish();
 
+        setContentView(R.layout.layout_messages_container);
+
+        ViewPager vpPager = (ViewPager) findViewById(R.id.pager);
+        adapterViewPager = new MessageListPagerAdapter(getSupportFragmentManager(), this);
+        vpPager.setAdapter(adapterViewPager);
+
+        PagerTabStrip strip = (PagerTabStrip) findViewById(R.id.pager_header);
+        strip.setDrawFullUnderline(false);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+        setUpActionBar();
+
     }
 
-    public void setupTabs(ActionBar actionBar) {
+    public static class MessageListPagerAdapter extends FragmentPagerAdapter {
+        private static int NUM_ITEMS = 2;
+        private MessageListActivity mActivity;
 
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        public MessageListPagerAdapter(FragmentManager fragmentManager, MessageListActivity activity) {
+            super(fragmentManager);
+            mActivity = activity;
+        }
 
-        actionBar.addTab(
-                actionBar.newTab().setText(R.string.tab_inbox).setTag(MessageList.TAG_INBOX)
-                        .setTabListener(this)
-        );
-        actionBar.addTab(
-                actionBar.newTab().setText(R.string.tab_outbox).setTag(MessageList.TAG_OUTBOX)
-                        .setTabListener(this)
-        );
+        // Returns total number of pages
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        // Returns the fragment to display for that page
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0: // Fragment # 0 - This will show FirstFragment
+                    return mActivity.getFragmentByTag(MessageList.TAG_INBOX);
+                case 1: // Fragment # 0 - This will show FirstFragment different title
+                    return mActivity.getFragmentByTag(MessageList.TAG_OUTBOX);
+                default:
+                    return null;
+            }
+        }
+
+        // Returns the page title for the top indicator
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0: // Fragment # 0 - This will show FirstFragment
+                    return mActivity.getResources().getString(R.string.tab_inbox);
+                case 1: // Fragment # 0 - This will show FirstFragment different title
+                    return mActivity.getResources().getString(R.string.tab_outbox);
+                default:
+                    return null;
+            }
+        }
+
     }
 
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+    public Fragment getFragmentByTag(String tag) {
         MessageListFragment fr = (MessageListFragment) getSupportFragmentManager()
-                .findFragmentByTag((String) tab.getTag());
+                .findFragmentByTag(tag);
         if (fr == null)
-            fr = MessageListFragment.newInstance((String) tab.getTag());
-
-        ft.replace(R.id.content, fr, (String) tab.getTag());
+            fr = MessageListFragment.newInstance(tag);
+        return fr;
     }
 
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-        // hide the given tab
-    }
-
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-        // probably ignore this event
-    }
 }

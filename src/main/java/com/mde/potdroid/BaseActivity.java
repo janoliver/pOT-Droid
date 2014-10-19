@@ -9,7 +9,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import com.mde.potdroid.fragments.BoardFragment;
 import com.mde.potdroid.fragments.SidebarLeftFragment;
 import com.mde.potdroid.fragments.SidebarRightFragment;
@@ -39,7 +38,7 @@ public class BaseActivity extends ActionBarActivity {
 
 
         // this must be called first to fix a crash in API 7
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         super.onCreate(savedInstanceState);
 

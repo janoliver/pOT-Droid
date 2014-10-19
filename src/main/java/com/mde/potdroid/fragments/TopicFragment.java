@@ -90,6 +90,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
         if (mTopic == null)
             startLoader(this);
+
     }
 
     @Override
@@ -533,4 +534,5 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         intent.putExtra(EditorFragment.ARG_RCPT, p.getAuthor().getNick());
         startActivityForResult(intent, EditorFragment.MODE_MESSAGE);
     }
+
 }

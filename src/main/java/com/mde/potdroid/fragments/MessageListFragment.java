@@ -92,10 +92,6 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
             }
         });
 
-        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) v.findViewById(R.id.main_toolbar);
-        getBaseActivity().setSupportActionBar(toolbar);
-        getBaseActivity().setUpActionBar();
-
         getActionbar().setTitle(R.string.title_messages);
         getActionbar().setSubtitle(mMode.equals(MODE_INBOX) ? R.string.tab_inbox : R.string.tab_outbox);
 

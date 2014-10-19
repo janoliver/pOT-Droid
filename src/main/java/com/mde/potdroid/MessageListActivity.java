@@ -20,7 +20,10 @@ public class MessageListActivity extends BaseActivity implements ActionBar.TabLi
         if(!Utils.isLoggedIn())
             finish();
 
-        ActionBar actionBar = getSupportActionBar();
+    }
+
+    public void setupTabs(ActionBar actionBar) {
+
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         actionBar.addTab(

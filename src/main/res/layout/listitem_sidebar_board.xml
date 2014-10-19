@@ -13,20 +13,20 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:scrollHorizontally="false"
-            android:textSize="16sp"
-            android:textColor="#fff"/>
+            android:textSize="18sp"
+            android:textColor="@color/white"/>
 
     <TextView
             android:id="@+id/text_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:textColor="@color/grey"/>
+            android:textColor="@color/white_low"/>
 
     <TextView
             android:id="@+id/last_post"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:textColor="@color/grey"/>
+            android:textColor="@color/white_low"/>
 </LinearLayout>

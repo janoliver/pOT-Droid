@@ -16,7 +16,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/sidebar_cap_boards"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 android:paddingLeft="10dp"
                 android:background="@drawable/background_transparent_clickable"
                 android:textColor="@color/white"

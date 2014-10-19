@@ -1,33 +1,30 @@
 body {
     padding:0;
     margin:0;
-    background:#000;
+    padding-top:7px;
+    background:#111723;
     color:#ddd;
     overflow-x: none;
 }
 
 section {
-    background:#394E63;
-    margin:15px 10px;
-    border-bottom:2px solid #2E3E4F;
-    border-radius: 4px;
+    background:#51677e;
+    margin:7px;
+    margin-top:0;
 }
 
 section.oldpost {
     opacity: 0.5;
 }
 
-section.newpost header {
-    border-left:3px solid yellow;
+section.newpost {
 }
 
 header {
-    background-color:#091827;
+    background-color:#394E63;
     font-weight:bold;
-    padding:5px;
+    padding:10px;
     overflow:auto;
-    border-top-radius: 4px;
-    border-top:2px solid #091827;
 }
 
 article {
@@ -60,7 +57,7 @@ header div.author {
 }
 
 header div.title {
-    color:#aaa;
+    color:rgba(255,255,255,0.4);
     font-size:0.8em;
 }
 
@@ -79,7 +76,7 @@ header div.date {
 
 header .icons i.fa {
     font-size:1.5em;
-    color:#394E63;
+    color:#222E3A;
     width:1em;
     height:1em;
     text-align:center;
@@ -102,7 +99,7 @@ header .icons {
 }
 
 article {
-    padding:5px;
+    padding:10px;
 }
 
 article > div {
@@ -119,8 +116,8 @@ article div a {
 }
 
 article div blockquote {
-    background:rgba(9, 24, 39, 0.35);
-    border:1px solid rgba(9, 24, 39, 0.35);
+    background:rgba(9, 24, 39, 0.4);
+    border:0px solid rgba(9, 24, 39, 0.4);
     display:block;
     margin:0;
 }
@@ -147,7 +144,7 @@ div.video i,
 div.spoiler i,
 div.img-link i {
     font-size:2em;
-    color:#000;
+    color:#51677e;
     padding:0 5px;
 }
 
@@ -162,11 +159,10 @@ div.img,
 div.video,
 div.spoiler,
 div.img-link {
-    border:1px solid #000;
     background: rgba(9,24,39,0.6);
-    padding:3px;
+    padding:5px;
     text-align:center;
-    margin:5px;
+    margin:5px 0px;
 }
 
 .videoWrapper {

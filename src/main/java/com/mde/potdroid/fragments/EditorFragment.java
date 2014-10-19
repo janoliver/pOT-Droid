@@ -108,6 +108,10 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             }
         });
 
+        Toolbar toolbar = (Toolbar) v.findViewById(R.id.main_toolbar);
+        getBaseActivity().setSupportActionBar(toolbar);
+        getBaseActivity().setUpActionBar();
+
         // fill the form
         if (getArguments().getString(ARG_TEXT) != null)
             mEditText.setText(getArguments().getString(ARG_TEXT));
@@ -138,9 +142,6 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         }
 
 
-        Toolbar toolbar = (Toolbar) v.findViewById(R.id.main_toolbar);
-        getBaseActivity().setSupportActionBar(toolbar);
-        getBaseActivity().setUpActionBar();
 
         return v;
     }

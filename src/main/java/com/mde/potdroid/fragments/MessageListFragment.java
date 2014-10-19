@@ -81,7 +81,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
         View v = inflater.inflate(R.layout.layout_message_list, container, false);
 
         mListAdapter = new MessageListAdapter();
-        ListView mListView = (ListView) v.findViewById(R.id.list_content);
+        ListView mListView = (ListView) v.findViewById(R.id.forum_list_content);
         mListView.setAdapter(mListAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -91,6 +91,10 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
                 startActivity(intent);
             }
         });
+
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) v.findViewById(R.id.main_toolbar);
+        getBaseActivity().setSupportActionBar(toolbar);
+        getBaseActivity().setUpActionBar();
 
         getActionbar().setTitle(R.string.title_messages);
         getActionbar().setSubtitle(mMode.equals(MODE_INBOX) ? R.string.tab_inbox : R.string.tab_outbox);
@@ -219,7 +223,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
                 int padding_right = v.getPaddingRight();
                 int padding_left = v.getPaddingLeft();
 
-                v.setBackgroundResource(R.drawable.sidebar_button_background);
+                v.setBackgroundResource(R.drawable.background_list_light_active);
                 v.setPadding(padding_left, padding_top, padding_right, padding_bottom);
             }
 

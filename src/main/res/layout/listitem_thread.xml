@@ -2,14 +2,14 @@
                 android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:background="@drawable/sidebar_bookmarkbutton_background">
+                android:padding="10dp"
+                android:background="@drawable/background_list_light">
 
     <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/icon_bookmarked"
+            android:layout_toLeftOf="@+id/icons"
             android:layout_alignParentLeft="true"
             android:textSize="16sp"
             android:ellipsize="end"
@@ -17,35 +17,41 @@
             android:textColor="@color/white"
             android:drawablePadding="5dp"/>
 
-    <com.mde.potdroid.views.IconView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:text="@string/icon_lock"
-            android:layout_marginTop="4dp"
+    <LinearLayout
+            android:id="@+id/icons"
+            android:layout_width="wrap_content"
             android:layout_alignParentRight="true"
-            android:id="@+id/icon_locked"
-            android:textSize="14sp"
-            android:color="@color/white"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <com.mde.potdroid.views.IconView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:text="@string/icon_pushpin"
-            android:layout_marginTop="4dp"
-            android:id="@+id/icon_pinned"
-            android:layout_toLeftOf="@+id/icon_locked"
-            android:textSize="14sp"
-            android:color="@color/white"/>
+        <com.mde.potdroid.views.IconView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:text="@string/icon_lock"
+                android:layout_marginTop="4dp"
+                android:id="@+id/icon_locked"
+                android:textSize="14sp"
+                android:color="@color/white_low"/>
 
-    <com.mde.potdroid.views.IconView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:text="@string/icon_bookmark"
-            android:layout_marginTop="4dp"
-            android:id="@+id/icon_bookmarked"
-            android:layout_toLeftOf="@+id/icon_pinned"
-            android:textSize="14sp"
-            android:color="@color/white"/>
+        <com.mde.potdroid.views.IconView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:text="@string/icon_pushpin"
+                android:layout_marginTop="4dp"
+                android:id="@+id/icon_pinned"
+                android:textSize="14sp"
+                android:color="@color/white_low"/>
+
+        <com.mde.potdroid.views.IconView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:text="@string/icon_bookmark"
+                android:layout_marginTop="4dp"
+                android:id="@+id/icon_bookmarked"
+                android:textSize="14sp"
+                android:color="@color/white_low"/>
+
+    </LinearLayout>
 
     <TextView
             android:id="@+id/subtitle"
@@ -59,7 +65,7 @@
             android:layout_below="@+id/title"
             android:layout_marginRight="15dp"
             android:textSize="14sp"
-            android:textColor="@color/grey"/>
+            android:textColor="@color/white_low"/>
 
     <TextView
             android:id="@+id/pages"
@@ -68,7 +74,7 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/title"
             android:textSize="12sp"
-            android:textColor="@color/darkgrey"/>
+            android:textColor="@color/white_low"/>
 
     <TextView
             android:id="@+id/author"
@@ -77,6 +83,6 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/pages"
             android:textSize="12sp"
-            android:textColor="@color/darkgrey"/>
+            android:textColor="@color/white_low"/>
 
 </RelativeLayout>

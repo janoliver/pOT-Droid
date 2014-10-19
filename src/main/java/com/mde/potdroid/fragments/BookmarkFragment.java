@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
@@ -21,7 +22,6 @@ import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.BookmarkList;
 import com.mde.potdroid.parsers.BookmarkParser;
-import com.mde.potdroid.views.IconDrawable;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -60,10 +60,10 @@ public class BookmarkFragment extends BaseFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
-        View v = inflater.inflate(R.layout.layout_board, container, false);
+        View v = inflater.inflate(R.layout.layout_bookmarks, container, false);
 
         mListAdapter = new BookmarkListAdapter();
-        ListView listView = (ListView) v.findViewById(R.id.list_content);
+        ListView listView = (ListView) v.findViewById(R.id.forum_list_content);
         listView.setAdapter(mListAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -77,6 +77,10 @@ public class BookmarkFragment extends BaseFragment
         });
 
         registerForContextMenu(listView);
+
+        Toolbar toolbar = (Toolbar) v.findViewById(R.id.main_toolbar);
+        getBaseActivity().setSupportActionBar(toolbar);
+        getBaseActivity().setUpActionBar();
 
         getActionbar().setTitle(R.string.title_bookmarks);
 
@@ -97,16 +101,16 @@ public class BookmarkFragment extends BaseFragment
 
         inflater.inflate(R.menu.actionmenu_bookmarks, menu);
 
-        MenuItem refresh = menu.findItem(R.id.refresh);
-        refresh.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
+        //MenuItem refresh = menu.findItem(R.id.refresh);
+        //refresh.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.refresh:
+            /*case R.id.refresh:
                 restartLoader(this);
-                return true;
+                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -222,7 +226,7 @@ public class BookmarkFragment extends BaseFragment
                 int padding_right = v.getPaddingRight();
                 int padding_left = v.getPaddingLeft();
 
-                v.setBackgroundResource(R.drawable.sidebar_button_background);
+                v.setBackgroundResource(R.drawable.background_list_light_active);
                 v.setPadding(padding_left, padding_top, padding_right, padding_bottom);
             }
 

@@ -106,13 +106,6 @@ public class BaseActivity extends ActionBarActivity {
                     .add(R.id.sidebar_container_right, mRightSidebar, TAG_SIDEBAR_RIGHT).commit();
         }
 
-        if (Utils.isLoggedIn()) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-        } else {
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT);
-        }
-
         // first start info
         SettingsWrapper settings = new SettingsWrapper(this);
         if (settings.isVersionUpdate(this)) {
@@ -171,6 +164,16 @@ public class BaseActivity extends ActionBarActivity {
     protected void onDestroy() {
         super.onDestroy();
         Crouton.clearCroutonsForActivity(this);
+    }
+
+    public void setUpActionBar() {
+
+        if (Utils.isLoggedIn()) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        } else {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT);
+        }
     }
 
     public SidebarRightFragment getRightSidebarFragment() {

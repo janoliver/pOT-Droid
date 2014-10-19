@@ -1,51 +1,50 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/sidebar"
+              android:id="@+id/paginate_view"
               android:layout_width="wrap_content"
-              android:layout_height="?attr/actionBarSize"
-              android:orientation="horizontal">
+              android:layout_centerHorizontal="true"
+              android:layout_marginBottom="5dp"
+              android:layout_height="wrap_content"
+              android:background="@drawable/rounded_background"
+              android:orientation="horizontal"
+              android:layout_alignParentBottom="true">
 
     <com.mde.potdroid.views.IconButton
-            android:layout_width="?attr/actionBarSize"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:text="@string/icon_fast_backward"
             android:id="@+id/button_frwd"
-            android:background="@drawable/actionbar_button_background"
             android:textSize="24sp"
             android:textColor="@color/white"/>
 
     <com.mde.potdroid.views.IconButton
-            android:layout_width="?attr/actionBarSize"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:text="@string/icon_backward"
             android:id="@+id/button_rwd"
-            android:background="@drawable/actionbar_button_background"
             android:textSize="24sp"
             android:textColor="@color/white"/>
 
-    <com.mde.potdroid.views.IconButton
-            android:layout_width="?attr/actionBarSize"
-            android:layout_height="?attr/actionBarSize"
+    <!--<com.mde.potdroid.views.IconButton
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:text="@string/icon_refresh"
             android:id="@+id/button_refresh"
-            android:background="@drawable/actionbar_button_background"
             android:textSize="24sp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"/>-->
 
     <com.mde.potdroid.views.IconButton
-            android:layout_width="?attr/actionBarSize"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:text="@string/icon_forward"
             android:id="@+id/button_fwd"
-            android:background="@drawable/actionbar_button_background"
             android:textSize="24sp"
             android:textColor="@color/white"/>
 
     <com.mde.potdroid.views.IconButton
-            android:layout_width="?attr/actionBarSize"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:text="@string/icon_fast_forward"
             android:id="@+id/button_ffwd"
-            android:background="@drawable/actionbar_button_background"
             android:textSize="24sp"
             android:textColor="@color/white"/>
 

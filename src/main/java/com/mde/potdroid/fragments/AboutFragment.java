@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +49,10 @@ public class AboutFragment extends BaseFragment {
         } catch (IOException e) {
             // passiert nicht! :mad:
         }
+
+        Toolbar toolbar = (Toolbar) v.findViewById(R.id.main_toolbar);
+        getBaseActivity().setSupportActionBar(toolbar);
+        getBaseActivity().setUpActionBar();
 
         return v;
     }

@@ -106,28 +106,10 @@ public class SidebarRightFragment extends BaseFragment implements LoaderManager.
         }
     }
 
-    /**
-     * We have a different loading animation in this fragment.
-     */
     @Override
-    public void showLoadingAnimation() {
-        try {
-            getView().findViewById(R.id.update_progress).setVisibility(View.VISIBLE);
-        } catch (NullPointerException e) {
-            // the view was already detached. Never mind...
-        }
-    }
-
-    /**
-     * We have a different loading animation in this fragment.
-     */
-    @Override
-    public void hideLoadingAnimation() {
-        try {
-            getView().findViewById(R.id.update_progress).setVisibility(View.INVISIBLE);
-        } catch (NullPointerException e) {
-            // the view was already detached. Never mind...
-        }
+    public void onRefresh() {
+        super.onRefresh();
+        restartLoader(this);
     }
 
     public void refreshBoards() {

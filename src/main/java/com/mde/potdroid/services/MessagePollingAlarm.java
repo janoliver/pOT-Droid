@@ -70,7 +70,7 @@ public class MessagePollingAlarm extends BroadcastReceiver {
 
         // build the notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setSmallIcon(R.drawable.statusbaricon);
+        builder.setSmallIcon(R.drawable.ic_statusbar);
         builder.setLargeIcon(
                 ((BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_launcher))
                         .getBitmap()

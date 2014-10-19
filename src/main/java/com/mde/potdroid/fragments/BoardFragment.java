@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
@@ -72,7 +73,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         View v = inflater.inflate(R.layout.layout_board, container, false);
 
         mListAdapter = new BoardListAdapter();
-        mListView = (ListView) v.findViewById(R.id.list_content);
+        mListView = (ListView) v.findViewById(R.id.forum_list_content);
         mListView.setAdapter(mListAdapter);
 
         // clicking on a topic leads to the topicactivity
@@ -96,6 +97,11 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                 return true;
             }
         });
+
+
+        Toolbar toolbar = (Toolbar) v.findViewById(R.id.main_toolbar);
+        getBaseActivity().setSupportActionBar(toolbar);
+        getBaseActivity().setUpActionBar();
 
         mDatabase = new DatabaseWrapper(getActivity());
 
@@ -195,7 +201,8 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             mListAdapter.notifyDataSetChanged();
 
             // refresh the OptionsMenu, because of new pagination possibilities
-            getBaseActivity().supportInvalidateOptionsMenu();
+            //getBaseActivity().supportInvalidateOptionsMenu();
+            refreshPaginateLayout();
 
             // generate subtitle and set title and subtitle of the actionbar
             Spanned subtitle = Html.fromHtml(String.format(getString(
@@ -358,20 +365,20 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                 int padding_right = v.getPaddingRight();
                 int padding_left = v.getPaddingLeft();
 
-                v.setBackgroundResource(R.drawable.sidebar_button_background);
+                v.setBackgroundResource(R.drawable.background_list_light_active);
                 v.setPadding(padding_left, padding_top, padding_right, padding_bottom);
             }
 
             if (!t.isSticky()) {
-                row.findViewById(R.id.icon_pinned).setVisibility(View.INVISIBLE);
+                row.findViewById(R.id.icon_pinned).setVisibility(View.GONE);
             }
 
             if (!t.isClosed()) {
-                row.findViewById(R.id.icon_locked).setVisibility(View.INVISIBLE);
+                row.findViewById(R.id.icon_locked).setVisibility(View.GONE);
             }
 
             if (!mDatabase.isBookmark(t)) {
-                row.findViewById(R.id.icon_bookmarked).setVisibility(View.INVISIBLE);
+                row.findViewById(R.id.icon_bookmarked).setVisibility(View.GONE);
             }
 
             return row;

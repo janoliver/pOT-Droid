@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
         android:id="@+id/sidebar"
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -5,6 +6,8 @@
         android:layout_height="match_parent"
         android:background="@color/bbstyle_lightblue"
         android:orientation="vertical">
+
+    <include layout="@layout/toolbar"/>
 
     <EditText
             android:id="@+id/edit_rcpt"
@@ -54,7 +57,7 @@
                 android:layout_gravity="center"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/actionbar_button_background"
+                android:background="@drawable/background_transparent_clickable"
                 android:src="@drawable/ic_action_icon"/>
 
     </RelativeLayout>

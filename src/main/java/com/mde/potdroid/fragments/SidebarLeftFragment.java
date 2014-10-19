@@ -66,16 +66,6 @@ public class SidebarLeftFragment extends BaseFragment
             }
         });
 
-        // below are the navigation and bookmark refresh buttons
-
-        Button bookmarkRefreshButton = (Button) v.findViewById(R.id.refresh_bookmarks);
-        bookmarkRefreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                restartLoader(SidebarLeftFragment.this);
-            }
-        });
-
         IconButton home = (IconButton) v.findViewById(R.id.button_home);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,30 +107,10 @@ public class SidebarLeftFragment extends BaseFragment
 
     }
 
-    /**
-     * We have a different loading animation in this fragment.
-     */
     @Override
-    public void showLoadingAnimation() {
-        try {
-            getView().findViewById(R.id.separator).setVisibility(View.GONE);
-            getView().findViewById(R.id.update_progress).setVisibility(View.VISIBLE);
-        } catch (NullPointerException e) {
-            // the view was already detached. Never mind...
-        }
-    }
-
-    /**
-     * We have a different loading animation in this fragment.
-     */
-    @Override
-    public void hideLoadingAnimation() {
-        try {
-            getView().findViewById(R.id.separator).setVisibility(View.VISIBLE);
-            getView().findViewById(R.id.update_progress).setVisibility(View.GONE);
-        } catch (NullPointerException e) {
-            // the view was already detached. Never mind...
-        }
+    public void onRefresh() {
+        super.onRefresh();
+        restartLoader(this);
     }
 
     public void refreshBookmarks() {

@@ -23,23 +23,20 @@
             android:id="@+id/user_password"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:password="true"
+            android:inputType="textPassword"
             android:hint="@string/dialog_password_hint"
             android:layout_marginBottom="15dp"/>
 
-    <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+    <ProgressBar
             android:id="@+id/login_progress"
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:indeterminate="true"
-            app:spb_sections_count="12"
-            app:spb_stroke_width="4dp"
-            app:spb_stroke_separator_length="4dp"
-            android:visibility="invisible"
-            app:spb_color="@color/white"/>
+            android:maxHeight="10dip"
+            android:minHeight="10dip"
+            android:progress="50"
+            android:visibility="invisible"/>
 
 
 </LinearLayout>

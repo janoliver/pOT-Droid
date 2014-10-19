@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
@@ -155,6 +156,11 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             mWebView.loadData("", "text/html", Network.ENCODING_UTF8);
         }
 
+
+        Toolbar toolbar = (Toolbar) v.findViewById(R.id.main_toolbar);
+        getBaseActivity().setSupportActionBar(toolbar);
+        getBaseActivity().setUpActionBar();
+
         return v;
     }
 
@@ -247,7 +253,8 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             Spanned subtitleText = Html.fromHtml(getString(R.string.subtitle_paginate,
                     mTopic.getPage(), mTopic.getNumberOfPages()));
 
-            getBaseActivity().supportInvalidateOptionsMenu();
+            //getBaseActivity().supportInvalidateOptionsMenu();
+            refreshPaginateLayout();
             getActionbar().setTitle(mTopic.getTitle());
             getActionbar().setSubtitle(subtitleText);
 

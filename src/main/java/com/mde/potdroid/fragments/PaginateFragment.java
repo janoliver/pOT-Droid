@@ -1,10 +1,8 @@
 package com.mde.potdroid.fragments;
 
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import com.mde.potdroid.R;
@@ -15,6 +13,8 @@ import com.mde.potdroid.views.IconButton;
  * for those Fragments who have pagination functionality.
  */
 abstract public class PaginateFragment extends BaseFragment {
+
+    private LinearLayout mPaginateLayout;
 
     public abstract void goToFirstPage();
 
@@ -39,24 +39,23 @@ abstract public class PaginateFragment extends BaseFragment {
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
+    public void onActivityCreated (Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        MenuItem paginate_layout = menu.findItem(R.id.layout_item);
-        LinearLayout paginateWidget = (LinearLayout) MenuItemCompat.getActionView(paginate_layout);
+        mPaginateLayout = (LinearLayout) getView().findViewById(R.id.paginate_view);
 
-        IconButton refreshButton = (IconButton) paginateWidget.findViewById(R.id.button_refresh);
-        IconButton fwdButton = (IconButton) paginateWidget.findViewById(R.id.button_fwd);
-        IconButton ffwdButton = (IconButton) paginateWidget.findViewById(R.id.button_ffwd);
-        IconButton rwdButton = (IconButton) paginateWidget.findViewById(R.id.button_rwd);
-        IconButton frwdButton = (IconButton) paginateWidget.findViewById(R.id.button_frwd);
+        //IconButton refreshButton = (IconButton) paginateWidget.findViewById(R.id.button_refresh);
+        IconButton fwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_fwd);
+        IconButton ffwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_ffwd);
+        IconButton rwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_rwd);
+        IconButton frwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_frwd);
 
-        refreshButton.setOnClickListener(new View.OnClickListener() {
+        /*refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 refreshPage();
             }
-        });
+        });*/
 
         fwdButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +85,14 @@ abstract public class PaginateFragment extends BaseFragment {
             }
         });
 
+    }
+
+    public void refreshPaginateLayout() {
+        IconButton fwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_fwd);
+        IconButton ffwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_ffwd);
+        IconButton rwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_rwd);
+        IconButton frwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_frwd);
+
         // only show the paginate buttons if there are before or after the current
         if (isLastPage()) {
             fwdButton.setVisibility(View.INVISIBLE);
@@ -102,7 +109,7 @@ abstract public class PaginateFragment extends BaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.actionmenu_paginate, menu);
+        //inflater.inflate(R.menu.actionmenu_paginate, menu);
     }
 
     public abstract void refreshPage();

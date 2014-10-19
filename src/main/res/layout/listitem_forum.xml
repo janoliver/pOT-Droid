@@ -1,11 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="7dp"
-                android:paddingTop="7dp"
-                android:paddingRight="7dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
                 android:paddingLeft="12dp"
-                android:background="@drawable/sidebar_bookmarkbutton_background">
+                android:background="@drawable/background_list_light_active">
 
     <TextView
             android:id="@+id/text_name"
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_name"
             android:textSize="12sp"
-            android:textColor="@color/grey"/>
+            android:textColor="@color/white_low"/>
 
     <TextView
             android:id="@+id/last_post"
@@ -28,6 +28,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_description"
             android:textSize="12sp"
-            android:textColor="@color/grey"/>
+            android:textColor="@color/white_low"/>
 
 </RelativeLayout>

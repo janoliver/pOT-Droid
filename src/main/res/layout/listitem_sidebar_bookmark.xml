@@ -3,35 +3,33 @@
                 android:id="@+id/RelativeLayout01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/sidebar_bookmarkbutton_background"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:background="@drawable/background_list_light"
+                android:padding="15dp"
+                android:layout_gravity="center_vertical">
 
     <TextView
             android:id="@+id/name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="0dp"
-            android:paddingRight="20dp"
             android:singleLine="true"
             android:scrollHorizontally="false"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:textSize="16sp"
+            android:textSize="18sp"
+            android:ellipsize="end"
             android:textColor="#fff"
-            android:layout_alignParentLeft="true"/>
+            android:paddingRight="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/newposts"/>
 
     <TextView
             android:id="@+id/newposts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
             android:paddingTop="2dp"
-            android:layout_marginTop="10dp"
-            android:layout_alignParentRight="true"
             android:paddingBottom="2dp"
-            android:textSize="11sp"
-            android:background="#222E3A"
-            android:textColor="#fff"/>
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_alignParentRight="true"
+            android:textSize="12sp"
+            android:background="?attr/colorPrimary"
+            android:textColor="@color/white_semi"/>
 </RelativeLayout>

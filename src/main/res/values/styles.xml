@@ -1,18 +1,15 @@
 <resources>
 
-    <style name="GenericProgressBackground" parent="@style/Theme.AppCompat">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">fill_parent</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:gravity">center</item>
+    <style name="PotDroidDark" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/bbstyle_darkblue</item>
+        <item name="colorPrimaryDark">@color/bbstyle_lightblue</item>
+        <item name="colorAccent">@color/bbstyle_lightblue</item>
+        <item name="android:windowBackground">@color/bbstyle_darkerblue</item>
+        <!--<item name="colorControlNormal">@color/green</item>
+        <item name="colorControlActivated">@color/red</item>
+        <item name="colorControlHighlight">@color/blue</item>
+        <item name="colorSwitchThumbNormal">@color/yellow</item>-->
     </style>
 
-    <style name="GenericProgressIndicator" parent="@android:style/Widget.ProgressBar.Small">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:indeterminate">true</item>
-    </style>
-
-    <style name="PotDroidDark" parent="Theme.Bbdarkstyle" />
 
 </resources>

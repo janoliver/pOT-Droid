@@ -5,54 +5,55 @@
               android:background="@color/bbstyle_lightblue"
               android:orientation="vertical">
 
-    <Button
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:id="@+id/nav_buttons"
+                  android:layout_width="fill_parent"
+                  android:layout_height="?attr/actionBarSize"
+                  android:orientation="horizontal"
+                  android:background="?attr/colorPrimary">
+
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/sidebar_cap_boards"
+                android:textSize="14sp"
+                android:paddingLeft="10dp"
+                android:background="@drawable/background_transparent_clickable"
+                android:textColor="@color/white"
+                android:id="@+id/refresh_boards"
+                android:gravity="left|center_vertical"/>
+    </LinearLayout>
+
+    <com.mde.potdroid.views.SwipeRefreshLayout
+            android:id="@+id/ptr_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/sidebar_cap_boards"
-            android:paddingBottom="10dp"
-            android:paddingLeft="10dp"
-            android:paddingTop="20dp"
-            android:textSize="14sp"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:background="@drawable/sidebar_button_background"
-            android:textColor="@color/white"
-            android:id="@+id/refresh_boards"
-            android:gravity="left|center_vertical"
-            android:textAlignment="textStart"/>
+            android:layout_height="match_parent">
 
-    <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/update_progress"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
-            android:indeterminate="true"
-            app:spb_sections_count="12"
-            app:spb_stroke_width="2dp"
-            app:spb_stroke_separator_length="4dp"
-            android:visibility="invisible"
-            app:spb_color="@color/white"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
+            <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:choiceMode="singleChoice"
+                    android:id="@+id/listview_boards"
+                    android:divider="?attr/colorPrimary"
+                    android:dividerHeight="1dp"/>
 
-    <ListView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:choiceMode="singleChoice"
-            android:id="@+id/listview_boards"
-            android:divider="@color/bbstyle_darkblue"
-            android:dividerHeight="1dp"/>
+            <TextView
+                    android:id="@+id/empty_bookmarks_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:text="@string/no_favorite_boards"
+                    android:visibility="gone"
+                    android:clickable="false"/>
+        </LinearLayout>
 
-    <TextView
-            android:id="@+id/empty_bookmarks_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dip"
-            android:textSize="13sp"
-            android:gravity="center"
-            android:text="@string/no_favorite_boards"
-            android:visibility="gone"/>
+    </com.mde.potdroid.views.SwipeRefreshLayout>
 
 
 </LinearLayout>

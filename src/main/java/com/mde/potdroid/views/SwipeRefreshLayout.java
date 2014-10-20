@@ -71,9 +71,7 @@ public class SwipeRefreshLayout extends ViewGroup {
 
     private SwipeProgressBar mProgressBar; //the thing that shows progress is going
     private View mTarget; //the content that gets pulled down
-    private int mOriginalOffsetTopOrBottom;
     private OnRefreshListener mListener;
-    private int mFrom;
     private boolean mRefreshing = false;
     private int mTouchSlop;
     private float mDistanceToTriggerSync = -1;
@@ -81,7 +79,6 @@ public class SwipeRefreshLayout extends ViewGroup {
     private float mFromPercentage = 0;
     private float mCurrPercentage = 0;
     private int mProgressBarHeight;
-    private int mCurrentTargetOffsetTopOrBottom;
 
     private float mInitialMotionY;
     private float mLastMotionY;
@@ -97,37 +94,6 @@ public class SwipeRefreshLayout extends ViewGroup {
             android.R.attr.enabled
     };
 
-    private final Animation mAnimateToStartPosition = new Animation() {
-        @Override
-        public void applyTransformation(float interpolatedTime, Transformation t) {
-            int offset;
-            if(mSwipeDown) {
-                int targetTop = 0;
-                if (mFrom != mOriginalOffsetTopOrBottom) {
-                    targetTop = (mFrom + (int) ((mOriginalOffsetTopOrBottom - mFrom) * interpolatedTime));
-                }
-
-                final int currentTop = mTarget.getTop();
-                offset = targetTop - currentTop;
-                if (offset + currentTop < 0) {
-                    offset = 0 - currentTop;
-                }
-                setTargetOffsetTopAndBottom(offset);
-            } else {
-                int targetBottom = getBottom() - getPaddingBottom();
-                if (mFrom != mOriginalOffsetTopOrBottom) {
-                    targetBottom = (mFrom + (int) ((mOriginalOffsetTopOrBottom - mFrom) * interpolatedTime));
-                }
-                final int currentBottom = mTarget.getBottom();
-                offset = targetBottom - currentBottom;
-                if (-offset + currentBottom < 0) {
-                    offset = getBottom() - getPaddingBottom() - currentBottom;
-                }
-                setTargetOffsetTopAndBottom(-offset);
-            }
-        }
-    };
-
     private Animation mShrinkTrigger = new Animation() {
         @Override
         public void applyTransformation(float interpolatedTime, Transformation t) {
@@ -136,36 +102,11 @@ public class SwipeRefreshLayout extends ViewGroup {
         }
     };
 
-    private final AnimationListener mReturnToStartPositionListener = new BaseAnimationListener() {
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            // Once the target content has returned to its start position, reset
-            // the target offset to 0
-            mCurrentTargetOffsetTopOrBottom = 0;
-        }
-    };
-
     private final AnimationListener mShrinkAnimationListener = new BaseAnimationListener() {
         @Override
         public void onAnimationEnd(Animation animation) {
             mCurrPercentage = 0;
         }
-    };
-
-    private final Runnable mReturnToStartPosition = new Runnable() {
-
-        @Override
-        public void run() {
-            mReturningToStart = true;
-            if(mSwipeDown)
-                animateOffsetToStartPosition(mCurrentTargetOffsetTopOrBottom + getPaddingTop(),
-                    mReturnToStartPositionListener);
-            else
-                animateOffsetToStartPosition(
-                        getBottom() - getPaddingBottom() + mCurrentTargetOffsetTopOrBottom,
-                        mReturnToStartPositionListener);
-        }
-
     };
 
     // Cancel the refresh gesture and animate everything back to its original state.
@@ -184,13 +125,6 @@ public class SwipeRefreshLayout extends ViewGroup {
                 mShrinkTrigger.setInterpolator(mDecelerateInterpolator);
                 startAnimation(mShrinkTrigger);
             }
-            if(mSwipeDown)
-                animateOffsetToStartPosition(mCurrentTargetOffsetTopOrBottom + getPaddingTop(),
-                        mReturnToStartPositionListener);
-            else
-                animateOffsetToStartPosition(
-                        getBottom() - getPaddingBottom() + mCurrentTargetOffsetTopOrBottom,
-                        mReturnToStartPositionListener);
         }
 
     };
@@ -232,23 +166,12 @@ public class SwipeRefreshLayout extends ViewGroup {
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         removeCallbacks(mCancel);
-        removeCallbacks(mReturnToStartPosition);
     }
 
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        removeCallbacks(mReturnToStartPosition);
         removeCallbacks(mCancel);
-    }
-
-    private void animateOffsetToStartPosition(int from, AnimationListener listener) {
-        mFrom = from;
-        mAnimateToStartPosition.reset();
-        mAnimateToStartPosition.setDuration(mMediumAnimationDuration);
-        mAnimateToStartPosition.setAnimationListener(listener);
-        mAnimateToStartPosition.setInterpolator(mDecelerateInterpolator);
-        mTarget.startAnimation(mAnimateToStartPosition);
     }
 
     /**
@@ -346,10 +269,6 @@ public class SwipeRefreshLayout extends ViewGroup {
             }
             mTarget = getChildAt(0);
         }
-        if(mSwipeDown)
-            mOriginalOffsetTopOrBottom = mTarget.getTop() + getPaddingTop();
-        else
-            mOriginalOffsetTopOrBottom = mTarget.getBottom() - getPaddingBottom();
         if (mDistanceToTriggerSync == -1) {
             if (getParent() != null && ((View)getParent()).getHeight() > 0) {
                 final DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -376,7 +295,7 @@ public class SwipeRefreshLayout extends ViewGroup {
         }
         final View child = getChildAt(0);
         final int childLeft = getPaddingLeft();
-        final int childTop = mCurrentTargetOffsetTopOrBottom + getPaddingTop();
+        final int childTop = getPaddingTop();
         final int childWidth = width - getPaddingLeft() - getPaddingRight();
         final int childHeight = height - getPaddingTop() - getPaddingBottom();
         child.layout(childLeft, childTop, childLeft + childWidth, childTop + childHeight);
@@ -550,7 +469,6 @@ public class SwipeRefreshLayout extends ViewGroup {
                         setTriggerPercentage(
                                 mAccelerateInterpolator.getInterpolation(
                                         yDiff / mDistanceToTriggerSync));
-                        updateContentOffset((int) (yDiff));
                         if ((mSwipeDown && mLastMotionY > y && mTarget.getTop() == getPaddingTop())
                         || (!mSwipeDown && mLastMotionY < y && mTarget.getBottom() == getPaddingBottom())) {
                             // If the user puts the view back at the top, we
@@ -589,40 +507,8 @@ public class SwipeRefreshLayout extends ViewGroup {
 
     private void startRefresh() {
         removeCallbacks(mCancel);
-        mReturnToStartPosition.run();
         setRefreshing(true);
         mListener.onRefresh();
-    }
-
-    private void updateContentOffset(int targetOffset) {
-        if(mSwipeDown) {
-            final int currentTop = mTarget.getTop();
-            if (targetOffset > mDistanceToTriggerSync) {
-                targetOffset = (int) mDistanceToTriggerSync;
-            } else if (targetOffset < 0) {
-                targetOffset = 0;
-            }
-            setTargetOffsetTopAndBottom(targetOffset - currentTop);
-        } else {
-            final int currentTop = mTarget.getTop();
-            if (targetOffset > mDistanceToTriggerSync) {
-                targetOffset = (int) mDistanceToTriggerSync;
-            } else if (targetOffset < 0) {
-                targetOffset = 0;
-            }
-            setTargetOffsetTopAndBottom(targetOffset + currentTop);
-        }
-
-    }
-
-    private void setTargetOffsetTopAndBottom(int offset) {
-        if(mSwipeDown) {
-            mTarget.offsetTopAndBottom(offset);
-            mCurrentTargetOffsetTopOrBottom = mTarget.getTop();
-        } else {
-            mTarget.offsetTopAndBottom(-offset);
-            mCurrentTargetOffsetTopOrBottom = mTarget.getBottom() - getBottom();
-        }
     }
 
     private void updatePositionTimeout() {

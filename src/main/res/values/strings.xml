@@ -110,4 +110,12 @@
     <string name="thread_lastpost"><![CDATA[<strong>%1$s</strong>, %2$s Uhr]]></string>
     <string name="notloggedin">Nicht eingeloggt!</string>
 
+    <!-- dialogs -->
+    <string name="post_dialog_edit">Bearbeiten</string>
+    <string name="post_dialog_quote">Zitieren</string>
+    <string name="post_dialog_bookmark">Bookmark setzen</string>
+    <string name="post_dialog_browser">Im Browser öffnen</string>
+    <string name="post_dialog_pm">PM schicken</string>
+
+
 </resources>

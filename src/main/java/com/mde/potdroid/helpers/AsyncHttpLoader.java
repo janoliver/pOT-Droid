@@ -1,5 +1,6 @@
 package com.mde.potdroid.helpers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.content.Loader;
@@ -20,6 +21,9 @@ import java.io.UnsupportedEncodingException;
  * The HTTP Client from the Network class is used, so that headers and cookies are in place.
  */
 public abstract class AsyncHttpLoader<E> extends Loader<E> {
+
+    // the calling activity
+    private Context mActivity;
 
     // request type codes
     public static final Integer GET = 0;
@@ -46,9 +50,12 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
 
     private Callback mHandler = new Callback() {
         @Override
-        public void onFailure(Request request, IOException throwable) {
-            AsyncHttpLoader.this.onNetworkFailure(0, null, "", throwable);
-            throwable.printStackTrace();
+        public void onFailure(Request request, final IOException throwable) {
+            getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    AsyncHttpLoader.this.onNetworkFailure(0, null, "", throwable);
+                }
+            });
         }
 
         @Override
@@ -118,6 +125,11 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
         mMode = mode;
         mParams = params;
         mEncoding = encoding;
+        mActivity = context;
+    }
+
+    private Activity getActivity() {
+        return (Activity)mActivity;
     }
 
     /**

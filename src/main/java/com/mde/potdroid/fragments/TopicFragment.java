@@ -379,7 +379,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
                 t.setHtmlCache(b.parse(t));
                 return t;
             } catch (Exception e) {
-                Utils.printException(e);
                 return null;
             }
         }
@@ -388,7 +387,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         protected void onNetworkFailure(int statusCode, Header[] headers,
                                         String responseBody, Throwable error) {
 
-            Utils.printException(error);
             deliverResult(null);
         }
     }

@@ -1,10 +1,12 @@
 package com.mde.potdroid.fragments;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v7.app.ActionBar;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -106,6 +108,20 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
     }
 
     /**
+     * Get Actionbar height attribute
+     */
+    public int getActionbarHeight() {
+        TypedValue typedValue = new TypedValue();
+        getBaseActivity().getTheme().resolveAttribute(R.attr.actionBarSize, typedValue, true);
+        int[] textSizeAttr = new int[] { R.attr.actionBarSize };
+        int indexOfAttr = 0;
+        TypedArray a = getBaseActivity().obtainStyledAttributes(typedValue.data, textSizeAttr);
+        int abSize = a.getDimensionPixelSize(indexOfAttr, -1);
+        a.recycle();
+        return abSize;
+    }
+
+    /**
      * When the user is not logged in, we add preferences and home to
      * the Actionbar Menu
      *
@@ -160,15 +176,15 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
     protected void showGenericNotification(String message, int s) {
         Style style = new Style.Builder()
                 .setBackgroundColorValue(s)
-                .setHeight(getActionbar().getHeight())
+                .setHeight(getActionbarHeight())
                 .build();
-        Crouton.makeText(getBaseActivity(), message,  style, R.id.main_group).show();
+        Crouton.makeText(getBaseActivity(), message, style, R.id.main_group).show();
     }
 
     protected void showGenericNotification(int message, int s) {
         Style style = new Style.Builder()
                 .setBackgroundColorValue(s)
-                .setHeight(getActionbar().getHeight())
+                .setHeight(getActionbarHeight())
                 .build();
         Crouton.makeText(getBaseActivity(), message,  style, R.id.main_group).show();
     }

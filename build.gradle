@@ -16,17 +16,9 @@ repositories {
 dependencies {
     compile 'com.android.support:support-v4:21.0.0'
     compile 'com.android.support:appcompat-v7:21.0.0'
-    compile('com.squareup.okhttp:okhttp:2.0.0') {
-        exclude group: 'com.android.support', module:'support-v4'
-        exclude group: 'com.android.support', module:'appcompat-v7'
-    }
-    compile('com.samskivert:jmustache:1.9') {
-        exclude group: 'com.android.support', module:'support-v4'
-        exclude group: 'com.android.support', module:'appcompat-v7'
-    }
-    compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
-        exclude group: 'com.google.android', module: 'support-v4'
-    }
+    compile 'com.squareup.okhttp:okhttp:2.0.0'
+    compile 'com.samskivert:jmustache:1.9'
+    compile 'de.keyboardsurfer.android.widget:crouton:1.8.5@aar'
 }
 
 android {

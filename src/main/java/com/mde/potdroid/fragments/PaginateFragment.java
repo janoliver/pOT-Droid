@@ -1,9 +1,8 @@
 package com.mde.potdroid.fragments;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.View;
+import android.view.*;
 import android.widget.LinearLayout;
 import com.mde.potdroid.R;
 import com.mde.potdroid.views.IconButton;
@@ -42,6 +41,10 @@ abstract public class PaginateFragment extends BaseFragment {
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        refreshPaginateLayout();
+    }
+
+    public void refreshPaginateLayout() {
         mPaginateLayout = (LinearLayout) getView().findViewById(R.id.paginate_view);
 
         //IconButton refreshButton = (IconButton) paginateWidget.findViewById(R.id.button_refresh);
@@ -85,14 +88,6 @@ abstract public class PaginateFragment extends BaseFragment {
             }
         });
 
-    }
-
-    public void refreshPaginateLayout() {
-        IconButton fwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_fwd);
-        IconButton ffwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_ffwd);
-        IconButton rwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_rwd);
-        IconButton frwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_frwd);
-
         // only show the paginate buttons if there are before or after the current
         if (isLastPage()) {
             fwdButton.setVisibility(View.INVISIBLE);
@@ -110,6 +105,19 @@ abstract public class PaginateFragment extends BaseFragment {
             frwdButton.setVisibility(View.VISIBLE);
         }
 
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        ViewGroup root = (ViewGroup) mPaginateLayout.getParent();
+        View child = root.findViewById(R.id.paginate_view);
+        int index = root.indexOfChild(child);
+        root.removeView(child);
+        View newPaginateView = inflater.inflate(R.layout.view_paginate, root, false);
+        root.addView(newPaginateView, index);
+        refreshPaginateLayout();
     }
 
     @Override

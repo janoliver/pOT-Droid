@@ -70,6 +70,13 @@
 
         </RelativeLayout>
 
+        <android.support.v7.widget.ActionMenuView
+                android:id="@+id/bbcode_toolbar"
+                android:layout_marginTop="-5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
         <EditText
                 android:id="@+id/edit_subtitle"
                 android:layout_width="fill_parent"
@@ -104,7 +111,7 @@
                 android:textCursorDrawable="@null"
                 android:layout_margin="5pt"/>
 
-        <com.mde.potdroid.views.BBCodeEditText
+        <EditText
                 android:id="@+id/edit_content"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
@@ -120,7 +127,7 @@
                 android:padding="3pt"
                 android:scrollbars="vertical|horizontal"
                 android:textColor="@color/bbstyle_darkblue"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 android:cursorVisible="true"
                 android:textCursorDrawable="@null"/>
 

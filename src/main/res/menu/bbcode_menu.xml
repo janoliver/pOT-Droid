@@ -1,52 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
             android:id="@+id/bold"
             android:title="Fett"
-            android:showAsAction="ifRoom"/>
+            app:showAsAction="ifRoom"/>
     <item
             android:id="@+id/italic"
             android:title="Kursiv"
-            android:showAsAction="ifRoom"/>
+            app:showAsAction="ifRoom"/>
     <item
             android:id="@+id/underline"
             android:title="Unterstrichen"
-            android:showAsAction="ifRoom"/>
+            app:showAsAction="ifRoom"/>
     <item
             android:id="@+id/striked"
             android:title="Durchgestrichen"
-            android:showAsAction="ifRoom"/>
+            app:showAsAction="ifRoom"/>
     <item
             android:id="@+id/code"
             android:title="Code"
-            android:showAsAction="ifRoom"/>
+            app:showAsAction="ifRoom"/>
     <item
             android:id="@+id/quote"
             android:title="Quote"
-            android:showAsAction="ifRoom"/>
+            app:showAsAction="ifRoom"/>
     <item
             android:id="@+id/spoiler"
             android:title="Spoiler"
-            android:showAsAction="ifRoom"/>
+            app:showAsAction="ifRoom"/>
     <item
             android:id="@+id/image"
             android:title="Bild"
-            android:showAsAction="ifRoom"/>
+            app:showAsAction="ifRoom"/>
     <item
             android:id="@+id/video"
             android:title="Video"
-            android:showAsAction="ifRoom"/>
+            app:showAsAction="ifRoom"/>
     <item
             android:id="@+id/url"
             android:title="Link"
-            android:showAsAction="ifRoom"/>
+            app:showAsAction="ifRoom"/>
     <item
             android:id="@+id/list"
             android:title="Liste"
-            android:showAsAction="ifRoom"/>
+            app:showAsAction="ifRoom"/>
     <item
             android:id="@+id/smiley"
             android:title="Smiley"
-            android:showAsAction="ifRoom"/>
+            app:showAsAction="ifRoom"/>
 </menu>

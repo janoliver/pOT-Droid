@@ -7,7 +7,10 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
+import android.util.SparseArray;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -18,12 +21,13 @@ import com.mde.potdroid.helpers.FormEncodingBuilder;
 import com.mde.potdroid.helpers.Network;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.parsers.MessageParser;
-import com.mde.potdroid.views.BBCodeEditText;
 import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.IconSelectionDialog;
+import com.mde.potdroid.views.PromptDialog;
 import org.apache.http.Header;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,6 +38,19 @@ import java.util.regex.Pattern;
  */
 public class EditorFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Bundle>,
    IconSelectionDialog.IconSelectedCallback{
+
+
+    protected static SparseArray<String> mSimpleTags;
+    static {
+        mSimpleTags = new SparseArray<String>();
+        mSimpleTags.append(R.id.bold, "b");
+        mSimpleTags.append(R.id.underline, "u");
+        mSimpleTags.append(R.id.italic, "i");
+        mSimpleTags.append(R.id.striked, "s");
+        mSimpleTags.append(R.id.code, "code");
+        mSimpleTags.append(R.id.quote, "quote");
+        mSimpleTags.append(R.id.spoiler, "spoiler");
+    }
 
     public static final String BOARD_URL_POST = "newreply.php";
     public static final String BOARD_URL_THREAD = "newthread.php";
@@ -57,7 +74,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     protected EditText mEditTitle;
     protected EditText mEditSubtitle;
     protected EditText mEditTags;
-    protected BBCodeEditText mEditText;
+    protected EditText mEditText;
     protected ImageButton mIconButton;
 
     // this holds the kind of form this is. The static fields are defined below.
@@ -92,7 +109,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         View v = inflater.inflate(R.layout.layout_editor, container, false);
 
         // assign some views
-        mEditText = (BBCodeEditText) v.findViewById(R.id.edit_content);
+        mEditText = (EditText) v.findViewById(R.id.edit_content);
         mEditTitle = (EditText) v.findViewById(R.id.edit_title);
         mEditRcpt = (EditText) v.findViewById(R.id.edit_rcpt);
         mEditSubtitle = (EditText) v.findViewById(R.id.edit_subtitle);
@@ -133,7 +150,6 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         else if (getArguments().getInt(ARG_MODE, MODE_REPLY) == MODE_MESSAGE) {
             mIconButton.setVisibility(View.GONE);
             mEditRcpt.setVisibility(View.VISIBLE);
-            mEditText.disable();
             getActionbar().setTitle(R.string.subtitle_form_write_pm);
         } else if (getArguments().getInt(ARG_MODE, MODE_REPLY) == MODE_THREAD) {
             mEditSubtitle.setVisibility(View.VISIBLE);
@@ -141,6 +157,26 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             getActionbar().setTitle(R.string.subtitle_form_write_thread);
         }
 
+        android.support.v7.widget.ActionMenuView bbcodeToolbar = ( 	android.support.v7.widget.ActionMenuView) v.findViewById(R.id.bbcode_toolbar);
+
+
+        Menu menu = bbcodeToolbar.getMenu();
+        getActivity().getMenuInflater().inflate(R.menu.bbcode_menu, menu);
+        
+        menu.findItem(R.id.bold).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_bold));
+        menu.findItem(R.id.italic).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_italic));
+        menu.findItem(R.id.striked).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_strikethrough));
+        menu.findItem(R.id.underline).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_underline));
+        menu.findItem(R.id.quote).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_quote_left));
+        menu.findItem(R.id.code).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_code));
+        menu.findItem(R.id.spoiler).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_eye_close));
+        menu.findItem(R.id.image).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_picture));
+        menu.findItem(R.id.image).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_facetime_video));
+        menu.findItem(R.id.url).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_link));
+        menu.findItem(R.id.list).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_list_ol));
+        menu.findItem(R.id.smiley).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_smile));
+
+        bbcodeToolbar.setOnMenuItemClickListener(new BBCodeHandler(getBaseActivity(), mEditText));
 
 
         return v;
@@ -430,6 +466,107 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
             Utils.printException(error);
             deliverResult(null);
+        }
+
+
+    }
+
+    public static class BBCodeHandler implements ActionMenuView.OnMenuItemClickListener, PromptDialog.SuccessCallback, IconSelectionDialog.IconSelectedCallback {
+        private EditText mEditText;
+        private ActionBarActivity mActivity;
+
+        public BBCodeHandler(ActionBarActivity activity, EditText edittext) {
+            mEditText = edittext;
+            mActivity = activity;
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            int start = mEditText.getSelectionStart();
+            int end = mEditText.getSelectionEnd();
+            if(mSimpleTags.indexOfKey(item.getItemId()) > -1) {
+                String code = mSimpleTags.get(item.getItemId());
+                mEditText.getText().insert(start, String.format("[%s]", code));
+                mEditText.getText().insert(end + 2 + code.length(), String.format("[/%s]", code));
+                mEditText.setSelection(start + 2 + code.length());
+                return true;
+            } else {
+                PromptDialog d;
+                switch (item.getItemId()) {
+                    case R.id.smiley:
+                        IconSelectionDialog id = IconSelectionDialog.newInstance(true);
+                        id.setCallback(this);
+                        id.show(mActivity.getSupportFragmentManager(), "icondialog");
+                        return true;
+                    case R.id.image:
+                        d = PromptDialog.newInstance("Bild einfügen", "URL...", R.id.image);
+                        d.setCallback(this);
+                        d.show(mActivity.getSupportFragmentManager(), "imgedialog");
+                        return true;
+                    case R.id.video:
+                        d = PromptDialog.newInstance("Video einfügen", "URL...", R.id.video);
+                        d.setCallback(this);
+                        d.show(mActivity.getSupportFragmentManager(), "videodialog");
+                        return true;
+                    case R.id.list:
+                        d = PromptDialog.newInstance("Liste einfügen", 3, new String[] {"a, 1, leer", "Item...", "Item..."}, true, R.id.list);
+                        d.setCallback(this);
+                        d.show(mActivity.getSupportFragmentManager(), "listdialog");
+                        return true;
+                    case R.id.url:
+                        d = PromptDialog.newInstance("Link einfügen", 2, new String[] {"Text", "URL..."}, false, R.id.url);
+                        d.setCallback(this);
+                        d.show(mActivity.getSupportFragmentManager(), "linkdialog");
+
+                    default:
+                        return false;
+                }
+
+            }
+        }
+
+        @Override
+        public void selected(String filename, String smiley) {
+
+            mEditText.getText().insert(mEditText.getSelectionStart(), smiley);
+        }
+
+        @Override
+        public void success(ArrayList<String> input, int code) {
+            String insert;
+            switch (code) {
+                case R.id.image:
+                    insert = String.format("[img]%s[/img]", input.get(0));
+                    mEditText.getText().insert(mEditText.getSelectionStart(), insert);
+                    return;
+                case R.id.video:
+                    insert = String.format("[video]%s[/video]", input.get(0));
+                    mEditText.getText().insert(mEditText.getSelectionStart(), insert);
+                    return;
+                case R.id.url:
+                    if(input.get(0).equals(""))
+                        insert = String.format("[url]%s[/url]", input.get(1));
+                    else
+                        insert = String.format("[url=%s]%s[/url]", input.get(1), input.get(0));
+                    mEditText.getText().insert(mEditText.getSelectionStart(), insert);
+                    return;
+                case R.id.list:
+                    StringBuilder result = new StringBuilder();
+
+                    if(input.get(0).toLowerCase().equals("a") || input.get(0).equals("1"))
+                        result.append(String.format("[list=%s]", input.get(0)));
+                    else
+                        result.append("[list]");
+                    for(String s : input) {
+                        if(!s.equals(""))
+                            result.append(String.format("[*] %s\n", s));
+                    }
+                    result.append("[/list]");
+                    mEditText.getText().insert(mEditText.getSelectionStart(), result);
+                    return;
+                default:
+                    return;
+            }
         }
     }
 

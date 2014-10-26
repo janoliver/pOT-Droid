@@ -229,6 +229,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
         showLoadingAnimation();
 
+
         if (getArguments().getInt(ARG_MODE) == MODE_MESSAGE)
             return new AsyncMessageSubmitter(getBaseActivity(), args);
         else if(getArguments().getInt(ARG_MODE) == MODE_REPLY ||

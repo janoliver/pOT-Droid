@@ -79,6 +79,26 @@ public class TopicJSInterface extends BenderJSInterface {
     }
 
     /**
+     * Loads an image in the background, and, if done, inserts it into the webview
+     */
+    @JavascriptInterface
+    public void loadImage(final String url, final String id) {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                mTopicFragment.loadImage(url, id);
+            }
+        });
+    }
+
+    /**
+     * Loads an image in the background, and, if done, inserts it into the webview
+     */
+    @JavascriptInterface
+    public boolean isCached(final String url) {
+        return mTopicFragment.isImageCached(url);
+    }
+
+    /**
      * Return the menu status
      *
      * @return 1 -> show always, 2 -> show icon, 3 -> orientation dependent
@@ -359,6 +379,15 @@ public class TopicJSInterface extends BenderJSInterface {
                 public void run() {
                     mWebView.loadUrl("javascript:loadAllImages();");
                 }
+        });
+    }
+
+    public void displayImage(final String url, final String disk_path, final String id) {
+        mActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                mWebView.loadUrl(String.format("javascript:displayImage('%s', '%s', '%s');",
+                        url, disk_path, id));
+            }
         });
     }
 

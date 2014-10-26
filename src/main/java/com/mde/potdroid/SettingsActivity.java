@@ -9,11 +9,13 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.services.MessagePollingService;
 import com.mde.potdroid.views.LoginDialog;
 import com.mde.potdroid.views.LogoutDialog;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 /**
@@ -35,7 +37,20 @@ public class SettingsActivity extends PreferenceActivity
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
+
+
+        final ImageLoader il = ImageLoader.getInstance();
+        Preference clearCachePref = findPreference("pref_clear_cache");
+        clearCachePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                il.clearDiskCache();
+                Toast.makeText(SettingsActivity.this, "Cache geleert!", Toast.LENGTH_LONG).show();
+                return true;
+            }
+        });
     }
+
+
 
     @Override
     public void onResume() {

@@ -125,19 +125,26 @@ $(document).ready(function() {
 
 });
 
-function replaceImage(icon, link_target) {
+function replaceImage(icon) {
     icon.attr('class', "fa fa-spinner spin");
     var el = icon.parent();
     var src = el.attr('data-src');
-    var img = $('<img/>').attr('src',src).attr('alt',src);
+    var id = Math.floor( Math.random()*99999 );
+    el.attr("id", "loadedimg-" + id);
+    api.loadImage(src, el.attr("id"));
+}
+
+function displayImage(url, path, id) {
+    var el = $("#" + id);
+    var href = el.attr("data-href");
+    var img = $('<img/>').attr('src',path).attr('alt', url);
     img.load(function() {
-        if(link_target === "") {
+        if(typeof href === "undefined") {
             el.replaceWith(img);
         } else {
-            var a = $("<a/>").attr("href", link_target).append(img);
+            var a = $("<a/>").attr("href", href).append(img);
             el.replaceWith(a);
         }
-
     });
 }
 
@@ -203,12 +210,7 @@ function loadAllImages() {
         all = $('div.img i, div.img-link i.img');
     }
     all.each(function() {
-        var href = $(this).parent().attr("data-href");
-        if(typeof href === "undefined") {
-            replaceImage($(this), "");
-        } else {
-            replaceImage($(this), href);
-        }
+        replaceImage($(this));
     });
 }
 

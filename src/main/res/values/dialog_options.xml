@@ -7,5 +7,9 @@
         <item>@string/post_dialog_browser</item>
         <item>@string/post_dialog_pm</item>
     </string-array>
+    <string-array name="image_dialog">
+        <item>@string/image_dialog_view</item>
+        <item>@string/image_dialog_share</item>
+    </string-array>
 </resources>
 

@@ -63,6 +63,8 @@
     <string name="msg_marked_favorite">Board als Favorit markiert.</string>
     <string name="msg_answer_created">Antwort erstellt!</string>
     <string name="msg_post_edited">Post bearbeitet!</string>
+    <string name="msg_img_loading_error">Fehler beim Laden eines Bildes.</string>
+
 
     <!-- menu items -->
     <string name="menu_settings">Settings</string>
@@ -116,6 +118,8 @@
     <string name="post_dialog_bookmark">Bookmark setzen</string>
     <string name="post_dialog_browser">Im Browser öffnen</string>
     <string name="post_dialog_pm">PM schicken</string>
+    <string name="image_dialog_view">Mit Bild-App öffnen</string>
+    <string name="image_dialog_share">Speichern/Teilen</string>
 
 
 </resources>

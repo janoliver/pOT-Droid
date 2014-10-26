@@ -158,6 +158,10 @@
     <PreferenceCategory
             android:title="System"
             android:key="pref_system_settings">
+        <Preference
+                android:key="pref_clear_cache"
+                android:title="Cache leeren"/>
+
         <CheckBoxPreference
                 android:key="pref_debug_mode"
                 android:title="Debug Modus"

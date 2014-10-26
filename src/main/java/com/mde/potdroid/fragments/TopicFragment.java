@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,12 +26,18 @@ import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.TopicParser;
 import com.mde.potdroid.views.ChoosePageDialog;
 import com.mde.potdroid.views.IconDrawable;
+import com.mde.potdroid.views.ImageActionsDialog;
 import com.mde.potdroid.views.PostActionsDialog;
+import com.nostra13.universalimageloader.cache.disc.DiskCache;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.nostra13.universalimageloader.utils.DiskCacheUtils;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import org.apache.http.Header;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
@@ -345,10 +352,9 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         if (hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE ||
             hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
 
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.setDataAndType(Uri.parse(hitTestResult.getExtra()), "image/*");
-            startActivity(intent);
+            ImageActionsDialog imenu = ImageActionsDialog.getInstance(Uri.parse(hitTestResult.getExtra()));
+            imenu.setTargetFragment(this, 0);
+            imenu.show(getBaseActivity().getSupportFragmentManager(), ImageActionsDialog.TAG);
         }
     }
 
@@ -531,6 +537,31 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         intent.putExtra(EditorFragment.ARG_MODE, EditorFragment.MODE_MESSAGE);
         intent.putExtra(EditorFragment.ARG_RCPT, p.getAuthor().getNick());
         startActivityForResult(intent, EditorFragment.MODE_MESSAGE);
+    }
+
+    public void loadImage(String url, final String id) {
+        final ImageLoader il = ImageLoader.getInstance();
+        final DiskCache cache = il.getDiskCache();
+
+        File f = DiskCacheUtils.findInCache(url, cache);
+        if(f != null) {
+            mJsInterface.displayImage(url, f.getAbsolutePath(), id);
+        } else {
+            il.loadImage(url, new SimpleImageLoadingListener() {
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    File f = DiskCacheUtils.findInCache(imageUri, cache);
+                    if (f != null)
+                        mJsInterface.displayImage(imageUri, f.getAbsolutePath(), id);
+                    else
+                        showError(R.string.msg_img_loading_error);
+                }
+            });
+        }
+    }
+
+    public boolean isImageCached(String url) {
+        return  DiskCacheUtils.findInCache(url, ImageLoader.getInstance().getDiskCache()) != null;
     }
 
 }

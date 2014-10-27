@@ -135,8 +135,6 @@ function replaceImage(icon) {
 }
 
 function displayImage(url, path, id) {
-console.log(path);
-console.log(url);
     var el = $("#" + id);
     var href = el.attr("data-href");
     var img = $('<img/>').attr('src',path).attr('alt', url);

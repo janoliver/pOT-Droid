@@ -9,9 +9,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
+import java.net.*;
 
 
 public class PotDroidApplication extends Application {
@@ -36,10 +34,17 @@ public class PotDroidApplication extends Application {
                         new FileNameGenerator() {
                             @Override
                             public String generate(String imageUri) {
-                                String filename = imageUri.substring(imageUri.lastIndexOf('/') + 1, imageUri.length());
-                                String basename = filename.substring(0, filename.lastIndexOf('.'));
-                                String extension = filename.substring(filename.lastIndexOf('.'));
-                                return basename.replaceAll("\\W+", "") + extension;
+                                try {
+                                    URL url = new URL(imageUri);
+                                    String filename = url.getPath().substring(url.getPath().lastIndexOf('/') + 1, url.getPath().length());
+                                    String basename = filename.substring(0, filename.lastIndexOf('.'));
+                                    String extension = filename.substring(filename.lastIndexOf('.'));
+                                    return basename.replaceAll("\\W+", "") + extension;
+
+                                } catch (MalformedURLException e) {
+                                    e.printStackTrace();
+                                    return imageUri;
+                                }
                             }
                         },
                         3600 * 24 * 7))

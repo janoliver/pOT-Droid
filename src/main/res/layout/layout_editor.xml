@@ -61,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:scaleType="fitCenter"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_gravity="center"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
@@ -70,12 +70,16 @@
 
         </RelativeLayout>
 
-        <android.support.v7.widget.ActionMenuView
-                android:id="@+id/bbcode_toolbar"
-                android:layout_marginTop="-5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
+        <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <android.support.v7.widget.ActionMenuView
+                    android:id="@+id/bbcode_toolbar"
+                    android:layout_marginTop="-5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+        </HorizontalScrollView>
 
         <EditText
                 android:id="@+id/edit_subtitle"

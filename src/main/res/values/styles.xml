@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <style name="PotDroidDark" parent="@style/Theme.AppCompat.NoActionBar">
@@ -5,11 +6,31 @@
         <item name="colorPrimaryDark">@color/bbstyle_lightblue</item>
         <item name="colorAccent">@color/bbstyle_lightblue</item>
         <item name="android:windowBackground">@color/bbstyle_darkerblue</item>
+        <item name="sdlDialogStyle">@style/DialogStyleDark.Custom</item>
         <!--<item name="colorControlNormal">@color/green</item>
         <item name="colorControlActivated">@color/red</item>
         <item name="colorControlHighlight">@color/blue</item>
         <item name="colorSwitchThumbNormal">@color/yellow</item>-->
     </style>
 
+    <style name="DialogStyleDark.Custom">
+        <!-- anything can be left out: -->
+        <item name="android:editTextStyle">@style/Dialog_EditTextStyle</item>
+        <item name="titleTextColor">@color/white</item>
+        <item name="titleSeparatorColor">@color/bbstyle_darkblue</item>
+        <item name="messageTextColor">@color/white</item>
+        <item name="buttonTextColor">@color/white</item>
+        <item name="buttonSeparatorColor">@color/bbstyle_darkblue</item>
+        <!--<item name="buttonBackgroundColorNormal">@color/dialog_button_normal</item>
+        <item name="buttonBackgroundColorPressed">@color/dialog_button_pressed</item>
+        <item name="buttonBackgroundColorFocused">@color/dialog_button_focused</item>-->
+        <item name="dialogBackground">@color/bbstyle_lightblue</item>
+    </style>
+
+    <style name="Dialog_EditTextStyle" parent="@android:style/Widget.EditText">
+        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@color/bbstyle_darkblue</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
 
 </resources>

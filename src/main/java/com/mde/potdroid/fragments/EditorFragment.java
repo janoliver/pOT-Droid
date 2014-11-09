@@ -157,8 +157,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             getActionbar().setTitle(R.string.subtitle_form_write_thread);
         }
 
-        android.support.v7.widget.ActionMenuView bbcodeToolbar = ( 	android.support.v7.widget.ActionMenuView) v.findViewById(R.id.bbcode_toolbar);
-
+        ActionMenuView bbcodeToolbar = (ActionMenuView) v.findViewById(R.id.bbcode_toolbar);
 
         Menu menu = bbcodeToolbar.getMenu();
         getActivity().getMenuInflater().inflate(R.menu.bbcode_menu, menu);
@@ -171,13 +170,12 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         menu.findItem(R.id.code).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_code));
         menu.findItem(R.id.spoiler).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_eye_close));
         menu.findItem(R.id.image).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_picture));
-        menu.findItem(R.id.image).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_facetime_video));
+        menu.findItem(R.id.video).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_facetime_video));
         menu.findItem(R.id.url).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_link));
         menu.findItem(R.id.list).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_list_ol));
         menu.findItem(R.id.smiley).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_smile));
 
         bbcodeToolbar.setOnMenuItemClickListener(new BBCodeHandler(getBaseActivity(), mEditText));
-
 
         return v;
     }
@@ -558,9 +556,9 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
                         result.append(String.format("[list=%s]", input.get(0)));
                     else
                         result.append("[list]");
-                    for(String s : input) {
-                        if(!s.equals(""))
-                            result.append(String.format("[*] %s\n", s));
+                    for(int i = 1; i < input.size(); ++i) {
+                        if(!input.get(i).equals(""))
+                            result.append(String.format("[*] %s\n", input.get(i)));
                     }
                     result.append("[/list]");
                     mEditText.getText().insert(mEditText.getSelectionStart(), result);

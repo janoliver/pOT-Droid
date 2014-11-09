@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5pt">
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:background="@color/white"
+            android:padding="3pt"
+            android:textColor="@color/bbstyle_darkblue"
+            android:textSize="16sp"
+            android:cursorVisible="true"
+            android:textColorHint="@color/bbstyle_lightblue"/>
+</FrameLayout>

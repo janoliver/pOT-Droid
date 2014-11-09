@@ -5,49 +5,49 @@
     <item
             android:id="@+id/bold"
             android:title="Fett"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="always"/>
     <item
             android:id="@+id/italic"
             android:title="Kursiv"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="always"/>
     <item
             android:id="@+id/underline"
             android:title="Unterstrichen"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="always"/>
     <item
             android:id="@+id/striked"
             android:title="Durchgestrichen"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="always"/>
     <item
             android:id="@+id/code"
             android:title="Code"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="always"/>
     <item
             android:id="@+id/quote"
             android:title="Quote"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="always"/>
     <item
             android:id="@+id/spoiler"
             android:title="Spoiler"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="always"/>
     <item
             android:id="@+id/image"
             android:title="Bild"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="always"/>
     <item
             android:id="@+id/video"
             android:title="Video"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="always"/>
     <item
             android:id="@+id/url"
             android:title="Link"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="always"/>
     <item
             android:id="@+id/list"
             android:title="Liste"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="always"/>
     <item
             android:id="@+id/smiley"
             android:title="Smiley"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="always"/>
 </menu>

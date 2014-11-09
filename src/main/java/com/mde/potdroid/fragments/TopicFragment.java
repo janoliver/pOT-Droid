@@ -107,7 +107,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
         // of some former TopicFragment, which will be restored on onResume. .
         if (Utils.isKitkat()) {
-            enableHardwareAcc();
+            disableHardwareAcc();
         }
 
     }
@@ -119,7 +119,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
         // of some former TopicFragment, which will be restored on onResume. .
         if (Utils.isKitkat()) {
-            disableHardwareAcc();
+            //disableHardwareAcc();
         }
 
     }

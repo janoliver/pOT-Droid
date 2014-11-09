@@ -81,10 +81,6 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
         registerForContextMenu(mListView);
 
-        Toolbar toolbar = (Toolbar) v.findViewById(R.id.main_toolbar);
-        getBaseActivity().setSupportActionBar(toolbar);
-        getBaseActivity().setUpActionBar();
-
         getActionbar().setTitle(R.string.title_forum);
 
         return v;

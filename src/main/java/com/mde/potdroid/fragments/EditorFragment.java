@@ -9,7 +9,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ActionMenuView;
-import android.support.v7.widget.Toolbar;
 import android.util.SparseArray;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -124,10 +123,6 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
                 id.show(getBaseActivity().getSupportFragmentManager(), "icondialog");
             }
         });
-
-        Toolbar toolbar = (Toolbar) v.findViewById(R.id.main_toolbar);
-        getBaseActivity().setSupportActionBar(toolbar);
-        getBaseActivity().setUpActionBar();
 
         // fill the form
         if (getArguments().getString(ARG_TEXT) != null)

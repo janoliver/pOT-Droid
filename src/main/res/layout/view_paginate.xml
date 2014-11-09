@@ -6,7 +6,8 @@
               android:background="@color/bbstyle_darkblue_semi"
               android:orientation="horizontal"
               android:gravity="center_vertical|center_horizontal"
-              android:layout_alignParentBottom="true">
+              android:layout_alignParentBottom="true"
+              android:visibility="invisible">
 
     <com.mde.potdroid.views.IconButton
             android:layout_width="45dp"

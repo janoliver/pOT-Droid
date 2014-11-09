@@ -45,7 +45,8 @@ abstract public class PaginateFragment extends BaseFragment {
     }
 
     public void refreshPaginateLayout() {
-        mPaginateLayout = (LinearLayout) getView().findViewById(R.id.paginate_view);
+        mPaginateLayout = getBaseActivity().getPaginateLayout();
+        mPaginateLayout.setVisibility(View.VISIBLE);
 
         //IconButton refreshButton = (IconButton) paginateWidget.findViewById(R.id.button_refresh);
         IconButton fwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_fwd);

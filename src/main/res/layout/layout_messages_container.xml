@@ -1,51 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
+
+<android.support.v4.view.ViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/drawer_layout"
+        android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout
+    <android.support.v4.view.PagerTabStrip
+            android:id="@+id/pager_header"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-        <include layout="@layout/toolbar"/>
-
-        <FrameLayout
-                android:id="@+id/main_group"
-                android:layout_below="@+id/main_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <android.support.v4.view.ViewPager
-                    android:id="@+id/pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                <android.support.v4.view.PagerTabStrip
-                        android:id="@+id/pager_header"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:paddingBottom="4dp"
-                        android:paddingTop="4dp"/>
-            </android.support.v4.view.ViewPager>
-        </FrameLayout>
-    </LinearLayout>
-
-    <FrameLayout
-            android:id="@+id/sidebar_container_left"
-            android:layout_width="300dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="left"
-            android:clickable="true"/>
-
-    <FrameLayout
-            android:id="@+id/sidebar_container_right"
-            android:layout_width="300dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:clickable="true"/>
-
-</android.support.v4.widget.DrawerLayout>
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"/>
+</android.support.v4.view.ViewPager>

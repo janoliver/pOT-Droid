@@ -6,17 +6,21 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import com.mde.potdroid.fragments.BoardFragment;
 import com.mde.potdroid.fragments.SidebarLeftFragment;
 import com.mde.potdroid.fragments.SidebarRightFragment;
 import com.mde.potdroid.helpers.CustomExceptionHandler;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
+import com.mde.potdroid.views.SwipeRefreshLayout;
 import com.mde.potdroid.views.UpdateInfoDialog;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
+import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 /**
  * The Class all activities should extend. It mainly handles the sidebar(s)
@@ -30,6 +34,10 @@ public class BaseActivity extends ActionBarActivity {
     protected SidebarLeftFragment mLeftSidebar;
     protected SidebarRightFragment mRightSidebar;
     protected DrawerLayout mDrawerLayout;
+    protected Toolbar mToolbar;
+    protected SmoothProgressBar mProgressbar;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
+    protected LinearLayout mPaginateLayout;
     protected ActionBarDrawerToggle mDrawerToggle;
 
 
@@ -61,6 +69,13 @@ public class BaseActivity extends ActionBarActivity {
 
         // find our drawerlayout. If it does not exist, we are in large mode.
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        mPaginateLayout = (LinearLayout) findViewById(R.id.paginate_view);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.content);
+        mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        mProgressbar = (SmoothProgressBar) findViewById(R.id.progressbar);
+        setSupportActionBar(mToolbar);
+        setUpActionBar();
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.drawable.ic_drawer, R.string.none, R.string.none) {
@@ -181,6 +196,22 @@ public class BaseActivity extends ActionBarActivity {
 
     public SidebarLeftFragment getLeftSidebarFragment() {
         return mLeftSidebar;
+    }
+
+    public Toolbar getToolbar() {
+        return mToolbar;
+    }
+
+    public SmoothProgressBar getProgressbar() {
+        return mProgressbar;
+    }
+
+    public SwipeRefreshLayout getSwipeRefreshLayout() {
+        return mSwipeRefreshLayout;
+    }
+
+    public LinearLayout getPaginateLayout() {
+        return mPaginateLayout;
     }
 
 }

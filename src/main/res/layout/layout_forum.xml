@@ -1,31 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<ExpandableListView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <include layout="@layout/toolbar"/>
-
-    <FrameLayout
-            android:id="@+id/main_group"
-            android:layout_below="@+id/main_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-        <com.mde.potdroid.views.SwipeRefreshLayout
-                android:id="@+id/ptr_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <ExpandableListView
-                    android:id="@+id/forum_list_content"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:childDivider="@color/bbstyle_darkblue"
-                    android:divider="@android:color/transparent"
-                    android:dividerHeight="1dp"/>
-        </com.mde.potdroid.views.SwipeRefreshLayout>
-    </FrameLayout>
-</LinearLayout>
+        android:id="@+id/forum_list_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:childDivider="@color/bbstyle_darkblue"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="1dp"/>

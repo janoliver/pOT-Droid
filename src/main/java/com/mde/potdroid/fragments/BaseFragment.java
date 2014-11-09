@@ -20,6 +20,7 @@ import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.SwipeRefreshLayout;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 /**
  * The Base Fragment class that all Fragments should inherit. Provides some methods
@@ -33,6 +34,8 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
     // the pulltorefresh instance
     protected SwipeRefreshLayout mPullToRefreshLayout;
 
+    protected SmoothProgressBar mProgressBar;
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -42,7 +45,15 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         setRetainInstance(true);
 
         // Now find the PullToRefreshLayout to setup
-        mPullToRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.ptr_layout);
+        if(getView().findViewById(R.id.ptr_layout) != null)
+            mPullToRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.ptr_layout);
+        else
+            mPullToRefreshLayout = getBaseActivity().getSwipeRefreshLayout();
+
+        if(getView().findViewById(R.id.progressbar) != null)
+            mProgressBar = (SmoothProgressBar) getView().findViewById(R.id.progressbar);
+        else
+            mProgressBar = getBaseActivity().getProgressbar();
 
         if (mPullToRefreshLayout != null) {
             mPullToRefreshLayout.setOnRefreshListener(this);
@@ -89,7 +100,9 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         if (mPullToRefreshLayout != null) {
             mPullToRefreshLayout.setRefreshing(false);
         }
-        //getBaseActivity().setProgressBarIndeterminateVisibility(false);
+        if (mProgressBar != null) {
+            //mProgressBar.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -236,9 +249,12 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
      */
     public void showLoadingAnimation() {
         if (mPullToRefreshLayout != null) {
-            mPullToRefreshLayout.setRefreshing(true);
+            //mPullToRefreshLayout.setRefreshing(true);
+            mPullToRefreshLayout.setRefreshing(false);
         }
-        //getBaseActivity().setProgressBarIndeterminateVisibility(true);
+        if (mProgressBar != null) {
+            //mProgressBar.setVisibility(View.VISIBLE);
+        }
     }
 
     /**

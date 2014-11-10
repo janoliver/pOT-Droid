@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
+import android.widget.FrameLayout;
 import com.mde.potdroid.fragments.MessageListFragment;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.MessageList;
@@ -25,7 +25,8 @@ public class MessageListActivity extends BaseActivity {
         if(!Utils.isLoggedIn())
             finish();
 
-        setContentView(R.layout.layout_messages_container);
+        FrameLayout content = (FrameLayout) findViewById(R.id.content);
+        getLayoutInflater().inflate(R.layout.layout_messages_container, content, true);
 
         ViewPager vpPager = (ViewPager) findViewById(R.id.pager);
         adapterViewPager = new MessageListPagerAdapter(getSupportFragmentManager(), this);
@@ -33,10 +34,6 @@ public class MessageListActivity extends BaseActivity {
 
         PagerTabStrip strip = (PagerTabStrip) findViewById(R.id.pager_header);
         strip.setDrawFullUnderline(false);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        setSupportActionBar(toolbar);
-        setUpActionBar();
 
     }
 

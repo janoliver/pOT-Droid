@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
@@ -92,6 +91,8 @@ public class MessageFragment extends BaseFragment
         super.onActivityCreated(savedInstanceState);
 
         getActionbar().setTitle(R.string.msg_message_loading);
+
+        mPullToRefreshLayout.setSwipeable(false);
 
         if (mMessage == null)
             startLoader(this);
@@ -235,10 +236,6 @@ public class MessageFragment extends BaseFragment
                     fragment.destroyWebView();
             }
         }
-
-        Toolbar toolbar = (Toolbar) v.findViewById(R.id.main_toolbar);
-        getBaseActivity().setSupportActionBar(toolbar);
-        getBaseActivity().setUpActionBar();
 
         return v;
     }

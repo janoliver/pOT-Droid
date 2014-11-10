@@ -3,9 +3,9 @@ package com.mde.potdroid;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -33,18 +33,12 @@ public class BaseActivity extends ActionBarActivity {
     protected SidebarRightFragment mRightSidebar;
     protected DrawerLayout mDrawerLayout;
     protected Toolbar mToolbar;
-    //protected SmoothProgressBar mProgressbar;
     protected LinearLayout mPaginateLayout;
     protected ActionBarDrawerToggle mDrawerToggle;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
-        // this must be called first to fix a crash in API 7
-        //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
         super.onCreate(savedInstanceState);
 
         // register an application context singleton in the Utils class.
@@ -67,14 +61,17 @@ public class BaseActivity extends ActionBarActivity {
         // find our drawerlayout. If it does not exist, we are in large mode.
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
+        // this is for pagination. It is usually hidden, but PaginateFragments
+        // show it if necessary.
         mPaginateLayout = (LinearLayout) findViewById(R.id.paginate_view);
+
+        // our toolbar (the new ActionBar)
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        //mProgressbar = (SmoothProgressBar) findViewById(R.id.progressbar);
         setSupportActionBar(mToolbar);
         setUpActionBar();
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_drawer, R.string.none, R.string.none) {
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, mToolbar, R.string.open_drawer, R.string.close_drawer) {
 
             public void onDrawerClosed(View view) {}
 
@@ -92,7 +89,6 @@ public class BaseActivity extends ActionBarActivity {
                 }
             }
         };
-
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         // find or create the left sidebar fragment
@@ -197,10 +193,6 @@ public class BaseActivity extends ActionBarActivity {
     public Toolbar getToolbar() {
         return mToolbar;
     }
-
-    /*public SmoothProgressBar getProgressbar() {
-        return mProgressbar;
-    }*/
 
     public LinearLayout getPaginateLayout() {
         return mPaginateLayout;

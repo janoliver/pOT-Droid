@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
@@ -30,7 +29,7 @@ import java.text.SimpleDateFormat;
  * This fragment displays a list of messages below a Tab bar for the inbox/outbox folders.
  */
 public class MessageListFragment extends BaseFragment implements LoaderManager
-        .LoaderCallbacks<MessageList>, SwipeRefreshLayout.OnRefreshListener {
+        .LoaderCallbacks<MessageList> {
 
     // the tags of the fragment arguments
     public static final String ARG_MODE = "mode";

@@ -17,10 +17,8 @@ import com.mde.potdroid.fragments.SidebarRightFragment;
 import com.mde.potdroid.helpers.CustomExceptionHandler;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
-import com.mde.potdroid.views.SwipeRefreshLayout;
 import com.mde.potdroid.views.UpdateInfoDialog;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
-import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 /**
  * The Class all activities should extend. It mainly handles the sidebar(s)
@@ -35,8 +33,7 @@ public class BaseActivity extends ActionBarActivity {
     protected SidebarRightFragment mRightSidebar;
     protected DrawerLayout mDrawerLayout;
     protected Toolbar mToolbar;
-    protected SmoothProgressBar mProgressbar;
-    protected SwipeRefreshLayout mSwipeRefreshLayout;
+    //protected SmoothProgressBar mProgressbar;
     protected LinearLayout mPaginateLayout;
     protected ActionBarDrawerToggle mDrawerToggle;
 
@@ -71,9 +68,8 @@ public class BaseActivity extends ActionBarActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         mPaginateLayout = (LinearLayout) findViewById(R.id.paginate_view);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.content);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mProgressbar = (SmoothProgressBar) findViewById(R.id.progressbar);
+        //mProgressbar = (SmoothProgressBar) findViewById(R.id.progressbar);
         setSupportActionBar(mToolbar);
         setUpActionBar();
 
@@ -202,13 +198,9 @@ public class BaseActivity extends ActionBarActivity {
         return mToolbar;
     }
 
-    public SmoothProgressBar getProgressbar() {
+    /*public SmoothProgressBar getProgressbar() {
         return mProgressbar;
-    }
-
-    public SwipeRefreshLayout getSwipeRefreshLayout() {
-        return mSwipeRefreshLayout;
-    }
+    }*/
 
     public LinearLayout getPaginateLayout() {
         return mPaginateLayout;

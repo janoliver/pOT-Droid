@@ -20,7 +20,6 @@ import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.SwipeRefreshLayout;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
-import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 /**
  * The Base Fragment class that all Fragments should inherit. Provides some methods
@@ -34,9 +33,6 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
     // the pulltorefresh instance
     protected SwipeRefreshLayout mPullToRefreshLayout;
 
-    protected SmoothProgressBar mProgressBar;
-
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -45,15 +41,10 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         setRetainInstance(true);
 
         // Now find the PullToRefreshLayout to setup
-        if(getView().findViewById(R.id.ptr_layout) != null)
-            mPullToRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.ptr_layout);
-        else
-            mPullToRefreshLayout = getBaseActivity().getSwipeRefreshLayout();
+        mPullToRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.ptr_layout);
 
-        if(getView().findViewById(R.id.progressbar) != null)
-            mProgressBar = (SmoothProgressBar) getView().findViewById(R.id.progressbar);
-        else
-            mProgressBar = getBaseActivity().getProgressbar();
+        if(mPullToRefreshLayout == null)
+            mPullToRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.ptr_holder);
 
         if (mPullToRefreshLayout != null) {
             mPullToRefreshLayout.setOnRefreshListener(this);
@@ -99,9 +90,6 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
     public void hideLoadingAnimation() {
         if (mPullToRefreshLayout != null) {
             mPullToRefreshLayout.setRefreshing(false);
-        }
-        if (mProgressBar != null) {
-            //mProgressBar.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -191,7 +179,7 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
                 .setBackgroundColorValue(s)
                 .setHeight(getActionbarHeight())
                 .build();
-        Crouton.makeText(getBaseActivity(), message, style, R.id.main_group).show();
+        Crouton.makeText(getBaseActivity(), message, style, R.id.content).show();
     }
 
     protected void showGenericNotification(int message, int s) {
@@ -199,7 +187,7 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
                 .setBackgroundColorValue(s)
                 .setHeight(getActionbarHeight())
                 .build();
-        Crouton.makeText(getBaseActivity(), message,  style, R.id.main_group).show();
+        Crouton.makeText(getBaseActivity(), message,  style, R.id.content).show();
     }
 
     /**
@@ -249,11 +237,7 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
      */
     public void showLoadingAnimation() {
         if (mPullToRefreshLayout != null) {
-            //mPullToRefreshLayout.setRefreshing(true);
-            mPullToRefreshLayout.setRefreshing(false);
-        }
-        if (mProgressBar != null) {
-            //mProgressBar.setVisibility(View.VISIBLE);
+            mPullToRefreshLayout.setRefreshing(true);
         }
     }
 

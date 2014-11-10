@@ -67,6 +67,7 @@ public class SwipeRefreshLayout extends ViewGroup {
     private static final int INVALID_POINTER = -1;
 
     protected boolean mSwipeDown = true;
+    protected boolean mSwipeable = true;
 
     private SwipeProgressBar mProgressBar; //the thing that shows progress is going
     private View mTarget; //the content that gets pulled down
@@ -221,6 +222,14 @@ public class SwipeRefreshLayout extends ViewGroup {
         return mSwipeDown;
     }
 
+    public void setSwipeable(boolean swipeable) {
+        mSwipeable = swipeable;
+    }
+
+    public boolean getSwipeable() {
+        return mSwipeable;
+    }
+
     /**
      * @deprecated Use {@link #setColorSchemeResources(int, int, int, int)}
      */
@@ -259,7 +268,7 @@ public class SwipeRefreshLayout extends ViewGroup {
         return mRefreshing;
     }
 
-    private void ensureTarget() {
+    public void ensureTarget() {
         // Don't bother getting the parent height if the parent hasn't been laid out yet.
         if (mTarget == null) {
             if (getChildCount() > 1 && !isInEditMode()) {
@@ -357,6 +366,8 @@ public class SwipeRefreshLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if(!mSwipeable)
+            return false;
         ensureTarget();
 
         final int action = MotionEventCompat.getActionMasked(ev);
@@ -421,6 +432,9 @@ public class SwipeRefreshLayout extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        if(!mSwipeable)
+            return false;
+
         final int action = MotionEventCompat.getActionMasked(ev);
 
         if (mReturningToStart && action == MotionEvent.ACTION_DOWN) {

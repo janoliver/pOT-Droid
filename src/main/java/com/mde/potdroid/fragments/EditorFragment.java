@@ -179,6 +179,8 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        mPullToRefreshLayout.setSwipeable(false);
+
         hideLoadingAnimation();
     }
 

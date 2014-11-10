@@ -1,131 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
+<com.mde.potdroid.views.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/main_group"
-        android:layout_below="@+id/header"
+        android:id="@+id/ptr_holder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="@color/bbstyle_lightblue">
 
+    <LinearLayout
+            android:id="@+id/main_group"
+            android:layout_below="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <EditText
-            android:id="@+id/edit_rcpt"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="5pt"
-            android:layout_marginRight="5pt"
-            android:layout_marginTop="5pt"
-            android:background="@color/white"
-            android:hint="@string/form_rcpt_hint"
-            android:padding="3pt"
-            android:textColor="@color/bbstyle_darkblue"
-            android:textSize="16sp"
-            android:visibility="gone"
-            android:cursorVisible="true"
-            android:textCursorDrawable="@null"/>
-
-    <RelativeLayout
-            android:id="@+id/title_icon_bar"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5pt">
 
         <EditText
-                android:id="@+id/edit_title"
+                android:id="@+id/edit_rcpt"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginLeft="5pt"
+                android:layout_marginRight="5pt"
+                android:layout_marginTop="5pt"
                 android:background="@color/white"
-                android:hint="@string/form_title_hint"
-                android:layout_toLeftOf="@+id/button_icon"
+                android:hint="@string/form_rcpt_hint"
                 android:padding="3pt"
-                android:inputType="text|textCapSentences"
+                android:textColor="@color/bbstyle_darkblue"
+                android:textSize="16sp"
+                android:visibility="gone"
+                android:cursorVisible="true"
+                android:textCursorDrawable="@null"/>
+
+        <RelativeLayout
+                android:id="@+id/title_icon_bar"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5pt">
+
+            <EditText
+                    android:id="@+id/edit_title"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/white"
+                    android:hint="@string/form_title_hint"
+                    android:layout_toLeftOf="@+id/button_icon"
+                    android:padding="3pt"
+                    android:inputType="text|textCapSentences"
+                    android:textColor="@color/bbstyle_darkblue"
+                    android:textSize="16sp"
+                    android:cursorVisible="true"
+                    android:textCursorDrawable="@null"/>
+
+            <ImageButton
+                    android:contentDescription="@string/none"
+                    android:id="@+id/button_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/background_transparent_clickable"
+                    android:src="@drawable/ic_action_icon"/>
+
+        </RelativeLayout>
+
+        <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <android.support.v7.widget.ActionMenuView
+                    android:id="@+id/bbcode_toolbar"
+                    android:layout_marginTop="-5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+        </HorizontalScrollView>
+
+        <EditText
+                android:id="@+id/edit_subtitle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5pt"
+                android:layout_marginRight="5pt"
+                android:background="@color/white"
+                android:hint="@string/form_subtitle_hint"
+                android:padding="3pt"
+                android:textColor="@color/bbstyle_darkblue"
+                android:textSize="16sp"
+                android:visibility="gone"
+                android:cursorVisible="true"
+                android:textCursorDrawable="@null"/>
+
+        <EditText
+                android:id="@+id/edit_tags"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5pt"
+                android:layout_marginRight="5pt"
+                android:layout_marginTop="5pt"
+                android:background="@color/white"
+                android:hint="@string/form_tags_hint"
+                android:padding="3pt"
+                android:textColor="@color/bbstyle_darkblue"
+                android:textSize="16sp"
+                android:visibility="gone"
+                android:cursorVisible="true"
+                android:textCursorDrawable="@null"
+                android:layout_margin="5pt"/>
+
+        <EditText
+                android:id="@+id/edit_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5pt"
+                android:layout_marginLeft="5pt"
+                android:layout_marginRight="5pt"
+                android:background="@color/white"
+                android:ems="10"
+                android:gravity="top"
+                android:hint="@string/form_text_hint"
+                android:inputType="textMultiLine|textCapSentences|textLongMessage"
+                android:padding="3pt"
+                android:scrollbars="vertical|horizontal"
                 android:textColor="@color/bbstyle_darkblue"
                 android:textSize="16sp"
                 android:cursorVisible="true"
                 android:textCursorDrawable="@null"/>
 
-        <ImageButton
-                android:contentDescription="@string/none"
-                android:id="@+id/button_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="fitCenter"
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="center"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/background_transparent_clickable"
-                android:src="@drawable/ic_action_icon"/>
-
-    </RelativeLayout>
-
-    <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <android.support.v7.widget.ActionMenuView
-                android:id="@+id/bbcode_toolbar"
-                android:layout_marginTop="-5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
-    </HorizontalScrollView>
-
-    <EditText
-            android:id="@+id/edit_subtitle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="5pt"
-            android:layout_marginRight="5pt"
-            android:background="@color/white"
-            android:hint="@string/form_subtitle_hint"
-            android:padding="3pt"
-            android:textColor="@color/bbstyle_darkblue"
-            android:textSize="16sp"
-            android:visibility="gone"
-            android:cursorVisible="true"
-            android:textCursorDrawable="@null"/>
-
-    <EditText
-            android:id="@+id/edit_tags"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="5pt"
-            android:layout_marginRight="5pt"
-            android:layout_marginTop="5pt"
-            android:background="@color/white"
-            android:hint="@string/form_tags_hint"
-            android:padding="3pt"
-            android:textColor="@color/bbstyle_darkblue"
-            android:textSize="16sp"
-            android:visibility="gone"
-            android:cursorVisible="true"
-            android:textCursorDrawable="@null"
-            android:layout_margin="5pt"/>
-
-    <EditText
-            android:id="@+id/edit_content"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center"
-            android:layout_marginBottom="5pt"
-            android:layout_marginLeft="5pt"
-            android:layout_marginRight="5pt"
-            android:background="@color/white"
-            android:ems="10"
-            android:gravity="top"
-            android:hint="@string/form_text_hint"
-            android:inputType="textMultiLine|textCapSentences|textLongMessage"
-            android:padding="3pt"
-            android:scrollbars="vertical|horizontal"
-            android:textColor="@color/bbstyle_darkblue"
-            android:textSize="16sp"
-            android:cursorVisible="true"
-            android:textCursorDrawable="@null"/>
-
-</LinearLayout>
+    </LinearLayout>
+</com.mde.potdroid.views.SwipeRefreshLayout>

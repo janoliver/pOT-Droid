@@ -46,7 +46,6 @@ abstract public class PaginateFragment extends BaseFragment {
 
     public void refreshPaginateLayout() {
         mPaginateLayout = getBaseActivity().getPaginateLayout();
-        mPaginateLayout.setVisibility(View.VISIBLE);
 
         //IconButton refreshButton = (IconButton) paginateWidget.findViewById(R.id.button_refresh);
         IconButton fwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_fwd);
@@ -89,11 +88,14 @@ abstract public class PaginateFragment extends BaseFragment {
             }
         });
 
+        boolean anyVisible = false;
+
         // only show the paginate buttons if there are before or after the current
         if (isLastPage()) {
             fwdButton.setVisibility(View.INVISIBLE);
             ffwdButton.setVisibility(View.INVISIBLE);
         } else {
+            anyVisible = true;
             fwdButton.setVisibility(View.VISIBLE);
             ffwdButton.setVisibility(View.VISIBLE);
         }
@@ -102,9 +104,13 @@ abstract public class PaginateFragment extends BaseFragment {
             rwdButton.setVisibility(View.INVISIBLE);
             frwdButton.setVisibility(View.INVISIBLE);
         } else {
+            anyVisible = true;
             rwdButton.setVisibility(View.VISIBLE);
             frwdButton.setVisibility(View.VISIBLE);
         }
+
+        if(anyVisible)
+            mPaginateLayout.setVisibility(View.VISIBLE);
 
     }
 

@@ -345,7 +345,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         WebView.HitTestResult hitTestResult = mWebView.getHitTestResult();
         if (hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE ||
             hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
-
             ImageActionsDialog imenu = ImageActionsDialog.getInstance(Uri.parse(hitTestResult.getExtra()));
             imenu.setTargetFragment(this, 0);
             imenu.show(getBaseActivity().getSupportFragmentManager(), ImageActionsDialog.TAG);
@@ -386,7 +385,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         @Override
         protected void onNetworkFailure(int statusCode, Header[] headers,
                                         String responseBody, Throwable error) {
-
             deliverResult(null);
         }
     }
@@ -537,18 +535,24 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         final ImageLoader il = ImageLoader.getInstance();
         final DiskCache cache = il.getDiskCache();
 
-        File f = DiskCacheUtils.findInCache(url, cache);
+        Uri localUri = CacheContentProvider.getContentUriFromUrlOrUri(url);
+        File f = DiskCacheUtils.findInCache(localUri.toString(), cache);
+
         if(f != null) {
-            mJsInterface.displayImage(url, f.getAbsolutePath(), id);
+            mJsInterface.displayImage(url, localUri.toString(), id);
         } else {
             il.loadImage(url, new SimpleImageLoadingListener() {
                 @Override
-                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                    File f = DiskCacheUtils.findInCache(imageUri, cache);
+                public void onLoadingComplete(String url, View view, Bitmap loadedImage) {
+                    Utils.log("Downloaded image with url " + url);
+                    Uri localUri = CacheContentProvider.getContentUriFromUrlOrUri(url);
+                    Utils.log("Has content uri " + localUri.toString());
+                    File f = DiskCacheUtils.findInCache(localUri.toString(), cache);
                     if (f != null)
-                        mJsInterface.displayImage(imageUri, f.getAbsolutePath(), id);
+                        mJsInterface.displayImage(url, localUri.toString(), id);
                     else
                         showError(R.string.msg_img_loading_error);
+
                 }
             });
         }

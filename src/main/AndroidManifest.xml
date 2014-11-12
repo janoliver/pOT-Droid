@@ -137,6 +137,10 @@
         <service
                 android:name=".services.MessagePollingService"
                 android:exported="false"/>
+        <provider
+                android:name=".helpers.CacheContentProvider"
+                android:authorities="com.mde.potdroid.files"
+                android:exported="true"/>
     </application>
 
 </manifest>

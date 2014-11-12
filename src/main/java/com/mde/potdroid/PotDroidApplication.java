@@ -1,15 +1,16 @@
 package com.mde.potdroid;
 
 import android.app.Application;
+import android.content.Context;
+import com.mde.potdroid.helpers.CacheContentProvider;
 import com.mde.potdroid.helpers.PersistentCookieStore;
-import com.nostra13.universalimageloader.cache.disc.impl.LimitedAgeDiscCache;
-import com.nostra13.universalimageloader.cache.disc.naming.FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.utils.StorageUtils;
 
-import java.net.*;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 
 
 public class PotDroidApplication extends Application {
@@ -21,33 +22,19 @@ public class PotDroidApplication extends Application {
                 new PersistentCookieStore(getApplicationContext()), CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(cookieManager);
 
+        initImageLoader(getApplicationContext());
+    }
+
+    public static void initImageLoader(Context c) {
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                 .cacheInMemory(false)
                 .cacheOnDisk(true)
                 .build();
 
         // Create global configuration and initialize ImageLoader with this config
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
-                .diskCache(new LimitedAgeDiscCache(
-                        StorageUtils.getCacheDirectory(getApplicationContext()),
-                        null,
-                        new FileNameGenerator() {
-                            @Override
-                            public String generate(String imageUri) {
-                                try {
-                                    URL url = new URL(imageUri);
-                                    String filename = url.getPath().substring(url.getPath().lastIndexOf('/') + 1, url.getPath().length());
-                                    String basename = filename.substring(0, filename.lastIndexOf('.'));
-                                    String extension = filename.substring(filename.lastIndexOf('.'));
-                                    return basename.replaceAll("\\W+", "") + extension;
-
-                                } catch (MalformedURLException e) {
-                                    e.printStackTrace();
-                                    return imageUri;
-                                }
-                            }
-                        },
-                        3600 * 24 * 7))
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(c)
+                .diskCacheFileNameGenerator(new CacheContentProvider.HashFileNameGenerator())
+                .diskCacheSize(50 * 1024 * 1024)
                 .defaultDisplayImageOptions(defaultOptions)
                 .build();
         ImageLoader.getInstance().init(config);

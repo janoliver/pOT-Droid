@@ -3,6 +3,7 @@ package com.mde.potdroid.helpers;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v4.content.Loader;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
@@ -24,6 +25,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
 
     // the calling activity
     private Context mActivity;
+    final Handler mUiThreadHandler = new Handler();
 
     // request type codes
     public static final Integer GET = 0;
@@ -173,8 +175,13 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
      *
      * @param response The response string
      */
-    protected void processResponse(String response) {
-        new ResponseTask().execute(response);
+    protected void processResponse(final String response) {
+        final Runnable mUpdateResults = new Runnable() {
+            public void run() {
+                new ResponseTask().execute(response);
+            }
+        };
+        mUiThreadHandler.post(mUpdateResults);
     }
 
     /**

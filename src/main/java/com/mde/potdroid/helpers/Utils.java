@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
@@ -138,6 +139,16 @@ public class Utils {
      */
     public static boolean isKitkat() {
         return android.os.Build.VERSION.SDK_INT == android.os.Build.VERSION_CODES.KITKAT;
+    }
+
+    /**
+     * Check if the current device version is Kitkat (2.3.3)
+     *
+     * @return true if Kitkat
+     */
+    public static boolean isGingerbread() {
+        return android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.GINGERBREAD ||
+                android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.GINGERBREAD_MR1;
     }
 
     /**

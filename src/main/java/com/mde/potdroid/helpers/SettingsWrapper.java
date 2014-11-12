@@ -47,6 +47,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_SHOW_MENU = "pref_show_menu";
     public static final String PREF_KEY_MARK_NEW_POSTS = "pref_mark_new_posts";
     public static final String PREF_KEY_BBCODE_EDITOR = "pref_bbcode_editor";
+    public static final String PREF_KEY_CACHE_SIZE = "pref_cache_size";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;
@@ -180,6 +181,10 @@ public class SettingsWrapper {
      */
     public Boolean showPostInfo() {
         return mSharedPreferences.getBoolean(PREF_KEY_POSTINFO, true);
+    }
+
+    public int getCacheSize() {
+        return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_CACHE_SIZE, "50")) * 1024 * 1024;
     }
 
     /**

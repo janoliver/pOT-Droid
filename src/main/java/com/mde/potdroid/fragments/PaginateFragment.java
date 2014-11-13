@@ -2,8 +2,11 @@ package com.mde.potdroid.fragments;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import com.mde.potdroid.R;
 import com.mde.potdroid.views.IconButton;
 
@@ -116,6 +119,17 @@ abstract public class PaginateFragment extends BaseFragment {
         root.removeViewAt(index);
         View newPaginateView = inflater.inflate(R.layout.view_paginate, root, false);
         root.addView(newPaginateView, index);
+
+        RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            p.addRule(RelativeLayout.ABOVE, R.id.paginate_view);
+        } else {
+            p.addRule(RelativeLayout.ABOVE, 0);
+        }
+        root.findViewById(R.id.content).setLayoutParams(p);
+
         refreshPaginateLayout();
     }
 }

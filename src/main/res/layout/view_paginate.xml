@@ -29,14 +29,6 @@
             android:textSize="24sp"
             android:textColor="@color/white"/>
 
-    <!--<com.mde.potdroid.views.IconButton
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:text="@string/icon_refresh"
-            android:id="@+id/button_refresh"
-            android:textSize="24sp"
-            android:textColor="@color/white"/>-->
-
     <com.mde.potdroid.views.IconButton
             android:layout_width="45dp"
             android:layout_height="45dp"

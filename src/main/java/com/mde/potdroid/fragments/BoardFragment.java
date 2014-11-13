@@ -253,7 +253,6 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         return mBoard == null || mBoard.getPage() == 1;
     }
 
-    @Override
     public void refreshPage() {
         restartLoader(this);
     }

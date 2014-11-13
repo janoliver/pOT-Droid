@@ -194,7 +194,8 @@ public class BaseActivity extends ActionBarActivity {
         return mToolbar;
     }
 
-    public LinearLayout getPaginateLayout() {
+    public LinearLayout refreshAndGetPaginateLayout() {
+        mPaginateLayout = (LinearLayout) findViewById(R.id.paginate_view);
         return mPaginateLayout;
     }
 

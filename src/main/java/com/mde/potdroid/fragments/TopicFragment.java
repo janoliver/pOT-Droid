@@ -379,7 +379,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         return mTopic == null || mTopic.getPage() == 1;
     }
 
-    @Override
     public void refreshPage() {
         restartLoader(this);
     }

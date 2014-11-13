@@ -45,20 +45,13 @@ abstract public class PaginateFragment extends BaseFragment {
     }
 
     public void refreshPaginateLayout() {
-        mPaginateLayout = getBaseActivity().getPaginateLayout();
+        mPaginateLayout = getBaseActivity().refreshAndGetPaginateLayout();
 
         //IconButton refreshButton = (IconButton) paginateWidget.findViewById(R.id.button_refresh);
         IconButton fwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_fwd);
         IconButton ffwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_ffwd);
         IconButton rwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_rwd);
         IconButton frwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_frwd);
-
-        /*refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refreshPage();
-            }
-        });*/
 
         fwdButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,19 +112,10 @@ abstract public class PaginateFragment extends BaseFragment {
         super.onConfigurationChanged(newConfig);
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         ViewGroup root = (ViewGroup) mPaginateLayout.getParent();
-        View child = root.findViewById(R.id.paginate_view);
-        int index = root.indexOfChild(child);
-        root.removeView(child);
+        int index = root.indexOfChild(root.findViewById(R.id.paginate_view));
+        root.removeViewAt(index);
         View newPaginateView = inflater.inflate(R.layout.view_paginate, root, false);
         root.addView(newPaginateView, index);
         refreshPaginateLayout();
     }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        //inflater.inflate(R.menu.actionmenu_paginate, menu);
-    }
-
-    public abstract void refreshPage();
 }

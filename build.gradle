@@ -16,7 +16,7 @@ repositories {
 dependencies {
     compile 'com.android.support:support-v4:21.0.0'
     compile 'com.android.support:appcompat-v7:21.0.0'
-    compile 'com.squareup.okhttp:okhttp:2.0.0'
+    compile 'com.squareup.okhttp:okhttp:2.1.0'
     compile 'com.samskivert:jmustache:1.9'
     compile 'de.keyboardsurfer.android.widget:crouton:1.8.5@aar'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'

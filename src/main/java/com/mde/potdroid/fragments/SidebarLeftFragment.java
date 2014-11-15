@@ -108,6 +108,11 @@ public class SidebarLeftFragment extends BaseFragment
     }
 
     @Override
+    public int getNotificationParent() {
+        return R.id.bookmark_list_holder;
+    }
+
+    @Override
     public void onRefresh() {
         super.onRefresh();
         restartLoader(this);

@@ -112,6 +112,11 @@ public class SidebarRightFragment extends BaseFragment implements LoaderManager.
         restartLoader(this);
     }
 
+    @Override
+    public int getNotificationParent() {
+        return R.id.forums_holder;
+    }
+
     public void refreshBoards() {
         restartLoader(this);
     }

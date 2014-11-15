@@ -54,7 +54,6 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
                     R.color.white_semi,
                     R.color.bbstyle_darkblue);
         }
-
     }
 
     /**
@@ -96,6 +95,10 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public void onRefresh() {
 
+    }
+
+    public int getNotificationParent() {
+        return R.id.content;
     }
 
     /**
@@ -179,7 +182,7 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
                 .setBackgroundColorValue(s)
                 .setHeight(getActionbarHeight())
                 .build();
-        Crouton.makeText(getBaseActivity(), message, style, R.id.content).show();
+        Crouton.makeText(getBaseActivity(), message, style, getNotificationParent()).show();
     }
 
     protected void showGenericNotification(int message, int s) {
@@ -187,7 +190,7 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
                 .setBackgroundColorValue(s)
                 .setHeight(getActionbarHeight())
                 .build();
-        Crouton.makeText(getBaseActivity(), message,  style, R.id.content).show();
+        Crouton.makeText(getBaseActivity(), message,  style, getNotificationParent()).show();
     }
 
     /**

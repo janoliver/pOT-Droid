@@ -423,33 +423,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         menu.show(getBaseActivity().getSupportFragmentManager(), PostActionsDialog.TAG);
     }
 
-    static class AsyncContentLoader extends AsyncHttpLoader<Topic> {
-
-        AsyncContentLoader(Context cx, int page, int thread_id, int post_id) {
-            super(cx, TopicParser.getUrl(thread_id, page, post_id));
-        }
-
-        @Override
-        public Topic processNetworkResponse(String response) {
-            try {
-                TopicParser parser = new TopicParser();
-                Topic t = parser.parse(response);
-
-                TopicBuilder b = new TopicBuilder(getContext());
-                t.setHtmlCache(b.parse(t));
-                return t;
-            } catch (Exception e) {
-                return null;
-            }
-        }
-
-        @Override
-        protected void onNetworkFailure(int statusCode, Header[] headers,
-                                        String responseBody, Throwable error) {
-            deliverResult(null);
-        }
-    }
-
     /**
      * Open the form and insert the quoted post
      *
@@ -621,6 +594,33 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
     public boolean isImageCached(String url) {
         return  DiskCacheUtils.findInCache(url, ImageLoader.getInstance().getDiskCache()) != null;
+    }
+
+    static class AsyncContentLoader extends AsyncHttpLoader<Topic> {
+
+        AsyncContentLoader(Context cx, int page, int thread_id, int post_id) {
+            super(cx, TopicParser.getUrl(thread_id, page, post_id));
+        }
+
+        @Override
+        public Topic processNetworkResponse(String response) {
+            try {
+                TopicParser parser = new TopicParser();
+                Topic t = parser.parse(response);
+
+                TopicBuilder b = new TopicBuilder(getContext());
+                t.setHtmlCache(b.parse(t));
+                return t;
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onNetworkFailure(int statusCode, Header[] headers,
+                                        String responseBody, Throwable error) {
+            deliverResult(null);
+        }
     }
 
 }

@@ -13,6 +13,7 @@ import org.apache.http.Header;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
 
 /**
  * This class provides a Loader to asynchroneously load POST or GET requests from the web.
@@ -198,8 +199,15 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
         if (mNetwork == null)
             mNetwork = new Network(getContext());
 
-        if (mData == null)
-            forceLoad();
+        if (mData == null) {
+
+            if(Utils.getConnectionType(mActivity) == Utils.NETWORK_NONE) {
+                onNetworkFailure(0, null, "", new ConnectException());
+            } else {
+                forceLoad();
+            }
+
+        }
     }
 
     /**

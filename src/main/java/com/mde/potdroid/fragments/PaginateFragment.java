@@ -45,6 +45,14 @@ abstract public class PaginateFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         refreshPaginateLayout();
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            ViewGroup root = (ViewGroup) mPaginateLayout.getParent();
+            ViewGroup contentView = (ViewGroup) root.findViewById(R.id.content);
+            RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) contentView.getLayoutParams();
+            p.addRule(RelativeLayout.ABOVE, R.id.paginate_view);
+            contentView.setLayoutParams(p);
+        }
     }
 
     public void refreshPaginateLayout() {
@@ -120,15 +128,15 @@ abstract public class PaginateFragment extends BaseFragment {
         View newPaginateView = inflater.inflate(R.layout.view_paginate, root, false);
         root.addView(newPaginateView, index);
 
-        RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
+        // Apply the new layout ordering to the content view
+        ViewGroup contentView = (ViewGroup)root.findViewById(R.id.content);
+        RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams)contentView.getLayoutParams();
         if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             p.addRule(RelativeLayout.ABOVE, R.id.paginate_view);
         } else {
             p.addRule(RelativeLayout.ABOVE, 0);
         }
-        root.findViewById(R.id.content).setLayoutParams(p);
+        contentView.setLayoutParams(p);
 
         refreshPaginateLayout();
     }

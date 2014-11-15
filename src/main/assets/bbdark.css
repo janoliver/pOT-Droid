@@ -4,6 +4,7 @@ body {
     background:#111723;
     color:#ddd;
     overflow-x: none;
+    margin:0;
 }
 
 section {

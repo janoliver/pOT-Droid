@@ -3,7 +3,7 @@
           android:exitFadeDuration="@android:integer/config_mediumAnimTime" >
     <item android:state_pressed="true">
         <shape>
-            <solid android:color="@color/white_semi" />
+            <solid android:color="?attr/bbTextColorSecondary" />
         </shape>
     </item>
     <item>

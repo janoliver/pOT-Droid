@@ -6,14 +6,29 @@
         <item name="colorPrimaryDark">@color/bbstyle_darkblue_semi</item>
         <item name="colorAccent">@color/bbstyle_lightblue</item>
         <item name="android:windowBackground">@color/bbstyle_darkerblue</item>
-        <item name="sdlDialogStyle">@style/DialogStyleDark.Custom</item>
+        <item name="sdlDialogStyle">@style/DialogStyleDark</item>
         <!--<item name="colorControlNormal">@color/green</item>
         <item name="colorControlActivated">@color/red</item>
         <item name="colorControlHighlight">@color/blue</item>
         <item name="colorSwitchThumbNormal">@color/yellow</item>-->
+        <item name="bbColorPrimary">@color/bbstyle_lightblue</item>
+        <item name="bbColorSecondary">@color/bbstyle_darkblue</item>
+        <item name="bbColorTertiary">@color/bbstyle_lighterblue</item>
+        <item name="bbColorHighlight">@color/white_low</item>
+        <item name="bbTextColorPrimary">@color/white</item>
+        <item name="bbTextColorSecondary">@color/white_low</item>
+        <item name="bbEditTextBackground">@color/white</item>
+        <item name="bbEditTextColor">@color/bbstyle_darkblue</item>
+        <item name="bbEditTextHintColor">@color/bbstyle_lightblue</item>
+        <item name="bbToolbarBackground">@color/bbstyle_darkblue</item>
+        <item name="bbToolbarColor">@color/white</item>
+        <item name="bbListSeparatorColor">@color/bbstyle_darkblue</item>
+        <item name="bbProgressPrimary">@color/white</item>
+        <item name="bbProgressSecondary">@color/bbstyle_lighterblue</item>
+        <item name="bbTopicCssFile">bbdark.css</item>
     </style>
 
-    <style name="DialogStyleDark.Custom">
+    <style name="DialogStyleDark">
         <!-- anything can be left out: -->
         <item name="titleTextColor">@color/white</item>
         <item name="titleSeparatorColor">@color/bbstyle_darkblue</item>
@@ -24,6 +39,46 @@
         <item name="buttonBackgroundColorPressed">@color/dialog_button_pressed</item>
         <item name="buttonBackgroundColorFocused">@color/dialog_button_focused</item>-->
         <item name="dialogBackground">@color/bbstyle_lightblue</item>
+    </style>
+
+    <style name="PotDroidLight" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/bbstyle_lightblue</item>
+        <item name="colorPrimaryDark">@color/bbstyle_darkblue</item>
+        <item name="colorAccent">@color/bbstyle_lightblue</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="sdlDialogStyle">@style/DialogStyleLight</item>
+        <!--<item name="colorControlNormal">@color/green</item>
+        <item name="colorControlActivated">@color/red</item>
+        <item name="colorControlHighlight">@color/blue</item>
+        <item name="colorSwitchThumbNormal">@color/yellow</item>-->
+        <item name="bbColorPrimary">@color/white</item>
+        <item name="bbColorSecondary">@color/lightgrey</item>
+        <item name="bbColorTertiary">@color/lightergrey</item>
+        <item name="bbColorHighlight">@color/bbstyle_lightblue</item>
+        <item name="bbTextColorPrimary">@color/darkergrey</item>
+        <item name="bbTextColorSecondary">@color/darkgrey</item>
+        <item name="bbEditTextBackground">@color/lightergrey</item>
+        <item name="bbEditTextColor">@color/bbstyle_darkblue</item>
+        <item name="bbEditTextHintColor">@color/grey</item>
+        <item name="bbToolbarBackground">@color/bbstyle_lightblue</item>
+        <item name="bbToolbarColor">@color/white</item>
+        <item name="bbListSeparatorColor">@color/lightergrey</item>
+        <item name="bbProgressPrimary">@color/bbstyle_darkblue</item>
+        <item name="bbProgressSecondary">@color/bbstyle_lighterblue</item>
+        <item name="bbTopicCssFile">bblight.css</item>
+    </style>
+
+    <style name="DialogStyleLight">
+        <!-- anything can be left out: -->
+        <item name="titleTextColor">@color/darkgrey</item>
+        <item name="titleSeparatorColor">@color/lightergrey</item>
+        <item name="messageTextColor">@color/darkgrey</item>
+        <item name="buttonTextColor">@color/darkgrey</item>
+        <item name="buttonSeparatorColor">@color/lightergrey</item>
+        <!--<item name="buttonBackgroundColorNormal">@color/dialog_button_normal</item>
+        <item name="buttonBackgroundColorPressed">@color/dialog_button_pressed</item>
+        <item name="buttonBackgroundColorFocused">@color/dialog_button_focused</item>-->
+        <item name="dialogBackground">@color/white</item>
     </style>
 
 </resources>

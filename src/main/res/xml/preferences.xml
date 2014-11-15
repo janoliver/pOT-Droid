@@ -26,6 +26,14 @@
             android:title="Style"
             android:key="pref_style_settings">
 
+        <ListPreference
+                android:key="pref_theme"
+                android:title="App Theme"
+                android:summary="Welches Theme soll die App haben?"
+                android:defaultValue="PotDroidDark"
+                android:entries="@array/pref_theme_entries"
+                android:entryValues="@array/pref_theme_values"/>
+
         <CheckBoxPreference
                 android:key="pref_hide_global"
                 android:title="Globale Threads ausblenden"

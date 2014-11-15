@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import com.mde.potdroid.R;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.cookie.BasicClientCookie;
 
@@ -20,6 +21,8 @@ import java.security.SecureRandom;
 public class SettingsWrapper {
 
     // The keys to the settings
+
+    public static final String PREF_KEY_THEME = "pref_theme";
     public static final String PREF_KEY_LOGIN = "pref_login";
     public static final String PREF_KEY_LOGOUT = "pref_logout";
     public static final String PREF_KEY_USERNAME = "user_name";
@@ -150,6 +153,15 @@ public class SettingsWrapper {
         String lb = mSharedPreferences.getString(PREF_KEY_LOAD_BENDERS, "0");
         return !(lb.equals("0") || (lb.equals("1") &&
                 Utils.getConnectionType(mContext) != Utils.NETWORK_WIFI));
+    }
+
+    public int getTheme() {
+        String theme = mSharedPreferences.getString(PREF_KEY_THEME, "PotDroidDark");
+        if(theme.equals("PotDroidDark"))
+            return R.style.PotDroidDark;
+        if(theme.equals("PotDroidLight"))
+            return R.style.PotDroidLight;
+        return -1;
     }
 
     /**

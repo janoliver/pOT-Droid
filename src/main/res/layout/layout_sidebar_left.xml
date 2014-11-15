@@ -2,7 +2,7 @@
               android:id="@+id/sidebar"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/bbstyle_lightblue"
+              android:background="?attr/bbColorPrimary"
               android:orientation="vertical">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,7 +10,7 @@
                   android:layout_width="fill_parent"
                   android:layout_height="?attr/actionBarSize"
                   android:orientation="horizontal"
-                  android:background="?attr/colorPrimary">
+                  android:background="?attr/bbToolbarBackground">
 
         <com.mde.potdroid.views.IconButton
                 android:layout_width="0dp"
@@ -19,7 +19,7 @@
                 android:id="@+id/button_home"
                 android:background="@drawable/background_transparent_clickable"
                 android:textSize="28sp"
-                android:textColor="@color/white"
+                android:textColor="?attr/bbToolbarColor"
                 android:layout_weight="1"/>
 
         <com.mde.potdroid.views.IconButton
@@ -29,7 +29,7 @@
                 android:id="@+id/button_pm"
                 android:background="@drawable/background_transparent_clickable"
                 android:textSize="24sp"
-                android:textColor="@color/white"
+                android:textColor="?attr/bbToolbarColor"
                 android:layout_weight="1"/>
 
         <com.mde.potdroid.views.IconButton
@@ -39,7 +39,7 @@
                 android:id="@+id/button_bookmarks"
                 android:background="@drawable/background_transparent_clickable"
                 android:textSize="24sp"
-                android:textColor="@color/white"
+                android:textColor="?attr/bbToolbarColor"
                 android:layout_weight="1"/>
 
         <com.mde.potdroid.views.IconButton
@@ -49,7 +49,7 @@
                 android:id="@+id/button_preferences"
                 android:background="@drawable/background_transparent_clickable"
                 android:textSize="24sp"
-                android:textColor="@color/white"
+                android:textColor="?attr/bbToolbarColor"
                 android:layout_weight="1"/>
 
     </LinearLayout>
@@ -70,13 +70,14 @@
                     android:layout_height="match_parent"
                     android:choiceMode="singleChoice"
                     android:id="@+id/listview_bookmarks"
-                    android:divider="?attr/colorPrimary"
+                    android:divider="?attr/bbListSeparatorColor"
                     android:dividerHeight="1dp"/>
 
             <TextView
                     android:id="@+id/empty_bookmarks_text"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    android:textColor="?attr/bbTextColorSecondary"
                     android:textSize="14sp"
                     android:gravity="center"
                     android:text="@string/no_unread_bookmarks"

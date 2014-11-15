@@ -15,7 +15,7 @@
             android:textSize="16sp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textColor="@color/white"
+            android:textColor="?attr/bbTextColorPrimary"
             android:drawablePadding="5dp"/>
 
     <com.mde.potdroid.views.IconView
@@ -26,7 +26,7 @@
             android:layout_alignParentRight="true"
             android:id="@+id/icon_locked"
             android:textSize="14sp"
-            android:color="@color/white"/>
+            android:textColor="?attr/bbTextColorSecondary"/>
 
     <com.mde.potdroid.views.IconView
             android:layout_width="20dp"
@@ -36,7 +36,7 @@
             android:id="@+id/icon_pinned"
             android:layout_toLeftOf="@+id/icon_locked"
             android:textSize="14sp"
-            android:color="@color/white"/>
+            android:textColor="?attr/bbTextColorSecondary"/>
 
     <com.mde.potdroid.views.IconView
             android:layout_width="20dp"
@@ -46,7 +46,7 @@
             android:id="@+id/icon_bookmarked"
             android:layout_toLeftOf="@+id/icon_pinned"
             android:textSize="14sp"
-            android:color="@color/white"/>
+            android:textColor="?attr/bbTextColorSecondary"/>
 
     <TextView
             android:id="@+id/subtitle"
@@ -59,7 +59,7 @@
             android:layout_below="@+id/title"
             android:layout_marginRight="15dp"
             android:textSize="14sp"
-            android:textColor="@color/grey"/>
+            android:textColor="?attr/bbTextColorSecondary"/>
 
     <TextView
             android:id="@+id/pages"
@@ -68,7 +68,7 @@
             android:layout_toLeftOf="@+id/author"
             android:layout_below="@+id/title"
             android:textSize="12sp"
-            android:textColor="@color/darkgrey"/>
+            android:textColor="?attr/bbTextColorSecondary"/>
 
     <TextView
             android:id="@+id/author"
@@ -77,6 +77,6 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/title"
             android:textSize="12sp"
-            android:textColor="@color/darkgrey"/>
+            android:textColor="?attr/bbTextColorSecondary"/>
 
 </RelativeLayout>

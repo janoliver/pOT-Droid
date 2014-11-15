@@ -598,8 +598,13 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
     static class AsyncContentLoader extends AsyncHttpLoader<Topic> {
 
+        // For some reason, getContext() returns an ApplicationContext object, which
+        // is not sufficient for the TopicBuilder instance. So we store our own.
+        private Context mContext;
+
         AsyncContentLoader(Context cx, int page, int thread_id, int post_id) {
             super(cx, TopicParser.getUrl(thread_id, page, post_id));
+            mContext = cx;
         }
 
         @Override
@@ -608,10 +613,11 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
                 TopicParser parser = new TopicParser();
                 Topic t = parser.parse(response);
 
-                TopicBuilder b = new TopicBuilder(getContext());
+                TopicBuilder b = new TopicBuilder(mContext);
                 t.setHtmlCache(b.parse(t));
                 return t;
             } catch (Exception e) {
+                e.printStackTrace();
                 return null;
             }
         }

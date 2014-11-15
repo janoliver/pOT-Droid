@@ -10,7 +10,7 @@
             android:id="@+id/forum_list_content"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:divider="@color/bbstyle_darkblue"
+            android:divider="?attr/bbListSeparatorColor"
             android:dividerHeight="1dp"/>
 
 </com.mde.potdroid.views.SwipeRefreshLayout>

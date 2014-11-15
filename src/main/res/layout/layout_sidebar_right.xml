@@ -2,7 +2,7 @@
               android:id="@+id/sidebar"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/bbstyle_lightblue"
+              android:background="?attr/bbColorPrimary"
               android:orientation="vertical">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,7 +10,7 @@
                   android:layout_width="fill_parent"
                   android:layout_height="?attr/actionBarSize"
                   android:orientation="horizontal"
-                  android:background="?attr/colorPrimary">
+                  android:background="?attr/bbToolbarBackground">
 
         <Button
                 android:layout_width="match_parent"
@@ -19,7 +19,7 @@
                 android:textSize="18sp"
                 android:paddingLeft="10dp"
                 android:background="@drawable/background_transparent_clickable"
-                android:textColor="@color/white"
+                android:textColor="?attr/bbToolbarColor"
                 android:id="@+id/refresh_boards"
                 android:gravity="left|center_vertical"/>
     </LinearLayout>
@@ -40,7 +40,7 @@
                     android:layout_height="match_parent"
                     android:choiceMode="singleChoice"
                     android:id="@+id/listview_boards"
-                    android:divider="?attr/colorPrimary"
+                    android:divider="?attr/bbListSeparatorColor"
                     android:dividerHeight="1dp"/>
 
             <TextView
@@ -48,6 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:textSize="14sp"
+                    android:textColor="?attr/bbTextColorSecondary"
                     android:gravity="center"
                     android:text="@string/no_favorite_boards"
                     android:visibility="gone"

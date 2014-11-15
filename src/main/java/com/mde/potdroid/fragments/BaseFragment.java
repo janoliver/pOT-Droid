@@ -48,11 +48,11 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
 
         if (mPullToRefreshLayout != null) {
             mPullToRefreshLayout.setOnRefreshListener(this);
-            mPullToRefreshLayout.setColorSchemeResources(
-                    R.color.white,
-                    R.color.bbstyle_lighterblue,
-                    R.color.white,
-                    R.color.bbstyle_lighterblue);
+            mPullToRefreshLayout.setColorSchemeColors(
+                    Utils.getColorByAttr(getActivity(), R.attr.bbProgressPrimary),
+                    Utils.getColorByAttr(getActivity(), R.attr.bbProgressSecondary),
+                    Utils.getColorByAttr(getActivity(), R.attr.bbProgressPrimary),
+                    Utils.getColorByAttr(getActivity(), R.attr.bbProgressSecondary));
         }
     }
 

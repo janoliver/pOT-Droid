@@ -9,10 +9,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:background="@color/white"
+            android:background="?bbEditTextBackground"
             android:padding="3pt"
-            android:textColor="@color/bbstyle_darkblue"
+            android:textColor="?attr/bbEditTextColor"
             android:textSize="16sp"
             android:cursorVisible="true"
-            android:textColorHint="@color/bbstyle_lightblue"/>
+            android:textColorHint="?attr/bbEditTextHintColor"/>
 </FrameLayout>

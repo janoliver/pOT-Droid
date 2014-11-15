@@ -2,7 +2,7 @@
               android:id="@+id/paginate_view"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:background="@color/bbstyle_darkblue_semi"
+              android:background="?bbToolbarBackground"
               android:orientation="horizontal"
               android:gravity="center_vertical|right"
               android:layout_alignParentRight="true"
@@ -17,7 +17,7 @@
             android:textSize="24sp"
             android:visibility="invisible"
             android:background="@drawable/background_transparent_clickable"
-            android:textColor="@color/white"/>
+            android:textColor="?attr/bbToolbarColor"/>
 
     <com.mde.potdroid.views.IconButton
             android:layout_width="45dp"
@@ -27,15 +27,7 @@
             android:visibility="invisible"
             android:background="@drawable/background_transparent_clickable"
             android:textSize="24sp"
-            android:textColor="@color/white"/>
-
-    <!--<com.mde.potdroid.views.IconButton
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:text="@string/icon_refresh"
-            android:id="@+id/button_refresh"
-            android:textSize="24sp"
-            android:textColor="@color/white"/>-->
+            android:textColor="?attr/bbToolbarColor"/>
 
     <com.mde.potdroid.views.IconButton
             android:layout_width="45dp"
@@ -45,7 +37,7 @@
             android:id="@+id/button_fwd"
             android:visibility="invisible"
             android:textSize="24sp"
-            android:textColor="@color/white"/>
+            android:textColor="?attr/bbToolbarColor"/>
 
     <com.mde.potdroid.views.IconButton
             android:layout_width="45dp"
@@ -55,6 +47,6 @@
             android:id="@+id/button_ffwd"
             android:visibility="invisible"
             android:textSize="24sp"
-            android:textColor="@color/white"/>
+            android:textColor="?attr/bbToolbarColor"/>
 
 </LinearLayout>

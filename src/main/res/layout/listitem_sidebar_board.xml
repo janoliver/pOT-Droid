@@ -14,19 +14,19 @@
             android:singleLine="true"
             android:scrollHorizontally="false"
             android:textSize="18sp"
-            android:textColor="@color/white"/>
+            android:textColor="?attr/bbTextColorPrimary"/>
 
     <TextView
             android:id="@+id/text_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:textColor="@color/white_low"/>
+            android:textColor="?attr/bbTextColorSecondary"/>
 
     <TextView
             android:id="@+id/last_post"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:textColor="@color/white_low"/>
+            android:textColor="?attr/bbTextColorSecondary"/>
 </LinearLayout>

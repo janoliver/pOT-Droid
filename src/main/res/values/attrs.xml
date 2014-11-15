@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="bbColorPrimary" format="color|reference" />
+    <attr name="bbColorSecondary" format="color|reference" />
+    <attr name="bbColorTertiary" format="color|reference" />
+    <attr name="bbColorHighlight" format="color|reference" />
+    <attr name="bbTextColorPrimary" format="color|reference" />
+    <attr name="bbTextColorSecondary" format="color|reference" />
+    <attr name="bbEditTextBackground" format="color|reference" />
+    <attr name="bbEditTextColor" format="color|reference" />
+    <attr name="bbEditTextHintColor" format="color|reference" />
+    <attr name="bbToolbarBackground" format="color|reference" />
+    <attr name="bbToolbarColor" format="color|reference" />
+    <attr name="bbListSeparatorColor" format="color|reference" />
+    <attr name="bbProgressPrimary" format="color|reference" />
+    <attr name="bbProgressSecondary" format="color|reference" />
+    <attr name="bbTopicCssFile" format="string" />
+</resources>

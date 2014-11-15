@@ -3,13 +3,21 @@
     <color name="white">#ffffff</color>
     <color name="white_semi">#aaffffff</color>
     <color name="white_low">#66ffffff</color>
+
+    <color name="black">#000000</color>
+    <color name="black_semi">#aa000000</color>
+    <color name="black_low">#66000000</color>
+
     <color name="grey">#aaaaaa</color>
+    <color name="lightgrey">#cccccc</color>
+    <color name="lightergrey">#eeeeee</color>
+    <color name="darkgrey">#888888</color>
+    <color name="darkergrey">#444444</color>
+
     <color name="red">#ffaa0003</color>
     <color name="green">#ff02aa0f</color>
     <color name="blue">#ff050faa</color>
     <color name="yellow">#fffefb04</color>
-    <color name="darkgrey">#888888</color>
-    <color name="black">#111111</color>
     <color name="transparent">#00000001</color>
     <color name="bbstyle_darkblue">#ff222E3A</color>
     <color name="bbstyle_darkblue_semi">#aa222E3A</color>

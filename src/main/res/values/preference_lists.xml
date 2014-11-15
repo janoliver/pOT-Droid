@@ -5,8 +5,8 @@
         <item>Dark</item>
     </string-array>
     <string-array name="pref_theme_values">
-        <item>theme_light</item>
-        <item>theme_dark</item>
+        <item>PotDroidLight</item>
+        <item>PotDroidDark</item>
     </string-array>
     <string-array name="load_images">
         <item>Nie</item>

@@ -39,12 +39,14 @@ public class BaseActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mSettings = new SettingsWrapper(this);
+
+        setTheme(mSettings.getTheme());
         super.onCreate(savedInstanceState);
 
         // register an application context singleton in the Utils class.
         Utils.setApplicationContext(getApplicationContext());
 
-        mSettings = new SettingsWrapper(this);
         mExtras = getIntent().getExtras();
 
         // debug mode. We write exceptions to the SDCard with a custom default exceptionhandler

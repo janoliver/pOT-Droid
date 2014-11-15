@@ -15,7 +15,7 @@
             android:scrollHorizontally="false"
             android:textSize="18sp"
             android:ellipsize="end"
-            android:textColor="#fff"
+            android:textColor="?attr/bbTextColorPrimary"
             android:paddingRight="10dp"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/newposts"/>
@@ -30,6 +30,6 @@
             android:paddingRight="4dp"
             android:layout_alignParentRight="true"
             android:textSize="12sp"
-            android:background="?attr/colorPrimary"
-            android:textColor="@color/white_semi"/>
+            android:background="?attr/bbColorSecondary"
+            android:textColor="?attr/bbTextColorSecondary"/>
 </RelativeLayout>

@@ -6,6 +6,8 @@ import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.TypedValue;
+import com.mde.potdroid.R;
+import com.mde.potdroid.helpers.Utils;
 
 public class IconDrawable extends Drawable {
     private String mText;
@@ -20,12 +22,16 @@ public class IconDrawable extends Drawable {
         return mFont;
     }
 
+    public static int getDefaultColor(Context cx) {
+        return Utils.getColorByAttr(cx, R.attr.bbToolbarColor);
+    }
+
     public static IconDrawable getIconDrawable(Context cx, int icon_string) {
-        return getIconDrawable(cx, icon_string, 24, Color.WHITE, 204);
+        return getIconDrawable(cx, icon_string, 24, getDefaultColor(cx), 204);
     }
 
     public static IconDrawable getIconDrawable(Context cx, int icon_string, int text_size) {
-        return getIconDrawable(cx, icon_string, text_size, Color.WHITE, 204);
+        return getIconDrawable(cx, icon_string, text_size, getDefaultColor(cx), 204);
     }
 
     public static IconDrawable getIconDrawable(Context cx,

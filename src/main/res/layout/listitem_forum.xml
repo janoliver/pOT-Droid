@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:textColor="@color/white"/>
+            android:textColor="?attr/bbTextColorPrimary"/>
 
     <TextView
             android:id="@+id/text_description"
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_name"
             android:textSize="12sp"
-            android:textColor="@color/white_low"/>
+            android:textColor="?attr/bbTextColorSecondary"/>
 
     <TextView
             android:id="@+id/last_post"
@@ -28,6 +28,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_description"
             android:textSize="12sp"
-            android:textColor="@color/white_low"/>
+            android:textColor="?attr/bbTextColorSecondary"/>
 
 </RelativeLayout>

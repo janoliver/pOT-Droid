@@ -29,9 +29,12 @@ public class SettingsActivity extends PreferenceActivity
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
         mSettings = new SettingsWrapper(this);
+
+        setTheme(mSettings.getTheme());
+
+        super.onCreate(savedInstanceState);
 
         setTitle(R.string.subtitle_settings);
 

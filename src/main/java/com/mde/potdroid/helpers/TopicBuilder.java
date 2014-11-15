@@ -100,7 +100,7 @@ public class TopicBuilder {
         InputStream is = mContext.getResources().getAssets().open("thread.html");
         Reader reader = new InputStreamReader(is);
         StringWriter sw = new StringWriter();
-        Mustache.compiler().compile(reader).execute(new TopicContext(topic), sw);
+        Mustache.compiler().compile(reader).execute(new TopicContext(topic, mContext), sw);
         return sw.toString();
     }
 
@@ -114,7 +114,7 @@ public class TopicBuilder {
         String template = "<img src=\"smileys/%1$s\" alt=\"%2$s\" />";
         Iterator<Map.Entry<String, String>> i = mSmileys.entrySet().iterator();
 
-        while (i.hasNext()) {
+        while(i.hasNext()) {
             Map.Entry<String, String> me = i.next();
             code = code.replace(me.getKey(), String.format(template, me.getValue(), me.getKey()));
         }
@@ -127,9 +127,15 @@ public class TopicBuilder {
     class TopicContext {
 
         private Topic mTopic;
+        private Context mContext;
 
-        public TopicContext(Topic t) {
+        public TopicContext(Topic t, Context cx) {
             mTopic = t;
+            mContext = cx;
+        }
+
+        public String getCssFile() {
+            return Utils.getStringByAttr(mContext, R.attr.bbTopicCssFile);
         }
 
         public List<PostContext> getPosts() {

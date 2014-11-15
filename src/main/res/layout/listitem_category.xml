@@ -9,7 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:textColor="@color/white"/>
+            android:textColor="?attr/bbTextColorPrimary"/>
 
     <TextView
             android:id="@+id/text_description"
@@ -17,6 +17,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_name"
             android:textSize="14sp"
-            android:textColor="@color/white_low"/>
+            android:textColor="?attr/bbTextColorSecondary"/>
 
 </RelativeLayout>

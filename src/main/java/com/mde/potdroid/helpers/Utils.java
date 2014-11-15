@@ -2,6 +2,7 @@ package com.mde.potdroid.helpers;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,6 +12,8 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
+import android.util.TypedValue;
+import com.mde.potdroid.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -253,5 +256,20 @@ public class Utils {
 
     public static class NotLoggedInException extends Exception {
 
+    }
+
+    public static int getColorByAttr(Context cx, int attr) {
+        TypedValue typedValue = new TypedValue();
+        cx.getTheme().resolveAttribute(attr, typedValue, true);
+        TypedArray a = cx.obtainStyledAttributes(typedValue.data, new int[] { attr });
+        int colorResource = a.getColor(0, R.color.red);
+        a.recycle();
+        return colorResource;
+    }
+
+    public static String getStringByAttr(Context cx, int attr) {
+        TypedValue typedValue = new TypedValue();
+        cx.getTheme().resolveAttribute(attr, typedValue, true);
+        return typedValue.string.toString();
     }
 }

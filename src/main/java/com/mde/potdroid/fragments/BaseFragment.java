@@ -51,8 +51,8 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
             mPullToRefreshLayout.setColorSchemeResources(
                     R.color.white,
                     R.color.bbstyle_lighterblue,
-                    R.color.white_semi,
-                    R.color.bbstyle_darkblue);
+                    R.color.white,
+                    R.color.bbstyle_lighterblue);
         }
     }
 

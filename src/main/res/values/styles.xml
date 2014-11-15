@@ -3,7 +3,7 @@
 
     <style name="PotDroidDark" parent="@style/Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/bbstyle_darkblue</item>
-        <item name="colorPrimaryDark">@color/bbstyle_lightblue</item>
+        <item name="colorPrimaryDark">@color/bbstyle_darkblue_semi</item>
         <item name="colorAccent">@color/bbstyle_lightblue</item>
         <item name="android:windowBackground">@color/bbstyle_darkerblue</item>
         <item name="sdlDialogStyle">@style/DialogStyleDark.Custom</item>

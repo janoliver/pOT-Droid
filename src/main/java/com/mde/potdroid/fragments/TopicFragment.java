@@ -211,7 +211,6 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             mJsInterface.registerScroll(getArguments().getInt(ARG_POST_ID, 0));
         }
 
-
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.setBackgroundColor(0x00000000);
         mWebView.getSettings().setAllowFileAccess(true);

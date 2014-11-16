@@ -337,6 +337,8 @@ public class SwipeRefreshLayout extends ViewGroup {
                 return absListView.getChildCount() > 0
                         && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
                         .getTop() < absListView.getPaddingTop());
+            } else if(mTarget instanceof ObservableWebView) {
+                return !((ObservableWebView)mTarget).isScrolledToTop();
             } else {
                 return mTarget.getScrollY() > 0;
             }
@@ -356,6 +358,8 @@ public class SwipeRefreshLayout extends ViewGroup {
                 return absListView.getChildCount() > 0
                         && (absListView.getLastVisiblePosition() < absListView.getAdapter().getCount()-1 &&
                         absListView.getChildAt(absListView.getChildCount() - 1).getBottom() > absListView.getHeight());
+            } else if(mTarget instanceof ObservableWebView) {
+                return !((ObservableWebView)mTarget).isScrolledToBottom();
             } else {
                 return mTarget.getBottom()-(getHeight()+getScrollY()+mTarget.getTop()) < 0;
             }

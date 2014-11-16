@@ -3,7 +3,7 @@
               android:id="@+id/RelativeLayout01"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:background="@drawable/background_list_light"
+              android:background="?attr/bbBackgroundList"
               android:padding="10dp"
               android:orientation="vertical">
 

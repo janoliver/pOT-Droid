@@ -5,7 +5,7 @@
                 android:paddingBottom="7dp"
                 android:paddingTop="7dp"
                 android:paddingLeft="10dp"
-                android:background="@drawable/background_list_light">
+                android:background="?attr/bbBackgroundList">
 
     <ImageView
             android:contentDescription="@string/none"

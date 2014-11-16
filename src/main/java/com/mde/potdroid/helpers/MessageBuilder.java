@@ -1,6 +1,7 @@
 package com.mde.potdroid.helpers;
 
 import android.content.Context;
+import com.mde.potdroid.R;
 import com.mde.potdroid.models.Message;
 import com.samskivert.mustache.Mustache;
 
@@ -30,7 +31,7 @@ public class MessageBuilder {
         InputStream is = mContext.getResources().getAssets().open("message.html");
         Reader reader = new InputStreamReader(is);
         StringWriter sw = new StringWriter();
-        Mustache.compiler().compile(reader).execute(new MessageContext(message), sw);
+        Mustache.compiler().compile(reader).execute(new MessageContext(message, mContext), sw);
         return sw.toString();
     }
 
@@ -40,9 +41,15 @@ public class MessageBuilder {
     class MessageContext {
 
         private Message mMessage;
+        private Context mContext;
 
-        public MessageContext(Message m) {
+        public MessageContext(Message m, Context cx) {
             mMessage = m;
+            mContext = cx;
+        }
+
+        public String getCssFile() {
+            return Utils.getStringByAttr(mContext, R.attr.bbTopicCssFile);
         }
 
         public Integer getId() {

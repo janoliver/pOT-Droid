@@ -64,7 +64,7 @@
                     android:layout_gravity="center"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/background_transparent_clickable"
+                    android:background="?attr/bbBackgroundTransparentClickable"
                     android:src="@drawable/ic_action_icon"/>
 
         </RelativeLayout>

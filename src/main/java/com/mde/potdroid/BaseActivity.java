@@ -42,6 +42,7 @@ public class BaseActivity extends ActionBarActivity {
         mSettings = new SettingsWrapper(this);
 
         setTheme(mSettings.getTheme());
+
         super.onCreate(savedInstanceState);
 
         // register an application context singleton in the Utils class.

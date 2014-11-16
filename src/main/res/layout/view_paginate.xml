@@ -16,7 +16,7 @@
             android:id="@+id/button_frwd"
             android:textSize="24sp"
             android:visibility="invisible"
-            android:background="@drawable/background_transparent_clickable"
+            android:background="?attr/bbBackgroundTransparentClickable"
             android:textColor="?attr/bbToolbarColor"/>
 
     <com.mde.potdroid.views.IconButton
@@ -25,7 +25,7 @@
             android:text="@string/icon_backward"
             android:id="@+id/button_rwd"
             android:visibility="invisible"
-            android:background="@drawable/background_transparent_clickable"
+            android:background="?attr/bbBackgroundTransparentClickable"
             android:textSize="24sp"
             android:textColor="?attr/bbToolbarColor"/>
 
@@ -33,7 +33,7 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:text="@string/icon_forward"
-            android:background="@drawable/background_transparent_clickable"
+            android:background="?attr/bbBackgroundTransparentClickable"
             android:id="@+id/button_fwd"
             android:visibility="invisible"
             android:textSize="24sp"
@@ -43,7 +43,7 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:text="@string/icon_fast_forward"
-            android:background="@drawable/background_transparent_clickable"
+            android:background="?attr/bbBackgroundTransparentClickable"
             android:id="@+id/button_ffwd"
             android:visibility="invisible"
             android:textSize="24sp"

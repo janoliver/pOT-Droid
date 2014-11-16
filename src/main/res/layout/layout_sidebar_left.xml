@@ -17,7 +17,7 @@
                 android:layout_height="match_parent"
                 android:text="@string/icon_home"
                 android:id="@+id/button_home"
-                android:background="@drawable/background_transparent_clickable"
+                android:background="?attr/bbBackgroundTransparentClickable"
                 android:textSize="28sp"
                 android:textColor="?attr/bbToolbarColor"
                 android:layout_weight="1"/>
@@ -27,7 +27,7 @@
                 android:layout_height="match_parent"
                 android:text="@string/icon_envelope_alt"
                 android:id="@+id/button_pm"
-                android:background="@drawable/background_transparent_clickable"
+                android:background="?attr/bbBackgroundTransparentClickable"
                 android:textSize="24sp"
                 android:textColor="?attr/bbToolbarColor"
                 android:layout_weight="1"/>
@@ -37,7 +37,7 @@
                 android:layout_height="match_parent"
                 android:text="@string/icon_bookmark"
                 android:id="@+id/button_bookmarks"
-                android:background="@drawable/background_transparent_clickable"
+                android:background="?attr/bbBackgroundTransparentClickable"
                 android:textSize="24sp"
                 android:textColor="?attr/bbToolbarColor"
                 android:layout_weight="1"/>
@@ -47,7 +47,7 @@
                 android:layout_height="match_parent"
                 android:text="@string/icon_cogs"
                 android:id="@+id/button_preferences"
-                android:background="@drawable/background_transparent_clickable"
+                android:background="?attr/bbBackgroundTransparentClickable"
                 android:textSize="24sp"
                 android:textColor="?attr/bbToolbarColor"
                 android:layout_weight="1"/>

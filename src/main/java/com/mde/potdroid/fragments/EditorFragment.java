@@ -137,6 +137,9 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         if (getArguments().getString(ARG_RCPT) != null)
             mEditRcpt.setText(getArguments().getString(ARG_RCPT));
 
+
+        ActionMenuView bbcodeToolbar = (ActionMenuView) v.findViewById(R.id.bbcode_toolbar);
+
         // set the title
         if (getArguments().getInt(ARG_MODE, MODE_REPLY) == MODE_REPLY)
             getActionbar().setTitle(R.string.subtitle_form_write_post);
@@ -145,6 +148,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         else if (getArguments().getInt(ARG_MODE, MODE_REPLY) == MODE_MESSAGE) {
             mIconButton.setVisibility(View.GONE);
             mEditRcpt.setVisibility(View.VISIBLE);
+            bbcodeToolbar.setVisibility(View.GONE);
             getActionbar().setTitle(R.string.subtitle_form_write_pm);
         } else if (getArguments().getInt(ARG_MODE, MODE_REPLY) == MODE_THREAD) {
             mEditSubtitle.setVisibility(View.VISIBLE);
@@ -152,7 +156,6 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             getActionbar().setTitle(R.string.subtitle_form_write_thread);
         }
 
-        ActionMenuView bbcodeToolbar = (ActionMenuView) v.findViewById(R.id.bbcode_toolbar);
 
         Menu menu = bbcodeToolbar.getMenu();
         getActivity().getMenuInflater().inflate(R.menu.bbcode_menu, menu);

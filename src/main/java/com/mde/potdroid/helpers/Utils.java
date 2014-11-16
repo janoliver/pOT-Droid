@@ -2,6 +2,7 @@ package com.mde.potdroid.helpers;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -266,5 +267,12 @@ public class Utils {
         TypedValue typedValue = new TypedValue();
         cx.getTheme().resolveAttribute(attr, typedValue, true);
         return typedValue.string.toString();
+    }
+
+    public static int getDrawableResourceIdByAttr(Context cx, int attr) {
+        TypedArray ta = cx.obtainStyledAttributes(new int[] { attr });
+        int resid = ta.getResourceId(0, 0);
+        ta.recycle();
+        return resid;
     }
 }

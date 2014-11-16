@@ -26,6 +26,9 @@
         <item name="bbProgressPrimary">@color/white</item>
         <item name="bbProgressSecondary">@color/bbstyle_lighterblue</item>
         <item name="bbTopicCssFile">bbdark.css</item>
+        <item name="bbBackgroundList">@drawable/dark_background_list</item>
+        <item name="bbBackgroundListActive">@drawable/dark_background_list_active</item>
+        <item name="bbBackgroundTransparentClickable">@drawable/dark_background_transparent_clickable</item>
     </style>
 
     <style name="DialogStyleDark">
@@ -66,6 +69,9 @@
         <item name="bbProgressPrimary">@color/bbstyle_darkblue</item>
         <item name="bbProgressSecondary">@color/bbstyle_lighterblue</item>
         <item name="bbTopicCssFile">bblight.css</item>
+        <item name="bbBackgroundList">@drawable/light_background_list</item>
+        <item name="bbBackgroundListActive">@drawable/light_background_list_active</item>
+        <item name="bbBackgroundTransparentClickable">@drawable/light_background_transparent_clickable</item>
     </style>
 
     <style name="DialogStyleLight">

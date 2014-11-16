@@ -221,7 +221,7 @@ public class BookmarkFragment extends BaseFragment
                 int padding_right = v.getPaddingRight();
                 int padding_left = v.getPaddingLeft();
 
-                v.setBackgroundResource(R.drawable.background_list_light_active);
+                v.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getActivity(), R.attr.bbBackgroundListActive));
                 v.setPadding(padding_left, padding_top, padding_right, padding_bottom);
             }
 

@@ -278,11 +278,16 @@ public class MessageFragment extends BaseFragment
 
     static class AsyncContentLoader extends AsyncHttpLoader<Message> {
 
+        // For some reason, getContext() returns an ApplicationContext object, which
+        // is not sufficient for the TopicBuilder instance. So we store our own.
+        private Context mContext;
+
         private Integer mMessageId;
 
         AsyncContentLoader(Context cx, Integer message_id) {
             super(cx, MessageParser.getUrl(message_id), GET, null, Network.ENCODING_ISO);
 
+            mContext = cx;
             mMessageId = message_id;
         }
 
@@ -291,7 +296,7 @@ public class MessageFragment extends BaseFragment
             try {
                 MessageParser parser = new MessageParser();
                 Message m = parser.parse(response, mMessageId);
-                MessageBuilder b = new MessageBuilder(getContext());
+                MessageBuilder b = new MessageBuilder(mContext);
                 m.setHtmlCache(b.parse(m));
                 return m;
             } catch (Exception e) {

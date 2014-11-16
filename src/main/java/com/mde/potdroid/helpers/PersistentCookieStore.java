@@ -138,7 +138,7 @@ public class PersistentCookieStore implements CookieStore {
             try {
                 ret.add(new URI(key));
             } catch (URISyntaxException e) {
-                e.printStackTrace();
+                Utils.printException(e);
             }
 
         return ret;

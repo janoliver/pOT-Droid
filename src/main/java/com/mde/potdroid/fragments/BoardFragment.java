@@ -344,7 +344,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                     d.setBounds(0, 0, (int)title.getTextSize(), (int)title.getTextSize());
                     title.setCompoundDrawables(d, null, null, null);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Utils.printException(e);
                 }
             }
 

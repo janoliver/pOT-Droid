@@ -136,7 +136,7 @@ public class CacheContentProvider extends ContentProvider {
             URL url = new URL(rawUrl.replace("%20","+"));
             return Uri.parse(CONTENT_URI + url.getHost() + url.getPath());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Utils.printException(e);
             return null;
         }
     }

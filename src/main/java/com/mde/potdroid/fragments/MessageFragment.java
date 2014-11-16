@@ -295,7 +295,7 @@ public class MessageFragment extends BaseFragment
                 m.setHtmlCache(b.parse(m));
                 return m;
             } catch (Exception e) {
-                e.printStackTrace();
+                Utils.printException(e);
                 return null;
             }
         }

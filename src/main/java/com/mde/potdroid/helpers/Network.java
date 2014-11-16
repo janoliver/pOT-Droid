@@ -136,7 +136,7 @@ public class Network {
         post(LOGIN_URL, formBody, new Callback() {
             @Override
             public void onFailure(Request request, IOException throwable) {
-                throwable.printStackTrace();
+                Utils.printException(throwable);
             }
 
             @Override

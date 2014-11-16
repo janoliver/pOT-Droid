@@ -125,7 +125,7 @@ public class BenderHandler {
 
                     callback.onSuccess(getAvatarFilePath(user));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Utils.printException(e);
                     callback.onFailure();
                 }
             }

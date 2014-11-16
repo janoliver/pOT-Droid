@@ -151,13 +151,13 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
                     Class.forName("android.webkit.WebView").getMethod("onResume", (Class[]) null)
                             .invoke(mWebView, (Object[]) null);
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+                    Utils.printException(e);
                 } catch (InvocationTargetException e) {
-                    e.printStackTrace();
+                    Utils.printException(e);
                 } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
+                    Utils.printException(e);
                 } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                    Utils.printException(e);
                 }
         }
     }
@@ -173,13 +173,13 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
                 Class.forName("android.webkit.WebView").getMethod("onPause", (Class[]) null)
                         .invoke(mWebView, (Object[]) null);
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                Utils.printException(e);
             } catch (InvocationTargetException e) {
-                e.printStackTrace();
+                Utils.printException(e);
             } catch (NoSuchMethodException e) {
-                e.printStackTrace();
+                Utils.printException(e);
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                Utils.printException(e);
             }
 
     }
@@ -617,7 +617,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
                 t.setHtmlCache(b.parse(t));
                 return t;
             } catch (Exception e) {
-                e.printStackTrace();
+                Utils.printException(e);
                 return null;
             }
         }

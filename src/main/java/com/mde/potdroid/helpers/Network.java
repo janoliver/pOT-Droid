@@ -20,8 +20,6 @@ public class Network {
     // this is the AsyncHttpClient we use for the network interaction
     private Headers mHeaders;
 
-    public static final int DEFAULT_TIMEOUT = 60; // s
-
     // a reference to the Context
     private Context mContext;
 
@@ -41,13 +39,13 @@ public class Network {
     public static final String COOKIE_LIFETIME = "31536000";
 
     public Network(Context context) {
-        if(mHttpClient == null) {
-            mHttpClient = new OkHttpClient();
-            mHttpClient.setConnectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-        }
-
         mContext = context;
         mSettings = new SettingsWrapper(mContext);
+
+        if(mHttpClient == null) {
+            mHttpClient = new OkHttpClient();
+            mHttpClient.setConnectTimeout(mSettings.getConnectionTimeout(), TimeUnit.SECONDS);
+        }
         initHttpClient();
     }
 

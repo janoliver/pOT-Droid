@@ -179,6 +179,15 @@
                 android:summary="Größe des Bilder Caches in MB"
                 android:title="Cache Größe" />
 
+        <EditTextPreference
+                android:defaultValue="60"
+                android:dialogTitle="Connection Timeout"
+                android:inputType="number"
+                android:numeric="integer"
+                android:key="pref_connection_timeout"
+                android:summary="Timeout von Verbindungen in sek"
+                android:title="Connection Timeout" />
+
         <CheckBoxPreference
                 android:key="pref_debug_mode"
                 android:title="Debug Modus"

@@ -11,6 +11,11 @@ $(document).ready(function() {
         });
     }
 
+    // set top and bottom padding
+    if(api.isPaginateViewShown())
+        $("#paddings").css("padding-bottom", api.getPaginateViewHeightInDp() + "px");
+    $("#paddings").css("padding-top", api.getToolBarHeightInDp() + "px");
+
     // automatic image loader
     // Only images within or after the currently visible post are loaded, so
     // the visible position is not changed

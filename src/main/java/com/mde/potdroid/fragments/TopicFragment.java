@@ -10,21 +10,23 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.mde.potdroid.EditorActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.*;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.TopicParser;
-import com.mde.potdroid.views.ChoosePageDialog;
-import com.mde.potdroid.views.IconDrawable;
-import com.mde.potdroid.views.ImageActionsDialog;
-import com.mde.potdroid.views.PostActionsDialog;
+import com.mde.potdroid.views.*;
+import com.nineoldandroids.view.ViewHelper;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.nostra13.universalimageloader.cache.disc.DiskCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -44,7 +46,8 @@ import java.util.LinkedList;
  * we have to work around that by adding and deleting it in onPause and onResume. This sucks,
  * I know, but LOLANDROID!
  */
-public class TopicFragment extends PaginateFragment implements LoaderManager.LoaderCallbacks<Topic> {
+public class TopicFragment extends PaginateFragment implements
+        LoaderManager.LoaderCallbacks<Topic> {
 
     public static final String ARG_TOPIC_ID = "thread_id";
     public static final String ARG_POST_ID = "post_id";
@@ -54,7 +57,9 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     private Topic mTopic;
 
     // the webview which is attached to the WebContainer
-    private WebView mWebView;
+    private ObservableScrollBottomWebView mWebView;
+    private boolean mUserInteraction;
+    private int mOldScroll;
 
     // we need to invoke some functions on this one outside of the
     // webview initialization, so keep a reference here.
@@ -94,6 +99,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
         mPullToRefreshLayout.setSwipeDown(false);
 
         setupWebView();
+        getBaseActivity().setOverlayToolbars();
 
         if (mTopic == null)
             startLoader(this);
@@ -104,7 +110,7 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_topic, container, false);
 
-        mWebView = (WebView) v.findViewById(R.id.webview);
+        mWebView = (ObservableScrollBottomWebView) v.findViewById(R.id.webview);
 
         // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
         // of some former TopicFragment, which will be restored on onResume. .
@@ -199,12 +205,14 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
 
         // create a webview if there is none already
         if(mWebView == null) {
-            mWebView = new WebView(getBaseActivity());
+            mWebView = new ObservableScrollBottomWebView(getBaseActivity());
             mWebView.setLayoutParams(new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
             ));
             mPullToRefreshLayout.addView(mWebView);
         }
+
+        mWebView.setScrollViewCallbacks(mWebViewScrollCallbacks);
 
         if(mJsInterface == null) {
             mJsInterface = new TopicJSInterface(mWebView, getBaseActivity(), this);
@@ -627,5 +635,47 @@ public class TopicFragment extends PaginateFragment implements LoaderManager.Loa
             deliverResult(null);
         }
     }
+
+    private ObservableScrollViewCallbacks mWebViewScrollCallbacks = new ObservableScrollViewCallbacks() {
+        @Override
+        public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
+            if(!mUserInteraction)
+                return;
+
+            Toolbar t = getBaseActivity().getToolbar();
+            View p = getBaseActivity().getPaginateLayout();
+            int toolbarHeight = t.getHeight();
+            int paginateLayoutHeight = p.getHeight();
+            boolean scrollingDown = scrollY > mOldScroll;
+            boolean toolbarsHidden = ViewHelper.getTranslationY(t) < 0;
+            int wvContentLength = (int) Math.floor(mWebView.getContentHeight() * mWebView.getScale());
+            boolean wvScrolledTop = toolbarHeight > mWebView.getCurrentScrollY();
+            boolean wvScrolledBottom = (wvContentLength - mWebView.getCurrentScrollY()) <
+                    (mWebView.getHeight() + paginateLayoutHeight);
+
+            if(!toolbarsHidden && scrollingDown && !wvScrolledTop && !wvScrolledBottom) {
+                ViewPropertyAnimator.animate(t).cancel();
+                ViewPropertyAnimator.animate(p).cancel();
+                ViewPropertyAnimator.animate(t).translationY(-toolbarHeight).setDuration(200).start();
+                ViewPropertyAnimator.animate(p).translationY(paginateLayoutHeight).setDuration(200).start();
+            } else if(toolbarsHidden && (!scrollingDown || wvScrolledBottom)) {
+                ViewPropertyAnimator.animate(t).cancel();
+                ViewPropertyAnimator.animate(p).cancel();
+                ViewPropertyAnimator.animate(t).translationY(0).setDuration(200).start();
+                ViewPropertyAnimator.animate(p).translationY(0).setDuration(200).start();
+            }
+
+            mOldScroll = scrollY;
+        }
+
+        @Override
+        public void onDownMotionEvent() {
+            mUserInteraction = true;
+        }
+
+        @Override
+        public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+        }
+    };
 
 }

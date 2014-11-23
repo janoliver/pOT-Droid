@@ -2,24 +2,24 @@ package com.mde.potdroid.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.webkit.WebView;
+import com.github.ksoichiro.android.observablescrollview.ObservableWebView;
 
-public class ObservableWebView extends WebView
+public class ObservableScrollBottomWebView extends ObservableWebView
 {
     private boolean mEnd;
     private boolean mStart;
 
-    public ObservableWebView(final Context context)
+    public ObservableScrollBottomWebView(final Context context)
     {
         super(context);
     }
 
-    public ObservableWebView(final Context context, final AttributeSet attrs)
+    public ObservableScrollBottomWebView(final Context context, final AttributeSet attrs)
     {
         super(context, attrs);
     }
 
-    public ObservableWebView(final Context context, final AttributeSet attrs, final int defStyle)
+    public ObservableScrollBottomWebView(final Context context, final AttributeSet attrs, final int defStyle)
     {
         super(context, attrs, defStyle);
     }

@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.14.2'
+        classpath 'com.android.tools.build:gradle:0.14.4'
     }
 }
 
@@ -21,6 +21,8 @@ dependencies {
     compile 'de.keyboardsurfer.android.widget:crouton:1.8.5@aar'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile 'eu.inmite.android.lib:android-styled-dialogs:1.2.0'
+    compile 'com.github.ksoichiro:android-observablescrollview:1.2.0'
+    compile 'com.nineoldandroids:library:2.4.0'
 }
 
 android {
@@ -34,13 +36,14 @@ android {
 
     buildTypes {
         release {
-            runProguard true
+            minifyEnabled true
+            shrinkResources true
             proguardFile 'proguard-potdroid.txt'
         }
 
         debug {
-            runProguard false
-            proguardFile 'proguard-potdroid.txt'
+            minifyEnabled false
+            shrinkResources false
         }
     }
 

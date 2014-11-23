@@ -10,7 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import com.mde.potdroid.fragments.BoardFragment;
 import com.mde.potdroid.fragments.SidebarLeftFragment;
 import com.mde.potdroid.fragments.SidebarRightFragment;
@@ -35,7 +37,7 @@ public class BaseActivity extends ActionBarActivity {
     protected Toolbar mToolbar;
     protected LinearLayout mPaginateLayout;
     protected ActionBarDrawerToggle mDrawerToggle;
-
+    protected boolean mOverlayToolbars;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,9 +199,46 @@ public class BaseActivity extends ActionBarActivity {
         return mToolbar;
     }
 
-    public LinearLayout refreshAndGetPaginateLayout() {
-        mPaginateLayout = (LinearLayout) findViewById(R.id.paginate_view);
+    public LinearLayout getPaginateLayout() {
         return mPaginateLayout;
+    }
+
+    public void setOverlayToolbars() {
+        mOverlayToolbars = true;
+        ViewGroup contentView = (ViewGroup)findViewById(R.id.content);
+        RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams)contentView.getLayoutParams();
+        p.addRule(RelativeLayout.BELOW, 0);
+        p.addRule(RelativeLayout.ABOVE, 0);
+        contentView.setLayoutParams(p);
+    }
+
+    public void setSolidToolbars() {
+        mOverlayToolbars = false;
+        ViewGroup contentView = (ViewGroup)findViewById(R.id.content);
+        RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams)contentView.getLayoutParams();
+        p.addRule(RelativeLayout.BELOW, R.id.main_toolbar);
+        p.addRule(RelativeLayout.ABOVE, R.id.paginate_view);
+        contentView.setLayoutParams(p);
+    }
+
+    public void hidePaginateView() {
+        if(!mOverlayToolbars) {
+            ViewGroup contentView = (ViewGroup) findViewById(R.id.content);
+            RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) contentView.getLayoutParams();
+            p.addRule(RelativeLayout.ABOVE, 0);
+            contentView.setLayoutParams(p);
+        }
+        mPaginateLayout.setVisibility(View.GONE);
+    }
+
+    public void showPaginateView() {
+        if(!mOverlayToolbars) {
+            ViewGroup contentView = (ViewGroup) findViewById(R.id.content);
+            RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) contentView.getLayoutParams();
+            p.addRule(RelativeLayout.ABOVE, R.id.paginate_view);
+            contentView.setLayoutParams(p);
+        }
+        mPaginateLayout.setVisibility(View.VISIBLE);
     }
 
 }

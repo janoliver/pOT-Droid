@@ -2,7 +2,9 @@ package com.mde.potdroid.helpers;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
+import android.util.DisplayMetrics;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import com.mde.potdroid.fragments.TopicFragment;
@@ -166,6 +168,27 @@ public class TopicJSInterface extends BenderJSInterface {
     @JavascriptInterface
     public boolean isLoggedIn() {
         return Utils.isLoggedIn();
+    }
+
+    @JavascriptInterface
+    public int getToolBarHeightInDp() {
+        Resources resources = mTopicFragment.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float pxHeight = mTopicFragment.getBaseActivity().getToolbar().getHeight();
+        return (int)(pxHeight / metrics.densityDpi * 160f);
+    }
+
+    @JavascriptInterface
+    public int getPaginateViewHeightInDp() {
+        Resources resources = mTopicFragment.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float pxHeight = mTopicFragment.getBaseActivity().getPaginateLayout().getHeight();
+        return (int)(pxHeight / metrics.densityDpi * 160f);
+    }
+
+    @JavascriptInterface
+    public boolean isPaginateViewShown() {
+        return mTopicFragment.getBaseActivity().getPaginateLayout().isShown();
     }
 
     /**

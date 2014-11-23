@@ -1,12 +1,8 @@
 package com.mde.potdroid.fragments;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import com.mde.potdroid.R;
 import com.mde.potdroid.views.IconButton;
 
@@ -45,18 +41,10 @@ abstract public class PaginateFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         refreshPaginateLayout();
-
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            ViewGroup root = (ViewGroup) mPaginateLayout.getParent();
-            ViewGroup contentView = (ViewGroup) root.findViewById(R.id.content);
-            RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) contentView.getLayoutParams();
-            p.addRule(RelativeLayout.ABOVE, R.id.paginate_view);
-            contentView.setLayoutParams(p);
-        }
     }
 
     public void refreshPaginateLayout() {
-        mPaginateLayout = getBaseActivity().refreshAndGetPaginateLayout();
+        mPaginateLayout = getBaseActivity().getPaginateLayout();
 
         //IconButton refreshButton = (IconButton) paginateWidget.findViewById(R.id.button_refresh);
         IconButton fwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_fwd);
@@ -114,30 +102,10 @@ abstract public class PaginateFragment extends BaseFragment {
         }
 
         if(anyVisible)
-            mPaginateLayout.setVisibility(View.VISIBLE);
+            getBaseActivity().showPaginateView();
+        else
+            getBaseActivity().hidePaginateView();
 
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
-        ViewGroup root = (ViewGroup) mPaginateLayout.getParent();
-        int index = root.indexOfChild(root.findViewById(R.id.paginate_view));
-        root.removeViewAt(index);
-        View newPaginateView = inflater.inflate(R.layout.view_paginate, root, false);
-        root.addView(newPaginateView, index);
-
-        // Apply the new layout ordering to the content view
-        ViewGroup contentView = (ViewGroup)root.findViewById(R.id.content);
-        RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams)contentView.getLayoutParams();
-        if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            p.addRule(RelativeLayout.ABOVE, R.id.paginate_view);
-        } else {
-            p.addRule(RelativeLayout.ABOVE, 0);
-        }
-        contentView.setLayoutParams(p);
-
-        refreshPaginateLayout();
-    }
 }

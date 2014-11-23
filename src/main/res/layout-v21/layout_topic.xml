@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <WebView
+    <com.mde.potdroid.views.ObservableScrollBottomWebView
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/webview"
             android:layout_width="fill_parent"

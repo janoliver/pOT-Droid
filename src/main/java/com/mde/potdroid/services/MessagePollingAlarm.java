@@ -16,6 +16,7 @@ import com.mde.potdroid.MessageListActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.Network;
 import com.mde.potdroid.helpers.SettingsWrapper;
+import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.MessageList;
 import com.mde.potdroid.parsers.MessageListParser;
@@ -24,6 +25,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 /**
@@ -40,18 +42,25 @@ public class MessagePollingAlarm extends BroadcastReceiver {
         network.get(MessageListParser.INBOX_URL, new Callback() {
             @Override
             public void onResponse(Response response) {
+
                 try {
+                    String stringResult;
+                    try {
+                        stringResult = new String(response.body().bytes(), Network.ENCODING_ISO);
+                    } catch (UnsupportedEncodingException e) {
+                        stringResult = response.body().string();
+                    }
                     MessageListParser p = new MessageListParser();
-                    MessageList list = p.parse(response.body().string());
+                    MessageList list = p.parse(stringResult);
                     handleNotification(list, context);
                 } catch (IOException e) {
-                    // @TODO: Not logged in should cancel the service.
+                    Utils.printException(e);
                 }
             }
 
             @Override
             public void onFailure(Request request, IOException error) {
-                // Response failed :(
+                Utils.printException(error);
             }
         });
 
@@ -75,8 +84,7 @@ public class MessagePollingAlarm extends BroadcastReceiver {
                 ((BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_launcher))
                         .getBitmap()
         );
-        builder.setContentTitle(String.format(context.getString(R.string.msg_newpm),
-                list.getNumberOfUnreadMessages()));
+        builder.setContentTitle(String.format(context.getString(R.string.msg_newpm), list.getNumberOfUnreadMessages()));
         builder.setAutoCancel(true);
         builder.setOnlyAlertOnce(true);
 

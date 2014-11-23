@@ -212,6 +212,10 @@ public class SwipeRefreshLayout extends ViewGroup {
         }
     }
 
+    public void setTopMargin(int topMargin) {
+        mProgressBar.setMarginTop(topMargin);
+        mProgressBar.setBounds(0, 0, getMeasuredWidth(), mProgressBarHeight);
+    }
 
     public void setSwipeDown(boolean swipeDown) {
         mSwipeDown = swipeDown;

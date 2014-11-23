@@ -56,6 +56,7 @@ final class SwipeProgressBar {
     private long mStartTime;
     private long mFinishTime;
     private boolean mRunning;
+    private int mTopMargin = 0;
 
     // Colors used when rendering the animation,
     private int mColor1;
@@ -137,7 +138,7 @@ final class SwipeProgressBar {
         final int width = mBounds.width();
         final int height = mBounds.height();
         final int cx = width / 2;
-        final int cy = height / 2;
+        final int cy = height / 2 + mTopMargin;
         boolean drawTriggerWhileFinishing = false;
         int restoreCount = canvas.save();
         canvas.clipRect(mBounds);
@@ -166,7 +167,7 @@ final class SwipeProgressBar {
                 float pct = (finishProgress / 100f);
                 // Radius of the circle is half of the screen.
                 float clearRadius = width / 2 * INTERPOLATOR.getInterpolation(pct);
-                mClipRect.set(cx - clearRadius, 0, cx + clearRadius, height);
+                mClipRect.set(cx - clearRadius, mTopMargin, cx + clearRadius, height + mTopMargin);
                 canvas.saveLayerAlpha(mClipRect, 0, 0);
                 // Only draw the trigger if there is a space in the center of
                 // this refreshing view that needs to be filled in by the
@@ -266,9 +267,9 @@ final class SwipeProgressBar {
      */
     void setBounds(int left, int top, int right, int bottom) {
         mBounds.left = left;
-        mBounds.top = top;
+        mBounds.top = top + mTopMargin;
         mBounds.right = right;
-        mBounds.bottom = bottom;
+        mBounds.bottom = bottom + mTopMargin;
     }
 
     final static class BakedBezierInterpolator implements Interpolator {
@@ -331,5 +332,9 @@ final class SwipeProgressBar {
             return VALUES[position] + weight * (VALUES[position + 1] - VALUES[position]);
         }
 
+    }
+
+    void setMarginTop(int margin) {
+        mTopMargin = margin;
     }
 }

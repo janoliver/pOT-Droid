@@ -97,6 +97,8 @@ public class TopicFragment extends PaginateFragment implements
 
         setHasOptionsMenu(true);
         mPullToRefreshLayout.setSwipeDown(false);
+        mPullToRefreshLayout.setTopMargin(getActionbarHeight());
+
 
         setupWebView();
         getBaseActivity().setOverlayToolbars();
@@ -658,11 +660,13 @@ public class TopicFragment extends PaginateFragment implements
                 ViewPropertyAnimator.animate(p).cancel();
                 ViewPropertyAnimator.animate(t).translationY(-toolbarHeight).setDuration(200).start();
                 ViewPropertyAnimator.animate(p).translationY(paginateLayoutHeight).setDuration(200).start();
+                mPullToRefreshLayout.setTopMargin(0);
             } else if(toolbarsHidden && (!scrollingDown || wvScrolledBottom)) {
                 ViewPropertyAnimator.animate(t).cancel();
                 ViewPropertyAnimator.animate(p).cancel();
                 ViewPropertyAnimator.animate(t).translationY(0).setDuration(200).start();
                 ViewPropertyAnimator.animate(p).translationY(0).setDuration(200).start();
+                mPullToRefreshLayout.setTopMargin(getActionbarHeight());
             }
 
             mOldScroll = scrollY;

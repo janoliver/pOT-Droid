@@ -18,10 +18,6 @@ abstract public class PaginateFragment extends BaseFragment {
 
     public abstract void goToLastPage();
 
-    /**
-     * All the functions below must be implemented by the child class.
-     */
-
     public abstract void goToNextPage();
 
     public abstract void goToPrevPage();
@@ -107,5 +103,6 @@ abstract public class PaginateFragment extends BaseFragment {
             getBaseActivity().hidePaginateView();
 
     }
+
 
 }

@@ -99,7 +99,6 @@ public class TopicFragment extends PaginateFragment implements
         mPullToRefreshLayout.setSwipeDown(false);
         mPullToRefreshLayout.setTopMargin(getActionbarHeight());
 
-
         setupWebView();
         getBaseActivity().setOverlayToolbars();
 

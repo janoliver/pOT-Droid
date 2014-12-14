@@ -586,9 +586,7 @@ public class TopicFragment extends PaginateFragment implements
             il.loadImage(url, new SimpleImageLoadingListener() {
                 @Override
                 public void onLoadingComplete(String url, View view, Bitmap loadedImage) {
-                    Utils.log("Downloaded image with url " + url);
                     Uri localUri = CacheContentProvider.getContentUriFromUrlOrUri(url);
-                    Utils.log("Has content uri " + localUri.toString());
                     File f = DiskCacheUtils.findInCache(localUri.toString(), cache);
                     if (f != null)
                         mJsInterface.displayImage(url, localUri.toString(), id);

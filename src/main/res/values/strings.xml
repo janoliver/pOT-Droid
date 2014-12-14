@@ -101,7 +101,7 @@
     <string name="form_tags_hint">Tag1, Tag2, …</string>
 
     <!-- vies -->
-    <string name="topic_additional_information"><![CDATA[<strong>%1$d</strong> Posts, <strong>%2$d</strong> Seiten]]></string>
+    <string name="topic_additional_information"><![CDATA[<strong>%1$d</strong>P, <strong>%2$d</strong>S]]></string>
     <string name="new_posts_description"><![CDATA[<strong>%1$d</strong> neue Posts, <strong>%2$d</strong> Seiten]]></string>
     <string name="message_description"><![CDATA[%1$s <strong>%2$s</strong>, %3$s: %4$s]]></string>
     <string name="message_header">\n\n------------------------\n%1$s schrieb am %2$s:\n</string>

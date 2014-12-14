@@ -30,6 +30,7 @@ import org.apache.http.Header;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * The Board Fragment, which contains a list of Topics.
@@ -332,8 +333,20 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             } else {
                 displayPost = t.getFirstPost();
             }
+
+            // some smarter date formatting
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(displayPost.getDate());
+            Calendar today = Calendar.getInstance();
+            String fmt = "dd.MM.yyyy, HH:mm";
+            if (calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) && calendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)) {
+                fmt = "HH:mm";
+            } else if (calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR)) {
+                fmt = "dd.MM., HH:mm";
+            }
+
             TextView lastpost = (TextView) row.findViewById(R.id.author);
-            String time = new SimpleDateFormat(getString(R.string.default_time_format)).format(displayPost.getDate());
+            String time = new SimpleDateFormat(fmt).format(displayPost.getDate());
             lastpost.setText(Html.fromHtml(String.format(
                     getString(R.string.thread_lastpost), displayPost.getAuthor().getNick(), time)));
 

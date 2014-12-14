@@ -5,7 +5,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import com.mde.potdroid.R;
 import com.mde.potdroid.fragments.TopicFragment;
@@ -38,7 +39,6 @@ public class PostActionsDialog extends DialogFragment {
         // get the menu items
         final String[] post_menu = getResources().getStringArray(R.array.post_dialog);
 
-        LayoutInflater inflater = fragment.getBaseActivity().getLayoutInflater();
         AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getBaseActivity());
 
         builder.setAdapter(new ArrayAdapter<String>(getActivity(),
@@ -61,6 +61,13 @@ public class PostActionsDialog extends DialogFragment {
                         return Utils.isLoggedIn();
                 }
                 return true;
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                view.setEnabled(isEnabled(position));
+                return view;
             }
         }, new DialogInterface.OnClickListener() {
             @Override
@@ -86,10 +93,7 @@ public class PostActionsDialog extends DialogFragment {
         });
 
         // Create the AlertDialog object and return it
-        final Dialog d = builder.create();
-
-
-        return d;
+        return builder.create();
     }
 
 }

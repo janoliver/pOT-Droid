@@ -137,7 +137,13 @@ public class BookmarkFragment extends BaseFragment
                 network.get(url, new Callback() {
                     @Override
                     public void onResponse(Response response) {
-                        showSuccess(R.string.msg_bookmark_removed);
+                        getBaseActivity().runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                showSuccess(R.string.msg_bookmark_removed);
+                            }
+                        });
                         hideLoadingAnimation();
                         restartLoader(BookmarkFragment.this);
                     }

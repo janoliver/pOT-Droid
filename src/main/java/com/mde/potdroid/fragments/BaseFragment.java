@@ -2,6 +2,7 @@ package com.mde.potdroid.fragments;
 
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -18,8 +19,7 @@ import com.mde.potdroid.SettingsActivity;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.SwipeRefreshLayout;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
+import com.nispok.snackbar.Snackbar;
 
 /**
  * The Base Fragment class that all Fragments should inherit. Provides some methods
@@ -32,6 +32,10 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
 
     // the pulltorefresh instance
     protected SwipeRefreshLayout mPullToRefreshLayout;
+
+    public static int COLOR_SUCCESS = Color.parseColor("#669900");
+    public static int COLOR_ERROR = Color.parseColor("#cc0000");
+    public static int COLOR_INFO = Color.parseColor("#0099cc");
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -177,62 +181,60 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         getLoaderManager().restartLoader(CONTENT_LOADER_ID, null, l);
     }
 
-    protected void showGenericNotification(String message, int s) {
-        Style style = new Style.Builder()
-                .setBackgroundColorValue(s)
-                .setHeight(getActionbarHeight())
-                .build();
-        Crouton.makeText(getBaseActivity(), message, style, getNotificationParent()).show();
+    protected void showGenericNotification(String message, int c) {
+        Snackbar.with(getBaseActivity().getApplicationContext())
+                .text(message)
+                .color(c)
+                .show(getBaseActivity());
     }
 
-    protected void showGenericNotification(int message, int s) {
-        Style style = new Style.Builder()
-                .setBackgroundColorValue(s)
-                .setHeight(getActionbarHeight())
-                .build();
-        Crouton.makeText(getBaseActivity(), message,  style, getNotificationParent()).show();
+    protected void showGenericNotification(int message, int c) {
+        Snackbar.with(getBaseActivity().getApplicationContext())
+                .text(message)
+                .color(c)
+                .show(getBaseActivity());
     }
 
     /**
      * Display an error
      */
     public void showError(String error) {
-        showGenericNotification(error, Style.holoRedLight);
+        showGenericNotification(error, COLOR_ERROR);
     }
 
     /**
      * Display a success message
      */
     public void showSuccess(String message) {
-        showGenericNotification(message, Style.holoGreenLight);
+        showGenericNotification(message, COLOR_SUCCESS);
     }
 
     /**
      * Display a success message
      */
     public void showInfo(String message) {
-        showGenericNotification(message, Style.holoBlueLight);
+        showGenericNotification(message, COLOR_INFO);
     }
 
     /**
      * Display an error
      */
     public void showError(int error) {
-        showGenericNotification(error, Style.holoRedLight);
+        showGenericNotification(error, COLOR_ERROR);
     }
 
     /**
      * Display a success message
      */
     public void showSuccess(int message) {
-        showGenericNotification(message, Style.holoGreenLight);
+        showGenericNotification(message, COLOR_SUCCESS);
     }
 
     /**
      * Display a success message
      */
     public void showInfo(int message) {
-        showGenericNotification(message, Style.holoBlueLight);
+        showGenericNotification(message, COLOR_INFO);
     }
 
     /**

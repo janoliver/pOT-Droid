@@ -527,18 +527,28 @@ public class TopicFragment extends PaginateFragment implements
         final String url = Utils.getAsyncUrl(
                 String.format("set-bookmark.php?PID=%d&token=%s", p.getId(), p.getBookmarktoken()));
 
+        showLoadingAnimation();
+
         Network network = new Network(getActivity());
         network.get(url, new Callback() {
             @Override
             public void onResponse(Response response) {
-                showSuccess(R.string.msg_bookmark_added);
+                getBaseActivity().runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        showSuccess(R.string.msg_bookmark_added);
+                    }
+                });
+                hideLoadingAnimation();
                 if (d != null)
                     d.cancel();
             }
 
             @Override
             public void onFailure(Request request, IOException error) {
-                // Response failed :(
+                Utils.printException(error);
+                hideLoadingAnimation();
             }
         });
     }

@@ -73,7 +73,7 @@ public class PostActionsDialog extends DialogFragment {
                         fragment.quotePost(getArguments().getInt(ARG_POST_ID));
                         break;
                     case 2:
-                        //fragment.bookmarkPost(getArguments().getInt(ARG_POST_ID), d);
+                        fragment.bookmarkPost(getArguments().getInt(ARG_POST_ID), null);
                         break;
                     case 3:
                         fragment.linkPost(getArguments().getInt(ARG_POST_ID));

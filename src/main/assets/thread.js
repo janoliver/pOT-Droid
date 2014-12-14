@@ -106,12 +106,13 @@ $(document).ready(function() {
         });
 
         if(api.getScroll() > 0) {
-            document.location.href = "#" + api.getScroll();
+            var scrollto = $('a[name="' + api.getScroll() + '"]');
+            $('html, body').scrollTop(scrollto.offset().top - api.getToolBarHeightInDp());
             if(api.isDarkenOldPosts()) {
-                $('a[name="' + api.getScroll() + '"]').parent().prevAll().addClass("oldpost");
+                scrollto.parent().prevAll().addClass("oldpost");
             }
             if(api.isMarkNewPosts()) {
-                $('a[name="' + api.getScroll() + '"]').parent().nextAll().addClass("newpost");
+                scrollto.parent().nextAll().addClass("newpost");
             }
         } else {
             window.scrollTo(0,0);
@@ -197,11 +198,12 @@ function unveil() {
 
 // scroll to the last post of UID uid
 function scrollToLastPostByUID(uid) {
-    var href = $("section[data-user-id="+uid+"]").last().find("a").first().attr("name");
+    var a = $("section[data-user-id="+uid+"]").last().find("a").first();
+    var href = a.attr("name");
     if(typeof href === "undefined")
         api.error("Kein Post auf dieser Seite");
     else
-        document.location.href = "#" + href;
+        $('html, body').scrollTop(a.offset().top + api.getToolBarHeightInDp());
 }
 
 // load all images

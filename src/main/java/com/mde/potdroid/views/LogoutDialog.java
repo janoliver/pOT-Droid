@@ -5,9 +5,9 @@ import android.content.Context;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import com.mde.potdroid.R;
+import com.mde.potdroid.fragments.BaseFragment;
 import com.mde.potdroid.helpers.SettingsWrapper;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
+import com.nispok.snackbar.Snackbar;
 
 /**
  * Simple PreferenceDialog that deletes the stored cookie and username/userid for the user.
@@ -32,11 +32,10 @@ public class LogoutDialog extends DialogPreference {
             mSettingsWrapper.clearCookie();
             mSettingsWrapper.clearUsername();
             mSettingsWrapper.clearUserId();
-            Style style = new Style.Builder()
-                    .setBackgroundColorValue(Style.holoGreenLight)
-                    .setHeightDimensionResId(R.dimen.notification_height_fallback)
-                    .build();
-            Crouton.makeText((Activity) getContext(), R.string.msg_logout_success, style).show();
+            Snackbar.with(getContext().getApplicationContext())
+                    .text(R.string.msg_logout_success)
+                    .color(BaseFragment.COLOR_SUCCESS)
+                    .show((Activity) getContext());
         }
     }
 

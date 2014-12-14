@@ -18,7 +18,6 @@ import com.mde.potdroid.helpers.CustomExceptionHandler;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.views.UpdateInfoDialog;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 /**
  * The Class all activities should extend. It mainly handles the sidebar(s)
@@ -175,7 +174,6 @@ public class BaseActivity extends ActionBarActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Crouton.clearCroutonsForActivity(this);
     }
 
     public void setUpActionBar() {

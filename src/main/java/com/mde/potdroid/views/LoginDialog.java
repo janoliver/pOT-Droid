@@ -11,10 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.mde.potdroid.R;
+import com.mde.potdroid.fragments.BaseFragment;
 import com.mde.potdroid.helpers.Network;
 import com.mde.potdroid.helpers.SettingsWrapper;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
+import com.nispok.snackbar.Snackbar;
 
 /**
  * This class is a DialogPreference for the Login Action. It takes care of showing the login form
@@ -82,11 +82,10 @@ public class LoginDialog extends DialogPreference {
                 n.login(user_name, user_password, new Network.LoginCallback() {
                     @Override
                     public void onSuccess() {
-                        Style style = new Style.Builder()
-                                .setBackgroundColorValue(Style.holoGreenLight)
-                                .setHeightDimensionResId(R.dimen.notification_height_fallback)
-                                .build();
-                        Crouton.makeText((Activity) getContext(), R.string.msg_login_success, style).show();
+                        Snackbar.with(getContext().getApplicationContext())
+                                .text(R.string.msg_login_success)
+                                .color(BaseFragment.COLOR_SUCCESS)
+                                .show((Activity) getContext());
 
                         mSettingsWrapper.setUsername(user_name);
                         getDialog().dismiss();
@@ -94,11 +93,11 @@ public class LoginDialog extends DialogPreference {
 
                     @Override
                     public void onFailure() {
-                        Style style = new Style.Builder()
-                                .setBackgroundColorValue(Style.holoRedLight)
-                                .setHeightDimensionResId(R.dimen.notification_height_fallback)
-                                .build();
-                        Crouton.makeText((Activity) getContext(), R.string.msg_login_failure, style).show();
+                        Snackbar.with(getContext().getApplicationContext())
+                                .text(R.string.msg_login_failure)
+                                .color(BaseFragment.COLOR_ERROR)
+                                .show((Activity) getContext());
+
                     }
                 });
             }

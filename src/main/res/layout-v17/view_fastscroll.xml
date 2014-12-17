@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/fastscroll_view"
+              android:layout_width="wrap_content"
+              android:layout_centerVertical="true"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:layout_marginRight="5dp"
+              android:gravity="center_vertical"
+              android:layout_alignParentRight="true"
+              android:visibility="invisible">
+
+    <com.mde.potdroid.views.IconButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:text="@string/icon_chevron_up"
+            android:id="@+id/button_up"
+            android:background="@drawable/circular_background"
+            android:textSize="22sp"
+            android:textColor="?attr/bbToolbarColor"
+            android:layout_marginBottom="5dp"
+            android:visibility="invisible"/>
+
+    <com.mde.potdroid.views.IconButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:text="@string/icon_chevron_down"
+            android:id="@+id/button_down"
+            android:background="@drawable/circular_background"
+            android:textSize="22sp"
+            android:textColor="?attr/bbToolbarColor"
+            android:visibility="invisible"/>
+
+</LinearLayout>

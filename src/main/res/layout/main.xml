@@ -24,6 +24,7 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
         <include layout="@layout/view_paginate"/>
+        <include layout="@layout/view_fastscroll"/>
 
     </RelativeLayout>
 

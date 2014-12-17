@@ -5,6 +5,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import com.mde.potdroid.R;
 import com.mde.potdroid.views.IconButton;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.view.ViewHelper;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 
 /**
  * This Fragment extends BaseFragment and provides some more methods and an interface
@@ -13,6 +16,9 @@ import com.mde.potdroid.views.IconButton;
 abstract public class PaginateFragment extends BaseFragment {
 
     private LinearLayout mPaginateLayout;
+    private LinearLayout mFastscrollLayout;
+    private IconButton mUpButton;
+    private IconButton mDownButton;
 
     public abstract void goToFirstPage();
 
@@ -41,6 +47,10 @@ abstract public class PaginateFragment extends BaseFragment {
 
     public void refreshPaginateLayout() {
         mPaginateLayout = getBaseActivity().getPaginateLayout();
+
+        mFastscrollLayout = getBaseActivity().getFastscrollLayout();
+        mUpButton = (IconButton) mFastscrollLayout.findViewById(R.id.button_up);
+        mDownButton = (IconButton) mFastscrollLayout.findViewById(R.id.button_down);
 
         //IconButton refreshButton = (IconButton) paginateWidget.findViewById(R.id.button_refresh);
         IconButton fwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_fwd);
@@ -97,12 +107,134 @@ abstract public class PaginateFragment extends BaseFragment {
             frwdButton.setVisibility(View.VISIBLE);
         }
 
-        if(anyVisible)
+        if(anyVisible) {
             getBaseActivity().showPaginateView();
-        else
+        } else {
             getBaseActivity().hidePaginateView();
+        }
 
     }
 
+    public void enableFastScroll(final FastScrollListener listener) {
+        getBaseActivity().showFastscrollView();
+
+        mUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onUpButtonClicked();
+            }
+        });
+        mDownButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onDownButtonClicked();
+            }
+        });
+    }
+
+    public void hideDownButton() {
+        if(mDownButton.getVisibility() == View.VISIBLE) {
+            ViewPropertyAnimator.animate(mDownButton).cancel();
+            ViewPropertyAnimator.animate(mDownButton).alpha(0f).setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    ViewHelper.setAlpha(mDownButton, 1.0f);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mDownButton.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+                }
+            }).setDuration(500).start();
+        }
+    }
+
+    public void showDownButton() {
+        if(mDownButton.getVisibility() == View.INVISIBLE) {
+            ViewPropertyAnimator.animate(mDownButton).cancel();
+            ViewPropertyAnimator.animate(mDownButton).alpha(1f).setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    ViewHelper.setAlpha(mDownButton, 0.0f);
+                    mDownButton.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+                }
+            }).setDuration(500).start();
+        }
+    }
+
+
+    public void hideUpButton() {
+        if(mUpButton.getVisibility() == View.VISIBLE) {
+            ViewPropertyAnimator.animate(mUpButton).cancel();
+            ViewPropertyAnimator.animate(mUpButton).alpha(0f).setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    ViewHelper.setAlpha(mUpButton, 1.0f);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mUpButton.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {}
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {}
+            }).setDuration(500).start();
+        }
+    }
+
+    public void showUpButton() {
+        if(mUpButton.getVisibility() == View.INVISIBLE) {
+            ViewPropertyAnimator.animate(mUpButton).cancel();
+            ViewPropertyAnimator.animate(mUpButton).alpha(1f).setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    ViewHelper.setAlpha(mUpButton, 0.0f);
+                    mUpButton.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+                }
+            }).setDuration(500).start();
+        }
+    }
+
+
+    public interface FastScrollListener {
+        public void onUpButtonClicked();
+        public void onDownButtonClicked();
+    }
 
 }

@@ -321,6 +321,18 @@ public class TopicFragment extends PaginateFragment implements
             mWebView.loadDataWithBaseURL("file:///android_asset/",
                         mTopic.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);
 
+            enableFastScroll(new FastScrollListener() {
+                @Override
+                public void onUpButtonClicked() {
+                    mJsInterface.unveil();
+                }
+
+                @Override
+                public void onDownButtonClicked() {
+                    mJsInterface.tobottom();
+                }
+            });
+
             // set title and subtitle of the ActionBar and reload the OptionsMenu
             Spanned subtitleText = Html.fromHtml(getString(R.string.subtitle_paginate,
                     mTopic.getPage(), mTopic.getNumberOfPages()));
@@ -674,6 +686,18 @@ public class TopicFragment extends PaginateFragment implements
                 ViewPropertyAnimator.animate(t).translationY(0).setDuration(200).start();
                 ViewPropertyAnimator.animate(p).translationY(0).setDuration(200).start();
                 mPullToRefreshLayout.setTopMargin(getActionbarHeight());
+            }
+
+            if(wvScrolledBottom) {
+                hideDownButton();
+            } else {
+                showDownButton();
+            }
+
+            if(wvScrolledTop) {
+                hideUpButton();
+            } else {
+                showUpButton();
             }
 
             mOldScroll = scrollY;

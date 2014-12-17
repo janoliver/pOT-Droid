@@ -33,6 +33,7 @@ public class BaseActivity extends ActionBarActivity {
     protected DrawerLayout mDrawerLayout;
     protected Toolbar mToolbar;
     protected LinearLayout mPaginateLayout;
+    protected LinearLayout mFastscrollLayout;
     protected FrameLayout mContentView;
     protected ActionBarDrawerToggle mDrawerToggle;
     protected boolean mOverlayToolbars;
@@ -69,6 +70,10 @@ public class BaseActivity extends ActionBarActivity {
         // this is for pagination. It is usually hidden, but PaginateFragments
         // show it if necessary.
         mPaginateLayout = (LinearLayout) findViewById(R.id.paginate_view);
+
+        // this is for fast scrolling. It is usually hidden, but PaginateFragments
+        // show it if necessary.
+        mFastscrollLayout = (LinearLayout) findViewById(R.id.fastscroll_view);
 
         // our toolbar (the new ActionBar)
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
@@ -202,6 +207,10 @@ public class BaseActivity extends ActionBarActivity {
         return mPaginateLayout;
     }
 
+    public LinearLayout getFastscrollLayout() {
+        return mFastscrollLayout;
+    }
+
     public FrameLayout getContentView() {
         return mContentView;
     }
@@ -238,6 +247,14 @@ public class BaseActivity extends ActionBarActivity {
             mContentView.setLayoutParams(p);
         }
         mPaginateLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void hideFastscrollView() {
+        mFastscrollLayout.setVisibility(View.GONE);
+    }
+
+    public void showFastscrollView() {
+        mFastscrollLayout.setVisibility(View.VISIBLE);
     }
 
 }

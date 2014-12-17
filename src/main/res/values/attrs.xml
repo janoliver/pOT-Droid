@@ -4,6 +4,7 @@
     <attr name="bbColorSecondary" format="color|reference" />
     <attr name="bbColorTertiary" format="color|reference" />
     <attr name="bbColorHighlight" format="color|reference" />
+    <attr name="bbColorTranslucentBackground" format="color|reference" />
     <attr name="bbTextColorPrimary" format="color|reference" />
     <attr name="bbTextColorSecondary" format="color|reference" />
     <attr name="bbEditTextBackground" format="color|reference" />

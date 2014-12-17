@@ -193,7 +193,12 @@ function loadBender(user_id, path) {
 // unveil dimmed posts
 function unveil() {
     $("*").css({ opacity: 1.0 });
-    window.scrollTo(0,0);
+    $('html, body').scrollTop( 0 );
+}
+
+// unveil dimmed posts
+function scrollToBottom() {
+    $('html, body').scrollTop( $(document).height() );
 }
 
 // scroll to the last post of UID uid

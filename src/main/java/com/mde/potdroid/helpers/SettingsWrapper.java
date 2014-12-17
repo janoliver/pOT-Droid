@@ -52,6 +52,8 @@ public class SettingsWrapper {
     public static final String PREF_KEY_BBCODE_EDITOR = "pref_bbcode_editor";
     public static final String PREF_KEY_CACHE_SIZE = "pref_cache_size";
     public static final String PREF_KEY_CONNECTION_TIMEOUT = "pref_connection_timeout";
+    public static final String PREF_KEY_DYNAMIC_TOOLBARS = "pref_dynamic_toolbars";
+    public static final String PREF_KEY_FASTSCROLL = "pref_fastscroll";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;
@@ -238,6 +240,24 @@ public class SettingsWrapper {
      */
     public Boolean markNewPosts() {
         return mSharedPreferences.getBoolean(PREF_KEY_MARK_NEW_POSTS, false);
+    }
+
+    /**
+     * Check if dynamic toolbars in topic activity are enabled
+     *
+     * @return true if so
+     */
+    public Boolean dynamicToolbars() {
+        return mSharedPreferences.getBoolean(PREF_KEY_DYNAMIC_TOOLBARS, true);
+    }
+
+    /**
+     * Check if fastscroll in topic activity are enabled
+     *
+     * @return true if so
+     */
+    public Boolean fastscroll() {
+        return mSharedPreferences.getBoolean(PREF_KEY_FASTSCROLL, true);
     }
 
     /**

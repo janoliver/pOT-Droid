@@ -161,6 +161,18 @@
                 android:title="BBCode Editor aktivieren"
                 android:summary="Nutze experimentellen BBCode Editor"
                 android:defaultValue="false"/>
+
+        <CheckBoxPreference
+                android:key="pref_dynamic_toolbars"
+                android:title="Dynamische Toolbars"
+                android:summary="Aktiviere dynamische Toolbars in der Threadview"
+                android:defaultValue="true"/>
+
+        <CheckBoxPreference
+                android:key="pref_fastscroll"
+                android:title="Fastscroll Buttons"
+                android:summary="Aktiviere Fastscroll (Hoch/Runter) Buttons in der Threadview"
+                android:defaultValue="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory

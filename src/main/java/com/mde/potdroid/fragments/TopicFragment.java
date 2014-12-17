@@ -61,6 +61,9 @@ public class TopicFragment extends PaginateFragment implements
     private boolean mUserInteraction;
     private int mOldScroll;
 
+    // the settings wrapper instance
+    private SettingsWrapper mSettings;
+
     // we need to invoke some functions on this one outside of the
     // webview initialization, so keep a reference here.
     private TopicJSInterface mJsInterface;
@@ -100,6 +103,8 @@ public class TopicFragment extends PaginateFragment implements
         mPullToRefreshLayout.setTopMargin(getActionbarHeight());
 
         setupWebView();
+
+        mSettings = new SettingsWrapper(getBaseActivity());
         getBaseActivity().setOverlayToolbars();
 
         if (mTopic == null)
@@ -674,30 +679,34 @@ public class TopicFragment extends PaginateFragment implements
             boolean wvScrolledBottom = (wvContentLength - mWebView.getCurrentScrollY()) <
                     (mWebView.getHeight() + paginateLayoutHeight);
 
-            if(!toolbarsHidden && scrollingDown && !wvScrolledTop && !wvScrolledBottom) {
-                ViewPropertyAnimator.animate(t).cancel();
-                ViewPropertyAnimator.animate(p).cancel();
-                ViewPropertyAnimator.animate(t).translationY(-toolbarHeight).setDuration(200).start();
-                ViewPropertyAnimator.animate(p).translationY(paginateLayoutHeight).setDuration(200).start();
-                mPullToRefreshLayout.setTopMargin(0);
-            } else if(toolbarsHidden && (!scrollingDown || wvScrolledBottom)) {
-                ViewPropertyAnimator.animate(t).cancel();
-                ViewPropertyAnimator.animate(p).cancel();
-                ViewPropertyAnimator.animate(t).translationY(0).setDuration(200).start();
-                ViewPropertyAnimator.animate(p).translationY(0).setDuration(200).start();
-                mPullToRefreshLayout.setTopMargin(getActionbarHeight());
+            if(mSettings.dynamicToolbars()) {
+                if (!toolbarsHidden && scrollingDown && !wvScrolledTop && !wvScrolledBottom) {
+                    ViewPropertyAnimator.animate(t).cancel();
+                    ViewPropertyAnimator.animate(p).cancel();
+                    ViewPropertyAnimator.animate(t).translationY(-toolbarHeight).setDuration(200).start();
+                    ViewPropertyAnimator.animate(p).translationY(paginateLayoutHeight).setDuration(200).start();
+                    mPullToRefreshLayout.setTopMargin(0);
+                } else if (toolbarsHidden && (!scrollingDown || wvScrolledBottom)) {
+                    ViewPropertyAnimator.animate(t).cancel();
+                    ViewPropertyAnimator.animate(p).cancel();
+                    ViewPropertyAnimator.animate(t).translationY(0).setDuration(200).start();
+                    ViewPropertyAnimator.animate(p).translationY(0).setDuration(200).start();
+                    mPullToRefreshLayout.setTopMargin(getActionbarHeight());
+                }
             }
 
-            if(wvScrolledBottom) {
-                hideDownButton();
-            } else {
-                showDownButton();
-            }
+            if(mSettings.fastscroll()) {
+                if (wvScrolledBottom) {
+                    hideDownButton();
+                } else {
+                    showDownButton();
+                }
 
-            if(wvScrolledTop) {
-                hideUpButton();
-            } else {
-                showUpButton();
+                if (wvScrolledTop) {
+                    hideUpButton();
+                } else {
+                    showUpButton();
+                }
             }
 
             mOldScroll = scrollY;

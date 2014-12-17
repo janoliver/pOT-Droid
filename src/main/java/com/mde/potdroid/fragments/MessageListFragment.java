@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
  */
 public class MessageListFragment extends BaseFragment implements LoaderManager
         .LoaderCallbacks<MessageList> {
+    private static Drawable mBenderPlaceholder;
 
     // the tags of the fragment arguments
     public static final String ARG_MODE = "mode";
@@ -190,8 +191,11 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
             return position;
         }
 
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View row = getInflater().inflate(R.layout.listitem_message, null);
+        public View getView(int position, View row, ViewGroup parent) {
+            if(row == null) {
+                row = getInflater().inflate(R.layout.listitem_message, null);
+            }
+
             Message m = (Message) getItem(position);
 
             // set the name, striked if closed
@@ -228,14 +232,6 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
 
             if (!m.isSystem() && mSettings.showBenders()) {
 
-                try {
-                    Drawable d = Utils.getDrawableFromAsset(getBaseActivity(),
-                            "images/placeholder_bender.png");
-                    bender_img.setImageDrawable(d);
-                } catch (IOException e) {
-                    bender_img.setVisibility(View.GONE);
-                }
-
                 mBenderHandler.getAvatar(m.getFrom(), new BenderHandler.BenderListener() {
                     @Override
                     public void onSuccess(String path) {
@@ -244,6 +240,23 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
 
                     @Override
                     public void onFailure() {
+                        // this functionality uses some primitive caching
+                        if(MessageListFragment.mBenderPlaceholder == null) {
+                            try {
+                                MessageListFragment.mBenderPlaceholder =
+                                        Utils.getDrawableFromAsset(getBaseActivity(),
+                                        "images/placeholder_bender.png");
+
+                            } catch (IOException e) {
+                                Utils.printException(e);
+                            }
+                        }
+
+                        if(MessageListFragment.mBenderPlaceholder == null) {
+                            bender_img.setVisibility(View.GONE);
+                        } else {
+                            bender_img.setImageDrawable(MessageListFragment.mBenderPlaceholder);
+                        }
                     }
                 });
             } else {

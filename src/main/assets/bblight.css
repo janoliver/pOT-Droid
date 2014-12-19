@@ -17,7 +17,8 @@ section.oldpost {
     opacity: 0.5;
 }
 
-section.newpost {
+section.newpost header {
+    background: linear-gradient(to right, #EF9A9A, #ffffff, #ffffff, #ffffff, #ffffff, #ffffff);
 }
 
 header {

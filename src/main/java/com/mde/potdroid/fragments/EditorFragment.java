@@ -15,10 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import com.mde.potdroid.R;
-import com.mde.potdroid.helpers.AsyncHttpLoader;
-import com.mde.potdroid.helpers.FormEncodingBuilder;
-import com.mde.potdroid.helpers.Network;
-import com.mde.potdroid.helpers.Utils;
+import com.mde.potdroid.helpers.*;
 import com.mde.potdroid.parsers.MessageParser;
 import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.IconSelectionDialog;
@@ -137,8 +134,32 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         if (getArguments().getString(ARG_RCPT) != null)
             mEditRcpt.setText(getArguments().getString(ARG_RCPT));
 
-
         ActionMenuView bbcodeToolbar = (ActionMenuView) v.findViewById(R.id.bbcode_toolbar);
+
+        SettingsWrapper settings = new SettingsWrapper(getBaseActivity());
+        if(settings.isBBCodeEditor()) {
+
+            Menu menu = bbcodeToolbar.getMenu();
+            getActivity().getMenuInflater().inflate(R.menu.bbcode_menu, menu);
+
+            menu.findItem(R.id.bold).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_bold, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+            menu.findItem(R.id.italic).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_italic, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+            menu.findItem(R.id.striked).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_strikethrough, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+            menu.findItem(R.id.underline).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_underline, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+            menu.findItem(R.id.quote).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_quote_left, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+            menu.findItem(R.id.code).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_code, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+            menu.findItem(R.id.spoiler).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_eye_close, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+            menu.findItem(R.id.image).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_picture, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+            menu.findItem(R.id.video).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_facetime_video, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+            menu.findItem(R.id.url).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_link, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+            menu.findItem(R.id.list).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_list_ol, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+            menu.findItem(R.id.smiley).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_smile, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+
+            bbcodeToolbar.setOnMenuItemClickListener(new BBCodeHandler(getBaseActivity(), mEditText));
+
+        } else {
+            bbcodeToolbar.setVisibility(View.GONE);
+        }
 
         // set the title
         if (getArguments().getInt(ARG_MODE, MODE_REPLY) == MODE_REPLY)
@@ -155,25 +176,6 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             mEditTags.setVisibility(View.VISIBLE);
             getActionbar().setTitle(R.string.subtitle_form_write_thread);
         }
-
-
-        Menu menu = bbcodeToolbar.getMenu();
-        getActivity().getMenuInflater().inflate(R.menu.bbcode_menu, menu);
-        
-        menu.findItem(R.id.bold).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_bold, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.italic).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_italic, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.striked).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_strikethrough, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.underline).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_underline, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.quote).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_quote_left, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.code).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_code, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.spoiler).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_eye_close, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.image).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_picture, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.video).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_facetime_video, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.url).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_link, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.list).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_list_ol, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.smiley).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_smile, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-
-        bbcodeToolbar.setOnMenuItemClickListener(new BBCodeHandler(getBaseActivity(), mEditText));
 
         return v;
     }

@@ -48,7 +48,7 @@
         <CheckBoxPreference
                 android:key="pref_darken_old_posts"
                 android:title="Gelesene Posts abdunkeln"
-                android:defaultValue="false"/>
+                android:defaultValue="true"/>
 
         <CheckBoxPreference
                 android:key="pref_mark_new_posts"
@@ -159,8 +159,8 @@
         <CheckBoxPreference
                 android:key="pref_bbcode_editor"
                 android:title="BBCode Editor aktivieren"
-                android:summary="Nutze experimentellen BBCode Editor"
-                android:defaultValue="false"/>
+                android:summary="Nutze BBCode Editor"
+                android:defaultValue="true"/>
 
         <CheckBoxPreference
                 android:key="pref_dynamic_toolbars"

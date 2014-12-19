@@ -8,7 +8,6 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
         <FrameLayout
                 android:id="@+id/content"
                 android:layout_below="@+id/main_toolbar"
@@ -23,92 +22,8 @@
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-        <LinearLayout
-                android:id="@+id/paginate_view"
-                android:layout_width="match_parent"
-                android:layout_centerHorizontal="true"
-                android:layout_height="wrap_content"
-                android:background="?attr/bbToolbarBackground"
-                android:orientation="horizontal"
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_alignParentBottom="true"
-                android:visibility="invisible">
-
-            <com.mde.potdroid.views.IconButton
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:text="@string/icon_fast_backward"
-                    android:id="@+id/button_frwd"
-                    android:textSize="24sp"
-                    android:visibility="invisible"
-                    android:background="?attr/bbBackgroundTransparentClickable"
-                    android:textColor="?attr/bbToolbarColor"/>
-
-            <com.mde.potdroid.views.IconButton
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:text="@string/icon_backward"
-                    android:id="@+id/button_rwd"
-                    android:visibility="invisible"
-                    android:background="?attr/bbBackgroundTransparentClickable"
-                    android:textSize="24sp"
-                    android:textColor="?attr/bbToolbarColor"/>
-
-            <com.mde.potdroid.views.IconButton
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:text="@string/icon_forward"
-                    android:background="?attr/bbBackgroundTransparentClickable"
-                    android:id="@+id/button_fwd"
-                    android:visibility="invisible"
-                    android:textSize="24sp"
-                    android:textColor="?attr/bbToolbarColor"/>
-
-            <com.mde.potdroid.views.IconButton
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:text="@string/icon_fast_forward"
-                    android:background="?attr/bbBackgroundTransparentClickable"
-                    android:id="@+id/button_ffwd"
-                    android:visibility="invisible"
-                    android:textSize="24sp"
-                    android:textColor="?attr/bbToolbarColor"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-                android:id="@+id/fastscroll_view"
-                android:layout_width="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginRight="5dp"
-                android:gravity="center_vertical"
-                android:layout_alignParentRight="true"
-                android:visibility="invisible">
-
-            <com.mde.potdroid.views.IconButton
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:text="@string/icon_chevron_up"
-                    android:id="@+id/button_up"
-                    android:background="@drawable/circular_background"
-                    android:textSize="22sp"
-                    android:textColor="?attr/bbToolbarColor"
-                    android:layout_marginBottom="5dp"
-                    android:visibility="invisible"/>
-
-            <com.mde.potdroid.views.IconButton
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:text="@string/icon_chevron_down"
-                    android:id="@+id/button_down"
-                    android:background="@drawable/circular_background"
-                    android:textSize="22sp"
-                    android:textColor="?attr/bbToolbarColor"
-                    android:visibility="invisible"/>
-
-        </LinearLayout>
+        <include layout="@layout/view_paginate"/>
+        <include layout="@layout/view_fastscroll"/>
 
     </RelativeLayout>
 

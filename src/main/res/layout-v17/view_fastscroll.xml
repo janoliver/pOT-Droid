@@ -14,9 +14,9 @@
             android:layout_height="35dp"
             android:text="@string/icon_chevron_up"
             android:id="@+id/button_up"
-            android:background="@drawable/circular_background"
+            android:background="@drawable/circular_translucent_button_background"
             android:textSize="22sp"
-            android:textColor="?attr/bbToolbarColor"
+            android:textColor="?attr/bbTextColorSecondary"
             android:layout_marginBottom="5dp"
             android:visibility="invisible"/>
 
@@ -25,9 +25,9 @@
             android:layout_height="35dp"
             android:text="@string/icon_chevron_down"
             android:id="@+id/button_down"
-            android:background="@drawable/circular_background"
+            android:background="@drawable/circular_translucent_button_background"
             android:textSize="22sp"
-            android:textColor="?attr/bbToolbarColor"
+            android:textColor="?attr/bbTextColorSecondary"
             android:visibility="invisible"/>
 
 </LinearLayout>

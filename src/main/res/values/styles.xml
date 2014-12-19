@@ -15,7 +15,7 @@
         <item name="bbColorSecondary">@color/bbstyle_darkblue</item>
         <item name="bbColorTertiary">@color/bbstyle_lighterblue</item>
         <item name="bbColorHighlight">@color/white_low</item>
-        <item name="bbColorTranslucentBackground">@color/white_low</item>
+        <item name="bbColorTranslucentBackground">@color/black_low</item>
         <item name="bbTextColorPrimary">@color/white</item>
         <item name="bbTextColorSecondary">@color/white_low</item>
         <item name="bbEditTextBackground">@color/white</item>
@@ -59,7 +59,7 @@
         <item name="bbColorSecondary">@color/lightgrey</item>
         <item name="bbColorTertiary">@color/lightergrey</item>
         <item name="bbColorHighlight">@color/bbstyle_lightblue</item>
-        <item name="bbColorTranslucentBackground">@color/black_low</item>
+        <item name="bbColorTranslucentBackground">@color/white_low</item>
         <item name="bbTextColorPrimary">@color/darkergrey</item>
         <item name="bbTextColorSecondary">@color/darkgrey</item>
         <item name="bbEditTextBackground">@color/lightergrey</item>

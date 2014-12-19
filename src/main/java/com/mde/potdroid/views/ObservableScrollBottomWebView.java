@@ -43,4 +43,5 @@ public class ObservableScrollBottomWebView extends ObservableWebView
     public boolean isScrolledToTop() {
         return mStart;
     }
+
 }

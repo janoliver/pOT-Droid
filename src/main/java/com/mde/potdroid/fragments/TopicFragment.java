@@ -98,9 +98,19 @@ public class TopicFragment extends PaginateFragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        setRetainInstance(true);
+
         setHasOptionsMenu(true);
         mPullToRefreshLayout.setSwipeDown(false);
-        mPullToRefreshLayout.setTopMargin(getActionbarHeight());
+
+        ViewTreeObserver vto = getBaseActivity().getToolbar().getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                getBaseActivity().getToolbar().getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                mPullToRefreshLayout.setTopMargin(getBaseActivity().getToolbar().getHeight());
+            }
+        });
 
         setupWebView();
 
@@ -116,8 +126,6 @@ public class TopicFragment extends PaginateFragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_topic, container, false);
 
-        mWebView = (ObservableScrollBottomWebView) v.findViewById(R.id.webview);
-
         // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
         // of some former TopicFragment, which will be restored on onResume. .
         if (mWebView == null && Utils.isKitkat()) {
@@ -130,6 +138,12 @@ public class TopicFragment extends PaginateFragment implements
         }
 
         return v;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mPullToRefreshLayout.removeAllViews();
     }
 
     /**
@@ -215,40 +229,43 @@ public class TopicFragment extends PaginateFragment implements
             mWebView.setLayoutParams(new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
             ));
-            mPullToRefreshLayout.addView(mWebView);
+
+            mWebView.setScrollViewCallbacks(mWebViewScrollCallbacks);
+
+            if(mJsInterface == null) {
+                mJsInterface = new TopicJSInterface(mWebView, getBaseActivity(), this);
+                mJsInterface.registerScroll(getArguments().getInt(ARG_POST_ID, 0));
+            }
+
+            mWebView.getSettings().setJavaScriptEnabled(true);
+            mWebView.setBackgroundColor(0x00000000);
+            mWebView.getSettings().setAllowFileAccess(true);
+            mWebView.getSettings().setUseWideViewPort(true);
+            mWebView.getSettings().setAppCacheEnabled(false);
+            mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+            mWebView.getSettings().setLoadWithOverviewMode(true);
+
+            // broken on 2.3.3
+            if(!Utils.isGingerbread())
+                mWebView.addJavascriptInterface(mJsInterface, "api");
+
+            registerForContextMenu(mWebView);
+
+            if (mTopic != null) {
+                mWebView.loadDataWithBaseURL(
+                        "file:///android_asset/",
+                        mTopic.getHtmlCache(),
+                        "text/html",
+                        Network.ENCODING_UTF8,
+                        null);
+            } else {
+                mWebView.loadData("", "text/html", Network.ENCODING_UTF8);
+            }
+
         }
 
-        mWebView.setScrollViewCallbacks(mWebViewScrollCallbacks);
-
-        if(mJsInterface == null) {
-            mJsInterface = new TopicJSInterface(mWebView, getBaseActivity(), this);
-            mJsInterface.registerScroll(getArguments().getInt(ARG_POST_ID, 0));
-        }
-
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.setBackgroundColor(0x00000000);
-        mWebView.getSettings().setAllowFileAccess(true);
-        mWebView.getSettings().setUseWideViewPort(true);
-        mWebView.getSettings().setAppCacheEnabled(false);
-        mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        mWebView.getSettings().setLoadWithOverviewMode(true);
-
-        // broken on 2.3.3
-        if(!Utils.isGingerbread())
-            mWebView.addJavascriptInterface(mJsInterface, "api");
-
-        registerForContextMenu(mWebView);
-
-        if (mTopic != null) {
-            mWebView.loadDataWithBaseURL(
-                    "file:///android_asset/",
-                    mTopic.getHtmlCache(),
-                    "text/html",
-                    Network.ENCODING_UTF8,
-                    null);
-        } else {
-            mWebView.loadData("", "text/html", Network.ENCODING_UTF8);
-        }
+        mPullToRefreshLayout.addView(mWebView);
+        refreshTitleAndPagination();
     }
 
     @Override
@@ -326,30 +343,38 @@ public class TopicFragment extends PaginateFragment implements
             mWebView.loadDataWithBaseURL("file:///android_asset/",
                         mTopic.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);
 
-            enableFastScroll(new FastScrollListener() {
-                @Override
-                public void onUpButtonClicked() {
-                    mJsInterface.unveil();
-                }
-
-                @Override
-                public void onDownButtonClicked() {
-                    mJsInterface.tobottom();
-                }
-            });
-
-            // set title and subtitle of the ActionBar and reload the OptionsMenu
-            Spanned subtitleText = Html.fromHtml(getString(R.string.subtitle_paginate,
-                    mTopic.getPage(), mTopic.getNumberOfPages()));
-
-            //getBaseActivity().supportInvalidateOptionsMenu();
-            refreshPaginateLayout();
-            getActionbar().setTitle(mTopic.getTitle());
-            getActionbar().setSubtitle(subtitleText);
+            refreshTitleAndPagination();
 
         } else {
             showError(getString(R.string.msg_loading_error));
         }
+    }
+
+    public void refreshTitleAndPagination() {
+        if(mTopic == null)
+            return;
+
+        // set title and subtitle of the ActionBar and reload the OptionsMenu
+        Spanned subtitleText = Html.fromHtml(getString(R.string.subtitle_paginate,
+                mTopic.getPage(), mTopic.getNumberOfPages()));
+
+        //getBaseActivity().supportInvalidateOptionsMenu();
+        refreshPaginateLayout();
+        getActionbar().setTitle(mTopic.getTitle());
+        getActionbar().setSubtitle(subtitleText);
+
+
+        enableFastScroll(new FastScrollListener() {
+            @Override
+            public void onUpButtonClicked() {
+                mJsInterface.unveil();
+            }
+
+            @Override
+            public void onDownButtonClicked() {
+                mJsInterface.tobottom();
+            }
+        });
     }
 
     public Topic getTopic() {
@@ -691,7 +716,7 @@ public class TopicFragment extends PaginateFragment implements
                     ViewPropertyAnimator.animate(p).cancel();
                     ViewPropertyAnimator.animate(t).translationY(0).setDuration(200).start();
                     ViewPropertyAnimator.animate(p).translationY(0).setDuration(200).start();
-                    mPullToRefreshLayout.setTopMargin(getActionbarHeight());
+                    mPullToRefreshLayout.setTopMargin(getBaseActivity().getToolbar().getHeight());
                 }
             }
 

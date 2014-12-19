@@ -74,8 +74,7 @@
                 android:uiOptions="none"/>
 
         <activity
-                android:name=".TopicActivity"
-                android:configChanges="orientation|screenSize|keyboard">
+                android:name=".TopicActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

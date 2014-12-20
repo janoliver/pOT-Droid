@@ -2,7 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:potdroid="http://schemas.android.com/apk/res-auto">
     <item
+            android:id="@+id/refresh"
+            android:title="@string/action_refresh"
+            potdroid:showAsAction="ifRoom"/>
+    <item
             android:id="@+id/new_message"
             android:title="@string/action_new_message"
-            potdroid:showAsAction="always"/>
+            potdroid:showAsAction="ifRoom"/>
 </menu>

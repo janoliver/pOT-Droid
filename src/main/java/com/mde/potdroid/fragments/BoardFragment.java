@@ -120,6 +120,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         inflater.inflate(R.menu.actionmenu_board, menu);
 
         menu.findItem(R.id.new_thread).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
+        menu.findItem(R.id.refresh).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
 
         if (!Utils.isLoggedIn()) {
             menu.setGroupVisible(R.id.loggedout_board, false);
@@ -135,6 +136,10 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         switch (item.getItemId()) {
             case R.id.new_thread:
                 newThread();
+                return true;
+            case R.id.refresh:
+                // reload content
+                restartLoader(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

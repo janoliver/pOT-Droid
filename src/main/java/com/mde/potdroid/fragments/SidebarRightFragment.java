@@ -13,6 +13,7 @@ import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.DatabaseWrapper;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Forum;
+import com.mde.potdroid.views.IconButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -71,6 +72,17 @@ public class SidebarRightFragment extends BaseFragment implements LoaderManager.
                 restartLoader(SidebarRightFragment.this);
             }
         });
+
+        IconButton refresh = (IconButton) v.findViewById(R.id.button_refresh);
+        if(!mSettings.isSwipeToRefresh()) {
+            refresh.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    restartLoader(SidebarRightFragment.this);
+                }
+            });
+            refresh.setVisibility(View.VISIBLE);
+        }
 
         registerForContextMenu(listView);
 

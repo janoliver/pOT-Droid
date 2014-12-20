@@ -103,6 +103,17 @@ public class SidebarLeftFragment extends BaseFragment
             }
         });
 
+        IconButton refresh = (IconButton) v.findViewById(R.id.button_refresh);
+        if(!mSettings.isSwipeToRefresh()) {
+            refresh.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    refreshBookmarks();
+                }
+            });
+            refresh.setVisibility(View.VISIBLE);
+        }
+
         return v;
 
     }

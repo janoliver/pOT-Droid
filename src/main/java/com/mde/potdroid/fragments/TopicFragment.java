@@ -279,6 +279,7 @@ public class TopicFragment extends PaginateFragment implements
         menu.findItem(R.id.unveil).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_eye_open));
         menu.findItem(R.id.topage).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_arrow_right));
         menu.findItem(R.id.last_own_post).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_search));
+        menu.findItem(R.id.refresh).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
 
         if (!Utils.isLoggedIn()) {
             menu.setGroupVisible(R.id.loggedout_topic, false);
@@ -294,6 +295,11 @@ public class TopicFragment extends PaginateFragment implements
 
         // Handle item selection
         switch (item.getItemId()) {
+
+            case R.id.refresh:
+                // reload content
+                restartLoader(this);
+                return true;
             case R.id.new_message:
                 replyPost();
                 return true;

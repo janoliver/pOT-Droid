@@ -2,10 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:potdroid="http://schemas.android.com/apk/res-auto">
     <group android:id="@+id/loggedout_board">
-    <item
-            android:id="@+id/new_thread"
-            android:title="@string/action_new_thread"
-            potdroid:showAsAction="ifRoom"/>
+        <item
+                android:id="@+id/new_thread"
+                android:title="@string/action_new_thread"
+                potdroid:showAsAction="ifRoom"/>
     </group>
-
+    <item
+            android:id="@+id/refresh"
+            android:title="@string/action_refresh"
+            potdroid:showAsAction="ifRoom"/>
 </menu>

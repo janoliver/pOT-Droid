@@ -16,6 +16,7 @@ import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.ForumActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.SettingsActivity;
+import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.BBSwipeRefreshLayout;
@@ -32,10 +33,18 @@ public abstract class BaseFragment extends Fragment implements BBSwipeRefreshLay
 
     // the pulltorefresh instance
     protected BBSwipeRefreshLayout mPullToRefreshLayout;
+    protected SettingsWrapper mSettings;
 
     public static int COLOR_SUCCESS = Color.parseColor("#669900");
     public static int COLOR_ERROR = Color.parseColor("#cc0000");
     public static int COLOR_INFO = Color.parseColor("#0099cc");
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mSettings = new SettingsWrapper(getBaseActivity());
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -58,6 +67,9 @@ public abstract class BaseFragment extends Fragment implements BBSwipeRefreshLay
                     Utils.getColorByAttr(getActivity(), R.attr.bbProgressPrimary),
                     Utils.getColorByAttr(getActivity(), R.attr.bbProgressSecondary));
         }
+
+        if(!mSettings.isSwipeToRefresh())
+            mPullToRefreshLayout.setEnabled(false);
     }
 
     /**

@@ -113,9 +113,8 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_messagelist, menu);
-
-        MenuItem newMessage = menu.findItem(R.id.new_message);
-        newMessage.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
+        menu.findItem(R.id.refresh).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
+        menu.findItem(R.id.new_message).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
     }
 
     @Override
@@ -123,6 +122,11 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
 
         // Handle item selection
         switch (item.getItemId()) {
+
+            case R.id.refresh:
+                // reload content
+                restartLoader(this);
+                return true;
             case R.id.new_message:
 
                 Intent intent = new Intent(getBaseActivity(), EditorActivity.class);

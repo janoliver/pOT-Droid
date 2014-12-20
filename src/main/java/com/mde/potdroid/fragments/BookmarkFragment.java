@@ -21,6 +21,7 @@ import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.BookmarkList;
 import com.mde.potdroid.parsers.BookmarkParser;
+import com.mde.potdroid.views.IconDrawable;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -96,16 +97,15 @@ public class BookmarkFragment extends BaseFragment
 
         inflater.inflate(R.menu.actionmenu_bookmarks, menu);
 
-        //MenuItem refresh = menu.findItem(R.id.refresh);
-        //refresh.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
+        menu.findItem(R.id.refresh).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            /*case R.id.refresh:
+            case R.id.refresh:
                 restartLoader(this);
-                return true;*/
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

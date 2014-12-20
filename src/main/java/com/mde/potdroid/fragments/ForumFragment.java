@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
@@ -21,6 +20,7 @@ import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Category;
 import com.mde.potdroid.models.Forum;
 import com.mde.potdroid.parsers.ForumParser;
+import com.mde.potdroid.views.IconDrawable;
 import org.apache.http.Header;
 
 import java.text.SimpleDateFormat;
@@ -133,8 +133,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
         inflater.inflate(R.menu.actionmenu_forum, menu);
 
-        //MenuItem refresh = menu.findItem(R.id.refresh);
-        //refresh.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
+        menu.findItem(R.id.refresh).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
     }
 
     @Override
@@ -147,10 +146,10 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            /*case R.id.refresh:
+            case R.id.refresh:
                 // reload content
                 restartLoader(this);
-                return true;*/
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -2,11 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:potdroid="http://schemas.android.com/apk/res-auto">
     <group android:id="@+id/loggedout_topic">
-    <item
-            android:id="@+id/new_message"
-            android:title="@string/action_reply"
-            potdroid:showAsAction="ifRoom"/>
+        <item
+                android:id="@+id/new_message"
+                android:title="@string/action_reply"
+                potdroid:showAsAction="ifRoom"/>
     </group>
+    <item
+            android:id="@+id/refresh"
+            android:title="@string/action_refresh"
+            potdroid:showAsAction="ifRoom"/>
     <item
             android:id="@+id/unveil"
             android:title="@string/action_unveil"

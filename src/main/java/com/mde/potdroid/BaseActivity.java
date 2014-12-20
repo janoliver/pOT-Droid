@@ -162,7 +162,7 @@ public class BaseActivity extends ActionBarActivity {
 
         // if user is not logged in OR no sidebar is in the drawer layout OR the user setting is
         // NOT to open the sidebar on drawertoggle click, then disable it.
-        if(!Utils.isLoggedIn() || !
+        if(!Utils.isLoggedIn() ||
                 mSettings.isFixedSidebar() ||
                 mSettings.getMataAction() != SettingsWrapper.START_SIDEBAR) {
 

@@ -8,7 +8,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -62,7 +61,10 @@ public class BaseActivity extends ActionBarActivity {
 
         // see getLayout function. We implement it as a function
         // so it can be overridden for a custom layout.
-        setContentView(R.layout.main);
+        if(mSettings.isFixedSidebar())
+            setContentView(R.layout.main_fixedsidebar);
+        else
+            setContentView(R.layout.main);
 
         mContentView = (FrameLayout) findViewById(R.id.content);
 
@@ -80,28 +82,8 @@ public class BaseActivity extends ActionBarActivity {
         // our toolbar (the new ActionBar)
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolbar);
-        setUpActionBar();
 
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, mToolbar, R.string.open_drawer, R.string.close_drawer) {
-
-            public void onDrawerClosed(View view) {}
-
-            public void onDrawerOpened(View view) {
-                // if the left sidebar is opened, refresh bookmarks
-                if (view.getId() == R.id.sidebar_container_left) {
-                    if (mLeftSidebar.isDirty())
-                        mLeftSidebar.refreshBookmarks();
-                }
-
-                // if the right sidebar is opened, refresh boards
-                if (view.getId() == R.id.sidebar_container_right) {
-                    if (mRightSidebar.isDirty())
-                        mRightSidebar.refreshBoards();
-                }
-            }
-        };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        setupDrawerToggle();
 
         // find or create the left sidebar fragment
         mLeftSidebar = (SidebarLeftFragment) getSupportFragmentManager()
@@ -117,7 +99,7 @@ public class BaseActivity extends ActionBarActivity {
         // add the fragments
         if (savedInstanceState == null) {
 
-            if(Utils.isLoggedIn())
+            if(Utils.isLoggedIn() || !mSettings.isFixedSidebar())
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.sidebar_container_left, mLeftSidebar, TAG_SIDEBAR_LEFT).commit();
             else {
@@ -126,6 +108,7 @@ public class BaseActivity extends ActionBarActivity {
                 RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) v.getLayoutParams();
                 p.addRule(RelativeLayout.LEFT_OF, 0);
                 v.setLayoutParams(p);
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT);
             }
 
             getSupportFragmentManager().beginTransaction()
@@ -155,57 +138,64 @@ public class BaseActivity extends ActionBarActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(mSettings.getMataAction() == SettingsWrapper.START_SIDEBAR && Utils.isLoggedIn()) {
-            // Pass the event to ActionBarDrawerToggle, if it returns
-            // true, then it has handled the app icon touch event
-            try {
-                return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
-            } catch(IllegalArgumentException e) {
-                // in landscape mode or for certain screen sizes, this will fail.
-                // This throwing is therefore the expected behaviour.
-                // do nothing.
-                return true;
+    public void setupDrawerToggle() {
+        // create the drawer toggle with the listeners
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, mToolbar, R.string.open_drawer, R.string.close_drawer) {
+
+            public void onDrawerClosed(View view) {}
+
+            public void onDrawerOpened(View view) {
+                // if the left sidebar is opened, refresh bookmarks
+                if (view.getId() == R.id.sidebar_container_left) {
+                    if (mLeftSidebar.isDirty())
+                        mLeftSidebar.refreshBookmarks();
+                }
+
+                // if the right sidebar is opened, refresh boards
+                if (view.getId() == R.id.sidebar_container_right) {
+                    if (mRightSidebar.isDirty())
+                        mRightSidebar.refreshBoards();
+                }
             }
-        } else {
-            switch (item.getItemId())
-            {
-                case android.R.id.home:
+        };
+
+        // if user is not logged in OR no sidebar is in the drawer layout OR the user setting is
+        // NOT to open the sidebar on drawertoggle click, then disable it.
+        if(!Utils.isLoggedIn() || !
+                mSettings.isFixedSidebar() ||
+                mSettings.getMataAction() != SettingsWrapper.START_SIDEBAR) {
+
+            mDrawerToggle.setDrawerIndicatorEnabled(false);
+            mDrawerToggle.setHomeAsUpIndicator(getV7DrawerToggleDelegate().getThemeUpIndicator());
+            mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     if(mSettings.getMataAction() == SettingsWrapper.START_FORUM) {
-                        Intent intent = new Intent(this, BoardActivity.class);
+                        Intent intent = new Intent(BaseActivity.this, BoardActivity.class);
                         intent.putExtra(BoardFragment.ARG_ID, mSettings.getMataForum());
                         intent.putExtra(BoardFragment.ARG_PAGE, 1);
                         startActivity(intent);
                     } else if(mSettings.getMataAction() == SettingsWrapper.START_BOOKMARKS &&
                             Utils.isLoggedIn()) {
-                        Intent intent = new Intent(this, BookmarkActivity.class);
+                        Intent intent = new Intent(BaseActivity.this, BookmarkActivity.class);
                         startActivity(intent);
                     } else {
-                        Intent intent = new Intent(this, ForumActivity.class);
+                        Intent intent = new Intent(BaseActivity.this, ForumActivity.class);
                         intent.putExtra("overview", true);
                         startActivity(intent);
                     }
-                    return true;
-                default:
-                    return super.onOptionsItemSelected(item);
-            }
+                }
+            });
         }
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    public void setUpActionBar() {
-
-        if (Utils.isLoggedIn()) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-        } else {
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT);
-        }
     }
 
     public SidebarRightFragment getRightSidebarFragment() {

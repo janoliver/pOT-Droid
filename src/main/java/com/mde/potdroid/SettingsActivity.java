@@ -5,10 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
+import android.preference.*;
 import android.widget.Toast;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
@@ -30,6 +27,7 @@ public class SettingsActivity extends PreferenceActivity
     public void onCreate(Bundle savedInstanceState) {
 
         mSettings = new SettingsWrapper(this);
+        boolean def = mSettings.isFixedSidebar();
 
         setTheme(mSettings.getTheme());
 
@@ -39,7 +37,9 @@ public class SettingsActivity extends PreferenceActivity
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
-
+        CheckBoxPreference preference = (CheckBoxPreference) findPreference("pref_fixed_sidebar");
+        preference.setChecked(def);
+        preference.setDefaultValue(def);
 
         final ImageLoader il = ImageLoader.getInstance();
         Preference clearCachePref = findPreference("pref_clear_cache");
@@ -51,6 +51,8 @@ public class SettingsActivity extends PreferenceActivity
             }
         });
     }
+
+
 
     @Override
     public void onResume() {
@@ -69,6 +71,7 @@ public class SettingsActivity extends PreferenceActivity
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
+
     }
 
     @Override

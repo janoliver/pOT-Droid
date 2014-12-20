@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import com.mde.potdroid.R;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.cookie.BasicClientCookie;
@@ -57,6 +58,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_SHOW_PAGNIATE_TOOLBAR = "pref_show_paginate_toolbar";
     public static final String PREF_KEY_SWIPE_TO_REFRESH = "pref_swipe_to_refresh";
     public static final String PREF_KEY_SWIPE_TO_PAGINATE = "pref_swipe_to_paginate";
+    public static final String PREF_KEY_FIXED_SIDEBAR = "pref_fixed_sidebar";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;
@@ -275,6 +277,11 @@ public class SettingsWrapper {
         return mSharedPreferences.getBoolean(PREF_KEY_FASTSCROLL, true);
     }
 
+    public Boolean isFixedSidebar() {
+        DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
+        float w = displayMetrics.widthPixels / displayMetrics.density;
+        return mSharedPreferences.getBoolean(PREF_KEY_FIXED_SIDEBAR, w > 768);
+    }
 
     /**
      * Set the settings username

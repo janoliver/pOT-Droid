@@ -124,6 +124,11 @@
             android:title="Verhalten"
             android:key="pref_behaviour_settings">
 
+        <CheckBoxPreference
+                android:key="pref_fixed_sidebar"
+                android:title="Bookmarks Sidebar immer anzeigen"
+                android:summary="Interessant für große Bildschirme/Tablets"/>
+
         <ListPreference
                 android:title="Startscreen"
                 android:summary="Was soll beim Starten der App angezeigt werden?"

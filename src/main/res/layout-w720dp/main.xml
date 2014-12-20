@@ -1,0 +1,54 @@
+<android.support.v4.widget.DrawerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/wide_content">
+
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/main_toolbar"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_width="match_parent"
+                android:background="?attr/colorPrimary"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+        <FrameLayout
+                android:id="@+id/sidebar_container_left"
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:layout_below="@+id/main_toolbar"/>
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/sidebar_container_left"
+                android:layout_below="@+id/main_toolbar">
+
+            <FrameLayout
+                    android:id="@+id/content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <include layout="@layout/view_paginate"/>
+
+            <include layout="@layout/view_fastscroll"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <FrameLayout
+            android:id="@+id/sidebar_container_right"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:clickable="true"/>
+
+</android.support.v4.widget.DrawerLayout>

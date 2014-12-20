@@ -183,7 +183,7 @@
         <CheckBoxPreference
                 android:key="pref_dynamic_toolbars"
                 android:title="Dynamische Toolbars"
-                android:summary="Aktiviere dynamische Toolbars in der Threadview"
+                android:summary="Aktiviere dynamische Toolbars in der Threadview (Nicht auf Tablets)"
                 android:defaultValue="true"/>
 
         <CheckBoxPreference

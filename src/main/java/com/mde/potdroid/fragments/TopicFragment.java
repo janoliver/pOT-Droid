@@ -103,19 +103,22 @@ public class TopicFragment extends PaginateFragment implements
         setHasOptionsMenu(true);
         mPullToRefreshLayout.setSwipeDown(false);
 
-        ViewTreeObserver vto = getBaseActivity().getToolbar().getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                getBaseActivity().getToolbar().getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                mPullToRefreshLayout.setTopMargin(getBaseActivity().getToolbar().getHeight());
-            }
-        });
-
         setupWebView();
 
         mSettings = new SettingsWrapper(getBaseActivity());
-        getBaseActivity().setOverlayToolbars();
+
+        if(!Utils.isTablet(getBaseActivity())) {
+            getBaseActivity().setOverlayToolbars();
+
+            ViewTreeObserver vto = getBaseActivity().getToolbar().getViewTreeObserver();
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    getBaseActivity().getToolbar().getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    mPullToRefreshLayout.setTopMargin(getBaseActivity().getToolbar().getHeight());
+                }
+            });
+        }
 
         if (mTopic == null)
             startLoader(this);
@@ -717,7 +720,7 @@ public class TopicFragment extends PaginateFragment implements
             boolean wvScrolledBottom = (wvContentLength - mWebView.getCurrentScrollY()) <=
                     (mWebView.getHeight() + paginateLayoutHeight);
 
-            if(mSettings.dynamicToolbars()) {
+            if(mSettings.dynamicToolbars() && !Utils.isTablet(getBaseActivity())) {
                 if (!toolbarsHidden && scrollingDown && !wvScrolledTop && !wvScrolledBottom) {
                     ViewPropertyAnimator.animate(t).cancel();
                     ViewPropertyAnimator.animate(p).cancel();

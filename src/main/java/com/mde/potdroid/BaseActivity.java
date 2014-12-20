@@ -7,7 +7,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.*;
+import android.view.Gravity;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -115,8 +117,9 @@ public class BaseActivity extends ActionBarActivity {
         // add the fragments
         if (savedInstanceState == null) {
 
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.sidebar_container_left, mLeftSidebar, TAG_SIDEBAR_LEFT).commit();
+            if(Utils.isLoggedIn())
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.sidebar_container_left, mLeftSidebar, TAG_SIDEBAR_LEFT).commit();
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.sidebar_container_right, mRightSidebar, TAG_SIDEBAR_RIGHT).commit();
@@ -150,7 +153,14 @@ public class BaseActivity extends ActionBarActivity {
         if(mSettings.getMataAction() == SettingsWrapper.START_SIDEBAR && Utils.isLoggedIn()) {
             // Pass the event to ActionBarDrawerToggle, if it returns
             // true, then it has handled the app icon touch event
-            return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+            try {
+                return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+            } catch(IllegalArgumentException e) {
+                // in landscape mode or for certain screen sizes, this will fail.
+                // This throwing is therefore the expected behaviour.
+                // do nothing.
+                return true;
+            }
         } else {
             switch (item.getItemId())
             {
@@ -221,6 +231,10 @@ public class BaseActivity extends ActionBarActivity {
         p.addRule(RelativeLayout.BELOW, 0);
         p.addRule(RelativeLayout.ABOVE, 0);
         mContentView.setLayoutParams(p);
+    }
+
+    public boolean getOverlayToolbars() {
+        return mOverlayToolbars;
     }
 
     public void setSolidToolbars() {

@@ -1,5 +1,6 @@
 package com.mde.potdroid.helpers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.TypedArray;
@@ -13,6 +14,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import android.util.TypedValue;
+import com.mde.potdroid.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -274,5 +276,9 @@ public class Utils {
         int resid = ta.getResourceId(0, 0);
         ta.recycle();
         return resid;
+    }
+
+    public static boolean isTablet(Activity a) {
+        return a.findViewById(R.id.wide_content) != null;
     }
 }

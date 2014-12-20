@@ -191,6 +191,11 @@ public class TopicJSInterface extends BenderJSInterface {
         return mTopicFragment.getBaseActivity().getPaginateLayout().isShown();
     }
 
+    @JavascriptInterface
+    public boolean isOverlayToolbars() {
+        return mTopicFragment.getBaseActivity().getOverlayToolbars();
+    }
+
     /**
      * Check if this is the last Page of the topic
      *

@@ -95,6 +95,16 @@
                 android:defaultValue="0"
                 android:entries="@array/load_images"
                 android:entryValues="@array/load_images_values"/>
+
+        <EditTextPreference
+                android:defaultValue="16"
+                android:dialogTitle="Bilder Cache Größe in MB"
+                android:inputType="number"
+                android:numeric="integer"
+                android:key="pref_font_size"
+                android:summary="Schriftgröße in Threads (16 ist Standard)"
+                android:title="Topic Schriftgröße" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -61,9 +61,6 @@ public class TopicFragment extends PaginateFragment implements
     private boolean mUserInteraction;
     private int mOldScroll;
 
-    // the settings wrapper instance
-    private SettingsWrapper mSettings;
-
     // we need to invoke some functions on this one outside of the
     // webview initialization, so keep a reference here.
     private TopicJSInterface mJsInterface;
@@ -104,8 +101,6 @@ public class TopicFragment extends PaginateFragment implements
         mPullToRefreshLayout.setSwipeDown(false);
 
         setupWebView();
-
-        mSettings = new SettingsWrapper(getBaseActivity());
 
         if(!Utils.isTablet(getBaseActivity())) {
             getBaseActivity().setOverlayToolbars();
@@ -241,6 +236,7 @@ public class TopicFragment extends PaginateFragment implements
             }
 
             mWebView.getSettings().setJavaScriptEnabled(true);
+            mWebView.getSettings().setDefaultFontSize(mSettings.getDefaultFontSize());
             mWebView.setBackgroundColor(0x00000000);
             mWebView.getSettings().setAllowFileAccess(true);
             mWebView.getSettings().setUseWideViewPort(true);

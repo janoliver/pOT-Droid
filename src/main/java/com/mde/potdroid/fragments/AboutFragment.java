@@ -43,6 +43,7 @@ public class AboutFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_about, container, false);
         WebView webView = (WebView) v.findViewById(R.id.about);
+        webView.getSettings().setDefaultFontSize(mSettings.getDefaultFontSize());
         try {
             webView.loadDataWithBaseURL("file:///android_asset/", getAboutHtml(),
                     "text/html", Network.ENCODING_UTF8, null);

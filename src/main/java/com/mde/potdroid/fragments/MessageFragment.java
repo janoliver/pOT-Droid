@@ -256,6 +256,7 @@ public class MessageFragment extends BaseFragment
         mWebView = new WebView(getBaseActivity());
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setDomStorageEnabled(true);
+        mWebView.getSettings().setDefaultFontSize(mSettings.getDefaultFontSize());
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         mWebView.getSettings().setAllowFileAccess(true);
         mWebView.setWebChromeClient(new WebChromeClient());

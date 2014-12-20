@@ -59,6 +59,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_SWIPE_TO_REFRESH = "pref_swipe_to_refresh";
     public static final String PREF_KEY_SWIPE_TO_PAGINATE = "pref_swipe_to_paginate";
     public static final String PREF_KEY_FIXED_SIDEBAR = "pref_fixed_sidebar";
+    public static final String PREF_KEY_FONT_SIZE = "pref_font_size";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;
@@ -205,6 +206,10 @@ public class SettingsWrapper {
 
     public int getCacheSize() {
         return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_CACHE_SIZE, "50")) * 1024 * 1024;
+    }
+
+    public int getDefaultFontSize() {
+        return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_FONT_SIZE, "16"));
     }
 
     public int getConnectionTimeout() {

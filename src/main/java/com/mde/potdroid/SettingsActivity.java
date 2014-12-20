@@ -6,12 +6,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.*;
-import android.widget.Toast;
+import com.mde.potdroid.fragments.BaseFragment;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.services.MessagePollingService;
 import com.mde.potdroid.views.LoginDialog;
 import com.mde.potdroid.views.LogoutDialog;
+import com.nispok.snackbar.Snackbar;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -46,7 +47,10 @@ public class SettingsActivity extends PreferenceActivity
         clearCachePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 il.clearDiskCache();
-                Toast.makeText(SettingsActivity.this, "Cache geleert!", Toast.LENGTH_LONG).show();
+                Snackbar.with(getApplicationContext())
+                        .text("Cache geleert!")
+                        .color(BaseFragment.COLOR_SUCCESS)
+                        .show(SettingsActivity.this);
                 return true;
             }
         });

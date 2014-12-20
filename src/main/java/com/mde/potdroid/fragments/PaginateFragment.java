@@ -1,7 +1,11 @@
 package com.mde.potdroid.fragments;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.mde.potdroid.R;
 import com.mde.potdroid.views.IconButton;
@@ -32,6 +36,8 @@ abstract public class PaginateFragment extends BaseFragment {
 
     public abstract boolean isLastPage();
 
+    public abstract ViewGroup getSwipeView();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +49,13 @@ abstract public class PaginateFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         refreshPaginateLayout();
+
+        if(getSwipeView() != null)
+            getSwipeView().setOnTouchListener(new PaginateDragListener());
+    }
+
+    public void setSwipeTarget(View v) {
+        v.setOnTouchListener(new PaginateDragListener());
     }
 
     public void refreshPaginateLayout() {
@@ -231,6 +244,32 @@ abstract public class PaginateFragment extends BaseFragment {
         }
     }
 
+    class PaginateDragListener implements View.OnTouchListener {
+        private float start_x;
+        private float min_distance;
+
+        public PaginateDragListener() {
+            super();
+
+            DisplayMetrics dm = getResources().getDisplayMetrics();
+            min_distance = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, dm);
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                start_x = event.getX();
+            } else if(event.getAction() == MotionEvent.ACTION_MOVE) {
+                float dx = start_x - event.getX();
+
+                if(dx > min_distance && !isLastPage())
+                    goToNextPage();
+                if(dx < -min_distance && !isFirstPage())
+                    goToPrevPage();
+            }
+            return false;
+        }
+    }
 
     public interface FastScrollListener {
         public void onUpButtonClicked();

@@ -375,6 +375,8 @@ public class TopicFragment extends PaginateFragment implements
                 mJsInterface.tobottom();
             }
         });
+
+        setSwipeTarget(mWebView);
     }
 
     public Topic getTopic() {
@@ -431,6 +433,11 @@ public class TopicFragment extends PaginateFragment implements
 
     public void refreshPage() {
         restartLoader(this);
+    }
+
+    @Override
+    public ViewGroup getSwipeView() {
+        return null;
     }
 
     @Override

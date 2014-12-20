@@ -250,6 +250,11 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     }
 
     @Override
+    public ViewGroup getSwipeView() {
+        return mListView;
+    }
+
+    @Override
     public boolean isFirstPage() {
         return mBoard == null || mBoard.getPage() == 1;
     }

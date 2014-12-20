@@ -120,6 +120,13 @@ public class BaseActivity extends ActionBarActivity {
             if(Utils.isLoggedIn())
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.sidebar_container_left, mLeftSidebar, TAG_SIDEBAR_LEFT).commit();
+            else {
+                findViewById(R.id.sidebar_container_left).setVisibility(View.GONE);
+                View v = findViewById(R.id.wide_content);
+                RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) v.getLayoutParams();
+                p.addRule(RelativeLayout.LEFT_OF, 0);
+                v.setLayoutParams(p);
+            }
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.sidebar_container_right, mRightSidebar, TAG_SIDEBAR_RIGHT).commit();

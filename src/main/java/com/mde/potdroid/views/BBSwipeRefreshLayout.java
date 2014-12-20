@@ -33,6 +33,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Transformation;
 import android.widget.AbsListView;
+import com.mde.potdroid.R;
 
 
 /**
@@ -55,8 +56,8 @@ import android.widget.AbsListView;
  * provide accessibility events; instead, a menu item must be provided to allow
  * refresh of the content wherever this gesture is used.</p>
  */
-public class SwipeRefreshLayout extends ViewGroup {
-    private static final String LOG_TAG = SwipeRefreshLayout.class.getSimpleName();
+public class BBSwipeRefreshLayout extends ViewGroup {
+    private static final String LOG_TAG = BBSwipeRefreshLayout.class.getSimpleName();
 
     private static final long RETURN_TO_ORIGINAL_POSITION_TIMEOUT = 300;
     private static final float ACCELERATE_INTERPOLATION_FACTOR = 1.5f;
@@ -85,14 +86,13 @@ public class SwipeRefreshLayout extends ViewGroup {
     private boolean mIsBeingDragged;
     private int mActivePointerId = INVALID_POINTER;
 
+    int mAdapterViewId;
+
     // Target is returning to its start offset because it was cancelled or a
     // refresh was triggered.
     private boolean mReturningToStart;
     private final DecelerateInterpolator mDecelerateInterpolator;
     private final AccelerateInterpolator mAccelerateInterpolator;
-    private static final int[] LAYOUT_ATTRS = new int[] {
-            android.R.attr.enabled
-    };
 
     private Animation mShrinkTrigger = new Animation() {
         @Override
@@ -133,7 +133,7 @@ public class SwipeRefreshLayout extends ViewGroup {
      * Simple constructor to use when creating a SwipeRefreshLayout from code.
      * @param context
      */
-    public SwipeRefreshLayout(Context context) {
+    public BBSwipeRefreshLayout(Context context) {
         this(context, null);
     }
 
@@ -142,7 +142,7 @@ public class SwipeRefreshLayout extends ViewGroup {
      * @param context
      * @param attrs
      */
-    public SwipeRefreshLayout(Context context, AttributeSet attrs) {
+    public BBSwipeRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
@@ -157,9 +157,10 @@ public class SwipeRefreshLayout extends ViewGroup {
         mDecelerateInterpolator = new DecelerateInterpolator(DECELERATE_INTERPOLATION_FACTOR);
         mAccelerateInterpolator = new AccelerateInterpolator(ACCELERATE_INTERPOLATION_FACTOR);
 
-        final TypedArray a = context.obtainStyledAttributes(attrs, LAYOUT_ATTRS);
-        setEnabled(a.getBoolean(0, true));
-        a.recycle();
+        TypedArray mStyledAttributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.BBSwipeRefreshLayout, 0, 0);
+        mAdapterViewId = mStyledAttributes.getResourceId (R.styleable.BBSwipeRefreshLayout_adapter_view, -1);
+        setEnabled(mStyledAttributes.getBoolean(R.styleable.BBSwipeRefreshLayout_enabled, true));
+        mStyledAttributes.recycle();
     }
 
     @Override
@@ -279,7 +280,10 @@ public class SwipeRefreshLayout extends ViewGroup {
                 throw new IllegalStateException(
                         "SwipeRefreshLayout can host only one direct child");
             }
-            mTarget = getChildAt(0);
+
+            mTarget = findViewById(mAdapterViewId);
+            if(mTarget == null)
+                mTarget = getChildAt(0);
         }
         if (mDistanceToTriggerSync == -1) {
             if (getParent() != null && ((View)getParent()).getHeight() > 0) {

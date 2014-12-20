@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/sidebar"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -54,10 +55,11 @@
 
     </LinearLayout>
 
-    <com.mde.potdroid.views.SwipeRefreshLayout
+    <com.mde.potdroid.views.BBSwipeRefreshLayout
             android:id="@+id/ptr_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:adapter_view="@+id/listview_bookmarks">
 
         <RelativeLayout
                 android:id="@+id/bookmark_list_holder"
@@ -85,6 +87,6 @@
                     android:clickable="false"/>
         </RelativeLayout>
 
-    </com.mde.potdroid.views.SwipeRefreshLayout>
+    </com.mde.potdroid.views.BBSwipeRefreshLayout>
 
 </LinearLayout>

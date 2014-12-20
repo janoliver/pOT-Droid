@@ -18,20 +18,20 @@ import com.mde.potdroid.R;
 import com.mde.potdroid.SettingsActivity;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.views.IconDrawable;
-import com.mde.potdroid.views.SwipeRefreshLayout;
+import com.mde.potdroid.views.BBSwipeRefreshLayout;
 import com.nispok.snackbar.Snackbar;
 
 /**
  * The Base Fragment class that all Fragments should inherit. Provides some methods
  * for convenient access of objects and handles loading animations.
  */
-public abstract class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public abstract class BaseFragment extends Fragment implements BBSwipeRefreshLayout.OnRefreshListener {
 
     // this is the ID of the content loader
     protected static final int CONTENT_LOADER_ID = 0;
 
     // the pulltorefresh instance
-    protected SwipeRefreshLayout mPullToRefreshLayout;
+    protected BBSwipeRefreshLayout mPullToRefreshLayout;
 
     public static int COLOR_SUCCESS = Color.parseColor("#669900");
     public static int COLOR_ERROR = Color.parseColor("#cc0000");
@@ -45,10 +45,10 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         setRetainInstance(true);
 
         // Now find the PullToRefreshLayout to setup
-        mPullToRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.ptr_layout);
+        mPullToRefreshLayout = (BBSwipeRefreshLayout) getView().findViewById(R.id.ptr_layout);
 
         if(mPullToRefreshLayout == null)
-            mPullToRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.ptr_holder);
+            mPullToRefreshLayout = (BBSwipeRefreshLayout) getView().findViewById(R.id.ptr_holder);
 
         if (mPullToRefreshLayout != null) {
             mPullToRefreshLayout.setOnRefreshListener(this);

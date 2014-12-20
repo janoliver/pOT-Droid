@@ -24,7 +24,7 @@
                 android:gravity="left|center_vertical"/>
     </LinearLayout>
 
-    <com.mde.potdroid.views.SwipeRefreshLayout
+    <com.mde.potdroid.views.BBSwipeRefreshLayout
             android:id="@+id/ptr_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -55,7 +55,7 @@
                     android:clickable="false"/>
         </RelativeLayout>
 
-    </com.mde.potdroid.views.SwipeRefreshLayout>
+    </com.mde.potdroid.views.BBSwipeRefreshLayout>
 
 
 </LinearLayout>

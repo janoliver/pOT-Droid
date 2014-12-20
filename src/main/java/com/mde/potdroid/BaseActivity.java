@@ -147,7 +147,7 @@ public class BaseActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(mSettings.getMataAction() == SettingsWrapper.START_SIDEBAR) {
+        if(mSettings.getMataAction() == SettingsWrapper.START_SIDEBAR && Utils.isLoggedIn()) {
             // Pass the event to ActionBarDrawerToggle, if it returns
             // true, then it has handled the app icon touch event
             return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);

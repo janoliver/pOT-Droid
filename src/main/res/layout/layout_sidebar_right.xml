@@ -61,7 +61,7 @@
                     android:layout_height="35dp"
                     android:text="@string/icon_refresh"
                     android:id="@+id/button_refresh"
-                    android:background="@drawable/circular_translucent_button_background"
+                    android:background="?attr/bbCircularTransparentClickable"
                     android:textSize="22sp"
                     android:textColor="?attr/bbTextColorSecondary"
                     android:layout_centerHorizontal="true"

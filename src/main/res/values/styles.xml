@@ -30,6 +30,7 @@
         <item name="bbBackgroundList">@drawable/dark_background_list</item>
         <item name="bbBackgroundListActive">@drawable/dark_background_list_active</item>
         <item name="bbBackgroundTransparentClickable">@drawable/dark_background_transparent_clickable</item>
+        <item name="bbCircularTransparentClickable">@drawable/dark_circular_translucent_button_background</item>
     </style>
 
     <style name="DialogStyleDark">
@@ -74,6 +75,7 @@
         <item name="bbBackgroundList">@drawable/light_background_list</item>
         <item name="bbBackgroundListActive">@drawable/light_background_list_active</item>
         <item name="bbBackgroundTransparentClickable">@drawable/light_background_transparent_clickable</item>
+        <item name="bbCircularTransparentClickable">@drawable/light_circular_translucent_button_background</item>
     </style>
 
     <style name="DialogStyleLight">

@@ -19,6 +19,7 @@
     <attr name="bbBackgroundList" format="reference"/>
     <attr name="bbBackgroundListActive" format="reference"/>
     <attr name="bbBackgroundTransparentClickable" format="reference"/>
+    <attr name="bbCircularTransparentClickable" format="reference"/>
 
     <declare-styleable name="BBSwipeRefreshLayout">
         <attr name="adapter_view" format="reference"/>

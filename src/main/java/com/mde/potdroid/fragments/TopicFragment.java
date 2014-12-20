@@ -713,8 +713,8 @@ public class TopicFragment extends PaginateFragment implements
             boolean scrollingDown = scrollY > mOldScroll;
             boolean toolbarsHidden = ViewHelper.getTranslationY(t) < 0;
             int wvContentLength = (int) Math.floor(mWebView.getContentHeight() * mWebView.getScale());
-            boolean wvScrolledTop = toolbarHeight > mWebView.getCurrentScrollY();
-            boolean wvScrolledBottom = (wvContentLength - mWebView.getCurrentScrollY()) <
+            boolean wvScrolledTop = toolbarHeight >= mWebView.getCurrentScrollY();
+            boolean wvScrolledBottom = (wvContentLength - mWebView.getCurrentScrollY()) <=
                     (mWebView.getHeight() + paginateLayoutHeight);
 
             if(mSettings.dynamicToolbars()) {

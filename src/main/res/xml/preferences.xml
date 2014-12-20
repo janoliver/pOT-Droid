@@ -163,6 +163,24 @@
                 android:defaultValue="true"/>
 
         <CheckBoxPreference
+                android:key="pref_swipe_to_paginate"
+                android:title="Blättern per Swipe"
+                android:summary="Soll per links/rechts swipe geblättert werden?"
+                android:defaultValue="true"/>
+
+        <CheckBoxPreference
+                android:key="pref_swipe_to_refresh"
+                android:title="Aktualisieren per Swipe"
+                android:summary="Soll per hoch/runter swipe aktualisiert werden?"
+                android:defaultValue="true"/>
+
+        <CheckBoxPreference
+                android:key="pref_show_paginate_toolbar"
+                android:title="Zeige Blättern Toolbar"
+                android:summary="Soll eine Toolbar zum Blättern angezeigt werden?"
+                android:defaultValue="true"/>
+
+        <CheckBoxPreference
                 android:key="pref_dynamic_toolbars"
                 android:title="Dynamische Toolbars"
                 android:summary="Aktiviere dynamische Toolbars in der Threadview"

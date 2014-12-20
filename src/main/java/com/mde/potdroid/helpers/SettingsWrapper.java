@@ -54,6 +54,9 @@ public class SettingsWrapper {
     public static final String PREF_KEY_CONNECTION_TIMEOUT = "pref_connection_timeout";
     public static final String PREF_KEY_DYNAMIC_TOOLBARS = "pref_dynamic_toolbars";
     public static final String PREF_KEY_FASTSCROLL = "pref_fastscroll";
+    public static final String PREF_KEY_SHOW_PAGNIATE_TOOLBAR = "pref_show_paginate_toolbar";
+    public static final String PREF_KEY_SWIPE_TO_REFRESH = "pref_swipe_to_refresh";
+    public static final String PREF_KEY_SWIPE_TO_PAGINATE = "pref_swipe_to_paginate";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;
@@ -251,6 +254,18 @@ public class SettingsWrapper {
         return mSharedPreferences.getBoolean(PREF_KEY_DYNAMIC_TOOLBARS, true);
     }
 
+    public Boolean isSwipeToRefresh() {
+        return mSharedPreferences.getBoolean(PREF_KEY_SWIPE_TO_REFRESH, true);
+    }
+
+    public Boolean isSwipeToPaginate() {
+        return mSharedPreferences.getBoolean(PREF_KEY_SWIPE_TO_PAGINATE, true);
+    }
+
+    public Boolean isShowPaginateToolbar() {
+        return mSharedPreferences.getBoolean(PREF_KEY_SHOW_PAGNIATE_TOOLBAR, true);
+    }
+
     /**
      * Check if fastscroll in topic activity are enabled
      *
@@ -259,6 +274,7 @@ public class SettingsWrapper {
     public Boolean fastscroll() {
         return mSharedPreferences.getBoolean(PREF_KEY_FASTSCROLL, true);
     }
+
 
     /**
      * Set the settings username

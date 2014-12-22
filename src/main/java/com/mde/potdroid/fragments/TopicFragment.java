@@ -621,11 +621,11 @@ public class TopicFragment extends PaginateFragment implements
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
 
-        Intent chooser = Intent.createChooser(i, "Browser wählen...");
+        Intent chooser = Intent.createChooser(i, getString(R.string.choose_browser));
         if (i.resolveActivity(getBaseActivity().getPackageManager()) != null) {
             startActivity(chooser);
         } else {
-            showError("Kein Browser installiert?");
+            showError(getString(R.string.no_browser_installed));
         }
     }
 

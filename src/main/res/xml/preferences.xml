@@ -108,7 +108,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="Synchronisation"
+            android:title="PMs"
             android:key="pref_style_settings">
 
         <ListPreference

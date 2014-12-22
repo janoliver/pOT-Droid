@@ -119,7 +119,6 @@ public class BaseActivity extends ActionBarActivity {
         SettingsWrapper settings = new SettingsWrapper(this);
         if (settings.isVersionUpdate(this)) {
             settings.registerVersion(this);
-
             UpdateInfoDialog d = new UpdateInfoDialog();
             d.show(getSupportFragmentManager(), "update_dialog");
         }

@@ -45,6 +45,8 @@ public class Network {
         if(mHttpClient == null) {
             mHttpClient = new OkHttpClient();
             mHttpClient.setConnectTimeout(mSettings.getConnectionTimeout(), TimeUnit.SECONDS);
+            mHttpClient.setReadTimeout(mSettings.getConnectionTimeout(), TimeUnit.SECONDS);
+            Utils.log(mSettings.getConnectionTimeout() + " s ");
         }
         initHttpClient();
     }

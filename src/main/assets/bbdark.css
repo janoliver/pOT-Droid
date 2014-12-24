@@ -18,7 +18,7 @@ section.oldpost {
 }
 
 section.newpost header {
-    background: linear-gradient(to right, #E6EE9C, #394E63, #394E63, #394E63, #394E63, #394E63);
+    border-left:3px solid #E6EE9C;
 }
 
 header {

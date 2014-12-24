@@ -93,10 +93,17 @@ public class LoginDialog extends DialogPreference {
 
                     @Override
                     public void onFailure() {
-                        Snackbar.with(getContext().getApplicationContext())
-                                .text(R.string.msg_login_failure)
-                                .color(BaseFragment.COLOR_ERROR)
-                                .show((Activity) getContext());
+                        ((Activity)getContext()).runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                Snackbar.with(getContext().getApplicationContext())
+                                        .text(R.string.msg_login_failure)
+                                        .color(BaseFragment.COLOR_ERROR)
+                                        .show((Activity) getContext());
+                            }
+                        });
+
 
                     }
                 });

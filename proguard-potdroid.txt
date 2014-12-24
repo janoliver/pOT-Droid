@@ -72,3 +72,6 @@
 
 -keep class com.mde.potdroid.fragments.AboutFragment$AboutContext { *; }
 -keepclassmembers class com.mde.potdroid.fragments.AboutFragment$AboutContext { *; }
+
+-dontwarn java.nio.**
+-dontwarn org.codehaus.**

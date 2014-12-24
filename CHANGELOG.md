@@ -1,5 +1,18 @@
 # Changelog
 
+## Version 4
+
+### Changelog 4.0.0
+
+  * Angepasst an's Material Design und weitreichende Design Änderungen
+  * Neue HTTP engine mit einigen neuen Features
+  * Bildercache, Bilder Sharing Funktion
+  * Usability wurde verbessert
+  * Swipe to refresh und Blättern per Swipe eingebaut
+  * Neuer BBCode Editor
+  * Diverse neue Einstellungsmöglichkeiten
+  * Light theme
+
 ## Version 3
 
 ### Changelog 3.0.2, 3.0.3

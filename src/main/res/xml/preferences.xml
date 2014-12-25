@@ -98,7 +98,7 @@
 
         <EditTextPreference
                 android:defaultValue="16"
-                android:dialogTitle="Bilder Cache Größe in MB"
+                android:dialogTitle="Textgröße in Topics"
                 android:inputType="number"
                 android:numeric="integer"
                 android:key="pref_font_size"

@@ -30,6 +30,8 @@ abstract public class PaginateFragment extends BaseFragment {
 
     public abstract void goToNextPage();
 
+    public abstract void refreshPage();
+
     public abstract void goToPrevPage();
 
     public abstract boolean isFirstPage();
@@ -74,6 +76,7 @@ abstract public class PaginateFragment extends BaseFragment {
         IconButton ffwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_ffwd);
         IconButton rwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_rwd);
         IconButton frwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_frwd);
+        IconButton refreshButton = (IconButton) mPaginateLayout.findViewById(R.id.button_refresh);
 
         fwdButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +103,13 @@ abstract public class PaginateFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 goToFirstPage();
+            }
+        });
+
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshPage();
             }
         });
 

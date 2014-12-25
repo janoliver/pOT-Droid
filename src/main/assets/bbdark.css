@@ -22,7 +22,7 @@ section.newpost header {
 }
 
 header {
-    background-color:#394E63;
+    border-bottom:1px solid #394E63;
     font-weight:bold;
     padding:10px;
     overflow:auto;

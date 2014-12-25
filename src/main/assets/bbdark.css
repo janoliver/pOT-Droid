@@ -41,6 +41,13 @@ div.bender {
     float:left;
 }
 
+div.up-indicator {
+    color: #51677e;
+    font-size:1.2em;
+    text-align:center;
+    padding:5px 0 10px 0;
+}
+
 header div.bender {
     height:50px;
     width:50px;

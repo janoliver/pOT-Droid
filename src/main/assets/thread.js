@@ -18,6 +18,10 @@ $(document).ready(function() {
         $("#paddings").css("padding-top", api.getToolBarHeightInDp() + "px");
     }
 
+    if(!api.isPullUpToRefresh()) {
+        $(".up-indicator").hide();
+    }
+
     // automatic image loader
     // Only images within or after the currently visible post are loaded, so
     // the visible position is not changed

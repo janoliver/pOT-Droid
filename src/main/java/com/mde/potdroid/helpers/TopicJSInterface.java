@@ -141,6 +141,16 @@ public class TopicJSInterface extends BenderJSInterface {
     }
 
     /**
+     * Check if swipe to refresh is on
+     *
+     * @return true if yes
+     */
+    @JavascriptInterface
+    public boolean isPullUpToRefresh() {
+        return mSettings.isSwipeToRefresh();
+    }
+
+    /**
      * Check if old posts should be darkened
      *
      * @return true if yes

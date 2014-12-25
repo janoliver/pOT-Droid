@@ -50,7 +50,7 @@ abstract public class PaginateFragment extends BaseFragment {
 
         refreshPaginateLayout();
 
-        if(getSwipeView() != null)
+        if(getSwipeView() != null && mSettings.isSwipeToPaginate())
             getSwipeView().setOnTouchListener(new PaginateDragListener());
     }
 

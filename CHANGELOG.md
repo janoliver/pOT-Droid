@@ -6,6 +6,7 @@
 
   * Viele kleine Verbesserungen
   * Kompakte Versionen der Themes
+  * Rechte Seitenleiste kann deaktiviert werden.
 
 ### Changelog 4.0.0
 

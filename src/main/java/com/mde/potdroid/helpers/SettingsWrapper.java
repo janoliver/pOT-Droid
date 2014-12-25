@@ -57,6 +57,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_FASTSCROLL = "pref_fastscroll";
     public static final String PREF_KEY_SHOW_PAGNIATE_TOOLBAR = "pref_show_paginate_toolbar";
     public static final String PREF_KEY_SWIPE_TO_REFRESH = "pref_swipe_to_refresh";
+    public static final String PREF_KEY_SWIPE_TO_REFRESH_TOPIC = "pref_swipe_to_refresh_topic";
     public static final String PREF_KEY_SWIPE_TO_PAGINATE = "pref_swipe_to_paginate";
     public static final String PREF_KEY_FIXED_SIDEBAR = "pref_fixed_sidebar";
     public static final String PREF_KEY_FONT_SIZE = "pref_font_size";
@@ -263,6 +264,10 @@ public class SettingsWrapper {
 
     public Boolean isSwipeToRefresh() {
         return mSharedPreferences.getBoolean(PREF_KEY_SWIPE_TO_REFRESH, true);
+    }
+
+    public Boolean isSwipeToRefreshTopic() {
+        return mSharedPreferences.getBoolean(PREF_KEY_SWIPE_TO_REFRESH_TOPIC, true);
     }
 
     public Boolean isSwipeToPaginate() {

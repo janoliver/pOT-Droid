@@ -186,7 +186,13 @@
         <CheckBoxPreference
                 android:key="pref_swipe_to_refresh"
                 android:title="Aktualisieren per Swipe"
-                android:summary="Soll per hoch/runter swipe aktualisiert werden?"
+                android:summary="Sollen Listen per down swipe aktualisiert werden?"
+                android:defaultValue="true"/>
+
+        <CheckBoxPreference
+                android:key="pref_swipe_to_refresh_topic"
+                android:title="Topic aktualisieren per Swipe"
+                android:summary="Sollen Topics per up swipe aktualisiert werden?"
                 android:defaultValue="true"/>
 
         <CheckBoxPreference

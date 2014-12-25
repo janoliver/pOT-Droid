@@ -118,6 +118,8 @@ public class TopicFragment extends PaginateFragment implements
         if (mTopic == null)
             startLoader(this);
 
+        if(!mSettings.isSwipeToRefreshTopic())
+            mPullToRefreshLayout.setEnabled(false);
     }
 
     @Override

@@ -147,7 +147,7 @@ public class TopicJSInterface extends BenderJSInterface {
      */
     @JavascriptInterface
     public boolean isPullUpToRefresh() {
-        return mSettings.isSwipeToRefresh();
+        return mSettings.isSwipeToRefreshTopic();
     }
 
     /**

@@ -142,10 +142,10 @@ public class BookmarkFragment extends BaseFragment
                             @Override
                             public void run() {
                                 showSuccess(R.string.msg_bookmark_removed);
+                                hideLoadingAnimation();
+                                restartLoader(BookmarkFragment.this);
                             }
                         });
-                        hideLoadingAnimation();
-                        restartLoader(BookmarkFragment.this);
                     }
 
                     @Override

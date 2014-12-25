@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import com.mde.potdroid.R;
-import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.cookie.BasicClientCookie;
 
 import java.io.File;
@@ -171,6 +170,10 @@ public class SettingsWrapper {
             return R.style.PotDroidDark;
         if(theme.equals("PotDroidLight"))
             return R.style.PotDroidLight;
+        if(theme.equals("PotDroidDarkCompact"))
+            return R.style.PotDroidDarkCompact;
+        if(theme.equals("PotDroidLightCompact"))
+            return R.style.PotDroidLightCompact;
         return -1;
     }
 
@@ -429,29 +432,11 @@ public class SettingsWrapper {
     }
 
     /**
-     * Store a login cookie in the settings
-     *
-     * @param cookie the cookie to store
-     */
-    public void setLoginCookie(Cookie cookie) {
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(PREF_KEY_COOKIE_NAME, cookie.getName());
-        editor.putString(PREF_KEY_COOKIE_VALUE, cookie.getValue());
-        editor.putString(PREF_KEY_COOKIE_URL, cookie.getDomain());
-        editor.putString(PREF_KEY_COOKIE_PATH, cookie.getPath());
-        editor.commit();
-    }
-
-    /**
      * Clear the login cookie from the settings
      */
     public void clearCookie() {
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.remove(PREF_KEY_COOKIE_NAME);
-        editor.remove(PREF_KEY_COOKIE_VALUE);
-        editor.remove(PREF_KEY_COOKIE_URL);
-        editor.remove(PREF_KEY_COOKIE_PATH);
-        editor.commit();
+        PersistentCookieStore s = new PersistentCookieStore(mContext);
+        s.removeAll();
     }
 
     /**

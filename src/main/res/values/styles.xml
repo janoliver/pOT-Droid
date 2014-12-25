@@ -1,16 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="PotDroidDark" parent="@style/Theme.AppCompat.NoActionBar">
+    <style name="PotDroidDark" parent="@style/PotDroidDarkBase">
+        <item name="bbListItemPaddingLR">15dp</item>
+        <item name="bbListItemPaddingTB">10dp</item>
+        <item name="bbListItemFontPrimary">18sp</item>
+        <item name="bbListItemFontSecondary">15sp</item>
+        <item name="bbListItemFontTertiary">12sp</item>
+    </style>
+
+    <style name="PotDroidDarkCompact" parent="@style/PotDroidDarkBase">
+        <item name="bbListItemPaddingLR">10dp</item>
+        <item name="bbListItemPaddingTB">5dp</item>
+        <item name="bbListItemFontPrimary">16sp</item>
+        <item name="bbListItemFontSecondary">14sp</item>
+        <item name="bbListItemFontTertiary">12sp</item>
+    </style>
+
+    <style name="PotDroidLight" parent="@style/PotDroidLightBase">
+        <item name="bbListItemPaddingLR">15dp</item>
+        <item name="bbListItemPaddingTB">10dp</item>
+        <item name="bbListItemFontPrimary">18sp</item>
+        <item name="bbListItemFontSecondary">15sp</item>
+        <item name="bbListItemFontTertiary">12sp</item>
+    </style>
+
+    <style name="PotDroidLightCompact" parent="@style/PotDroidLightBase">
+        <item name="bbListItemPaddingLR">10dp</item>
+        <item name="bbListItemPaddingTB">5dp</item>
+        <item name="bbListItemFontPrimary">16sp</item>
+        <item name="bbListItemFontSecondary">14sp</item>
+        <item name="bbListItemFontTertiary">12sp</item>
+    </style>
+
+    <style name="PotDroidDarkBase" parent="@style/Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/bbstyle_darkblue</item>
         <item name="colorPrimaryDark">@color/bbstyle_darkblue_semi</item>
         <item name="colorAccent">@color/bbstyle_lightblue</item>
         <item name="android:windowBackground">@color/bbstyle_darkerblue</item>
         <item name="sdlDialogStyle">@style/DialogStyleDark</item>
-        <!--<item name="colorControlNormal">@color/green</item>
-        <item name="colorControlActivated">@color/red</item>
-        <item name="colorControlHighlight">@color/blue</item>
-        <item name="colorSwitchThumbNormal">@color/yellow</item>-->
         <item name="bbColorPrimary">@color/bbstyle_lightblue</item>
         <item name="bbColorSecondary">@color/bbstyle_darkblue</item>
         <item name="bbColorTertiary">@color/bbstyle_lighterblue</item>
@@ -40,22 +68,15 @@
         <item name="messageTextColor">@color/white</item>
         <item name="buttonTextColor">@color/white</item>
         <item name="buttonSeparatorColor">@color/bbstyle_darkblue</item>
-        <!--<item name="buttonBackgroundColorNormal">@color/dialog_button_normal</item>
-        <item name="buttonBackgroundColorPressed">@color/dialog_button_pressed</item>
-        <item name="buttonBackgroundColorFocused">@color/dialog_button_focused</item>-->
         <item name="dialogBackground">@color/bbstyle_lightblue</item>
     </style>
 
-    <style name="PotDroidLight" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="PotDroidLightBase" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/bbstyle_lightblue</item>
         <item name="colorPrimaryDark">@color/bbstyle_darkblue</item>
         <item name="colorAccent">@color/bbstyle_lightblue</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="sdlDialogStyle">@style/DialogStyleLight</item>
-        <!--<item name="colorControlNormal">@color/green</item>
-        <item name="colorControlActivated">@color/red</item>
-        <item name="colorControlHighlight">@color/blue</item>
-        <item name="colorSwitchThumbNormal">@color/yellow</item>-->
         <item name="bbColorPrimary">@color/white</item>
         <item name="bbColorSecondary">@color/lightgrey</item>
         <item name="bbColorTertiary">@color/lightergrey</item>
@@ -85,9 +106,6 @@
         <item name="messageTextColor">@color/darkgrey</item>
         <item name="buttonTextColor">@color/darkgrey</item>
         <item name="buttonSeparatorColor">@color/lightergrey</item>
-        <!--<item name="buttonBackgroundColorNormal">@color/dialog_button_normal</item>
-        <item name="buttonBackgroundColorPressed">@color/dialog_button_pressed</item>
-        <item name="buttonBackgroundColorFocused">@color/dialog_button_focused</item>-->
         <item name="dialogBackground">@color/white</item>
     </style>
 

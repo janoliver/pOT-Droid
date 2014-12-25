@@ -2,13 +2,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/bbBackgroundList"
-                android:padding="10dp">
+                android:padding="?attr/bbListItemPaddingTB">
 
     <TextView
             android:id="@+id/text_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="?attr/bbListItemFontPrimary"
             android:textColor="?attr/bbTextColorPrimary"/>
 
     <TextView
@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_name"
-            android:textSize="14sp"
+            android:textSize="?attr/bbListItemFontSecondary"
             android:textColor="?attr/bbTextColorSecondary"/>
 
 </RelativeLayout>

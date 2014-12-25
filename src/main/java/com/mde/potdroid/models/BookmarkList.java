@@ -23,6 +23,10 @@ public class BookmarkList implements Serializable {
         mBookmarkDatabase = new DatabaseWrapper(mContext);
     }
 
+    public void clearBookmarksCache() {
+        mBookmarkDatabase.clearBookmarks();
+    }
+
     public Integer getNumberOfNewPosts() {
         return mNumberOfNewPosts;
     }

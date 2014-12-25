@@ -4,7 +4,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/bbBackgroundList"
-                android:padding="15dp"
+                android:padding="?attr/bbListItemPaddingLR"
                 android:layout_gravity="center_vertical">
 
     <TextView
@@ -13,10 +13,10 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:scrollHorizontally="false"
-            android:textSize="18sp"
+            android:textSize="?attr/bbListItemFontPrimary"
             android:ellipsize="end"
             android:textColor="?attr/bbTextColorPrimary"
-            android:paddingRight="10dp"
+            android:paddingRight="?attr/bbListItemPaddingTB"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/newposts"/>
 
@@ -29,7 +29,7 @@
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:layout_alignParentRight="true"
-            android:textSize="12sp"
+            android:textSize="?attr/bbListItemFontTertiary"
             android:background="?attr/bbColorSecondary"
             android:textColor="?attr/bbTextColorSecondary"/>
 </RelativeLayout>

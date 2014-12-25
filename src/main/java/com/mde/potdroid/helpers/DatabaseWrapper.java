@@ -72,6 +72,16 @@ public class DatabaseWrapper {
         }
     }
 
+    public void clearBookmarks() {
+        try {
+            mDatabase.beginTransaction();
+            mDatabase.delete(BOOKMARKS_TABLE_NAME, null, null);
+            mDatabase.setTransactionSuccessful();
+        } finally {
+            mDatabase.endTransaction();
+        }
+    }
+
     /**
      * Expects an ArrayList of Bookmarks and synchronizes the Bookmarks Database table.
      *

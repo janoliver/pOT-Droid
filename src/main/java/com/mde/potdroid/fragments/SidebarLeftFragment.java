@@ -8,7 +8,10 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import com.mde.potdroid.*;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Bookmark;
@@ -25,6 +28,8 @@ public class SidebarLeftFragment extends BaseFragment
     // the bookmark list and adapter
     private BookmarkList mBookmarkList;
     private BookmarkListAdapter mListAdapter;
+    private IconButton mPmButton;
+    private IconButton mBookmarksButton;
 
     // this member indicates, whether the view is "dirty" and should be refreshed.
     private Boolean mDirty = true;
@@ -85,8 +90,8 @@ public class SidebarLeftFragment extends BaseFragment
             }
         });
 
-        IconButton bookmarks = (IconButton) v.findViewById(R.id.button_bookmarks);
-        bookmarks.setOnClickListener(new View.OnClickListener() {
+        mBookmarksButton = (IconButton) v.findViewById(R.id.button_bookmarks);
+        mBookmarksButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseActivity(), BookmarkActivity.class);
@@ -94,14 +99,19 @@ public class SidebarLeftFragment extends BaseFragment
             }
         });
 
-        IconButton pm = (IconButton) v.findViewById(R.id.button_pm);
-        pm.setOnClickListener(new View.OnClickListener() {
+        mPmButton = (IconButton) v.findViewById(R.id.button_pm);
+        mPmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseActivity(), MessageListActivity.class);
                 startActivity(intent);
             }
         });
+
+        if(!Utils.isLoggedIn()) {
+            mPmButton.disable();
+            mBookmarksButton.disable();
+        }
 
         IconButton refresh = (IconButton) v.findViewById(R.id.button_refresh);
         if(!mSettings.isSwipeToRefresh()) {
@@ -145,9 +155,24 @@ public class SidebarLeftFragment extends BaseFragment
     public void onLoadFinished(Loader<BookmarkParser.BookmarksContainer> loader,
                                BookmarkParser.BookmarksContainer success) {
         hideLoadingAnimation();
-        if (success != null) {
+
+        if(success != null && success.getException() != null) {
+            if(success.getException() instanceof Utils.NotLoggedInException) {
+                Utils.setNotLoggedIn();
+                mBookmarkList.clearBookmarksCache();
+                mListAdapter.notifyDataSetChanged();
+                showError(getString(R.string.notloggedin));
+                TextView indicator = (TextView)getView().findViewById(R.id.empty_bookmarks_text);
+                indicator.setText(R.string.notloggedin);
+
+                mPmButton.disable();
+                mBookmarksButton.disable();
+            }
+        } else if (success != null) {
+
             mBookmarkList.refresh(success.getBookmarks(), success.getNumberOfNewPosts());
             mListAdapter.notifyDataSetChanged();
+
         } else {
             showError(getString(R.string.msg_loading_error));
         }

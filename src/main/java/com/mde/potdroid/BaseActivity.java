@@ -99,7 +99,7 @@ public class BaseActivity extends ActionBarActivity {
         // add the fragments
         if (savedInstanceState == null) {
 
-            if(Utils.isLoggedIn() || !mSettings.isFixedSidebar())
+            if(!mSettings.isFixedSidebar())
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.sidebar_container_left, mLeftSidebar, TAG_SIDEBAR_LEFT).commit();
             else {

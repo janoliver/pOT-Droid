@@ -178,7 +178,14 @@ public class BookmarkFragment extends BaseFragment
                                BookmarkParser.BookmarksContainer success) {
         hideLoadingAnimation();
 
-        if (success != null) {
+        if(success != null && success.getException() != null) {
+            if(success.getException() instanceof Utils.NotLoggedInException) {
+                Utils.setNotLoggedIn();
+                mBookmarkList.clearBookmarksCache();
+                showError(getString(R.string.notloggedin));
+                mListAdapter.notifyDataSetChanged();
+            }
+        } else if (success != null) {
 
             mBookmarkList.refresh(success.getBookmarks(), success.getNumberOfNewPosts());
             mListAdapter.notifyDataSetChanged();
@@ -187,10 +194,7 @@ public class BookmarkFragment extends BaseFragment
             getActionbar().setSubtitle(subtitle);
 
         } else {
-            if(Utils.isLoggedIn())
-                showError(getString(R.string.msg_loading_error));
-            else
-                showError(getString(R.string.notloggedin));
+             showError(getString(R.string.msg_loading_error));
         }
     }
 
@@ -261,15 +265,16 @@ public class BookmarkFragment extends BaseFragment
 
         @Override
         public BookmarkParser.BookmarksContainer processNetworkResponse(String response) {
+            Utils.log(response);
             try {
                 BookmarkParser parser = new BookmarkParser();
                 return parser.parse(response);
-            } catch (Utils.NotLoggedInException e) {
-                Utils.setNotLoggedIn();
-                return null;
             } catch (Exception e) {
-                Utils.printException(e);
-                return null;
+                BookmarkParser.BookmarksContainer c = new BookmarkParser.BookmarksContainer();
+                Utils.setNotLoggedIn();
+                Utils.log("not logged in!");
+                c.setException(e);
+                return c;
             }
         }
 

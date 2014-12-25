@@ -136,6 +136,7 @@ public class BookmarkParser extends DefaultHandler {
 
         private ArrayList<Bookmark> mBookmarks = new ArrayList<Bookmark>();
         private Integer mNumberOfNewPosts;
+        private Exception mException;
 
         public void addBookmark(Bookmark b) {
             mBookmarks.add(b);
@@ -151,6 +152,14 @@ public class BookmarkParser extends DefaultHandler {
 
         public void setNumberOfNewPosts(int new_posts) {
             mNumberOfNewPosts = new_posts;
+        }
+
+        public void setException(Exception e) {
+            mException = e;
+        }
+
+        public Exception getException() {
+            return mException;
         }
     }
 }

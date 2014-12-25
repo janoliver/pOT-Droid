@@ -21,6 +21,12 @@
     <attr name="bbBackgroundTransparentClickable" format="reference"/>
     <attr name="bbCircularTransparentClickable" format="reference"/>
 
+    <attr name="bbListItemPaddingLR" format="dimension" />
+    <attr name="bbListItemPaddingTB" format="dimension" />
+    <attr name="bbListItemFontPrimary" format="dimension" />
+    <attr name="bbListItemFontSecondary" format="dimension" />
+    <attr name="bbListItemFontTertiary" format="dimension" />
+
     <declare-styleable name="BBSwipeRefreshLayout">
         <attr name="adapter_view" format="reference"/>
         <attr name="enabled" format="boolean"/>

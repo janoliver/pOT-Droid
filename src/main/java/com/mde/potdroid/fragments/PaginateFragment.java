@@ -61,7 +61,8 @@ abstract public class PaginateFragment extends BaseFragment {
     }
 
     public void setSwipeTarget(View v) {
-        v.setOnTouchListener(new PaginateDragListener());
+        if(mSettings.isSwipeToPaginate())
+            v.setOnTouchListener(new PaginateDragListener());
     }
 
     public void refreshPaginateLayout() {

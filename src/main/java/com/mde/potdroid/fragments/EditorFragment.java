@@ -186,6 +186,8 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
         mPullToRefreshLayout.setSwipeable(false);
 
+        mEditText.requestFocus();
+
         hideLoadingAnimation();
     }
 

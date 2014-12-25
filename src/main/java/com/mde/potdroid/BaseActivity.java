@@ -111,6 +111,9 @@ public class BaseActivity extends ActionBarActivity {
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT);
             }
 
+            if(!mSettings.isBoardBookmarks())
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
+
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.sidebar_container_right, mRightSidebar, TAG_SIDEBAR_RIGHT).commit();
         }

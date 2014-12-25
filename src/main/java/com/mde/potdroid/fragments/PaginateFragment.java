@@ -23,6 +23,10 @@ abstract public class PaginateFragment extends BaseFragment {
     private LinearLayout mFastscrollLayout;
     private IconButton mUpButton;
     private IconButton mDownButton;
+    private boolean mDownButtonShown;
+    private boolean mUpButtonShown;
+    private boolean mDownButtonAnimation;
+    private boolean mUpButtonAnimation;
 
     public abstract void goToFirstPage();
 
@@ -47,12 +51,12 @@ abstract public class PaginateFragment extends BaseFragment {
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         refreshPaginateLayout();
 
-        if(getSwipeView() != null && mSettings.isSwipeToPaginate())
+        if (getSwipeView() != null && mSettings.isSwipeToPaginate())
             getSwipeView().setOnTouchListener(new PaginateDragListener());
     }
 
@@ -66,7 +70,7 @@ abstract public class PaginateFragment extends BaseFragment {
         mUpButton = (IconButton) mFastscrollLayout.findViewById(R.id.button_up);
         mDownButton = (IconButton) mFastscrollLayout.findViewById(R.id.button_down);
 
-        if(!mSettings.isShowPaginateToolbar()) {
+        if (!mSettings.isShowPaginateToolbar()) {
             mPaginateLayout.setVisibility(View.GONE);
             return;
         }
@@ -134,7 +138,7 @@ abstract public class PaginateFragment extends BaseFragment {
             frwdButton.setVisibility(View.VISIBLE);
         }
 
-        if(anyVisible) {
+        if (anyVisible) {
             getBaseActivity().showPaginateView();
         } else {
             getBaseActivity().hidePaginateView();
@@ -160,102 +164,144 @@ abstract public class PaginateFragment extends BaseFragment {
     }
 
     public void hideDownButton() {
-        if(mDownButton.getVisibility() == View.VISIBLE) {
-            ViewPropertyAnimator.animate(mDownButton).cancel();
-            ViewPropertyAnimator.animate(mDownButton).alpha(0f).setListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                    ViewHelper.setAlpha(mDownButton, 1.0f);
-                }
+        if(!mDownButtonShown)
+            return;
 
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mDownButton.setVisibility(View.INVISIBLE);
-                }
+        mDownButtonAnimation = true;
 
-                @Override
-                public void onAnimationCancel(Animator animation) {
-                }
+        ViewPropertyAnimator.animate(mDownButton).cancel();
+        ViewPropertyAnimator.animate(mDownButton).alpha(0f).setStartDelay(1000).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                ViewHelper.setAlpha(mDownButton, 1.0f);
+            }
 
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-                }
-            }).setDuration(500).start();
-        }
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mDownButtonShown = false;
+                mDownButtonAnimation = false;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        }).setDuration(500).start();
     }
 
     public void showDownButton() {
-        if(mDownButton.getVisibility() == View.INVISIBLE) {
-            ViewPropertyAnimator.animate(mDownButton).cancel();
-            ViewPropertyAnimator.animate(mDownButton).alpha(1f).setListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                    ViewHelper.setAlpha(mDownButton, 0.0f);
-                    mDownButton.setVisibility(View.VISIBLE);
-                }
-
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animation) {
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-                }
-            }).setDuration(500).start();
+        if(mDownButtonShown) {
+            // restart the timer to hide the button
+            hideDownButton();
+            return;
         }
+
+        if(mDownButtonAnimation)
+            return;
+
+        mDownButtonAnimation = true;
+
+        ViewPropertyAnimator.animate(mDownButton).alpha(1f).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                ViewHelper.setAlpha(mDownButton, 0.0f);
+                mDownButton.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mDownButtonAnimation = false;
+                mDownButtonShown = true;
+                hideDownButton();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        }).setDuration(500).start();
+
     }
 
 
     public void hideUpButton() {
-        if(mUpButton.getVisibility() == View.VISIBLE) {
-            ViewPropertyAnimator.animate(mUpButton).cancel();
-            ViewPropertyAnimator.animate(mUpButton).alpha(0f).setListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                    ViewHelper.setAlpha(mUpButton, 1.0f);
-                }
+        if(!mUpButtonShown)
+            return;
 
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mUpButton.setVisibility(View.INVISIBLE);
-                }
+        mUpButtonAnimation = true;
 
-                @Override
-                public void onAnimationCancel(Animator animation) {}
+        ViewPropertyAnimator.animate(mUpButton).cancel();
+        ViewPropertyAnimator.animate(mUpButton).alpha(0f).setStartDelay(1000).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                ViewHelper.setAlpha(mUpButton, 1.0f);
+            }
 
-                @Override
-                public void onAnimationRepeat(Animator animation) {}
-            }).setDuration(500).start();
-        }
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mUpButtonShown = false;
+                mUpButtonAnimation = false;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        }).setDuration(500).start();
     }
 
     public void showUpButton() {
-        if(mUpButton.getVisibility() == View.INVISIBLE) {
-            ViewPropertyAnimator.animate(mUpButton).cancel();
-            ViewPropertyAnimator.animate(mUpButton).alpha(1f).setListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                    ViewHelper.setAlpha(mUpButton, 0.0f);
-                    mUpButton.setVisibility(View.VISIBLE);
-                }
-
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animation) {
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-                }
-            }).setDuration(500).start();
+        if(mUpButtonShown) {
+            // restart the timer to hide the button
+            hideUpButton();
+            return;
         }
+
+        if(mUpButtonAnimation)
+            return;
+
+        mUpButtonAnimation = true;
+
+        ViewPropertyAnimator.animate(mUpButton).alpha(1f).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                ViewHelper.setAlpha(mUpButton, 0.0f);
+                mUpButton.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mUpButtonAnimation = false;
+                mUpButtonShown = true;
+                hideUpButton();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        }).setDuration(500).start();
+
+    }
+
+
+
+    public interface FastScrollListener {
+        public void onUpButtonClicked();
+
+        public void onDownButtonClicked();
     }
 
     class PaginateDragListener implements View.OnTouchListener {
@@ -273,21 +319,16 @@ abstract public class PaginateFragment extends BaseFragment {
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 start_x = event.getX();
-            } else if(event.getAction() == MotionEvent.ACTION_MOVE) {
+            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                 float dx = start_x - event.getX();
 
-                if(dx > min_distance && !isLastPage())
+                if (dx > min_distance && !isLastPage())
                     goToNextPage();
-                if(dx < -min_distance && !isFirstPage())
+                if (dx < -min_distance && !isFirstPage())
                     goToPrevPage();
             }
             return false;
         }
-    }
-
-    public interface FastScrollListener {
-        public void onUpButtonClicked();
-        public void onDownButtonClicked();
     }
 
 }

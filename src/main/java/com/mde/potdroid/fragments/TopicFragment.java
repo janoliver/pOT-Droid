@@ -741,7 +741,11 @@ public class TopicFragment extends PaginateFragment implements
             }
 
             if(mSettings.fastscroll()) {
-                if (wvScrolledBottom) {
+                if(scrollingDown)
+                    showDownButton();
+                else
+                    showUpButton();
+                /*if (wvScrolledBottom) {
                     hideDownButton();
                 } else {
                     showDownButton();
@@ -751,7 +755,7 @@ public class TopicFragment extends PaginateFragment implements
                     hideUpButton();
                 } else {
                     showUpButton();
-                }
+                }*/
             }
 
             mOldScroll = scrollY;

@@ -2,6 +2,11 @@
 
 ## Version 4
 
+### Changelog 4.0.1
+
+  * Viele kleine Verbesserungen
+  * Kompakte Versionen der Themes
+
 ### Changelog 4.0.0
 
   * Angepasst an's Material Design und weitreichende Design Änderungen

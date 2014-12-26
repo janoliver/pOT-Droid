@@ -63,10 +63,13 @@ public class SettingsActivity extends PreferenceActivity
         super.onResume();
 
         // set some custom descriptions programmatically
+        setPreferenceDescription(SettingsWrapper.PREF_KEY_THEME);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_USERNAME);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_BENDERS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_SHOW_BENDERS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_IMAGES);
+        setPreferenceDescription(SettingsWrapper.PREF_KEY_SHOW_MENU);
+        setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_VIDEOS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_POLL_MESSAGES);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_MATA);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_MATA_FORUM);

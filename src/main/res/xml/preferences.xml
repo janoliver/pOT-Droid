@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory
+    <PreferenceScreen
             android:title="Account"
-            android:key="pref_account_settings">
+            android:key="pref_account_settings"
+            android:summary="Account Einstellungen">
         <com.mde.potdroid.views.LoginDialog
                 android:key="pref_login"
                 android:dialogIcon="@android:drawable/ic_dialog_alert"
@@ -20,11 +21,12 @@
                 android:positiveButtonText="Logout"
                 android:negativeButtonText="Abbrechen"
                 android:enabled="false"/>
-    </PreferenceCategory>
+    </PreferenceScreen>
 
-    <PreferenceCategory
+    <PreferenceScreen
             android:title="Style"
-            android:key="pref_style_settings">
+            android:key="pref_style_settings"
+            android:summary="Aussehen der App konfigurieren">
 
         <ListPreference
                 android:key="pref_theme"
@@ -105,11 +107,12 @@
                 android:summary="Schriftgröße in Threads (16 ist Standard)"
                 android:title="Topic Schriftgröße" />
 
-    </PreferenceCategory>
+    </PreferenceScreen>
 
-    <PreferenceCategory
+    <PreferenceScreen
             android:title="PMs"
-            android:key="pref_style_settings">
+            android:key="pref_style_settings"
+            android:summary="PM Polling Optionen">
 
         <ListPreference
                 android:title="Nach neuen PMs checken"
@@ -128,11 +131,12 @@
         <CheckBoxPreference
                 android:key="pref_notification_vibrate"
                 android:title="Vibrieren bei Benachrichtigung"/>
-    </PreferenceCategory>
+    </PreferenceScreen>
 
-    <PreferenceCategory
+    <PreferenceScreen
             android:title="Verhalten"
-            android:key="pref_behaviour_settings">
+            android:key="pref_behaviour_settings"
+            android:summary="Verhalten der App konfigurieren">
 
         <CheckBoxPreference
                 android:key="pref_fixed_sidebar"
@@ -218,11 +222,12 @@
                 android:title="Fastscroll Buttons"
                 android:summary="Aktiviere Fastscroll (Hoch/Runter) Buttons in der Threadview"
                 android:defaultValue="true"/>
-    </PreferenceCategory>
+    </PreferenceScreen>
 
-    <PreferenceCategory
+    <PreferenceScreen
             android:title="System"
-            android:key="pref_system_settings">
+            android:key="pref_system_settings"
+            android:summary="Sonstige Einstellungen">
         <Preference
                 android:key="pref_clear_cache"
                 android:title="Cache leeren"/>
@@ -250,13 +255,13 @@
                 android:title="Debug Modus"
                 android:defaultValue="false"/>
 
-        <PreferenceScreen
-                android:key="pref_about"
-                android:title="Über die App"
-                android:summary="Changelog, Infos, uvm.">
-            <intent android:action=".AboutActivity"/>
-        </PreferenceScreen>
+    </PreferenceScreen>
 
-    </PreferenceCategory>
+    <PreferenceScreen
+            android:key="pref_about"
+            android:title="Über die App"
+            android:summary="Changelog, Infos, uvm.">
+        <intent android:action=".AboutActivity"/>
+    </PreferenceScreen>
 
 </PreferenceScreen>

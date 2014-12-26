@@ -2,11 +2,12 @@
 
 ## Version 4
 
-### Changelog 4.0.1
+### Changelog 4.0.X
 
   * Viele kleine Verbesserungen
   * Kompakte Versionen der Themes
   * Rechte Seitenleiste kann deaktiviert werden.
+  * Dark Theme Varianten Setting eingefügt
 
 ### Changelog 4.0.0
 

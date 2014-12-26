@@ -165,6 +165,10 @@ public class TopicBuilder {
             return mPost.getAuthor().getNick();
         }
 
+        public boolean isAuthor() {
+            return mPost.getAuthor().getId() == mSettings.getUserId();
+        }
+
         public String getIcon() {
             if (mSettings.showPostInfo() && mPost.getIconId() != null)
                 return String.format("<img class=\"posticon\" src=\"thread-icons/icon%1$d.png\" />",

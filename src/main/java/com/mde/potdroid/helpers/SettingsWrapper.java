@@ -23,6 +23,7 @@ public class SettingsWrapper {
     // The keys to the settings
 
     public static final String PREF_KEY_THEME = "pref_theme";
+    public static final String PREF_KEY_THEME_DARK_VARIANT = "pref_theme_dark_variant";
     public static final String PREF_KEY_LOGIN = "pref_login";
     public static final String PREF_KEY_LOGOUT = "pref_logout";
     public static final String PREF_KEY_USERNAME = "user_name";
@@ -176,6 +177,10 @@ public class SettingsWrapper {
         if(theme.equals("PotDroidLightCompact"))
             return R.style.PotDroidLightCompact;
         return -1;
+    }
+
+    public String getThemeVariant() {
+        return mSharedPreferences.getString(PREF_KEY_THEME_DARK_VARIANT, "darkbright");
     }
 
     /**

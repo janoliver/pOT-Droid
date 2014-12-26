@@ -13,6 +13,11 @@ section {
     margin-top:0;
 }
 
+.bright > section,
+.darkbright > section {
+    background:#51677e;
+}
+
 section.oldpost {
     opacity: 0.5;
 }
@@ -23,9 +28,15 @@ section.newpost header {
 
 header {
     border-bottom:1px solid #394E63;
+    background:#394E63;
     font-weight:bold;
     padding:10px;
     overflow:auto;
+}
+
+.bright section header,
+.brightdark section header {
+    background:#51677e;
 }
 
 article {

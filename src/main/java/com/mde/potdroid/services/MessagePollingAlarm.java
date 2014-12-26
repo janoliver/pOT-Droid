@@ -38,6 +38,8 @@ public class MessagePollingAlarm extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
 
+        Utils.setApplicationContext(context);
+
         Network network = new Network(context);
         network.get(MessageListParser.INBOX_URL, new Callback() {
             @Override

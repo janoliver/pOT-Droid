@@ -36,6 +36,14 @@
                 android:entries="@array/pref_theme_entries"
                 android:entryValues="@array/pref_theme_values"/>
 
+        <ListPreference
+                android:key="pref_theme_dark_variant"
+                android:title="Dark Theme Variante"
+                android:summary="Theme Variante des Dark Themes für die Topic Ansicht"
+                android:defaultValue="darkbright"
+                android:entries="@array/pref_theme_variant_entries"
+                android:entryValues="@array/pref_theme_variant_values"/>
+
         <CheckBoxPreference
                 android:key="pref_hide_global"
                 android:title="Globale Threads ausblenden"

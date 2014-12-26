@@ -12,6 +12,18 @@
         <item>PotDroidDark</item>
         <item>PotDroidDarkCompact</item>
     </string-array>
+    <string-array name="pref_theme_variant_entries">
+        <item>Dunkel</item>
+        <item>Hell Dunkel</item>
+        <item>Hell</item>
+        <item>Dunkel Hell</item>
+    </string-array>
+    <string-array name="pref_theme_variant_values">
+        <item>dark</item>
+        <item>brightdark</item>
+        <item>bright</item>
+        <item>darkbright</item>
+    </string-array>
     <string-array name="load_images">
         <item>Nie</item>
         <item>Nur mit WLAN</item>

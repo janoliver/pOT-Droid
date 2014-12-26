@@ -138,6 +138,10 @@ public class TopicBuilder {
             return Utils.getStringByAttr(mContext, R.attr.bbTopicCssFile);
         }
 
+        public String getThemeVariant() {
+            return mSettings.getThemeVariant();
+        }
+
         public List<PostContext> getPosts() {
             List<PostContext> pc = new ArrayList<PostContext>();
             for (Post p : mTopic.getPosts())

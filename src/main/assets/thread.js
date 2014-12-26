@@ -18,7 +18,7 @@ $(document).ready(function() {
         $("#paddings").css("padding-top", api.getToolBarHeightInDp() + "px");
     }
 
-    if(!api.isPullUpToRefresh()) {
+    if(!api.isPullUpToRefresh() || !api.isShowEndIndicator()) {
         $(".up-indicator").hide();
     }
 

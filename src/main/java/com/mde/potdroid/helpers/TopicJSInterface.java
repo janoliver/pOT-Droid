@@ -151,6 +151,16 @@ public class TopicJSInterface extends BenderJSInterface {
     }
 
     /**
+     * Check if the topic end indicator should be shown
+     *
+     * @return true if yes
+     */
+    @JavascriptInterface
+    public boolean isShowEndIndicator() {
+        return mSettings.isShowEndIndicator();
+    }
+
+    /**
      * Check if old posts should be darkened
      *
      * @return true if yes

@@ -62,6 +62,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_FIXED_SIDEBAR = "pref_fixed_sidebar";
     public static final String PREF_KEY_FONT_SIZE = "pref_font_size";
     public static final String PREF_KEY_BOARDS_BOOKMARKS = "pref_board_bookmarks";
+    public static final String PREF_KEY_SHOW_END_INDICATOR = "pref_show_end_indicator";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;
@@ -289,6 +290,10 @@ public class SettingsWrapper {
 
     public Boolean isShowPaginateToolbar() {
         return mSharedPreferences.getBoolean(PREF_KEY_SHOW_PAGNIATE_TOOLBAR, true);
+    }
+
+    public Boolean isShowEndIndicator() {
+        return mSharedPreferences.getBoolean(PREF_KEY_SHOW_END_INDICATOR, true);
     }
 
     /**

@@ -33,6 +33,13 @@ article {
     overflow:auto;
 }
 
+div.up-indicator {
+    color: #ffffff;
+    font-size:1.2em;
+    text-align:center;
+    padding:5px 0 10px 0;
+}
+
 div.bender {
     display:none;
     background-image:url(images/placeholder_bender.png);

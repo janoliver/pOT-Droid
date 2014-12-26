@@ -32,6 +32,15 @@
     <com.mde.potdroid.views.IconButton
             android:layout_width="45dp"
             android:layout_height="45dp"
+            android:text="@string/icon_refresh"
+            android:id="@+id/button_refresh"
+            android:background="?attr/bbBackgroundTransparentClickable"
+            android:textSize="24sp"
+            android:textColor="?attr/bbToolbarColor"/>
+
+    <com.mde.potdroid.views.IconButton
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:text="@string/icon_forward"
             android:background="?attr/bbBackgroundTransparentClickable"
             android:id="@+id/button_fwd"

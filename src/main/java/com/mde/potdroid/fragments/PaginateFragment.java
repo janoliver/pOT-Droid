@@ -76,7 +76,6 @@ abstract public class PaginateFragment extends BaseFragment {
             return;
         }
 
-        //IconButton refreshButton = (IconButton) paginateWidget.findViewById(R.id.button_refresh);
         IconButton fwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_fwd);
         IconButton ffwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_ffwd);
         IconButton rwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_rwd);

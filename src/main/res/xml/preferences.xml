@@ -118,7 +118,7 @@
         <CheckBoxPreference
                 android:key="pref_show_end_indicator"
                 android:title="Threadende anzeigen"
-                android:summary="Hinweis für Pull to Refresh am Ende der Seite anzeigen"
+                android:summary="Hinweis für Pull to Refresh am Ende des Threads anzeigen"
                 android:defaultValue="true"/>
 
     </PreferenceScreen>
@@ -216,7 +216,7 @@
         <CheckBoxPreference
                 android:key="pref_swipe_to_refresh_topic"
                 android:title="Topic aktualisieren per Swipe"
-                android:summary="Sollen Topics per up swipe aktualisiert werden?"
+                android:summary="Sollen Topics auf der letzten Seite per up swipe aktualisiert werden?"
                 android:defaultValue="true"/>
 
         <CheckBoxPreference

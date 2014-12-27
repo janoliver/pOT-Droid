@@ -384,6 +384,12 @@ public class TopicFragment extends PaginateFragment implements
         });
 
         setSwipeTarget(mWebView);
+
+        if(!isLastPage())
+            mPullToRefreshLayout.setEnabled(false);
+        else if(mSettings.isSwipeToRefreshTopic())
+            mPullToRefreshLayout.setEnabled(true);
+
     }
 
     public Topic getTopic() {

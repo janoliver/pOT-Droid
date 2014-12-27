@@ -247,7 +247,7 @@ public class TopicFragment extends PaginateFragment implements
             mWebView.getSettings().setLoadWithOverviewMode(true);
 
             // broken on 2.3.3
-            if(!Utils.isGingerbread())
+            //if(!Utils.isGingerbread())
                 mWebView.addJavascriptInterface(mJsInterface, "api");
 
             registerForContextMenu(mWebView);

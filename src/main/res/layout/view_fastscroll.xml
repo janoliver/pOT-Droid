@@ -18,7 +18,7 @@
             android:textSize="22sp"
             android:textColor="?attr/bbTextColorSecondary"
             android:layout_marginBottom="5dp"
-            android:visibility="invisible"/>
+            android:visibility="gone"/>
 
     <com.mde.potdroid.views.IconButton
             android:layout_width="35dp"
@@ -28,6 +28,6 @@
             android:background="?attr/bbCircularTransparentClickable"
             android:textSize="22sp"
             android:textColor="?attr/bbTextColorSecondary"
-            android:visibility="invisible"/>
+            android:visibility="gone"/>
 
 </LinearLayout>

@@ -219,16 +219,18 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
                             .getDate())));
             description.setText(content);
 
-            if (m.isUnread()) {
-                View v = row.findViewById(R.id.container);
-                int padding_top = v.getPaddingTop();
-                int padding_bottom = v.getPaddingBottom();
-                int padding_right = v.getPaddingRight();
-                int padding_left = v.getPaddingLeft();
+            View v = row.findViewById(R.id.container);
+            int padding_top = v.getPaddingTop();
+            int padding_bottom = v.getPaddingBottom();
+            int padding_right = v.getPaddingRight();
+            int padding_left = v.getPaddingLeft();
 
+            if (m.isUnread())
                 v.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getActivity(), R.attr.bbBackgroundListActive));
-                v.setPadding(padding_left, padding_top, padding_right, padding_bottom);
-            }
+            else
+                v.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getActivity(), R.attr.bbBackgroundList));
+
+            v.setPadding(padding_left, padding_top, padding_right, padding_bottom);
 
             // bender. Show an alias as long as the real bender is not present. If the sender
             // is "System", hide the view.

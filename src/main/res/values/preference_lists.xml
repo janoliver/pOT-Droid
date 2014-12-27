@@ -17,12 +17,14 @@
         <item>Hell Dunkel</item>
         <item>Hell</item>
         <item>Dunkel Hell</item>
+        <item>Extrawurst Wahookastyle</item>
     </string-array>
     <string-array name="pref_theme_variant_values">
         <item>dark</item>
         <item>brightdark</item>
         <item>bright</item>
         <item>darkbright</item>
+        <item>wahoo</item>
     </string-array>
     <string-array name="load_images">
         <item>Nie</item>

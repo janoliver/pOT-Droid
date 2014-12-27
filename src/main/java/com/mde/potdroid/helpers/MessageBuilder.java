@@ -16,9 +16,11 @@ public class MessageBuilder {
 
     // a reference to the context
     private Context mContext;
+    private SettingsWrapper mSettings;
 
     public MessageBuilder(Context cx) {
         mContext = cx;
+        mSettings = new SettingsWrapper(cx);
     }
 
     /**
@@ -52,6 +54,11 @@ public class MessageBuilder {
         public String getCssFile() {
             return Utils.getStringByAttr(mContext, R.attr.bbTopicCssFile);
         }
+
+        public String getThemeVariant() {
+            return mSettings.getThemeVariant();
+        }
+
 
         public Integer getId() {
             return mMessage.getId();

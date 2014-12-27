@@ -99,17 +99,8 @@ public class BaseActivity extends ActionBarActivity {
         // add the fragments
         if (savedInstanceState == null) {
 
-            if(!mSettings.isFixedSidebar())
-                getSupportFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                         .add(R.id.sidebar_container_left, mLeftSidebar, TAG_SIDEBAR_LEFT).commit();
-            else {
-                findViewById(R.id.sidebar_container_left).setVisibility(View.GONE);
-                View v = findViewById(R.id.wide_content);
-                RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) v.getLayoutParams();
-                p.addRule(RelativeLayout.LEFT_OF, 0);
-                v.setLayoutParams(p);
-                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.LEFT);
-            }
 
             if(!mSettings.isBoardBookmarks())
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);

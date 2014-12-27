@@ -13,9 +13,13 @@ import android.util.SparseArray;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import com.mde.potdroid.R;
-import com.mde.potdroid.helpers.*;
+import com.mde.potdroid.helpers.AsyncHttpLoader;
+import com.mde.potdroid.helpers.FormEncodingBuilder;
+import com.mde.potdroid.helpers.Network;
+import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.parsers.MessageParser;
 import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.IconSelectionDialog;
@@ -33,25 +37,12 @@ import java.util.regex.Pattern;
  * finishing, success and failure of the form.
  */
 public class EditorFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Bundle>,
-   IconSelectionDialog.IconSelectedCallback{
+        IconSelectionDialog.IconSelectedCallback {
 
-
-    protected static SparseArray<String> mSimpleTags;
-    static {
-        mSimpleTags = new SparseArray<String>();
-        mSimpleTags.append(R.id.bold, "b");
-        mSimpleTags.append(R.id.underline, "u");
-        mSimpleTags.append(R.id.italic, "i");
-        mSimpleTags.append(R.id.striked, "s");
-        mSimpleTags.append(R.id.code, "code");
-        mSimpleTags.append(R.id.quote, "quote");
-        mSimpleTags.append(R.id.spoiler, "spoiler");
-    }
 
     public static final String BOARD_URL_POST = "newreply.php";
     public static final String BOARD_URL_THREAD = "newthread.php";
     public static final String BOARD_URL_EDITPOST = "editreply.php";
-
     protected static final String ARG_MODE = "mode";
     protected static final String ARG_TOPIC_ID = "topic_id";
     protected static final String ARG_POST_ID = "post_id";
@@ -64,6 +55,23 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     protected static final String ARG_TEXT = "text";
     protected static final String ARG_TITLE = "title";
     protected static final String ARG_STATUS = "status";
+    // this holds the kind of form this is. The static fields are defined below.
+    public static int MODE_EDIT = 1;
+    public static int MODE_REPLY = 2;
+    public static int MODE_MESSAGE = 3;
+    public static int MODE_THREAD = 4;
+    protected static SparseArray<String> mSimpleTags;
+
+    static {
+        mSimpleTags = new SparseArray<String>();
+        mSimpleTags.append(R.id.bold, "b");
+        mSimpleTags.append(R.id.underline, "u");
+        mSimpleTags.append(R.id.italic, "i");
+        mSimpleTags.append(R.id.striked, "s");
+        mSimpleTags.append(R.id.code, "code");
+        mSimpleTags.append(R.id.quote, "quote");
+        mSimpleTags.append(R.id.spoiler, "spoiler");
+    }
 
     // the input title and text views
     protected EditText mEditRcpt;
@@ -72,13 +80,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     protected EditText mEditTags;
     protected EditText mEditText;
     protected ImageButton mIconButton;
-
-    // this holds the kind of form this is. The static fields are defined below.
-    public static int MODE_EDIT = 1;
-    public static int MODE_REPLY = 2;
-    public static int MODE_MESSAGE = 3;
-    public static int MODE_THREAD = 4;
-
+    protected ImageButton mBBButton;
     // the array of icons
     private int mIconId;
 
@@ -111,6 +113,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         mEditSubtitle = (EditText) v.findViewById(R.id.edit_subtitle);
         mEditTags = (EditText) v.findViewById(R.id.edit_tags);
         mIconButton = (ImageButton) v.findViewById(R.id.button_icon);
+        mBBButton = (ImageButton) v.findViewById(R.id.button_bb);
 
         mIconButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,6 +123,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
                 id.show(getBaseActivity().getSupportFragmentManager(), "icondialog");
             }
         });
+
 
         // fill the form
         if (getArguments().getString(ARG_TEXT) != null)
@@ -134,32 +138,40 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         if (getArguments().getString(ARG_RCPT) != null)
             mEditRcpt.setText(getArguments().getString(ARG_RCPT));
 
+        final HorizontalScrollView bbcodeToolbarHolder = (HorizontalScrollView) v.findViewById(R.id.bbcode_toolbar_holder);
         ActionMenuView bbcodeToolbar = (ActionMenuView) v.findViewById(R.id.bbcode_toolbar);
 
-        SettingsWrapper settings = new SettingsWrapper(getBaseActivity());
-        if(settings.isBBCodeEditor()) {
+        Menu menu = bbcodeToolbar.getMenu();
+        getActivity().getMenuInflater().inflate(R.menu.bbcode_menu, menu);
 
-            Menu menu = bbcodeToolbar.getMenu();
-            getActivity().getMenuInflater().inflate(R.menu.bbcode_menu, menu);
+        menu.findItem(R.id.bold).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_bold, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+        menu.findItem(R.id.italic).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_italic, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+        menu.findItem(R.id.striked).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_strikethrough, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+        menu.findItem(R.id.underline).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_underline, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+        menu.findItem(R.id.quote).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_quote_left, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+        menu.findItem(R.id.code).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_code, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+        menu.findItem(R.id.spoiler).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_eye_close, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+        menu.findItem(R.id.image).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_picture, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+        menu.findItem(R.id.video).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_facetime_video, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+        menu.findItem(R.id.url).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_link, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+        menu.findItem(R.id.list).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_list_ol, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+        menu.findItem(R.id.smiley).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_smile, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
 
-            menu.findItem(R.id.bold).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_bold, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-            menu.findItem(R.id.italic).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_italic, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-            menu.findItem(R.id.striked).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_strikethrough, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-            menu.findItem(R.id.underline).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_underline, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-            menu.findItem(R.id.quote).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_quote_left, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-            menu.findItem(R.id.code).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_code, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-            menu.findItem(R.id.spoiler).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_eye_close, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-            menu.findItem(R.id.image).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_picture, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-            menu.findItem(R.id.video).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_facetime_video, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-            menu.findItem(R.id.url).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_link, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-            menu.findItem(R.id.list).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_list_ol, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-            menu.findItem(R.id.smiley).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_smile, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+        bbcodeToolbar.setOnMenuItemClickListener(new BBCodeHandler(getBaseActivity(), mEditText));
 
-            bbcodeToolbar.setOnMenuItemClickListener(new BBCodeHandler(getBaseActivity(), mEditText));
-
-        } else {
-            bbcodeToolbar.setVisibility(View.GONE);
+        if (!mSettings.isBBCodeEditor()) {
+            bbcodeToolbarHolder.setVisibility(View.GONE);
         }
+
+        mBBButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(bbcodeToolbarHolder.getVisibility() == View.GONE)
+                    bbcodeToolbarHolder.setVisibility(View.VISIBLE);
+                else
+                    bbcodeToolbarHolder.setVisibility(View.GONE);
+            }
+        });
 
         // set the title
         if (getArguments().getInt(ARG_MODE, MODE_REPLY) == MODE_REPLY)
@@ -181,7 +193,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         mPullToRefreshLayout.setSwipeable(false);
@@ -234,10 +246,10 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
         if (getArguments().getInt(ARG_MODE) == MODE_MESSAGE)
             return new AsyncMessageSubmitter(getBaseActivity(), args);
-        else if(getArguments().getInt(ARG_MODE) == MODE_REPLY ||
+        else if (getArguments().getInt(ARG_MODE) == MODE_REPLY ||
                 getArguments().getInt(ARG_MODE) == MODE_EDIT)
             return new AsyncPostSubmitter(getBaseActivity(), args);
-        else if(getArguments().getInt(ARG_MODE) == MODE_THREAD)
+        else if (getArguments().getInt(ARG_MODE) == MODE_THREAD)
             return new AsyncThreadSubmitter(getBaseActivity(), args);
 
         return null;
@@ -274,13 +286,13 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
      * @param iconId the icon id
      */
     public void setIconById(Integer iconId) {
-        if(iconId < 0) {
+        if (iconId < 0) {
             mIconId = 0;
             mIconButton.setImageResource(R.drawable.ic_action_icon);
         } else {
             Bitmap icon;
             try {
-                int size = (int)(mEditTitle.getTextSize() * 1.5);
+                int size = (int) (mEditTitle.getTextSize() * 1.5);
                 icon = Utils.getBitmapIcon(getActivity(), iconId);
                 Bitmap bm = Bitmap.createScaledBitmap(icon, size, size, true);
                 mIconButton.setImageBitmap(bm);
@@ -487,7 +499,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         public boolean onMenuItemClick(MenuItem item) {
             int start = mEditText.getSelectionStart();
             int end = mEditText.getSelectionEnd();
-            if(mSimpleTags.indexOfKey(item.getItemId()) > -1) {
+            if (mSimpleTags.indexOfKey(item.getItemId()) > -1) {
                 String code = mSimpleTags.get(item.getItemId());
                 mEditText.getText().insert(start, String.format("[%s]", code));
                 mEditText.getText().insert(end + 2 + code.length(), String.format("[/%s]", code));
@@ -512,12 +524,12 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
                         d.show(mActivity.getSupportFragmentManager(), "videodialog");
                         return true;
                     case R.id.list:
-                        d = PromptDialog.newInstance("Liste einfügen", 3, new String[] {"a, 1, leer", "Item...", "Item..."}, true, R.id.list);
+                        d = PromptDialog.newInstance("Liste einfügen", 3, new String[]{"a, 1, leer", "Item...", "Item..."}, true, R.id.list);
                         d.setCallback(this);
                         d.show(mActivity.getSupportFragmentManager(), "listdialog");
                         return true;
                     case R.id.url:
-                        d = PromptDialog.newInstance("Link einfügen", 2, new String[] {"Text", "URL..."}, false, R.id.url);
+                        d = PromptDialog.newInstance("Link einfügen", 2, new String[]{"Text", "URL..."}, false, R.id.url);
                         d.setCallback(this);
                         d.show(mActivity.getSupportFragmentManager(), "linkdialog");
 
@@ -547,7 +559,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
                     mEditText.getText().insert(mEditText.getSelectionStart(), insert);
                     return;
                 case R.id.url:
-                    if(input.get(0).equals(""))
+                    if (input.get(0).equals(""))
                         insert = String.format("[url]%s[/url]", input.get(1));
                     else
                         insert = String.format("[url=%s]%s[/url]", input.get(1), input.get(0));
@@ -556,12 +568,12 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
                 case R.id.list:
                     StringBuilder result = new StringBuilder();
 
-                    if(input.get(0).toLowerCase().equals("a") || input.get(0).equals("1"))
+                    if (input.get(0).toLowerCase().equals("a") || input.get(0).equals("1"))
                         result.append(String.format("[list=%s]", input.get(0)));
                     else
                         result.append("[list]");
-                    for(int i = 1; i < input.size(); ++i) {
-                        if(!input.get(i).equals(""))
+                    for (int i = 1; i < input.size(); ++i) {
+                        if (!input.get(i).equals(""))
                             result.append(String.format("[*] %s\n", input.get(i)));
                     }
                     result.append("[/list]");

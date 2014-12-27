@@ -717,6 +717,8 @@ public class TopicFragment extends PaginateFragment implements
             View p = getBaseActivity().getPaginateLayout();
             int toolbarHeight = t.getHeight();
             int paginateLayoutHeight = p.getHeight();
+            if(paginateLayoutHeight == 0)
+                paginateLayoutHeight = 50;
             boolean scrollingDown = scrollY > mOldScroll;
             boolean toolbarsHidden = ViewHelper.getTranslationY(t) < 0;
             int wvContentLength = (int) Math.floor(mWebView.getContentHeight() * mWebView.getScale());

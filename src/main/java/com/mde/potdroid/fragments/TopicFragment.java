@@ -95,6 +95,7 @@ public class TopicFragment extends PaginateFragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        Utils.log("TopicFragment.onActivityCreated()");
         setRetainInstance(true);
 
         setHasOptionsMenu(true);
@@ -111,6 +112,7 @@ public class TopicFragment extends PaginateFragment implements
                 public void onGlobalLayout() {
                     getBaseActivity().getToolbar().getViewTreeObserver().removeGlobalOnLayoutListener(this);
                     mPullToRefreshLayout.setTopMargin(getBaseActivity().getToolbar().getHeight());
+                    Utils.log("TopicFragment.onActivityCreated().ViewTreeListener");
                 }
             });
         }
@@ -125,6 +127,7 @@ public class TopicFragment extends PaginateFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_topic, container, false);
+        Utils.log("TopicFragment.onCreateView()");
 
         // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
         // of some former TopicFragment, which will be restored on onResume. .
@@ -165,6 +168,7 @@ public class TopicFragment extends PaginateFragment implements
     @Override
     public void onResume() {
         super.onResume();
+        Utils.log("TopicFragment.onResume()");
 
         if (mDestroyed && Utils.isKitkat()) {
             setupWebView();
@@ -221,21 +225,25 @@ public class TopicFragment extends PaginateFragment implements
      */
     public void setupWebView() {
 
+        Utils.log("TopicFragment.setupWebView()");
         mDestroyed = false;
 
         // create a webview if there is none already
         if(mWebView == null) {
+            Utils.log("TopicFragment.setupWebView() creating webview instance");
             mWebView = new ObservableScrollBottomWebView(getBaseActivity());
             mWebView.setLayoutParams(new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
             ));
 
             mWebView.setScrollViewCallbacks(mWebViewScrollCallbacks);
+            Utils.log("TopicFragment.setupWebView() creating js interface");
 
             if(mJsInterface == null) {
                 mJsInterface = new TopicJSInterface(mWebView, getBaseActivity(), this);
                 mJsInterface.registerScroll(getArguments().getInt(ARG_POST_ID, 0));
             }
+            Utils.log("TopicFragment.setupWebView() settings");
 
             mWebView.getSettings().setJavaScriptEnabled(true);
             mWebView.getSettings().setDefaultFontSize(mSettings.getDefaultFontSize());
@@ -245,6 +253,7 @@ public class TopicFragment extends PaginateFragment implements
             mWebView.getSettings().setAppCacheEnabled(false);
             mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
             mWebView.getSettings().setLoadWithOverviewMode(true);
+            Utils.log("TopicFragment.setupWebView() add js interface");
 
             // broken on 2.3.3
             //if(!Utils.isGingerbread())
@@ -325,6 +334,8 @@ public class TopicFragment extends PaginateFragment implements
 
     @Override
     public Loader<Topic> onCreateLoader(int id, Bundle args) {
+        Utils.log("TopicFragment.onCreateLoader()");
+
         int page = getArguments().getInt(ARG_PAGE, 1);
         int tid = getArguments().getInt(ARG_TOPIC_ID, 0);
         int pid = getArguments().getInt(ARG_POST_ID, 0);
@@ -337,6 +348,8 @@ public class TopicFragment extends PaginateFragment implements
     @Override
     public void onLoadFinished(Loader<Topic> loader, Topic data) {
         hideLoadingAnimation();
+        Utils.log("TopicFragment.onLoadFinished()");
+
 
         if (data != null) {
             // update the topic data
@@ -347,6 +360,8 @@ public class TopicFragment extends PaginateFragment implements
 
             //destroyWebView();
             //setupWebView();
+
+            Utils.log("TopicFragment.onLoadFinished() displaying topic");
             mWebView.loadDataWithBaseURL("file:///android_asset/",
                         mTopic.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);
 
@@ -360,6 +375,7 @@ public class TopicFragment extends PaginateFragment implements
     public void refreshTitleAndPagination() {
         if(mTopic == null)
             return;
+        Utils.log("TopicFragment.refreshTitleAndPagination()");
 
         // set title and subtitle of the ActionBar and reload the OptionsMenu
         Spanned subtitleText = Html.fromHtml(getString(R.string.subtitle_paginate,
@@ -689,13 +705,18 @@ public class TopicFragment extends PaginateFragment implements
         AsyncContentLoader(Context cx, int page, int thread_id, int post_id) {
             super(cx, TopicParser.getUrl(thread_id, page, post_id));
             mContext = cx;
+
+            Utils.log("TopicFragment.AsyncContentLoader()");
         }
 
         @Override
         public Topic processNetworkResponse(String response) {
+            Utils.log("TopicFragment.AsyncContentLoader.processNetworkResponse()");
             try {
                 TopicParser parser = new TopicParser();
+                Utils.log("TopicFragment.AsyncContentLoader.processNetworkResponse() parsing post");
                 Topic t = parser.parse(response);
+                Utils.log("TopicFragment.AsyncContentLoader.processNetworkResponse() building topic");
 
                 TopicBuilder b = new TopicBuilder(mContext);
                 t.setHtmlCache(b.parse(t));

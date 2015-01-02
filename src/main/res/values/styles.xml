@@ -46,7 +46,7 @@
         <item name="bbColorHighlight">@color/white_low</item>
         <item name="bbColorTranslucentBackground">@color/black_low</item>
         <item name="bbTextColorPrimary">@color/white</item>
-        <item name="bbTextColorSecondary">@color/white</item>
+        <item name="bbTextColorSecondary">@color/white_low</item>
         <item name="bbEditTextBackground">@color/white</item>
         <item name="bbEditTextColor">@color/bbstyle_darkblue</item>
         <item name="bbEditTextHintColor">@color/bbstyle_lightblue</item>

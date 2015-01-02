@@ -125,20 +125,27 @@ public class TopicFragment extends PaginateFragment implements
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        destroyWebView();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_topic, container, false);
         Utils.log("TopicFragment.onCreateView()");
 
         // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
         // of some former TopicFragment, which will be restored on onResume. .
-        if (mWebView == null && Utils.isKitkat()) {
-            mWebViewHolder.add(this);
-            if (mWebViewHolder.size() > 3) {
-                TopicFragment fragment = mWebViewHolder.removeFirst();
-                if (fragment != null)
-                    fragment.destroyWebView();
-            }
-        }
+//        if (mWebView == null/* && Utils.isKitkat()*/) {
+//            mWebViewHolder.add(this);
+//            if (mWebViewHolder.size() > 1) {
+//                TopicFragment fragment = mWebViewHolder.removeFirst();
+//                if (fragment != null)
+//                    fragment.destroyWebView();
+//            }
+//        }
 
         return v;
     }
@@ -155,7 +162,6 @@ public class TopicFragment extends PaginateFragment implements
     public void destroyWebView() {
 
         if (mWebView != null && !mDestroyed) {
-
             mPullToRefreshLayout.removeAllViews();
 
             mWebView.destroy();

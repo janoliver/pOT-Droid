@@ -175,7 +175,6 @@ public class BaseActivity extends ActionBarActivity {
                         startActivity(intent);
                     } else {
                         Intent intent = new Intent(BaseActivity.this, ForumActivity.class);
-                        intent.putExtra("overview", true);
                         startActivity(intent);
                     }
                 }
@@ -259,6 +258,11 @@ public class BaseActivity extends ActionBarActivity {
 
     public void showFastscrollView() {
         mFastscrollLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void closeLeftDrawer() {
+        if(mDrawerLayout != null)
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
     }
 
 }

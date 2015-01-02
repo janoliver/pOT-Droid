@@ -1,5 +1,6 @@
 package com.mde.potdroid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,6 +32,7 @@ public class MessageListActivity extends BaseActivity {
         ViewPager vpPager = (ViewPager) findViewById(R.id.pager);
         adapterViewPager = new MessageListPagerAdapter(getSupportFragmentManager(), this);
         vpPager.setAdapter(adapterViewPager);
+
 
         PagerTabStrip strip = (PagerTabStrip) findViewById(R.id.pager_header);
         strip.setDrawFullUnderline(false);
@@ -86,6 +88,13 @@ public class MessageListActivity extends BaseActivity {
         if (fr == null)
             fr = MessageListFragment.newInstance(tag);
         return fr;
+    }
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        closeLeftDrawer();
     }
 
 }

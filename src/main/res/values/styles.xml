@@ -37,6 +37,7 @@
         <item name="colorPrimary">@color/bbstyle_darkblue</item>
         <item name="colorPrimaryDark">@color/bbstyle_darkblue_semi</item>
         <item name="colorAccent">@color/bbstyle_lightblue</item>
+
         <item name="android:windowBackground">@color/bbstyle_darkerblue</item>
         <item name="sdlDialogStyle">@style/DialogStyleDark</item>
         <item name="bbColorPrimary">@color/bbstyle_lightblue</item>
@@ -45,7 +46,7 @@
         <item name="bbColorHighlight">@color/white_low</item>
         <item name="bbColorTranslucentBackground">@color/black_low</item>
         <item name="bbTextColorPrimary">@color/white</item>
-        <item name="bbTextColorSecondary">@color/white_low</item>
+        <item name="bbTextColorSecondary">@color/white</item>
         <item name="bbEditTextBackground">@color/white</item>
         <item name="bbEditTextColor">@color/bbstyle_darkblue</item>
         <item name="bbEditTextHintColor">@color/bbstyle_lightblue</item>

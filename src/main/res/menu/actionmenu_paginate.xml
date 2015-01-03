@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:potdroid="http://schemas.android.com/apk/res-auto">
-    <item
-            android:id="@+id/layout_item"
-            potdroid:actionLayout="@layout/view_paginate"
-            potdroid:showAsAction="always"
-            android:title="@string/none"/>
+    <group android:id="@+id/paginate">
+        <item
+                android:id="@+id/prev"
+                android:title="@string/action_previous"
+                potdroid:showAsAction="ifRoom"/>
+        <item
+                android:id="@+id/next"
+                android:title="@string/action_next"
+                potdroid:showAsAction="ifRoom"/>
+    </group>
 </menu>

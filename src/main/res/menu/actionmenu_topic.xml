@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:potdroid="http://schemas.android.com/apk/res-auto">
-    <group android:id="@+id/loggedout_topic">
-        <item
-                android:id="@+id/new_message"
-                android:title="@string/action_reply"
-                potdroid:showAsAction="ifRoom"/>
-    </group>
+
     <item
             android:id="@+id/refresh"
             android:title="@string/action_refresh"
@@ -19,7 +14,7 @@
             android:id="@+id/topage"
             android:title="@string/action_topage"
             potdroid:showAsAction="never"/>
-    <group android:id="@+id/loggedout_topic2">
+    <group android:id="@+id/loggedout_topic">
         <item
                 android:id="@+id/last_own_post"
                 android:title="@string/action_last_own_post"

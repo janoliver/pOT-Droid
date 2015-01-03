@@ -13,8 +13,6 @@ $(document).ready(function() {
 
     // set top and bottom padding
     if(api.isOverlayToolbars()) {
-        if(api.isPaginateViewShown())
-            $("#paddings").css("padding-bottom", api.getPaginateViewHeightInDp() + "px");
         $("#paddings").css("padding-top", api.getToolBarHeightInDp() + "px");
     }
 

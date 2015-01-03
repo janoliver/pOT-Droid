@@ -199,19 +199,6 @@ public class TopicJSInterface extends BenderJSInterface {
     }
 
     @JavascriptInterface
-    public int getPaginateViewHeightInDp() {
-        Resources resources = mTopicFragment.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        float pxHeight = mTopicFragment.getBaseActivity().getPaginateLayout().getHeight();
-        return (int)(pxHeight / metrics.densityDpi * 160f);
-    }
-
-    @JavascriptInterface
-    public boolean isPaginateViewShown() {
-        return mTopicFragment.getBaseActivity().getPaginateLayout().isShown();
-    }
-
-    @JavascriptInterface
     public boolean isOverlayToolbars() {
         return mTopicFragment.getBaseActivity().getOverlayToolbars();
     }

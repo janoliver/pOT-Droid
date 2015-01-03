@@ -1,15 +1,17 @@
 package com.mde.potdroid.fragments;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.LinearLayout;
 import com.mde.potdroid.R;
 import com.mde.potdroid.views.IconButton;
+import com.mde.potdroid.views.IconDrawable;
 
 /**
  * This Fragment extends BaseFragment and provides some more methods and an interface
@@ -17,7 +19,6 @@ import com.mde.potdroid.views.IconButton;
  */
 abstract public class PaginateFragment extends BaseFragment {
 
-    private LinearLayout mPaginateLayout;
     private LinearLayout mFastscrollLayout;
     private IconButton mUpButton;
     private IconButton mDownButton;
@@ -69,89 +70,61 @@ abstract public class PaginateFragment extends BaseFragment {
             getSwipeView().setOnTouchListener(new PaginateDragListener());
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.actionmenu_paginate, menu);
+
+        Drawable prev_icon = IconDrawable.getIconDrawable(getActivity(), R.string.icon_backward);
+        MenuItem prev_item = menu.findItem(R.id.prev);
+        Drawable next_icon = IconDrawable.getIconDrawable(getActivity(), R.string.icon_forward);
+        MenuItem next_item = menu.findItem(R.id.next);
+
+        if(isFirstPage()) {
+            prev_item.setEnabled(false);
+            prev_icon.mutate().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+        }
+
+        if(isLastPage()) {
+            next_item.setEnabled(false);
+            next_icon.mutate().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+        }
+
+        prev_item.setIcon(prev_icon);
+        next_item.setIcon(next_icon);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.prev:
+                // reload content
+                goToPrevPage();
+                return true;
+            case R.id.next:
+                // reload content
+                goToNextPage();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     public void setSwipeTarget(View v) {
         if(mSettings.isSwipeToPaginate())
             v.setOnTouchListener(new PaginateDragListener());
     }
 
     public void refreshPaginateLayout() {
-        mPaginateLayout = getBaseActivity().getPaginateLayout();
+        getBaseActivity().invalidateOptionsMenu();
+
         mFastscrollLayout = getBaseActivity().getFastscrollLayout();
         mUpButton = (IconButton) mFastscrollLayout.findViewById(R.id.button_up);
         mDownButton = (IconButton) mFastscrollLayout.findViewById(R.id.button_down);
-
-        if (!mSettings.isShowPaginateToolbar()) {
-            mPaginateLayout.setVisibility(View.GONE);
-            return;
-        }
-
-        IconButton fwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_fwd);
-        IconButton ffwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_ffwd);
-        IconButton rwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_rwd);
-        IconButton frwdButton = (IconButton) mPaginateLayout.findViewById(R.id.button_frwd);
-        IconButton refreshButton = (IconButton) mPaginateLayout.findViewById(R.id.button_refresh);
-
-        fwdButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToNextPage();
-            }
-        });
-
-        ffwdButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToLastPage();
-            }
-        });
-
-        rwdButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToPrevPage();
-            }
-        });
-
-        frwdButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToFirstPage();
-            }
-        });
-
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refreshPage();
-            }
-        });
-
-        boolean anyVisible = false;
-
-        // only show the paginate buttons if there are before or after the current
-        if (isLastPage()) {
-            fwdButton.setVisibility(View.INVISIBLE);
-            ffwdButton.setVisibility(View.INVISIBLE);
-        } else {
-            anyVisible = true;
-            fwdButton.setVisibility(View.VISIBLE);
-            ffwdButton.setVisibility(View.VISIBLE);
-        }
-
-        if (isFirstPage()) {
-            rwdButton.setVisibility(View.INVISIBLE);
-            frwdButton.setVisibility(View.INVISIBLE);
-        } else {
-            anyVisible = true;
-            rwdButton.setVisibility(View.VISIBLE);
-            frwdButton.setVisibility(View.VISIBLE);
-        }
-
-        if (anyVisible) {
-            getBaseActivity().showPaginateView();
-        } else {
-            getBaseActivity().hidePaginateView();
-        }
 
     }
 

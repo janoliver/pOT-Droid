@@ -33,7 +33,6 @@ public class BaseActivity extends ActionBarActivity {
     protected SidebarRightFragment mRightSidebar;
     protected DrawerLayout mDrawerLayout;
     protected Toolbar mToolbar;
-    protected LinearLayout mPaginateLayout;
     protected LinearLayout mFastscrollLayout;
     protected FrameLayout mContentView;
     protected ActionBarDrawerToggle mDrawerToggle;
@@ -70,10 +69,6 @@ public class BaseActivity extends ActionBarActivity {
 
         // find our drawerlayout. If it does not exist, we are in large mode.
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        // this is for pagination. It is usually hidden, but PaginateFragments
-        // show it if necessary.
-        mPaginateLayout = (LinearLayout) findViewById(R.id.paginate_view);
 
         // this is for fast scrolling. It is usually hidden, but PaginateFragments
         // show it if necessary.
@@ -202,10 +197,6 @@ public class BaseActivity extends ActionBarActivity {
         return mToolbar;
     }
 
-    public LinearLayout getPaginateLayout() {
-        return mPaginateLayout;
-    }
-
     public LinearLayout getFastscrollLayout() {
         return mFastscrollLayout;
     }
@@ -232,24 +223,6 @@ public class BaseActivity extends ActionBarActivity {
         p.addRule(RelativeLayout.BELOW, R.id.main_toolbar);
         p.addRule(RelativeLayout.ABOVE, R.id.paginate_view);
         mContentView.setLayoutParams(p);
-    }
-
-    public void hidePaginateView() {
-        if(!mOverlayToolbars) {
-            RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) mContentView.getLayoutParams();
-            p.addRule(RelativeLayout.ABOVE, 0);
-            mContentView.setLayoutParams(p);
-        }
-        mPaginateLayout.setVisibility(View.GONE);
-    }
-
-    public void showPaginateView() {
-        if(!mOverlayToolbars) {
-            RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) mContentView.getLayoutParams();
-            p.addRule(RelativeLayout.ABOVE, R.id.paginate_view);
-            mContentView.setLayoutParams(p);
-        }
-        mPaginateLayout.setVisibility(View.VISIBLE);
     }
 
     public void hideFastscrollView() {

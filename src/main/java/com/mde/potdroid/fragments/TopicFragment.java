@@ -25,7 +25,7 @@ import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.TopicParser;
 import com.mde.potdroid.views.*;
-import com.nineoldandroids.view.ViewHelper;
+import com.melnykov.fab.FloatingActionButton;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.nostra13.universalimageloader.cache.disc.DiskCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -60,6 +60,7 @@ public class TopicFragment extends PaginateFragment implements
     private ObservableScrollBottomWebView mWebView;
     private boolean mUserInteraction;
     private int mOldScroll;
+    private FloatingActionButton mFab;
 
     // we need to invoke some functions on this one outside of the
     // webview initialization, so keep a reference here.
@@ -95,7 +96,6 @@ public class TopicFragment extends PaginateFragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Utils.log("TopicFragment.onActivityCreated()");
         setRetainInstance(true);
 
         setHasOptionsMenu(true);
@@ -103,7 +103,7 @@ public class TopicFragment extends PaginateFragment implements
 
         setupWebView();
 
-        if(!Utils.isTablet(getBaseActivity())) {
+        if (!Utils.isTablet(getBaseActivity())) {
             getBaseActivity().setOverlayToolbars();
 
             ViewTreeObserver vto = getBaseActivity().getToolbar().getViewTreeObserver();
@@ -112,7 +112,6 @@ public class TopicFragment extends PaginateFragment implements
                 public void onGlobalLayout() {
                     getBaseActivity().getToolbar().getViewTreeObserver().removeGlobalOnLayoutListener(this);
                     mPullToRefreshLayout.setTopMargin(getBaseActivity().getToolbar().getHeight());
-                    Utils.log("TopicFragment.onActivityCreated().ViewTreeListener");
                 }
             });
         }
@@ -120,7 +119,7 @@ public class TopicFragment extends PaginateFragment implements
         if (mTopic == null)
             startLoader(this);
 
-        if(!mSettings.isSwipeToRefreshTopic())
+        if (!mSettings.isSwipeToRefreshTopic())
             mPullToRefreshLayout.setEnabled(false);
     }
 
@@ -134,7 +133,6 @@ public class TopicFragment extends PaginateFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_topic, container, false);
-        Utils.log("TopicFragment.onCreateView()");
 
         // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
         // of some former TopicFragment, which will be restored on onResume. .
@@ -146,6 +144,21 @@ public class TopicFragment extends PaginateFragment implements
 //                    fragment.destroyWebView();
 //            }
 //        }
+
+        mFab = (FloatingActionButton) v.findViewById(R.id.fab);
+        mFab.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
+        mFab.hide(false);
+
+        if (Utils.isLoggedIn()) {
+            mFab.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    replyPost();
+                }
+            });
+        } else {
+            mFab.setVisibility(View.GONE);
+        }
+
 
         return v;
     }
@@ -174,13 +187,12 @@ public class TopicFragment extends PaginateFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        Utils.log("TopicFragment.onResume()");
 
         if (mDestroyed && Utils.isKitkat()) {
             setupWebView();
         } else {
 
-            if(Build.VERSION.SDK_INT >= 11)
+            if (Build.VERSION.SDK_INT >= 11)
                 mWebView.onResume();
             else
                 try {
@@ -202,7 +214,7 @@ public class TopicFragment extends PaginateFragment implements
     public void onPause() {
         super.onPause();
 
-        if(Build.VERSION.SDK_INT >= 11)
+        if (Build.VERSION.SDK_INT >= 11)
             mWebView.onPause();
         else
             try {
@@ -231,25 +243,21 @@ public class TopicFragment extends PaginateFragment implements
      */
     public void setupWebView() {
 
-        Utils.log("TopicFragment.setupWebView()");
         mDestroyed = false;
 
         // create a webview if there is none already
-        if(mWebView == null) {
-            Utils.log("TopicFragment.setupWebView() creating webview instance");
+        if (mWebView == null) {
             mWebView = new ObservableScrollBottomWebView(getBaseActivity());
             mWebView.setLayoutParams(new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
             ));
 
             mWebView.setScrollViewCallbacks(mWebViewScrollCallbacks);
-            Utils.log("TopicFragment.setupWebView() creating js interface");
 
-            if(mJsInterface == null) {
+            if (mJsInterface == null) {
                 mJsInterface = new TopicJSInterface(mWebView, getBaseActivity(), this);
                 mJsInterface.registerScroll(getArguments().getInt(ARG_POST_ID, 0));
             }
-            Utils.log("TopicFragment.setupWebView() settings");
 
             mWebView.getSettings().setJavaScriptEnabled(true);
             mWebView.getSettings().setDefaultFontSize(mSettings.getDefaultFontSize());
@@ -259,11 +267,10 @@ public class TopicFragment extends PaginateFragment implements
             mWebView.getSettings().setAppCacheEnabled(false);
             mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
             mWebView.getSettings().setLoadWithOverviewMode(true);
-            Utils.log("TopicFragment.setupWebView() add js interface");
 
             // broken on 2.3.3
             //if(!Utils.isGingerbread())
-                mWebView.addJavascriptInterface(mJsInterface, "api");
+            mWebView.addJavascriptInterface(mJsInterface, "api");
 
             registerForContextMenu(mWebView);
 
@@ -290,7 +297,6 @@ public class TopicFragment extends PaginateFragment implements
 
         inflater.inflate(R.menu.actionmenu_topic, menu);
 
-        menu.findItem(R.id.new_message).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
         menu.findItem(R.id.load_images).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_picture));
         menu.findItem(R.id.unveil).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_eye_open));
         menu.findItem(R.id.topage).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_arrow_right));
@@ -299,10 +305,8 @@ public class TopicFragment extends PaginateFragment implements
 
         if (!Utils.isLoggedIn()) {
             menu.setGroupVisible(R.id.loggedout_topic, false);
-            menu.setGroupVisible(R.id.loggedout_topic2, false);
         } else {
             menu.setGroupVisible(R.id.loggedout_topic, true);
-            menu.setGroupVisible(R.id.loggedout_topic2, true);
         }
     }
 
@@ -315,9 +319,6 @@ public class TopicFragment extends PaginateFragment implements
             case R.id.refresh:
                 // reload content
                 restartLoader(this);
-                return true;
-            case R.id.new_message:
-                replyPost();
                 return true;
             case R.id.unveil:
                 mJsInterface.unveil();
@@ -340,7 +341,6 @@ public class TopicFragment extends PaginateFragment implements
 
     @Override
     public Loader<Topic> onCreateLoader(int id, Bundle args) {
-        Utils.log("TopicFragment.onCreateLoader()");
 
         int page = getArguments().getInt(ARG_PAGE, 1);
         int tid = getArguments().getInt(ARG_TOPIC_ID, 0);
@@ -354,8 +354,6 @@ public class TopicFragment extends PaginateFragment implements
     @Override
     public void onLoadFinished(Loader<Topic> loader, Topic data) {
         hideLoadingAnimation();
-        Utils.log("TopicFragment.onLoadFinished()");
-
 
         if (data != null) {
             // update the topic data
@@ -367,11 +365,12 @@ public class TopicFragment extends PaginateFragment implements
             //destroyWebView();
             //setupWebView();
 
-            Utils.log("TopicFragment.onLoadFinished() displaying topic");
             mWebView.loadDataWithBaseURL("file:///android_asset/",
-                        mTopic.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);
+                    mTopic.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);
 
             refreshTitleAndPagination();
+
+            mFab.show();
 
         } else {
             showError(getString(R.string.msg_loading_error));
@@ -379,9 +378,8 @@ public class TopicFragment extends PaginateFragment implements
     }
 
     public void refreshTitleAndPagination() {
-        if(mTopic == null)
+        if (mTopic == null)
             return;
-        Utils.log("TopicFragment.refreshTitleAndPagination()");
 
         // set title and subtitle of the ActionBar and reload the OptionsMenu
         Spanned subtitleText = Html.fromHtml(getString(R.string.subtitle_paginate,
@@ -407,9 +405,9 @@ public class TopicFragment extends PaginateFragment implements
 
         setSwipeTarget(mWebView);
 
-        if(!isLastPage())
+        if (!isLastPage())
             mPullToRefreshLayout.setEnabled(false);
-        else if(mSettings.isSwipeToRefreshTopic())
+        else if (mSettings.isSwipeToRefreshTopic())
             mPullToRefreshLayout.setEnabled(true);
 
     }
@@ -432,7 +430,7 @@ public class TopicFragment extends PaginateFragment implements
     }
 
     public void goToPage(int page) {
-        if(page != mTopic.getPage()) {
+        if (page != mTopic.getPage()) {
             getArguments().putInt(ARG_PAGE, page);
             getArguments().remove(ARG_POST_ID);
             mJsInterface.registerScroll(0);
@@ -497,7 +495,7 @@ public class TopicFragment extends PaginateFragment implements
         // offer to open the image with an image application
         WebView.HitTestResult hitTestResult = mWebView.getHitTestResult();
         if (hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE ||
-            hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+                hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
             ImageActionsDialog imenu = ImageActionsDialog.getInstance(Uri.parse(hitTestResult.getExtra()));
             imenu.setTargetFragment(this, 0);
             imenu.show(getBaseActivity().getSupportFragmentManager(), ImageActionsDialog.TAG);
@@ -542,7 +540,7 @@ public class TopicFragment extends PaginateFragment implements
      * Open the form for reply
      */
     public void replyPost() {
-        if(mTopic == null)
+        if (mTopic == null)
             return;
 
         if (mTopic.isClosed())
@@ -680,7 +678,7 @@ public class TopicFragment extends PaginateFragment implements
         Uri localUri = CacheContentProvider.getContentUriFromUrlOrUri(url);
         File f = DiskCacheUtils.findInCache(localUri.toString(), cache);
 
-        if(f != null) {
+        if (f != null) {
             mJsInterface.displayImage(url, localUri.toString(), id);
         } else {
             il.loadImage(url, new SimpleImageLoadingListener() {
@@ -699,7 +697,7 @@ public class TopicFragment extends PaginateFragment implements
     }
 
     public boolean isImageCached(String url) {
-        return  DiskCacheUtils.findInCache(url, ImageLoader.getInstance().getDiskCache()) != null;
+        return DiskCacheUtils.findInCache(url, ImageLoader.getInstance().getDiskCache()) != null;
     }
 
     static class AsyncContentLoader extends AsyncHttpLoader<Topic> {
@@ -712,17 +710,13 @@ public class TopicFragment extends PaginateFragment implements
             super(cx, TopicParser.getUrl(thread_id, page, post_id));
             mContext = cx;
 
-            Utils.log("TopicFragment.AsyncContentLoader()");
         }
 
         @Override
         public Topic processNetworkResponse(String response) {
-            Utils.log("TopicFragment.AsyncContentLoader.processNetworkResponse()");
             try {
                 TopicParser parser = new TopicParser();
-                Utils.log("TopicFragment.AsyncContentLoader.processNetworkResponse() parsing post");
                 Topic t = parser.parse(response);
-                Utils.log("TopicFragment.AsyncContentLoader.processNetworkResponse() building topic");
 
                 TopicBuilder b = new TopicBuilder(mContext);
                 t.setHtmlCache(b.parse(t));
@@ -741,42 +735,37 @@ public class TopicFragment extends PaginateFragment implements
     }
 
     private ObservableScrollViewCallbacks mWebViewScrollCallbacks = new ObservableScrollViewCallbacks() {
+        private boolean mIsScrolledBottom;
+        private boolean mIsScrolledTop;
+        private boolean mToolbarHidden;
+
         @Override
         public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
-            if(!mUserInteraction)
+            if (!mUserInteraction)
                 return;
 
-            Toolbar t = getBaseActivity().getToolbar();
-            View p = getBaseActivity().getPaginateLayout();
-            int toolbarHeight = t.getHeight();
-            int paginateLayoutHeight = p.getHeight();
-            if(paginateLayoutHeight == 0)
-                paginateLayoutHeight = 50;
             boolean scrollingDown = scrollY > mOldScroll;
-            boolean toolbarsHidden = ViewHelper.getTranslationY(t) < 0;
-            int wvContentLength = (int) Math.floor(mWebView.getContentHeight() * mWebView.getScale());
-            boolean wvScrolledTop = toolbarHeight >= mWebView.getCurrentScrollY();
-            boolean wvScrolledBottom = (wvContentLength - mWebView.getCurrentScrollY()) <=
-                    (mWebView.getHeight() + paginateLayoutHeight);
 
-            if(mSettings.dynamicToolbars() && !Utils.isTablet(getBaseActivity())) {
-                if (!toolbarsHidden && scrollingDown && !wvScrolledTop && !wvScrolledBottom) {
-                    ViewPropertyAnimator.animate(t).cancel();
-                    ViewPropertyAnimator.animate(p).cancel();
-                    ViewPropertyAnimator.animate(t).translationY(-toolbarHeight).setDuration(200).start();
-                    ViewPropertyAnimator.animate(p).translationY(paginateLayoutHeight).setDuration(200).start();
-                    mPullToRefreshLayout.setTopMargin(0);
-                } else if (toolbarsHidden && (!scrollingDown || wvScrolledBottom)) {
-                    ViewPropertyAnimator.animate(t).cancel();
-                    ViewPropertyAnimator.animate(p).cancel();
-                    ViewPropertyAnimator.animate(t).translationY(0).setDuration(200).start();
-                    ViewPropertyAnimator.animate(p).translationY(0).setDuration(200).start();
-                    mPullToRefreshLayout.setTopMargin(getBaseActivity().getToolbar().getHeight());
+            int wvContentLength = (int) Math.floor(mWebView.getContentHeight() * mWebView.getScale());
+
+            mIsScrolledTop = getBaseActivity().getToolbar().getHeight() >= mWebView.getCurrentScrollY();
+            mIsScrolledBottom = (wvContentLength - mWebView.getCurrentScrollY()) <=
+                    (mWebView.getHeight() + 50);
+
+            if (scrollingDown && !mIsScrolledTop && !mIsScrolledBottom) {
+                hideToolbar();
+                if (mFab.isVisible() && !mIsScrolledBottom) {
+                    mFab.hide();
+                }
+            } else {
+                showToolbar();
+                if (!mFab.isVisible()) {
+                    mFab.show();
                 }
             }
 
-            if(mSettings.fastscroll()) {
-                if(scrollingDown) {
+            if (mSettings.fastscroll()) {
+                if (scrollingDown) {
                     hideUpButton();
                     showDownButton();
                 } else {
@@ -788,6 +777,26 @@ public class TopicFragment extends PaginateFragment implements
             mOldScroll = scrollY;
         }
 
+        private void showToolbar() {
+            if (mToolbarHidden) {
+                toggleToolbar(true);
+            }
+        }
+
+        private void hideToolbar() {
+            if (!mToolbarHidden && mSettings.dynamicToolbars() && !Utils.isTablet(getBaseActivity())) {
+                toggleToolbar(false);
+            }
+        }
+
+        private void toggleToolbar(final boolean show) {
+            mToolbarHidden = !show;
+            Toolbar t = getBaseActivity().getToolbar();
+            int translation = show ? 0 : -t.getHeight();
+            ViewPropertyAnimator.animate(t).translationY(translation).setDuration(200).start();
+            mPullToRefreshLayout.setTopMargin(translation + t.getHeight());
+        }
+
         @Override
         public void onDownMotionEvent() {
             mUserInteraction = true;
@@ -795,6 +804,7 @@ public class TopicFragment extends PaginateFragment implements
 
         @Override
         public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+
         }
     };
 

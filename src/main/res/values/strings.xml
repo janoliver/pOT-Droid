@@ -36,6 +36,8 @@ Zur Version 4 lies dir bitte den Disclaimer in \'Über die App\' durch!]]></stri
     <!-- actions -->
     <string name="action_remove_bookmark">Bookmark entfernen</string>
     <string name="action_refresh">Aktualisieren</string>
+    <string name="action_previous">Vorherige Seite</string>
+    <string name="action_next">Nächste Seite</string>
     <string name="action_send">Senden</string>
     <string name="action_cancel">Abbrechen</string>
     <string name="action_new_message">Neue Nachricht</string>

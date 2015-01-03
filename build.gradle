@@ -27,6 +27,7 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.nispok:snackbar:2.5.2'
     compile 'com.android.support:support-v4-preferencefragment:1.0.0@aar'
+    compile 'com.melnykov:floatingactionbutton:1.1.0'
 }
 
 android {

@@ -26,6 +26,7 @@ import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.BoardParser;
 import com.mde.potdroid.views.IconDrawable;
+import com.melnykov.fab.FloatingActionButton;
 import org.apache.http.Header;
 
 import java.io.IOException;
@@ -47,6 +48,8 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     private ListView mListView;
     // bookmark database handler
     private DatabaseWrapper mDatabase;
+
+    private FloatingActionButton mFab;
 
     /**
      * Returns an instance of the BoardFragment and sets required parameters as Arguments
@@ -98,6 +101,20 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             }
         });
 
+        mFab = (FloatingActionButton) v.findViewById(R.id.fab);
+        mFab.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
+
+        if(Utils.isLoggedIn()) {
+            mFab.attachToListView(mListView);
+            mFab.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    newThread();
+                }
+            });
+        } else {
+            mFab.setVisibility(View.GONE);
+        }
+
         mDatabase = new DatabaseWrapper(getActivity());
 
         return v;
@@ -118,15 +135,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_board, menu);
-
-        menu.findItem(R.id.new_thread).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
         menu.findItem(R.id.refresh).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
-
-        if (!Utils.isLoggedIn()) {
-            menu.setGroupVisible(R.id.loggedout_board, false);
-        } else {
-            menu.setGroupVisible(R.id.loggedout_board, true);
-        }
     }
 
     @Override
@@ -134,9 +143,6 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.new_thread:
-                newThread();
-                return true;
             case R.id.refresh:
                 // reload content
                 restartLoader(this);

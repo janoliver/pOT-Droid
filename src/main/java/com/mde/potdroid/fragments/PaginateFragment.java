@@ -8,8 +8,8 @@ import android.os.Handler;
 import android.view.*;
 import android.widget.LinearLayout;
 import com.mde.potdroid.R;
-import com.mde.potdroid.views.IconButton;
 import com.mde.potdroid.views.IconDrawable;
+import com.melnykov.fab.FloatingActionButton;
 
 /**
  * This Fragment extends BaseFragment and provides some more methods and an interface
@@ -18,8 +18,8 @@ import com.mde.potdroid.views.IconDrawable;
 abstract public class PaginateFragment extends BaseFragment {
 
     private LinearLayout mFastscrollLayout;
-    private IconButton mUpButton;
-    private IconButton mDownButton;
+    private FloatingActionButton mUpButton;
+    private FloatingActionButton mDownButton;
     private Handler mDownHandler = new Handler();
     private Runnable mDownRunnable = new Runnable() {
         @Override
@@ -121,9 +121,11 @@ abstract public class PaginateFragment extends BaseFragment {
         getBaseActivity().invalidateOptionsMenu();
 
         mFastscrollLayout = getBaseActivity().getFastscrollLayout();
-        mUpButton = (IconButton) mFastscrollLayout.findViewById(R.id.button_up);
-        mDownButton = (IconButton) mFastscrollLayout.findViewById(R.id.button_down);
+        mUpButton = (FloatingActionButton) mFastscrollLayout.findViewById(R.id.button_up);
+        mDownButton = (FloatingActionButton) mFastscrollLayout.findViewById(R.id.button_down);
 
+        mUpButton.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_chevron_up));
+        mDownButton.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_chevron_down));
     }
 
     public void enableFastScroll(final FastScrollListener listener) {

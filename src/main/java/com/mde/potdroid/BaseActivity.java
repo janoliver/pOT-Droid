@@ -234,7 +234,6 @@ public class BaseActivity extends ActionBarActivity {
         mOverlayToolbars = false;
         RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) mContentView.getLayoutParams();
         p.addRule(RelativeLayout.BELOW, R.id.main_toolbar);
-        p.addRule(RelativeLayout.ABOVE, R.id.paginate_view);
         mContentView.setLayoutParams(p);
     }
 

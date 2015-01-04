@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:fab="http://schemas.android.com/apk/res-auto"
               android:id="@+id/fastscroll_view"
               android:layout_width="wrap_content"
               android:layout_centerVertical="true"
@@ -9,25 +10,30 @@
               android:layout_alignParentRight="true"
               android:visibility="invisible">
 
-    <com.mde.potdroid.views.IconButton
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:text="@string/icon_chevron_up"
+    <com.melnykov.fab.FloatingActionButton
             android:id="@+id/button_up"
-            android:background="?attr/bbCircularTransparentClickable"
-            android:textSize="22sp"
-            android:textColor="?attr/bbTextColorSecondary"
-            android:layout_marginBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:layout_margin="16dp"
+            fab:fab_type="mini"
+            android:src="@drawable/ic_action_bb"
+            fab:fab_colorNormal="?attr/bbColorSecondary"
+            fab:fab_colorPressed="?attr/bbColorPrimary"
+            fab:fab_colorRipple="@color/transparent"
             android:visibility="gone"/>
 
-    <com.mde.potdroid.views.IconButton
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:text="@string/icon_chevron_down"
+    <com.melnykov.fab.FloatingActionButton
             android:id="@+id/button_down"
-            android:background="?attr/bbCircularTransparentClickable"
-            android:textSize="22sp"
-            android:textColor="?attr/bbTextColorSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:layout_margin="16dp"
+            fab:fab_type="mini"
+            android:src="@drawable/ic_action_bb"
+            fab:fab_colorNormal="?attr/bbColorSecondary"
+            fab:fab_colorPressed="?attr/bbColorPrimary"
+            fab:fab_colorRipple="@color/transparent"
             android:visibility="gone"/>
 
 </LinearLayout>

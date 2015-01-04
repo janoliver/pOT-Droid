@@ -44,4 +44,13 @@ public class ObservableScrollBottomWebView extends ObservableWebView
         return mStart;
     }
 
+    public void scrollToBottom() {
+
+        scrollTo(0, (int)(getContentHeight() * getScale()));
+    }
+
+    public void scrollToTop() {
+        scrollTo(0, 0);
+    }
+
 }

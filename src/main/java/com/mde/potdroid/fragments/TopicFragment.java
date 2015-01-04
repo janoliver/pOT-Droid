@@ -235,7 +235,6 @@ public class TopicFragment extends PaginateFragment implements
             mWebView.addJavascriptInterface(mJsInterface, "api");
 
             registerForContextMenu(mWebView);
-            Utils.log("xxxxxxxxxxxx created WebView");
 
         }
 

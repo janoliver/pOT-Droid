@@ -5,8 +5,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.*;
 import android.widget.LinearLayout;
 import com.mde.potdroid.R;
@@ -182,25 +180,30 @@ abstract public class PaginateFragment extends BaseFragment {
 
     class PaginateDragListener implements View.OnTouchListener {
         private float start_x;
-        private float min_distance;
+        private float start_y;
+        private int swipeMinDistance;
+        private int swipeMaxOffPath;
 
         public PaginateDragListener() {
             super();
 
-            DisplayMetrics dm = getResources().getDisplayMetrics();
-            min_distance = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, dm);
+            final ViewConfiguration vc = ViewConfiguration.get(getActivity());
+            swipeMinDistance = vc.getScaledPagingTouchSlop() * 10;
+            swipeMaxOffPath = vc.getScaledTouchSlop() * 4;
         }
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 start_x = event.getX();
+                start_y = event.getY();
             } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                 float dx = start_x - event.getX();
+                float dy = Math.abs(start_y - event.getY());
 
-                if (dx > min_distance && !isLastPage())
+                if (dx > swipeMinDistance && !isLastPage() && dy < swipeMaxOffPath)
                     goToNextPage();
-                if (dx < -min_distance && !isFirstPage())
+                if (dx < -swipeMinDistance && !isFirstPage() && dy < swipeMaxOffPath)
                     goToPrevPage();
             }
             return false;

@@ -175,6 +175,11 @@ public class SidebarLeftFragment extends BaseFragment
         } else {
             showError(getString(R.string.msg_loading_error));
         }
+
+        // if the setting to refresh bookmarks on sidebar open is set to true,
+        // we immediately set dirty again so the bookmarks become updated
+        if(mSettings.isReloadBookmarksOnSidebarOpen())
+            mDirty = true;
     }
 
     @Override

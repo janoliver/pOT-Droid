@@ -227,8 +227,8 @@
 
         <CheckBoxPreference
                 android:key="pref_dynamic_toolbars"
-                android:title="Dynamische Toolbars"
-                android:summary="Aktiviere dynamische Toolbars in der Threadview (Nicht auf Tablets)"
+                android:title="Dynamische Toolbar"
+                android:summary="Aktiviere dynamische Toolbar in der Threadview (Nicht auf Tablets)"
                 android:defaultValue="true"/>
 
         <CheckBoxPreference
@@ -236,6 +236,12 @@
                 android:title="Fastscroll Buttons"
                 android:summary="Aktiviere Fastscroll (Hoch/Runter) Buttons in der Threadview"
                 android:defaultValue="true"/>
+
+        <CheckBoxPreference
+                android:key="pref_reload_bookmarks"
+                android:title="Sidebar Bookmarks neu laden"
+                android:summary="Bookmarks in der Sidebar beim Öffnen neu laden"
+                android:defaultValue="false"/>
     </PreferenceScreen>
 
     <PreferenceScreen

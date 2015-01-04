@@ -68,7 +68,6 @@ public class TopicFragment extends PaginateFragment implements
 
     // singleton and state indicator for the Kitkat bug workaround
     public static LinkedList<TopicFragment> mWebViewHolder = new LinkedList<TopicFragment>();
-    public boolean mDestroyed = true;
 
 
     /**
@@ -124,26 +123,18 @@ public class TopicFragment extends PaginateFragment implements
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
 
-        destroyWebView();
+        mPullToRefreshLayout.removeAllViews();
+
+        mWebView.destroy();
+        mWebView = null;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_topic, container, false);
-
-        // this is a hotfix for the Kitkat Webview memory leak. We destroy the webview
-        // of some former TopicFragment, which will be restored on onResume. .
-//        if (mWebView == null/* && Utils.isKitkat()*/) {
-//            mWebViewHolder.add(this);
-//            if (mWebViewHolder.size() > 1) {
-//                TopicFragment fragment = mWebViewHolder.removeFirst();
-//                if (fragment != null)
-//                    fragment.destroyWebView();
-//            }
-//        }
 
         mFab = (FloatingActionButton) v.findViewById(R.id.fab);
         mFab.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
@@ -164,50 +155,24 @@ public class TopicFragment extends PaginateFragment implements
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mPullToRefreshLayout.removeAllViews();
-    }
-
-    /**
-     * Destroys and detaches the webview.
-     */
-    public void destroyWebView() {
-
-        if (mWebView != null && !mDestroyed) {
-            mPullToRefreshLayout.removeAllViews();
-
-            mWebView.destroy();
-            mWebView = null;
-
-            mDestroyed = true;
-        }
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
 
-        if (mDestroyed && Utils.isKitkat()) {
-            setupWebView();
-        } else {
-
-            if (Build.VERSION.SDK_INT >= 11)
-                mWebView.onResume();
-            else
-                try {
-                    Class.forName("android.webkit.WebView").getMethod("onResume", (Class[]) null)
-                            .invoke(mWebView, (Object[]) null);
-                } catch (IllegalAccessException e) {
-                    Utils.printException(e);
-                } catch (InvocationTargetException e) {
-                    Utils.printException(e);
-                } catch (NoSuchMethodException e) {
-                    Utils.printException(e);
-                } catch (ClassNotFoundException e) {
-                    Utils.printException(e);
-                }
-        }
+        if (Build.VERSION.SDK_INT >= 11)
+            mWebView.onResume();
+        else
+            try {
+                Class.forName("android.webkit.WebView").getMethod("onResume", (Class[]) null)
+                        .invoke(mWebView, (Object[]) null);
+            } catch (IllegalAccessException e) {
+                Utils.printException(e);
+            } catch (InvocationTargetException e) {
+                Utils.printException(e);
+            } catch (NoSuchMethodException e) {
+                Utils.printException(e);
+            } catch (ClassNotFoundException e) {
+                Utils.printException(e);
+            }
     }
 
     @Override
@@ -243,8 +208,6 @@ public class TopicFragment extends PaginateFragment implements
      */
     public void setupWebView() {
 
-        mDestroyed = false;
-
         // create a webview if there is none already
         if (mWebView == null) {
             mWebView = new ObservableScrollBottomWebView(getBaseActivity());
@@ -269,26 +232,32 @@ public class TopicFragment extends PaginateFragment implements
             mWebView.getSettings().setLoadWithOverviewMode(true);
 
             // broken on 2.3.3
-            //if(!Utils.isGingerbread())
             mWebView.addJavascriptInterface(mJsInterface, "api");
 
             registerForContextMenu(mWebView);
-
-            if (mTopic != null) {
-                mWebView.loadDataWithBaseURL(
-                        "file:///android_asset/",
-                        mTopic.getHtmlCache(),
-                        "text/html",
-                        Network.ENCODING_UTF8,
-                        null);
-            } else {
-                mWebView.loadData("", "text/html", Network.ENCODING_UTF8);
-            }
+            Utils.log("xxxxxxxxxxxx created WebView");
 
         }
 
+        displayContent();
+
         mPullToRefreshLayout.addView(mWebView);
         refreshTitleAndPagination();
+    }
+
+    public void displayContent() {
+
+        if (mTopic != null) {
+            mWebView.loadDataWithBaseURL(
+                    "file:///android_asset/",
+                    mTopic.getHtmlCache(),
+                    "text/html",
+                    Network.ENCODING_UTF8,
+                    null);
+        } else {
+            mWebView.loadData("", "text/html", Network.ENCODING_UTF8);
+        }
+
     }
 
     @Override
@@ -362,11 +331,7 @@ public class TopicFragment extends PaginateFragment implements
             // Refresh the bookmarks after the topic loaded
             getBaseActivity().getLeftSidebarFragment().refreshBookmarks();
 
-            //destroyWebView();
-            //setupWebView();
-
-            mWebView.loadDataWithBaseURL("file:///android_asset/",
-                    mTopic.getHtmlCache(), "text/html", Network.ENCODING_UTF8, null);
+            displayContent();
 
             refreshTitleAndPagination();
 

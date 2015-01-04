@@ -64,6 +64,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_BOARDS_BOOKMARKS = "pref_board_bookmarks";
     public static final String PREF_KEY_SHOW_END_INDICATOR = "pref_show_end_indicator";
     public static final String PREF_KEY_RELOAD_BOOKMARKS = "pref_reload_bookmarks";
+    public static final String PREF_KEY_SWAPPED_SIDEBARS = "pref_swap_sidebars";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;
@@ -287,6 +288,10 @@ public class SettingsWrapper {
 
     public Boolean isSwipeToRefreshTopic() {
         return mSharedPreferences.getBoolean(PREF_KEY_SWIPE_TO_REFRESH_TOPIC, true);
+    }
+
+    public Boolean isSwappedSidebars() {
+        return mSharedPreferences.getBoolean(PREF_KEY_SWAPPED_SIDEBARS, false);
     }
 
     public Boolean isSwipeToPaginate() {

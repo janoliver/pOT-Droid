@@ -18,7 +18,7 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
         <FrameLayout
-                android:id="@+id/sidebar_container_left"
+                android:id="@+id/sidebar_container_bookmarks"
                 android:layout_width="300dp"
                 android:layout_height="match_parent"
                 android:clickable="true"
@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/wide_content"
-                android:layout_toRightOf="@+id/sidebar_container_left"
+                android:layout_toRightOf="@+id/sidebar_container_bookmarks"
                 android:layout_below="@+id/main_toolbar">
 
             <FrameLayout
@@ -45,7 +45,7 @@
     </RelativeLayout>
 
     <FrameLayout
-            android:id="@+id/sidebar_container_right"
+            android:id="@+id/sidebar_container_boards"
             android:layout_width="300dp"
             android:layout_height="match_parent"
             android:layout_gravity="right"

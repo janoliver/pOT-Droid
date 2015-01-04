@@ -27,14 +27,14 @@
     </RelativeLayout>
 
     <FrameLayout
-            android:id="@+id/sidebar_container_left"
+            android:id="@+id/sidebar_container_bookmarks"
             android:layout_width="300dp"
             android:layout_height="match_parent"
             android:layout_gravity="left"
             android:clickable="true"/>
 
     <FrameLayout
-            android:id="@+id/sidebar_container_right"
+            android:id="@+id/sidebar_container_boards"
             android:layout_width="300dp"
             android:layout_height="match_parent"
             android:layout_gravity="right"

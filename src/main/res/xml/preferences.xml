@@ -158,6 +158,12 @@
                 android:summary="Interessant für große Bildschirme/Tablets"/>
 
         <CheckBoxPreference
+                android:key="pref_swap_sidebars"
+                android:title="Sidebars tauschen"
+                android:summary="Bookmarks erscheinen rechts, Boards links"
+                android:defaultValue="false"/>
+
+        <CheckBoxPreference
                 android:key="pref_board_bookmarks"
                 android:title="Board Bookmark Sidebar aktivieren"
                 android:summary="Soll die rechte Sidebar mit den Board Bookmarks verwendet werden?"

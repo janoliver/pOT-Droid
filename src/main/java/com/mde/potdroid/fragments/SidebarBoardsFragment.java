@@ -21,7 +21,7 @@ import java.util.ArrayList;
 /**
  * This is the Sidebar containing a list of favorite Boards
  */
-public class SidebarRightFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Forum> {
+public class SidebarBoardsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Forum> {
 
     private ArrayList<Board> mBoards;
     private BoardListAdapter mListAdapter;
@@ -36,8 +36,8 @@ public class SidebarRightFragment extends BaseFragment implements LoaderManager.
      *
      * @return SidebarLeftFragment
      */
-    public static SidebarRightFragment newInstance() {
-        return new SidebarRightFragment();
+    public static SidebarBoardsFragment newInstance() {
+        return new SidebarBoardsFragment();
     }
 
     @Override
@@ -69,7 +69,7 @@ public class SidebarRightFragment extends BaseFragment implements LoaderManager.
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                restartLoader(SidebarRightFragment.this);
+                restartLoader(SidebarBoardsFragment.this);
             }
         });
 
@@ -78,7 +78,7 @@ public class SidebarRightFragment extends BaseFragment implements LoaderManager.
             refresh.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    restartLoader(SidebarRightFragment.this);
+                    restartLoader(SidebarBoardsFragment.this);
                 }
             });
             refresh.setVisibility(View.VISIBLE);

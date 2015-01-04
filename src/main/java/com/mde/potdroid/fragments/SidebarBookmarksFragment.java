@@ -22,7 +22,7 @@ import com.mde.potdroid.views.IconButton;
 /**
  * This is the Sidebar containing a list of unread Bookmarks and the navigation.
  */
-public class SidebarLeftFragment extends BaseFragment
+public class SidebarBookmarksFragment extends BaseFragment
         implements LoaderManager.LoaderCallbacks<BookmarkParser.BookmarksContainer> {
 
     // the bookmark list and adapter
@@ -40,8 +40,8 @@ public class SidebarLeftFragment extends BaseFragment
      *
      * @return SidebarLeftFragment
      */
-    public static SidebarLeftFragment newInstance() {
-        return new SidebarLeftFragment();
+    public static SidebarBookmarksFragment newInstance() {
+        return new SidebarBookmarksFragment();
     }
 
     @Override

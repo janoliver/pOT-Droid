@@ -34,7 +34,7 @@ abstract public class PaginateFragment extends BaseFragment {
             hideUpButton();
         }
     };
-
+    private boolean mSwipeEnabled = true;
 
     public abstract void goToFirstPage();
 
@@ -110,6 +110,10 @@ abstract public class PaginateFragment extends BaseFragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void setSwipeEnabled(boolean enabled) {
+        mSwipeEnabled = enabled;
     }
 
     public void setSwipeTarget(View v) {
@@ -196,6 +200,8 @@ abstract public class PaginateFragment extends BaseFragment {
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+            if(!mSwipeEnabled)
+                return false;
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 start_x = event.getX();
                 start_y = event.getY();

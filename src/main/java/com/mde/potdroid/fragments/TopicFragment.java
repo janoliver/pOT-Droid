@@ -315,6 +315,7 @@ public class TopicFragment extends PaginateFragment implements
         int pid = getArguments().getInt(ARG_POST_ID, 0);
 
         showLoadingAnimation();
+        setSwipeEnabled(false);
 
         return new AsyncContentLoader(getBaseActivity(), page, tid, pid);
     }
@@ -333,6 +334,8 @@ public class TopicFragment extends PaginateFragment implements
             displayContent();
 
             refreshTitleAndPagination();
+
+            setSwipeEnabled(true);
 
             mFab.show();
 

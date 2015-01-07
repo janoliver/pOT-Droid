@@ -186,6 +186,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         int bid = getArguments().getInt(ARG_ID, 0);
 
         showLoadingAnimation();
+        setSwipeEnabled(false);
 
         return new AsyncContentLoader(getBaseActivity(), page, bid);
     }
@@ -217,6 +218,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
             getActionbar().setTitle(mBoard.getName());
             getActionbar().setSubtitle(subtitle);
+            setSwipeEnabled(true);
 
             // scroll to top
             mListView.setSelectionAfterHeaderView();

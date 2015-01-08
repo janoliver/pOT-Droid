@@ -189,6 +189,7 @@ abstract public class PaginateFragment extends BaseFragment {
         private float start_y;
         private int swipeMinDistance;
         private int swipeMaxOffPath;
+        private boolean mSwiping;
 
         public PaginateDragListener() {
             super();
@@ -205,14 +206,23 @@ abstract public class PaginateFragment extends BaseFragment {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 start_x = event.getX();
                 start_y = event.getY();
-            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                mSwiping = true;
+            } else if (mSwiping && event.getAction() == MotionEvent.ACTION_MOVE) {
                 float dx = start_x - event.getX();
                 float dy = Math.abs(start_y - event.getY());
 
-                if (dx > swipeMinDistance && !isLastPage() && dy < swipeMaxOffPath)
+                if (dx > swipeMinDistance && !isLastPage() && dy < swipeMaxOffPath) {
                     goToNextPage();
-                if (dx < -swipeMinDistance && !isFirstPage() && dy < swipeMaxOffPath)
+                    mSwiping = false;
+                }
+                if (dx < -swipeMinDistance && !isFirstPage() && dy < swipeMaxOffPath) {
                     goToPrevPage();
+                    mSwiping = false;
+                }
+            } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                start_x = event.getX();
+                start_y = event.getY();
+                mSwiping = false;
             }
             return false;
         }

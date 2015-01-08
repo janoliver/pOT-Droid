@@ -58,6 +58,7 @@
         <CheckBoxPreference
                 android:key="pref_darken_old_posts"
                 android:title="Gelesene Posts abdunkeln"
+                android:summary="Kann bei langen Posts Grafikfehler verursachen."
                 android:defaultValue="true"/>
 
         <CheckBoxPreference
@@ -280,6 +281,11 @@
                 android:key="pref_debug_mode"
                 android:title="Debug Modus"
                 android:defaultValue="false"/>
+
+        <CheckBoxPreference
+                android:key="pref_parse_bbcode"
+                android:title="BBCode Parsen"
+                android:defaultValue="true"/>
 
     </PreferenceScreen>
 

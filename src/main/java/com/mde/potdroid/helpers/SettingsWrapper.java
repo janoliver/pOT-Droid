@@ -65,6 +65,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_SHOW_END_INDICATOR = "pref_show_end_indicator";
     public static final String PREF_KEY_RELOAD_BOOKMARKS = "pref_reload_bookmarks";
     public static final String PREF_KEY_SWAPPED_SIDEBARS = "pref_swap_sidebars";
+    public static final String PREF_KEY_PARSE_BBCODE = "pref_parse_bbcode";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;
@@ -304,6 +305,10 @@ public class SettingsWrapper {
 
     public Boolean isShowEndIndicator() {
         return mSharedPreferences.getBoolean(PREF_KEY_SHOW_END_INDICATOR, true);
+    }
+
+    public Boolean isParseBBCode() {
+        return mSharedPreferences.getBoolean(PREF_KEY_PARSE_BBCODE, true);
     }
 
     /**

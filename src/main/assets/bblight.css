@@ -111,6 +111,14 @@ article {
     padding:10px;
 }
 
+article div.err {
+    background:#cc0000;
+    color:#fff;
+    padding: 3px;
+    text-align:center;
+}
+
+
 article > div {
     overflow:auto;
     font-size:0.9em;

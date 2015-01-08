@@ -214,13 +214,16 @@ public class TopicBuilder {
         }
 
         public String getText() {
+            if(!mSettings.isParseBBCode())
+                return mPost.getText();
             String text;
             try {
                 text = getBBCodeParserInstance().parse(mPost.getText());
                 text = parseSmileys(text);
             } catch (Exception e) {
                 Utils.printException(e);
-                text = "-- Post konnte nicht geparsed werden --";
+                text = "<div class=\"err\"> Post konnte nicht geparsed werden </div><br /><br/>"
+                        + mPost.getText();
             }
 
             return text;

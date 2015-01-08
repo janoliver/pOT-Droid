@@ -8,6 +8,7 @@ import com.mde.potdroid.helpers.SettingsWrapper;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -38,6 +39,8 @@ public class PotDroidApplication extends Application {
                 .diskCacheFileNameGenerator(new CacheContentProvider.HashFileNameGenerator())
                 .diskCacheSize(settings.getCacheSize())
                 .defaultDisplayImageOptions(defaultOptions)
+                .imageDownloader(new BaseImageDownloader(c, settings.getConnectionTimeout() * 1000,
+                        4000 * settings.getConnectionTimeout()))
                 .build();
         ImageLoader.getInstance().init(config);
     }

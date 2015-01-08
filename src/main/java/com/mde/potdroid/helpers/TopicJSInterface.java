@@ -434,4 +434,13 @@ public class TopicJSInterface extends BenderJSInterface {
         });
     }
 
+    @JavascriptInterface
+    public void displayImageLoader(final String id) {
+        mActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                mWebView.loadUrl(String.format("javascript:displayImageLoader('%s');", id));
+            }
+        });
+    }
+
 }

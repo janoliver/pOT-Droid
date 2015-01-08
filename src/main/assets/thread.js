@@ -33,11 +33,11 @@ $(document).ready(function() {
     }
 
     // manual image loader
-    $("div.img i").click(function() {
+    $("div.img i.img-loader").click(function() {
         replaceImage($(this), "");
     });
 
-    // manual image loader
+    // manual video loader
     $("div.video i.vid").click(function() {
         replaceVideo($(this));
     });
@@ -53,7 +53,7 @@ $(document).ready(function() {
     });
 
     // manual image with link loader
-    $("div.img-link i.img").click(function() {
+    $("div.img-link i.img-loader").click(function() {
         replaceImage($(this), $(this).parent().attr('data-href'));
     });
 
@@ -129,19 +129,33 @@ $(document).ready(function() {
         },{
             continuous: false,
         });
-
-
     }, 100);
 
 });
 
 function replaceImage(icon) {
-    icon.attr('class', "fa fa-spinner spin");
+    var classes = "fa fa-spinner spin img-spinner";
+    if(icon.hasClass("gif"))
+        classes = classes + " gif";
+    icon.attr('class', classes);
+
     var el = icon.parent();
     var src = el.attr('data-src');
     var id = Math.floor( Math.random()*99999 );
     el.attr("id", "loadedimg-" + id);
     api.loadImage(src, el.attr("id"));
+}
+
+function displayImageLoader(id) {
+    var el = $("#" + id);
+    var icon = el.find("i.img-spinner");
+    var classes = "fa img-loader err";
+    if(icon.hasClass("gif"))
+        classes = classes + " fa-film gif";
+    else
+        classes = classes + " fa-picture-o";
+    icon.attr("class", classes);
+    el.attr("id", "");
 }
 
 function displayImage(url, path, id) {

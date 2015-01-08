@@ -364,11 +364,11 @@ public class TopicBuilder {
                     String extension = m.group(1).substring(m.group(1).length() - 3).toLowerCase();
                     String icon = "fa-picture-o";
                     if (extension.equals("gif"))
-                        icon = "fa-film";
+                        icon = "fa-film gif";
                     return String.format("<div class=\"img-link\" data-src=\"%1$s\" " +
                             "data-href=\"%2$s\">"
                             + "<i class=\"link fa fa-external-link-square\"></i>"
-                            + "<i class=\"img fa %3$s\"></i>"
+                            + "<i class=\"img-loader fa %3$s\"></i>"
                             + "</div>", m.group(1), args.get(0), icon);
                 }
 
@@ -403,9 +403,9 @@ public class TopicBuilder {
                     String extension = content.substring(content.length() - 3).toLowerCase();
                     String icon = "fa-picture-o";
                     if (extension.equals("gif"))
-                        icon = "fa-film";
+                        icon = "fa-film gif";
                     return String.format("<div class=\"img\" data-src=\"%1$s\"><i class=\"fa " +
-                            "%2$s\"></i></div>", content, icon);
+                            "%2$s img-loader\"></i></div>", content, icon);
                 }
             }
         });

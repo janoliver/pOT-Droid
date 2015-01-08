@@ -29,6 +29,7 @@ import com.melnykov.fab.FloatingActionButton;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.nostra13.universalimageloader.cache.disc.DiskCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.utils.DiskCacheUtils;
 import com.squareup.okhttp.Callback;
@@ -660,6 +661,12 @@ public class TopicFragment extends PaginateFragment implements
                     else
                         showError(R.string.msg_img_loading_error);
 
+                }
+
+                @Override
+                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                    mJsInterface.displayImageLoader(id);
+                    showError(R.string.msg_img_loading_error);
                 }
             });
         }

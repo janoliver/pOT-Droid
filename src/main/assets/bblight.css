@@ -157,6 +157,11 @@ div.img-link i {
     padding:0 5px;
 }
 
+div.img i.err,
+div.img-link i.err {
+    color:#cc0000;
+}
+
 div.img i:active,
 div.video i:active,
 div.spoiler i:active,

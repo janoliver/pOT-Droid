@@ -3,10 +3,6 @@
       xmlns:potdroid="http://schemas.android.com/apk/res-auto">
 
     <item
-            android:id="@+id/refresh"
-            android:title="@string/action_refresh"
-            potdroid:showAsAction="ifRoom"/>
-    <item
             android:id="@+id/unveil"
             android:title="@string/action_unveil"
             potdroid:showAsAction="never"/>

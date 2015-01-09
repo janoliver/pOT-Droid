@@ -73,6 +73,7 @@ abstract public class PaginateFragment extends BaseFragment {
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_paginate, menu);
+        menu.findItem(R.id.refresh).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
 
         Drawable prev_icon = IconDrawable.getIconDrawable(getActivity(), R.string.icon_backward);
         MenuItem prev_item = menu.findItem(R.id.prev);
@@ -85,8 +86,9 @@ abstract public class PaginateFragment extends BaseFragment {
         }
 
         if(isLastPage()) {
-            next_item.setEnabled(false);
-            next_icon.mutate().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+            //next_item.setEnabled(false);
+            //next_icon.mutate().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+            next_item.setVisible(false);
         }
 
         prev_item.setIcon(prev_icon);
@@ -99,6 +101,10 @@ abstract public class PaginateFragment extends BaseFragment {
 
         // Handle item selection
         switch (item.getItemId()) {
+            case R.id.refresh:
+                // reload content
+                refreshPage();
+                return true;
             case R.id.prev:
                 // reload content
                 goToPrevPage();

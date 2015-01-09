@@ -131,14 +131,6 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-        inflater.inflate(R.menu.actionmenu_board, menu);
-        menu.findItem(R.id.refresh).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         // Handle item selection

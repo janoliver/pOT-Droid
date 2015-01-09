@@ -11,4 +11,8 @@
                 android:title="@string/action_next"
                 potdroid:showAsAction="ifRoom"/>
     </group>
+    <item
+            android:id="@+id/refresh"
+            android:title="@string/action_refresh"
+            potdroid:showAsAction="ifRoom"/>
 </menu>

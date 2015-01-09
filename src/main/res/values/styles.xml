@@ -37,9 +37,7 @@
         <item name="colorPrimary">@color/bbstyle_darkblue</item>
         <item name="colorPrimaryDark">@color/bbstyle_darkblue_semi</item>
         <item name="colorAccent">@color/bbstyle_lightblue</item>
-
         <item name="android:windowBackground">@color/bbstyle_darkerblue</item>
-        <item name="sdlDialogStyle">@style/DialogStyleDark</item>
         <item name="bbColorPrimary">@color/bbstyle_lightblue</item>
         <item name="bbColorSecondary">@color/bbstyle_darkblue</item>
         <item name="bbColorSecondaryTransparent">@color/bbstyle_darkblue_semi</item>
@@ -63,22 +61,11 @@
         <item name="bbCircularTransparentClickable">@drawable/dark_circular_translucent_button_background</item>
     </style>
 
-    <style name="DialogStyleDark">
-        <!-- anything can be left out: -->
-        <item name="titleTextColor">@color/white</item>
-        <item name="titleSeparatorColor">@color/bbstyle_darkblue</item>
-        <item name="messageTextColor">@color/white</item>
-        <item name="buttonTextColor">@color/white</item>
-        <item name="buttonSeparatorColor">@color/bbstyle_darkblue</item>
-        <item name="dialogBackground">@color/bbstyle_lightblue</item>
-    </style>
-
     <style name="PotDroidLightBase" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/bbstyle_lightblue</item>
         <item name="colorPrimaryDark">@color/bbstyle_darkblue</item>
         <item name="colorAccent">@color/bbstyle_lightblue</item>
         <item name="android:windowBackground">@color/white</item>
-        <item name="sdlDialogStyle">@style/DialogStyleLight</item>
         <item name="bbColorPrimary">@color/white</item>
         <item name="bbColorSecondary">@color/lightgrey</item>
         <item name="bbColorSecondaryTransparent">@color/lightgrey_transparent</item>
@@ -100,16 +87,6 @@
         <item name="bbBackgroundListActive">@drawable/light_background_list_active</item>
         <item name="bbBackgroundTransparentClickable">@drawable/light_background_transparent_clickable</item>
         <item name="bbCircularTransparentClickable">@drawable/light_circular_translucent_button_background</item>
-    </style>
-
-    <style name="DialogStyleLight">
-        <!-- anything can be left out: -->
-        <item name="titleTextColor">@color/darkgrey</item>
-        <item name="titleSeparatorColor">@color/lightergrey</item>
-        <item name="messageTextColor">@color/darkgrey</item>
-        <item name="buttonTextColor">@color/darkgrey</item>
-        <item name="buttonSeparatorColor">@color/lightergrey</item>
-        <item name="dialogBackground">@color/white</item>
     </style>
 
 </resources>

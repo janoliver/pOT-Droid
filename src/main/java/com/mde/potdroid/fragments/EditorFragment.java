@@ -115,6 +115,9 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         mIconButton = (ImageButton) v.findViewById(R.id.button_icon);
         mBBButton = (ImageButton) v.findViewById(R.id.button_bb);
 
+        mIconButton.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_smile, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+        mBBButton.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_bold, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+
         mIconButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -288,7 +291,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     public void setIconById(Integer iconId) {
         if (iconId < 0) {
             mIconId = 0;
-            mIconButton.setImageResource(R.drawable.ic_action_icon);
+            mIconButton.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_smile, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
         } else {
             Bitmap icon;
             try {

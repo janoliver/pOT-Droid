@@ -57,6 +57,7 @@
             <ImageButton
                     android:contentDescription="@string/none"
                     android:id="@+id/button_icon"
+                    android:padding="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:scaleType="fitCenter"
@@ -64,11 +65,11 @@
                     android:layout_gravity="center"
                     android:layout_toLeftOf="@+id/button_bb"
                     android:layout_centerVertical="true"
-                    android:background="?attr/bbBackgroundTransparentClickable"
-                    android:src="@drawable/ic_action_icon"/>
+                    android:background="?attr/bbBackgroundTransparentClickable"/>
 
             <ImageButton
                     android:contentDescription="@string/none"
+                    android:padding="5dp"
                     android:id="@+id/button_bb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -77,8 +78,7 @@
                     android:layout_gravity="center"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="?attr/bbBackgroundTransparentClickable"
-                    android:src="@drawable/ic_action_bb"/>
+                    android:background="?attr/bbBackgroundTransparentClickable"/>
 
         </RelativeLayout>
 

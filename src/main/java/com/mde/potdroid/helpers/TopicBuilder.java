@@ -324,6 +324,7 @@ public class TopicBuilder {
         mParser.registerTag(new SimpleTag("code", "code", "string") {
             @Override
             public String html(String content, List<String> args) {
+                content = content.replace("<br />", "");
                 return String.format("<span class=\"code\">%1$s</span>", content);
             }
         });

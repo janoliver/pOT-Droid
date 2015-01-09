@@ -173,6 +173,12 @@ article div blockquote div.content {
     text-decoration: line-through;
 }
 
+.code {
+    margin:0.5em;
+    font-family: "Courier", monospace;
+    white-space: pre;
+}
+
 div.img i,
 div.video i,
 div.spoiler i,

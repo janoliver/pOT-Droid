@@ -267,7 +267,8 @@ public class TopicFragment extends PaginateFragment implements
         inflater.inflate(R.menu.actionmenu_topic, menu);
 
         menu.findItem(R.id.load_images).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_picture));
-        menu.findItem(R.id.unveil).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_eye_open));
+        menu.findItem(R.id.unveil).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_chevron_up));
+        menu.findItem(R.id.tobottom).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_chevron_down));
         menu.findItem(R.id.topage).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_arrow_right));
         menu.findItem(R.id.last_own_post).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_search));
 
@@ -284,7 +285,10 @@ public class TopicFragment extends PaginateFragment implements
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.unveil:
-                mJsInterface.unveil();
+                mWebView.scrollToTop();
+                return true;
+            case R.id.tobottom:
+                mWebView.scrollToBottom();
                 return true;
             case R.id.topage:
                 ChoosePageDialog d = ChoosePageDialog.getInstance(mTopic.getNumberOfPages());

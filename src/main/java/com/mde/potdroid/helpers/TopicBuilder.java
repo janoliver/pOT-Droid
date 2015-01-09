@@ -97,11 +97,9 @@ public class TopicBuilder {
      * @throws IOException
      */
     public String parse(Topic topic) throws IOException {
-        Utils.log("Getting template...");
         InputStream is = mContext.getResources().getAssets().open("thread.html");
         Reader reader = new InputStreamReader(is);
         StringWriter sw = new StringWriter();
-        Utils.log("Compiling template...");
         Mustache.compiler().compile(reader).execute(new TopicContext(topic, mContext), sw);
         return sw.toString();
     }
@@ -113,7 +111,6 @@ public class TopicBuilder {
      * @return HTML code with smileys
      */
     private String parseSmileys(String code) {
-        Utils.log("Parsing Smileys");
         String template = "<img src=\"smileys/%1$s\" alt=\"%2$s\" />";
         Iterator<Map.Entry<String, String>> i = mSmileys.entrySet().iterator();
 
@@ -138,18 +135,14 @@ public class TopicBuilder {
         }
 
         public String getCssFile() {
-            Utils.log("Getting css file...");
             return Utils.getStringByAttr(mContext, R.attr.bbTopicCssFile);
         }
 
         public String getThemeVariant() {
-
-            Utils.log("Getting theme variant...");
             return mSettings.getThemeVariant();
         }
 
         public List<PostContext> getPosts() {
-            Utils.log("Generating Post List...");
             List<PostContext> pc = new ArrayList<PostContext>();
             int user_id = mSettings.getUserId();
             boolean show_post_info = mSettings.showPostInfo();
@@ -197,7 +190,6 @@ public class TopicBuilder {
         }
 
         public String getAvatarBackground() {
-            Utils.log("Getting Avatar Background...");
             if(mBenderHandler.getAvatarFilePathIfExists(mPost.getAuthor()) == null)
                 return "";
             else
@@ -210,17 +202,14 @@ public class TopicBuilder {
         }
 
         public String getAvatar() {
-            Utils.log("Getting Avatar");
             return mPost.getAuthor().getAvatarFile();
         }
 
         public Integer getAvatarId() {
-            Utils.log("Getting Avatar ID");
             return mPost.getAuthor().getAvatarId();
         }
 
         public String getDate() {
-            Utils.log("Getting Date");
             if(!mShowPostInfo)
                 return "";
             return new SimpleDateFormat(mContext.getString(R.string.default_time_format))
@@ -234,12 +223,10 @@ public class TopicBuilder {
         }
 
         public String getText() {
-            Utils.log("Getting Text");
             if(!mParseBBcode)
                 return mPost.getText();
             String text;
             try {
-                Utils.log("Parsing bbcode");
                 text = getBBCodeParserInstance().parse(mPost.getText());
                 text = parseSmileys(text);
             } catch (Exception e) {

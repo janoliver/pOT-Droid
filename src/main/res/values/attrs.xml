@@ -2,6 +2,7 @@
 <resources>
     <attr name="bbColorPrimary" format="color|reference"/>
     <attr name="bbColorSecondary" format="color|reference"/>
+    <attr name="bbColorSecondaryTransparent" format="color|reference"/>
     <attr name="bbColorTertiary" format="color|reference"/>
     <attr name="bbColorHighlight" format="color|reference"/>
     <attr name="bbColorTranslucentBackground" format="color|reference"/>

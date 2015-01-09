@@ -42,6 +42,7 @@
         <item name="sdlDialogStyle">@style/DialogStyleDark</item>
         <item name="bbColorPrimary">@color/bbstyle_lightblue</item>
         <item name="bbColorSecondary">@color/bbstyle_darkblue</item>
+        <item name="bbColorSecondaryTransparent">@color/bbstyle_darkblue_semi</item>
         <item name="bbColorTertiary">@color/bbstyle_lighterblue</item>
         <item name="bbColorHighlight">@color/white_low</item>
         <item name="bbColorTranslucentBackground">@color/black_low</item>
@@ -80,6 +81,7 @@
         <item name="sdlDialogStyle">@style/DialogStyleLight</item>
         <item name="bbColorPrimary">@color/white</item>
         <item name="bbColorSecondary">@color/lightgrey</item>
+        <item name="bbColorSecondaryTransparent">@color/lightgrey_transparent</item>
         <item name="bbColorTertiary">@color/lightergrey</item>
         <item name="bbColorHighlight">@color/bbstyle_lightblue</item>
         <item name="bbColorTranslucentBackground">@color/white_low</item>

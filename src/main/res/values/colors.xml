@@ -10,6 +10,7 @@
 
     <color name="grey">#aaaaaa</color>
     <color name="lightgrey">#cccccc</color>
+    <color name="lightgrey_transparent">#cccccccc</color>
     <color name="lightergrey">#eeeeee</color>
     <color name="darkgrey">#888888</color>
     <color name="darkergrey">#444444</color>

@@ -3,6 +3,7 @@ package com.mde.potdroid;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,8 +14,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.mde.potdroid.fragments.BoardFragment;
-import com.mde.potdroid.fragments.SidebarBookmarksFragment;
 import com.mde.potdroid.fragments.SidebarBoardsFragment;
+import com.mde.potdroid.fragments.SidebarBookmarksFragment;
 import com.mde.potdroid.helpers.CustomExceptionHandler;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
@@ -40,6 +41,10 @@ public class BaseActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // load default preference values from xml
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
         mSettings = new SettingsWrapper(this);
 
         setTheme(mSettings.getTheme());

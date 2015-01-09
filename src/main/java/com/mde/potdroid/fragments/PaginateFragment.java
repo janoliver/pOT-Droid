@@ -195,7 +195,7 @@ abstract public class PaginateFragment extends BaseFragment {
             super();
 
             final ViewConfiguration vc = ViewConfiguration.get(getActivity());
-            swipeMinDistance = vc.getScaledPagingTouchSlop() * 10;
+            swipeMinDistance = vc.getScaledPagingTouchSlop() * 7;
             swipeMaxOffPath = vc.getScaledTouchSlop() * 4;
         }
 

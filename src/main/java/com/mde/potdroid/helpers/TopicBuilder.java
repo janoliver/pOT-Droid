@@ -24,7 +24,7 @@ public class TopicBuilder {
 
     // a HashMap with the smileys
     public static HashMap<String, String> mSmileys = new HashMap<String, String>();
-    {
+    static {
         mSmileys.put(":bang:", "banghead.gif");
         mSmileys.put(":D", "biggrin.gif");
         mSmileys.put(":confused:", "confused.gif");
@@ -54,7 +54,7 @@ public class TopicBuilder {
     }
 
     public static HashMap<String, Integer> mIcons = new HashMap<String, Integer>();
-    {
+    static {
         mIcons.put("icon2.gif", 32);
         mIcons.put("icon11.gif", 40);
         mIcons.put("icon4.gif", 34);
@@ -97,9 +97,11 @@ public class TopicBuilder {
      * @throws IOException
      */
     public String parse(Topic topic) throws IOException {
+        Utils.log("Getting template...");
         InputStream is = mContext.getResources().getAssets().open("thread.html");
         Reader reader = new InputStreamReader(is);
         StringWriter sw = new StringWriter();
+        Utils.log("Compiling template...");
         Mustache.compiler().compile(reader).execute(new TopicContext(topic, mContext), sw);
         return sw.toString();
     }
@@ -111,6 +113,7 @@ public class TopicBuilder {
      * @return HTML code with smileys
      */
     private String parseSmileys(String code) {
+        Utils.log("Parsing Smileys");
         String template = "<img src=\"smileys/%1$s\" alt=\"%2$s\" />";
         Iterator<Map.Entry<String, String>> i = mSmileys.entrySet().iterator();
 
@@ -135,17 +138,24 @@ public class TopicBuilder {
         }
 
         public String getCssFile() {
+            Utils.log("Getting css file...");
             return Utils.getStringByAttr(mContext, R.attr.bbTopicCssFile);
         }
 
         public String getThemeVariant() {
+
+            Utils.log("Getting theme variant...");
             return mSettings.getThemeVariant();
         }
 
         public List<PostContext> getPosts() {
+            Utils.log("Generating Post List...");
             List<PostContext> pc = new ArrayList<PostContext>();
+            int user_id = mSettings.getUserId();
+            boolean show_post_info = mSettings.showPostInfo();
+            boolean parse_bbcode = mSettings.isParseBBCode();
             for (Post p : mTopic.getPosts())
-                pc.add(new PostContext(p));
+                pc.add(new PostContext(p, user_id, parse_bbcode, show_post_info));
             return pc;
         }
     }
@@ -155,10 +165,16 @@ public class TopicBuilder {
      */
     class PostContext {
 
+        private int mUserId;
+        private boolean mShowPostInfo;
+        private boolean mParseBBcode;
         private Post mPost;
 
-        public PostContext(Post p) {
+        public PostContext(Post p, int user_id, boolean parse_bbcode, boolean show_post_info) {
             mPost = p;
+            mUserId = user_id;
+            mParseBBcode = parse_bbcode;
+            mShowPostInfo = show_post_info;
         }
 
         public Integer getId() {
@@ -170,7 +186,7 @@ public class TopicBuilder {
         }
 
         public boolean isAuthor() {
-            return mPost.getAuthor().getId() == mSettings.getUserId();
+            return mPost.getAuthor().getId() == mUserId;
         }
 
         public String getIcon() {
@@ -181,6 +197,7 @@ public class TopicBuilder {
         }
 
         public String getAvatarBackground() {
+            Utils.log("Getting Avatar Background...");
             if(mBenderHandler.getAvatarFilePathIfExists(mPost.getAuthor()) == null)
                 return "";
             else
@@ -193,31 +210,36 @@ public class TopicBuilder {
         }
 
         public String getAvatar() {
+            Utils.log("Getting Avatar");
             return mPost.getAuthor().getAvatarFile();
         }
 
         public Integer getAvatarId() {
+            Utils.log("Getting Avatar ID");
             return mPost.getAuthor().getAvatarId();
         }
 
         public String getDate() {
-            if(!mSettings.showPostInfo())
+            Utils.log("Getting Date");
+            if(!mShowPostInfo)
                 return "";
             return new SimpleDateFormat(mContext.getString(R.string.default_time_format))
-                    .format(mPost.getDate());
+                    .format(mPost.getDate()) + " Uhr";
         }
 
         public String getTitle() {
-            if(!mSettings.showPostInfo())
+            if(!mShowPostInfo)
                 return "";
             return mPost.getTitle();
         }
 
         public String getText() {
-            if(!mSettings.isParseBBCode())
+            Utils.log("Getting Text");
+            if(!mParseBBcode)
                 return mPost.getText();
             String text;
             try {
+                Utils.log("Parsing bbcode");
                 text = getBBCodeParserInstance().parse(mPost.getText());
                 text = parseSmileys(text);
             } catch (Exception e) {

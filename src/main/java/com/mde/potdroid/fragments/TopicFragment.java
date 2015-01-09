@@ -318,6 +318,7 @@ public class TopicFragment extends PaginateFragment implements
     @Override
     public void onLoadFinished(Loader<Topic> loader, Topic data) {
         hideLoadingAnimation();
+        Utils.log("Finished loading");
 
         if (data != null) {
             // update the topic data
@@ -688,8 +689,10 @@ public class TopicFragment extends PaginateFragment implements
                 TopicParser parser = new TopicParser();
                 Topic t = parser.parse(response);
 
+                Utils.log("Building topic");
                 TopicBuilder b = new TopicBuilder(mContext);
                 t.setHtmlCache(b.parse(t));
+                Utils.log("Finished building topic");
                 return t;
             } catch (Exception e) {
                 Utils.printException(e);

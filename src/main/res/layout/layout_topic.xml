@@ -16,7 +16,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_action_bb"
             fab:fab_colorNormal="?attr/bbColorSecondary"
             fab:fab_colorPressed="?attr/bbColorPrimary"
             fab:fab_colorRipple="@color/transparent"/>

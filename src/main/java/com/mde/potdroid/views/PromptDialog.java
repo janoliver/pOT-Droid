@@ -74,12 +74,7 @@ public class PromptDialog extends DialogFragment {
 
         final LayoutInflater inflater = LayoutInflater.from(context);
 
-        final LinearLayout input_layout = new LinearLayout(context);
-        input_layout.setOrientation(LinearLayout.VERTICAL);
-        LinearLayout.LayoutParams layout_params =
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
-        input_layout.setLayoutParams(layout_params);
+        final LinearLayout input_layout = (LinearLayout)inflater.inflate(R.layout.template_holder, null);
 
         for(int i=0;i < mNumberInputs; ++i) {
             FrameLayout editTextHolder = (FrameLayout)inflater.inflate(R.layout.template_edittext, null);

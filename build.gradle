@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.0.0'
@@ -10,7 +10,7 @@ buildscript {
 apply plugin: 'com.android.application'
 
 repositories {
-    mavenCentral()
+    jcenter()
     maven {
         url "https://raw.github.com/kolavar/android-support-v4-preferencefragment/master/maven-repository/"
     }
@@ -27,7 +27,9 @@ dependencies {
     compile 'com.nispok:snackbar:2.7.3'
     compile 'com.android.support:support-v4-preferencefragment:1.0.0@aar'
     compile 'com.melnykov:floatingactionbutton:1.1.0'
+    compile 'com.afollestad:material-dialogs:0.5.9'
 }
+
 
 android {
     compileSdkVersion 21

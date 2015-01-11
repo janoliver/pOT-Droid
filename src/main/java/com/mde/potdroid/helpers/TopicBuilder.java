@@ -5,6 +5,7 @@ import android.webkit.URLUtil;
 import com.mde.potdroid.R;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
+import com.mde.potdroid.models.User;
 import com.samskivert.mustache.Mustache;
 
 import java.io.*;
@@ -21,6 +22,7 @@ public class TopicBuilder {
 
     // context reference
     private Context mContext;
+    private Map<User, String> mAvatarCache = new HashMap<>();
 
     // a HashMap with the smileys
     public static HashMap<String, String> mSmileys = new HashMap<String, String>();
@@ -72,8 +74,6 @@ public class TopicBuilder {
         mIcons.put("icon7.gif", 37);
     }
 
-
-
     // a reference to the Settings class
     private SettingsWrapper mSettings;
 
@@ -101,6 +101,7 @@ public class TopicBuilder {
         Reader reader = new InputStreamReader(is);
         StringWriter sw = new StringWriter();
         Mustache.compiler().compile(reader).execute(new TopicContext(topic, mContext), sw);
+        mBenderHandler.updateLastSeenBenderInformation(new ArrayList(mAvatarCache.keySet()));
         return sw.toString();
     }
 
@@ -190,11 +191,16 @@ public class TopicBuilder {
         }
 
         public String getAvatarBackground() {
-            if(mBenderHandler.getAvatarFilePathIfExists(mPost.getAuthor()) == null)
-                return "";
-            else
-                return String.format("style=\"background-image:url(%s)\"",
-                    mBenderHandler.getAvatarFilePath(mPost.getAuthor()));
+            if(!mAvatarCache.containsKey(mPost.getAuthor())) {
+                String path = mBenderHandler.getAvatarFilePathIfExists(mPost.getAuthor());
+                if(path == null)
+                    mAvatarCache.put(mPost.getAuthor(), "");
+                else
+                    mAvatarCache.put(mPost.getAuthor(),
+                            String.format("style=\"background-image:url(%s)\"", path));
+            }
+
+            return mAvatarCache.get(mPost.getAuthor());
         }
 
         public Integer getAuthorId() {

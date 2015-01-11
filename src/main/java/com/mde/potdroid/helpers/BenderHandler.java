@@ -15,6 +15,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 /**
  * This class handles the Bender downloading and storing the User <-> Bender
@@ -180,17 +181,12 @@ public class BenderHandler {
         String[] parts = user.getAvatarFile().split("\\.");
         String filename = user.getAvatarId() + "." + parts[parts.length - 1];
 
-        File res = new File(getBenderStorageDir(), filename);
+        return new File(getBenderStorageDir(), filename);
+    }
 
-        if(res.exists())
-        {
-            Date date = new Date();
-            mDatabase.updateBender(user.getAvatarId(), user.getId(),
-                    user.getAvatarFile(), new Timestamp(date.getTime()));
-
-        }
-
-        return res;
+    public void updateLastSeenBenderInformation(List<User> user_list) {
+        Date date = new Date();
+        mDatabase.updateLastSeenBenderInformation(user_list, new Timestamp(date.getTime()));
     }
 
     /**

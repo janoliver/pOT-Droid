@@ -731,18 +731,19 @@ public class TopicFragment extends PaginateFragment implements
 
             mIsScrolledTop = getBaseActivity().getToolbar().getHeight() >= mWebView.getCurrentScrollY();
             mIsScrolledBottom = (wvContentLength - mWebView.getCurrentScrollY()) <=
-                    (mWebView.getHeight() + 50);
+                    (mWebView.getHeight() + 200);
 
             if (scrollingDown && !mIsScrolledTop && !mIsScrolledBottom) {
                 hideToolbar();
-                if (mFab.isVisible() && !mIsScrolledBottom) {
-                    mFab.hide();
-                }
             } else {
                 showToolbar();
-                if (!mFab.isVisible()) {
-                    mFab.show();
-                }
+            }
+
+            if ((scrollingDown && !mIsScrolledTop && !mIsScrolledBottom) ||
+                (!scrollingDown && mIsScrolledBottom)) {
+                mFab.hide();
+            } else {
+                mFab.show();
             }
 
             if (mSettings.fastscroll()) {

@@ -251,7 +251,7 @@ public class BaseActivity extends ActionBarActivity {
     }
 
     public void closeLeftDrawer() {
-        if (mDrawerLayout != null)
+        if (mDrawerLayout != null && !mSettings.isFixedSidebar())
             mDrawerLayout.closeDrawer(Gravity.LEFT);
     }
 

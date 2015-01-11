@@ -3,6 +3,10 @@
       xmlns:potdroid="http://schemas.android.com/apk/res-auto">
 
     <item
+            android:id="@+id/new_reply"
+            android:title="@string/action_reply"
+            potdroid:showAsAction="ifRoom"/>
+    <item
             android:id="@+id/unveil"
             android:title="@string/action_unveil"
             potdroid:showAsAction="never"/>

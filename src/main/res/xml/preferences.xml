@@ -245,6 +245,12 @@
                 android:defaultValue="true"/>
 
         <CheckBoxPreference
+                android:key="pref_fab"
+                android:title="Zeige Floating Action Button"
+                android:summary="Zeige Floating Action Button für 'Neuer Post' und 'Neuer Thread"
+                android:defaultValue="true"/>
+
+        <CheckBoxPreference
                 android:key="pref_reload_bookmarks"
                 android:title="Sidebar Bookmarks neu laden"
                 android:summary="Bookmarks in der Sidebar beim Öffnen neu laden"

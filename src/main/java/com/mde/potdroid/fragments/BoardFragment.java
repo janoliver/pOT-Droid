@@ -104,7 +104,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         mFab = (FloatingActionButton) v.findViewById(R.id.fab);
         mFab.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
 
-        if(Utils.isLoggedIn()) {
+        if(Utils.isLoggedIn() && mSettings.isShowFAB()) {
             mFab.attachToListView(mListView);
             mFab.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -135,13 +135,24 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.refresh:
+            case R.id.new_thread:
                 // reload content
-                restartLoader(this);
+                newThread();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.actionmenu_board, menu);
+        if(!Utils.isLoggedIn())
+            menu.findItem(R.id.new_thread).setVisible(false);
+        else
+            menu.findItem(R.id.new_thread).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
     }
 
     /**

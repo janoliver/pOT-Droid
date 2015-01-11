@@ -141,7 +141,7 @@ public class TopicFragment extends PaginateFragment implements
         mFab.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
         mFab.hide(false);
 
-        if (Utils.isLoggedIn()) {
+        if (Utils.isLoggedIn() && mSettings.isShowFAB()) {
             mFab.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     replyPost();
@@ -276,8 +276,10 @@ public class TopicFragment extends PaginateFragment implements
 
         if (!Utils.isLoggedIn()) {
             menu.setGroupVisible(R.id.loggedout_topic, false);
+            menu.findItem(R.id.new_reply).setVisible(false);
         } else {
             menu.setGroupVisible(R.id.loggedout_topic, true);
+            menu.findItem(R.id.new_reply).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
         }
     }
 
@@ -286,6 +288,9 @@ public class TopicFragment extends PaginateFragment implements
 
         // Handle item selection
         switch (item.getItemId()) {
+            case R.id.new_reply:
+                replyPost();
+                return true;
             case R.id.unveil:
                 mWebView.scrollToTop();
                 return true;

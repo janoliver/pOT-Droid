@@ -271,27 +271,36 @@ public class DatabaseWrapper {
 
     // update or create bender information of a user
     public void updateBender(int id, int user_id, String filename, Date last_seen) {
-        ContentValues values = new ContentValues();
-        values.put("id", id);
-        values.put("user_id", user_id);
-        values.put("bender_filename", filename);
-        values.put("last_seen", last_seen.getTime() * 1000.);
-        long res = mDatabase.replace(BENDER_TABLE_NAME, null, values);
+        try {
+            mDatabase.beginTransaction();
+
+            ContentValues values = new ContentValues();
+            values.put("id", id);
+            values.put("user_id", user_id);
+            values.put("bender_filename", filename);
+            values.put("last_seen", last_seen.getTime() * 1000.);
+            mDatabase.replace(BENDER_TABLE_NAME, null, values);
+            mDatabase.setTransactionSuccessful();
+        } finally {
+            mDatabase.endTransaction();
+        }
     }
 
     public void updateLastSeenBenderInformation(List<User> user_list, Date last_seen) {
-        mDatabase.beginTransaction();
-        for(User u: user_list) {
-            ContentValues values = new ContentValues();
-            values.put("id", u.getAvatarId());
-            values.put("user_id", u.getId());
-            values.put("bender_filename", u.getAvatarFile());
-            values.put("last_seen", last_seen.getTime() * 1000.);
-            mDatabase.replace(BENDER_TABLE_NAME, null, values);
+        try {
+            mDatabase.beginTransaction();
+            for(User u: user_list) {
+                ContentValues values = new ContentValues();
+                values.put("id", u.getAvatarId());
+                values.put("user_id", u.getId());
+                values.put("bender_filename", u.getAvatarFile());
+                values.put("last_seen", last_seen.getTime() * 1000.);
+                mDatabase.replace(BENDER_TABLE_NAME, null, values);
+            }
+            mDatabase.setTransactionSuccessful();
+        } finally {
+            mDatabase.endTransaction();
         }
-
-        mDatabase.setTransactionSuccessful();
-        mDatabase.endTransaction();
     }
 
     /**

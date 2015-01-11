@@ -246,7 +246,9 @@ public class TopicFragment extends PaginateFragment implements
     }
 
     public void displayContent() {
-
+        // shouldn't be null :(
+        if(mWebView == null)
+            return;
         if (mTopic != null) {
             mWebView.loadDataWithBaseURL(
                     "file:///android_asset/",
@@ -583,6 +585,10 @@ public class TopicFragment extends PaginateFragment implements
         network.get(url, new Callback() {
             @Override
             public void onResponse(Response response) {
+                // fail silently if the Activity is not present anymore
+                if(getBaseActivity() == null)
+                    return;
+
                 getBaseActivity().runOnUiThread(new Runnable() {
 
                     @Override
@@ -590,6 +596,7 @@ public class TopicFragment extends PaginateFragment implements
                         showSuccess(R.string.msg_bookmark_added);
                     }
                 });
+
                 hideLoadingAnimation();
                 if (d != null)
                     d.cancel();

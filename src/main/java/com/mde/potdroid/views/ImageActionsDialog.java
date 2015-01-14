@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.LayoutInflater;
 import com.mde.potdroid.R;
 import com.mde.potdroid.fragments.TopicFragment;
 
@@ -35,9 +34,6 @@ public class ImageActionsDialog extends DialogFragment {
         final TopicFragment fragment = (TopicFragment) getTargetFragment();
 
         // get the menu items
-        final String[] image_menu = getResources().getStringArray(R.array.image_dialog);
-
-        LayoutInflater inflater = fragment.getBaseActivity().getLayoutInflater();
         AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getBaseActivity());
         builder.setItems(R.array.image_dialog, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {

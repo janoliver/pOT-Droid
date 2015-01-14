@@ -479,14 +479,17 @@ public class TopicFragment extends PaginateFragment implements
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo
             menuInfo) {
-        // long touch is only resolved if it happened on an image. If so, we
-        // offer to open the image with an image application
+
         WebView.HitTestResult hitTestResult = mWebView.getHitTestResult();
         if (hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE ||
                 hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
             ImageActionsDialog imenu = ImageActionsDialog.getInstance(Uri.parse(hitTestResult.getExtra()));
             imenu.setTargetFragment(this, 0);
             imenu.show(getBaseActivity().getSupportFragmentManager(), ImageActionsDialog.TAG);
+        } else if (hitTestResult.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE) {
+            LinkActionsDialog imenu = LinkActionsDialog.getInstance(Uri.parse(hitTestResult.getExtra()));
+            imenu.setTargetFragment(this, 0);
+            imenu.show(getBaseActivity().getSupportFragmentManager(), LinkActionsDialog.TAG);
         }
     }
 

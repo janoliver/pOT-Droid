@@ -29,13 +29,15 @@
                 android:layout_height="match_parent"
                 android:id="@+id/wide_content"
                 android:layout_toRightOf="@+id/sidebar_container_bookmarks"
-                android:layout_below="@+id/main_toolbar">
+                android:layout_below="@+id/main_toolbar"
+                android:layout_above="@+id/bottom_toolbar">
 
             <FrameLayout
                     android:id="@+id/content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
+            <include layout="@layout/view_bottom_toolbar"/>
             <include layout="@layout/view_fastscroll"/>
 
         </RelativeLayout>

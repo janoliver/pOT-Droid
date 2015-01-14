@@ -31,6 +31,10 @@ public class BenderJSInterface {
         mSettings = new SettingsWrapper(cx);
     }
 
+    public void setWebView(WebView wv) {
+        mWebView = wv;
+    }
+
     /**
      * Log something to Logcat
      *

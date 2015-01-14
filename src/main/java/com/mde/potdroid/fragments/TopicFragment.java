@@ -16,6 +16,7 @@ import android.text.Spanned;
 import android.view.*;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.RelativeLayout;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.mde.potdroid.EditorActivity;
@@ -103,7 +104,7 @@ public class TopicFragment extends PaginateFragment implements
 
         setupWebView();
 
-        if (!Utils.isTablet(getBaseActivity())) {
+        if (!mSettings.isFixedSidebar()) {
             getBaseActivity().setOverlayToolbars();
 
             ViewTreeObserver vto = getBaseActivity().getToolbar().getViewTreeObserver();
@@ -121,6 +122,15 @@ public class TopicFragment extends PaginateFragment implements
 
         if (!mSettings.isSwipeToRefreshTopic())
             mPullToRefreshLayout.setEnabled(false);
+
+        if(mSettings.isBottomToolbar()) {
+            getmWriteButton().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    replyPost();
+                }
+            });
+        }
     }
 
     @Override
@@ -237,6 +247,7 @@ public class TopicFragment extends PaginateFragment implements
 
             registerForContextMenu(mWebView);
 
+            mJsInterface.setWebView(mWebView);
         }
 
         displayContent();
@@ -274,7 +285,7 @@ public class TopicFragment extends PaginateFragment implements
         menu.findItem(R.id.topage).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_arrow_right));
         menu.findItem(R.id.last_own_post).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_search));
 
-        if (!Utils.isLoggedIn()) {
+        if (!Utils.isLoggedIn() || mSettings.isBottomToolbar()) {
             menu.setGroupVisible(R.id.loggedout_topic, false);
             menu.findItem(R.id.new_reply).setVisible(false);
         } else {
@@ -295,7 +306,7 @@ public class TopicFragment extends PaginateFragment implements
                 mWebView.scrollToTop();
                 return true;
             case R.id.tobottom:
-                mWebView.scrollToBottom();
+                mJsInterface.scrollToBottom();
                 return true;
             case R.id.topage:
                 ChoosePageDialog d = ChoosePageDialog.getInstance(mTopic.getNumberOfPages());
@@ -373,7 +384,7 @@ public class TopicFragment extends PaginateFragment implements
 
             @Override
             public void onDownButtonClicked() {
-                mWebView.scrollToBottom();
+                mJsInterface.scrollToBottom();
                 //mJsInterface.tobottom();
             }
         });
@@ -384,6 +395,8 @@ public class TopicFragment extends PaginateFragment implements
             mPullToRefreshLayout.setEnabled(false);
         else if (mSettings.isSwipeToRefreshTopic())
             mPullToRefreshLayout.setEnabled(true);
+
+        refreshPaginateLayout();
 
     }
 
@@ -739,9 +752,9 @@ public class TopicFragment extends PaginateFragment implements
                     (mWebView.getHeight() + 200);
 
             if (scrollingDown && !mIsScrolledTop && !mIsScrolledBottom) {
-                hideToolbar();
+                hideToolbars();
             } else {
-                showToolbar();
+                showToolbars();
             }
 
             if ((scrollingDown && !mIsScrolledTop && !mIsScrolledBottom) ||
@@ -764,24 +777,33 @@ public class TopicFragment extends PaginateFragment implements
             mOldScroll = scrollY;
         }
 
-        private void showToolbar() {
+        private void showToolbars() {
             if (mToolbarHidden) {
-                toggleToolbar(true);
+                toggleTopToolbar(true);
+                toggleBottomToolbar(true);
             }
         }
 
-        private void hideToolbar() {
-            if (!mToolbarHidden && mSettings.dynamicToolbars() && !Utils.isTablet(getBaseActivity())) {
-                toggleToolbar(false);
+        private void hideToolbars() {
+            if (!mToolbarHidden && mSettings.dynamicToolbars() && !mSettings.isFixedSidebar()) {
+                toggleTopToolbar(false);
+                toggleBottomToolbar(false);
             }
         }
 
-        private void toggleToolbar(final boolean show) {
+        private void toggleTopToolbar(final boolean show) {
             mToolbarHidden = !show;
             Toolbar t = getBaseActivity().getToolbar();
             int translation = show ? 0 : -t.getHeight();
             ViewPropertyAnimator.animate(t).translationY(translation).setDuration(200).start();
             mPullToRefreshLayout.setTopMargin(translation + t.getHeight());
+        }
+
+        private void toggleBottomToolbar(final boolean show) {
+            mToolbarHidden = !show;
+            RelativeLayout t = getBaseActivity().getBottomToolbar();
+            int translation = show ? 0 : t.getHeight();
+            ViewPropertyAnimator.animate(t).translationY(translation).setDuration(200).start();
         }
 
         @Override

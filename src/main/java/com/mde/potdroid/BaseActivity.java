@@ -34,6 +34,7 @@ public class BaseActivity extends ActionBarActivity {
     protected SidebarBoardsFragment mBoardsSidebar;
     protected DrawerLayout mDrawerLayout;
     protected Toolbar mToolbar;
+    protected RelativeLayout mBottomToolbar;
     protected LinearLayout mFastscrollLayout;
     protected FrameLayout mContentView;
     protected ActionBarDrawerToggle mDrawerToggle;
@@ -81,6 +82,8 @@ public class BaseActivity extends ActionBarActivity {
 
         // our toolbar (the new ActionBar)
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        mBottomToolbar = (RelativeLayout) findViewById(R.id.bottom_toolbar);
+
         setSupportActionBar(mToolbar);
 
         setupDrawerToggle();
@@ -215,6 +218,10 @@ public class BaseActivity extends ActionBarActivity {
         return mToolbar;
     }
 
+    public RelativeLayout getBottomToolbar() {
+        return mBottomToolbar;
+    }
+
     public LinearLayout getFastscrollLayout() {
         return mFastscrollLayout;
     }
@@ -239,6 +246,23 @@ public class BaseActivity extends ActionBarActivity {
         mOverlayToolbars = false;
         RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) mContentView.getLayoutParams();
         p.addRule(RelativeLayout.BELOW, R.id.main_toolbar);
+
+        if(mSettings.isBottomToolbar())
+            p.addRule(RelativeLayout.ABOVE, R.id.bottom_toolbar);
+        mContentView.setLayoutParams(p);
+    }
+
+    public void disableBottomToolbar() {
+        getBottomToolbar().setVisibility(View.GONE);
+        RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) mContentView.getLayoutParams();
+        p.addRule(RelativeLayout.ABOVE, 0);
+        mContentView.setLayoutParams(p);
+    }
+
+    public void enableBottomToolbar() {
+        getBottomToolbar().setVisibility(View.VISIBLE);
+        RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) mContentView.getLayoutParams();
+        p.addRule(RelativeLayout.ABOVE, R.id.bottom_toolbar);
         mContentView.setLayoutParams(p);
     }
 

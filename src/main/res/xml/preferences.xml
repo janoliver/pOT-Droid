@@ -230,7 +230,7 @@
                 android:key="pref_show_paginate_toolbar"
                 android:title="Zeige Blättern Toolbar"
                 android:summary="Soll eine Toolbar zum Blättern angezeigt werden?"
-                android:defaultValue="true"/>
+                android:defaultValue="false"/>
 
         <CheckBoxPreference
                 android:key="pref_dynamic_toolbars"

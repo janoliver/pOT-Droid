@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.view.*;
 import android.widget.LinearLayout;
 import com.mde.potdroid.R;
+import com.mde.potdroid.helpers.Utils;
+import com.mde.potdroid.views.IconButton;
 import com.mde.potdroid.views.IconDrawable;
 import com.melnykov.fab.FloatingActionButton;
 
@@ -35,6 +37,12 @@ abstract public class PaginateFragment extends BaseFragment {
         }
     };
     private boolean mSwipeEnabled = true;
+    private IconButton mRefreshButton;
+    private IconButton mFwdButton;
+    private IconButton mFfwdButton;
+    private IconButton mRwdButton;
+    private IconButton mFrwdButton;
+    private IconButton mWriteButton;
 
     public abstract void goToFirstPage();
 
@@ -62,15 +70,64 @@ abstract public class PaginateFragment extends BaseFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        refreshPaginateLayout();
 
         if (getSwipeView() != null && mSettings.isSwipeToPaginate())
             getSwipeView().setOnTouchListener(new PaginateDragListener());
+
+        if(mSettings.isBottomToolbar()) {
+            getBaseActivity().enableBottomToolbar();
+
+            mRefreshButton = (IconButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_refresh);
+            mFwdButton = (IconButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_fwd);
+            mFfwdButton = (IconButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_ffwd);
+            mRwdButton = (IconButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_rwd);
+            mFrwdButton = (IconButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_frwd);
+            mWriteButton = (IconButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_write);
+
+            mRefreshButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    refreshPage();
+                }
+            });
+            mFwdButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToNextPage();
+                }
+            });
+            mFfwdButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToLastPage();
+                }
+            });
+            mRwdButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToPrevPage();
+                }
+            });
+            mFrwdButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToFirstPage();
+                }
+            });
+        }
+
+        if(!Utils.isLoggedIn())
+            mWriteButton.setVisibility(View.GONE);
+
+        refreshPaginateLayout();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+
+        if(mSettings.isBottomToolbar())
+            return;
 
         inflater.inflate(R.menu.actionmenu_paginate, menu);
         menu.findItem(R.id.refresh).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
@@ -86,8 +143,6 @@ abstract public class PaginateFragment extends BaseFragment {
         }
 
         if(isLastPage()) {
-            //next_item.setEnabled(false);
-            //next_icon.mutate().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
             next_item.setVisible(false);
         }
 
@@ -129,6 +184,24 @@ abstract public class PaginateFragment extends BaseFragment {
 
     public void refreshPaginateLayout() {
         getBaseActivity().invalidateOptionsMenu();
+
+        if(mSettings.isBottomToolbar()) {
+            if(isFirstPage()) {
+                mRwdButton.disable();
+                mFrwdButton.disable();
+            } else {
+                mRwdButton.enable();
+                mFrwdButton.enable();
+            }
+
+            if(isLastPage()) {
+                mFwdButton.disable();
+                mFfwdButton.disable();
+            } else {
+                mFwdButton.enable();
+                mFfwdButton.enable();
+            }
+        }
 
         mFastscrollLayout = getBaseActivity().getFastscrollLayout();
         mUpButton = (FloatingActionButton) mFastscrollLayout.findViewById(R.id.button_up);
@@ -182,6 +255,10 @@ abstract public class PaginateFragment extends BaseFragment {
 
         if(mUpButton.getVisibility() == View.GONE)
             mUpButton.setVisibility(View.VISIBLE);
+    }
+
+    public IconButton getmWriteButton() {
+        return mWriteButton;
     }
 
     public interface FastScrollListener {

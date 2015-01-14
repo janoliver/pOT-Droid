@@ -128,6 +128,15 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
         if (mBoard == null)
             startLoader(this);
+
+        if(mSettings.isBottomToolbar()) {
+            getmWriteButton().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    newThread();
+                }
+            });
+        }
     }
 
     @Override
@@ -149,7 +158,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_board, menu);
-        if(!Utils.isLoggedIn())
+        if(!Utils.isLoggedIn() || mSettings.isBottomToolbar())
             menu.findItem(R.id.new_thread).setVisible(false);
         else
             menu.findItem(R.id.new_thread).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));

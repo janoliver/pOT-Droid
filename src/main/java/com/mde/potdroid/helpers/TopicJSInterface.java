@@ -203,6 +203,11 @@ public class TopicJSInterface extends BenderJSInterface {
         return mTopicFragment.getBaseActivity().getOverlayToolbars();
     }
 
+    @JavascriptInterface
+    public boolean isBottomToolbar() {
+        return mSettings.isBottomToolbar();
+    }
+
     /**
      * Check if this is the last Page of the topic
      *
@@ -439,6 +444,14 @@ public class TopicJSInterface extends BenderJSInterface {
         mActivity.runOnUiThread(new Runnable() {
             public void run() {
                 mWebView.loadUrl(String.format("javascript:displayImageLoader('%s');", id));
+            }
+        });
+    }
+
+    public void scrollToBottom() {
+        mActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                mWebView.loadUrl("javascript:scrollToBottom();");
             }
         });
     }

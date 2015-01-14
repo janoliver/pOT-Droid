@@ -11,6 +11,7 @@
         <FrameLayout
                 android:id="@+id/content"
                 android:layout_below="@+id/main_toolbar"
+                android:layout_above="@+id/bottom_toolbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -22,6 +23,7 @@
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
+        <include layout="@layout/view_bottom_toolbar"/>
         <include layout="@layout/view_fastscroll"/>
 
     </RelativeLayout>

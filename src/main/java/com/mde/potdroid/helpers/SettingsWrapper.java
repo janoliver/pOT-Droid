@@ -220,8 +220,8 @@ public class SettingsWrapper {
         return mSharedPreferences.getBoolean(PREF_KEY_SWIPE_TO_PAGINATE, true);
     }
 
-    public Boolean isShowPaginateToolbar() {
-        return mSharedPreferences.getBoolean(PREF_KEY_SHOW_PAGNIATE_TOOLBAR, true);
+    public Boolean isBottomToolbar() {
+        return mSharedPreferences.getBoolean(PREF_KEY_SHOW_PAGNIATE_TOOLBAR, false);
     }
 
     public Boolean isShowEndIndicator() {

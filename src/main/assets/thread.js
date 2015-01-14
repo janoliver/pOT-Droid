@@ -14,6 +14,8 @@ $(document).ready(function() {
     // set top and bottom padding
     if(api.isOverlayToolbars()) {
         $("#paddings").css("padding-top", api.getToolBarHeightInDp() + "px");
+        if(api.isBottomToolbar())
+            $("#paddings").css("padding-bottom", api.getToolBarHeightInDp() + "px");
     }
 
     if(!api.isPullUpToRefresh() || !api.isShowEndIndicator() || !api.isLastPage()) {
@@ -33,7 +35,7 @@ $(document).ready(function() {
     }
 
     // manual image loader
-    $("div.img i.img-loader").click(function() {
+    $("div.img i.img-loader").on("click", function() {
         replaceImage($(this), "");
     });
 
@@ -48,12 +50,12 @@ $(document).ready(function() {
     });
 
     // manual image with link loader
-    $("div.img-link i.link").click(function() {
+    $("div.img-link i.link").on("click", function() {
         api.openUrl($(this).parent().attr('data-href'));
     });
 
     // manual image with link loader
-    $("div.img-link i.img-loader").click(function() {
+    $("div.img-link i.img-loader").on("click", function() {
         replaceImage($(this), $(this).parent().attr('data-href'));
     });
 

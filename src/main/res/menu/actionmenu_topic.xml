@@ -9,11 +9,11 @@
     <item
             android:id="@+id/unveil"
             android:title="@string/action_unveil"
-            potdroid:showAsAction="never"/>
+            potdroid:showAsAction="ifRoom"/>
     <item
             android:id="@+id/tobottom"
             android:title="@string/action_tobottom"
-            potdroid:showAsAction="never"/>
+            potdroid:showAsAction="ifRoom"/>
     <item
             android:id="@+id/topage"
             android:title="@string/action_topage"

@@ -39,7 +39,8 @@ public class PotDroidApplication extends Application {
                 .diskCacheFileNameGenerator(new CacheContentProvider.HashFileNameGenerator())
                 .diskCacheSize(settings.getCacheSize())
                 .defaultDisplayImageOptions(defaultOptions)
-                .imageDownloader(new BaseImageDownloader(c, settings.getConnectionTimeout() * 1000,
+                .imageDownloader(new BaseImageDownloader(c,
+                        1000 * settings.getConnectionTimeout(),
                         4000 * settings.getConnectionTimeout()))
                 .build();
         ImageLoader.getInstance().init(config);

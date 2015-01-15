@@ -1,55 +1,61 @@
-<android.support.v4.widget.DrawerLayout
+<FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-    <RelativeLayout
+    <android.support.v4.widget.DrawerLayout
+            android:id="@+id/drawer_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <android.support.v7.widget.Toolbar
-                android:id="@+id/main_toolbar"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_width="match_parent"
-                android:background="?attr/colorPrimary"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-
-        <FrameLayout
-                android:id="@+id/sidebar_container_bookmarks"
-                android:layout_width="300dp"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:layout_below="@+id/main_toolbar"/>
-
         <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/wide_content"
-                android:layout_toRightOf="@+id/sidebar_container_bookmarks"
-                android:layout_below="@+id/main_toolbar"
-                android:layout_above="@+id/bottom_toolbar">
+                android:layout_height="match_parent">
+
+            <android.support.v7.widget.Toolbar
+                    android:id="@+id/main_toolbar"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_width="match_parent"
+                    android:background="?attr/colorPrimary"
+                    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
             <FrameLayout
-                    android:id="@+id/content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:id="@+id/sidebar_container_bookmarks"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:layout_below="@+id/main_toolbar"/>
 
-            <include layout="@layout/view_bottom_toolbar"/>
-            <include layout="@layout/view_fastscroll"/>
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/wide_content"
+                    android:layout_toRightOf="@+id/sidebar_container_bookmarks"
+                    android:layout_below="@+id/main_toolbar"
+                    android:layout_above="@+id/bottom_toolbar">
+
+                <FrameLayout
+                        android:id="@+id/content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <include layout="@layout/view_bottom_toolbar"/>
+
+                <include layout="@layout/view_fastscroll"/>
+
+            </RelativeLayout>
 
         </RelativeLayout>
 
-    </RelativeLayout>
+        <FrameLayout
+                android:id="@+id/sidebar_container_boards"
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:clickable="true"/>
 
-    <FrameLayout
-            android:id="@+id/sidebar_container_boards"
-            android:layout_width="300dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:clickable="true"/>
-
-</android.support.v4.widget.DrawerLayout>
+    </android.support.v4.widget.DrawerLayout>
+</FrameLayout>

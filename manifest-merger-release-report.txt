@@ -80,104 +80,98 @@ ADDED from AndroidManifest.xml:28:17
 		ADDED from AndroidManifest.xml:28:27
 activity#com.mde.potdroid.ForumActivity
 ADDED from AndroidManifest.xml:33:9
-	android:launchMode
-		ADDED from AndroidManifest.xml:35:17
 	android:name
 		ADDED from AndroidManifest.xml:34:17
 intent-filter#android.intent.action.VIEW+android.intent.category.BROWSABLE+android.intent.category.DEFAULT
-ADDED from AndroidManifest.xml:37:13
+ADDED from AndroidManifest.xml:36:13
 action#android.intent.action.VIEW
+ADDED from AndroidManifest.xml:37:17
+	android:name
+		ADDED from AndroidManifest.xml:37:25
+category#android.intent.category.DEFAULT
 ADDED from AndroidManifest.xml:38:17
 	android:name
-		ADDED from AndroidManifest.xml:38:25
-category#android.intent.category.DEFAULT
+		ADDED from AndroidManifest.xml:38:27
+category#android.intent.category.BROWSABLE
 ADDED from AndroidManifest.xml:39:17
 	android:name
 		ADDED from AndroidManifest.xml:39:27
-category#android.intent.category.BROWSABLE
-ADDED from AndroidManifest.xml:40:17
-	android:name
-		ADDED from AndroidManifest.xml:40:27
 data
-ADDED from AndroidManifest.xml:42:17
+ADDED from AndroidManifest.xml:41:17
 	android:host
-		ADDED from AndroidManifest.xml:44:25
-	android:scheme
 		ADDED from AndroidManifest.xml:43:25
+	android:scheme
+		ADDED from AndroidManifest.xml:42:25
 	android:pathPattern
-		ADDED from AndroidManifest.xml:45:25
+		ADDED from AndroidManifest.xml:44:25
 activity#com.mde.potdroid.BoardActivity
-ADDED from AndroidManifest.xml:50:9
+ADDED from AndroidManifest.xml:49:9
 	android:name
-		ADDED from AndroidManifest.xml:50:19
+		ADDED from AndroidManifest.xml:49:19
 activity#com.mde.potdroid.BookmarkActivity
-ADDED from AndroidManifest.xml:65:9
-	android:launchMode
-		ADDED from AndroidManifest.xml:67:17
+ADDED from AndroidManifest.xml:64:9
 	android:name
-		ADDED from AndroidManifest.xml:66:17
+		ADDED from AndroidManifest.xml:65:17
 activity#com.mde.potdroid.EditorActivity
-ADDED from AndroidManifest.xml:69:9
+ADDED from AndroidManifest.xml:67:9
 	android:name
-		ADDED from AndroidManifest.xml:70:17
+		ADDED from AndroidManifest.xml:68:17
 activity#com.mde.potdroid.TopicActivity
-ADDED from AndroidManifest.xml:72:9
+ADDED from AndroidManifest.xml:70:9
 	android:name
-		ADDED from AndroidManifest.xml:73:17
+		ADDED from AndroidManifest.xml:71:17
 activity#com.mde.potdroid.MessageListActivity
-ADDED from AndroidManifest.xml:88:9
-	android:launchMode
-		ADDED from AndroidManifest.xml:90:17
+ADDED from AndroidManifest.xml:86:9
 	android:name
-		ADDED from AndroidManifest.xml:89:17
+		ADDED from AndroidManifest.xml:87:17
 activity#com.mde.potdroid.MessageActivity
+ADDED from AndroidManifest.xml:102:9
+	android:name
+		ADDED from AndroidManifest.xml:103:17
+activity#com.mde.potdroid.SettingsActivity
 ADDED from AndroidManifest.xml:105:9
 	android:name
-		ADDED from AndroidManifest.xml:106:17
-activity#com.mde.potdroid.SettingsActivity
-ADDED from AndroidManifest.xml:108:9
-	android:name
-		ADDED from AndroidManifest.xml:108:19
+		ADDED from AndroidManifest.xml:105:19
 activity#com.mde.potdroid.AboutActivity
-ADDED from AndroidManifest.xml:110:9
+ADDED from AndroidManifest.xml:107:9
 	android:name
-		ADDED from AndroidManifest.xml:110:19
+		ADDED from AndroidManifest.xml:107:19
 intent-filter#.AboutActivity+android.intent.category.DEFAULT
-ADDED from AndroidManifest.xml:111:13
+ADDED from AndroidManifest.xml:108:13
 action#.AboutActivity
-ADDED from AndroidManifest.xml:112:17
+ADDED from AndroidManifest.xml:109:17
 	android:name
-		ADDED from AndroidManifest.xml:112:25
+		ADDED from AndroidManifest.xml:109:25
 receiver#com.mde.potdroid.services.BootBroadcastReceiver
-ADDED from AndroidManifest.xml:117:9
+ADDED from AndroidManifest.xml:114:9
 	android:name
-		ADDED from AndroidManifest.xml:117:19
+		ADDED from AndroidManifest.xml:114:19
 intent-filter#android.intent.action.BOOT_COMPLETED
-ADDED from AndroidManifest.xml:119:13
+ADDED from AndroidManifest.xml:116:13
 action#android.intent.action.BOOT_COMPLETED
-ADDED from AndroidManifest.xml:120:17
+ADDED from AndroidManifest.xml:117:17
 	android:name
-		ADDED from AndroidManifest.xml:120:25
+		ADDED from AndroidManifest.xml:117:25
 receiver#com.mde.potdroid.services.MessagePollingAlarm
-ADDED from AndroidManifest.xml:125:9
+ADDED from AndroidManifest.xml:122:9
 	android:process
-		ADDED from AndroidManifest.xml:127:17
+		ADDED from AndroidManifest.xml:124:17
 	android:name
-		ADDED from AndroidManifest.xml:126:17
+		ADDED from AndroidManifest.xml:123:17
 service#com.mde.potdroid.services.MessagePollingService
-ADDED from AndroidManifest.xml:129:9
+ADDED from AndroidManifest.xml:126:9
 	android:exported
+		ADDED from AndroidManifest.xml:128:17
+	android:name
+		ADDED from AndroidManifest.xml:127:17
+provider#com.mde.potdroid.helpers.CacheContentProvider
+ADDED from AndroidManifest.xml:129:9
+	android:authorities
 		ADDED from AndroidManifest.xml:131:17
+	android:exported
+		ADDED from AndroidManifest.xml:132:17
 	android:name
 		ADDED from AndroidManifest.xml:130:17
-provider#com.mde.potdroid.helpers.CacheContentProvider
-ADDED from AndroidManifest.xml:132:9
-	android:authorities
-		ADDED from AndroidManifest.xml:134:17
-	android:exported
-		ADDED from AndroidManifest.xml:135:17
-	android:name
-		ADDED from AndroidManifest.xml:133:17
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
 MERGED from com.android.support:support-v4:21.0.3:15:5

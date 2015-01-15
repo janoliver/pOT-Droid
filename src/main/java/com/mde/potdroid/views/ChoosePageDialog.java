@@ -1,10 +1,10 @@
 package com.mde.potdroid.views;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.view.View;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mde.potdroid.R;
 import com.mde.potdroid.fragments.TopicFragment;
 
@@ -22,18 +22,19 @@ public class ChoosePageDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         CharSequence[] items = new CharSequence[getArguments().getInt("pages")];
         for(int i=0; i < items.length; ++i) {
             items[i] = "Seite "+(i+1);
         }
 
-        builder.setTitle(R.string.action_topage)
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        ((TopicFragment)getTargetFragment()).goToPage(which + 1);
+        return new MaterialDialog.Builder(getActivity())
+                .title(R.string.action_topage)
+                .items(items)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+                        ((TopicFragment)getTargetFragment()).goToPage(i + 1);
                     }
-                });
-        return builder.create();
+                }).build();
     }
 }

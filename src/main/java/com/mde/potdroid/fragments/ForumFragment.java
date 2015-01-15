@@ -8,9 +8,11 @@ import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
+import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mde.potdroid.BoardActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
@@ -78,45 +80,42 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
                 return true;
             }
         });
+        mListView.setOnItemLongClickListener(new ExpandableListView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                    final int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                    final int childPosition = ExpandableListView.getPackedPositionChild(id);
 
-        registerForContextMenu(mListView);
+                    new MaterialDialog.Builder(getActivity())
+                            .content(R.string.action_add_favorite_board)
+                            .positiveText("Ok")
+                            .negativeText("Abbrechen")
+                            .callback(new MaterialDialog.ButtonCallback() {
+                                @Override
+                                public void onPositive(MaterialDialog dialog) {
+                                    DatabaseWrapper db = new DatabaseWrapper(getActivity());
+                                    Board b = mForum.
+                                            getCategories().get(groupPosition).
+                                            getBoards().get(childPosition);
+
+                                    db.addBoard(b);
+                                    showSuccess(R.string.msg_marked_favorite);
+                                }
+                            })
+                            .show();
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
 
         getActionbar().setTitle(R.string.title_forum);
 
         return v;
 
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getBaseActivity().getMenuInflater();
-        inflater.inflate(R.menu.contextmenu_board, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        if (item.getGroupId() != R.id.forum)
-            return false;
-
-        ExpandableListView.ExpandableListContextMenuInfo info =
-                (ExpandableListView.ExpandableListContextMenuInfo) item.getMenuInfo();
-
-        switch (item.getItemId()) {
-            // so far, one can only delete a bookmark through the context menu
-            case R.id.add:
-                DatabaseWrapper db = new DatabaseWrapper(getActivity());
-                Board b = mForum.
-                        getCategories().get(mListView.getPackedPositionGroup(info.packedPosition)).
-                        getBoards().get(mListView.getPackedPositionChild(info.packedPosition));
-
-                db.addBoard(b);
-                showSuccess(R.string.msg_marked_favorite);
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
     }
 
     @Override

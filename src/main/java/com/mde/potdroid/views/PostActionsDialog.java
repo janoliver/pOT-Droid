@@ -1,13 +1,14 @@
 package com.mde.potdroid.views;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mde.potdroid.R;
 import com.mde.potdroid.fragments.TopicFragment;
 import com.mde.potdroid.helpers.SettingsWrapper;
@@ -39,9 +40,7 @@ public class PostActionsDialog extends DialogFragment {
         // get the menu items
         final String[] post_menu = getResources().getStringArray(R.array.post_dialog);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getBaseActivity());
-
-        builder.setAdapter(new ArrayAdapter<String>(getActivity(),
+        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, post_menu) {
 
             @Override
@@ -69,31 +68,40 @@ public class PostActionsDialog extends DialogFragment {
                 view.setEnabled(isEnabled(position));
                 return view;
             }
-        }, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case 0:
-                        fragment.editPost(getArguments().getInt(ARG_POST_ID));
-                        break;
-                    case 1:
-                        fragment.quotePost(getArguments().getInt(ARG_POST_ID));
-                        break;
-                    case 2:
-                        fragment.bookmarkPost(getArguments().getInt(ARG_POST_ID), null);
-                        break;
-                    case 3:
-                        fragment.linkPost(getArguments().getInt(ARG_POST_ID));
-                        break;
-                    case 4:
-                        fragment.pmToAuthor(getArguments().getInt(ARG_POST_ID));
-                        break;
-                }
-            }
-        });
+        };
 
-        // Create the AlertDialog object and return it
-        return builder.create();
+        MaterialDialog dialog = new MaterialDialog.Builder(fragment.getBaseActivity())
+                .items(post_menu)
+                .adapter(adapter)
+                .build();
+
+        ListView listView = dialog.getListView();
+        if (listView != null) {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    switch (position) {
+                        case 0:
+                            fragment.editPost(getArguments().getInt(ARG_POST_ID));
+                            break;
+                        case 1:
+                            fragment.quotePost(getArguments().getInt(ARG_POST_ID));
+                            break;
+                        case 2:
+                            fragment.bookmarkPost(getArguments().getInt(ARG_POST_ID), null);
+                            break;
+                        case 3:
+                            fragment.linkPost(getArguments().getInt(ARG_POST_ID));
+                            break;
+                        case 4:
+                            fragment.pmToAuthor(getArguments().getInt(ARG_POST_ID));
+                            break;
+                    }
+                }
+            });
+        }
+
+        return dialog;
     }
 
 }

@@ -1,13 +1,13 @@
 package com.mde.potdroid.views;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Html;
 import android.text.Spanned;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mde.potdroid.AboutActivity;
 import com.mde.potdroid.R;
 
@@ -18,25 +18,31 @@ public class UpdateInfoDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
 
         Spanned msg = Html.fromHtml(getString(R.string.update_info));
+        String version;
+        try {
+            version = getActivity().getPackageManager().getPackageInfo(
+                    getActivity().getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            version = "";
+        }
 
-        builder.setMessage(msg)
-                .setPositiveButton(R.string.update_info_about, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
+        builder.content(msg)
+                .title("pOT-Droid " + version)
+                .positiveText(R.string.update_info_about)
+                .negativeText(R.string.update_info_cancel)
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
                         Intent intent = new Intent(getActivity(), AboutActivity.class);
                         startActivity(intent);
                     }
-                })
-                .setNegativeButton(R.string.update_info_cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                    }
                 });
+
         // Create the AlertDialog object and return it
-        return builder.create();
+        return builder.build();
     }
 
 }

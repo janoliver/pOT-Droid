@@ -1,14 +1,13 @@
 package com.mde.potdroid.views;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.view.View;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mde.potdroid.R;
-import com.mde.potdroid.fragments.TopicFragment;
 
 /**
  * This DialogFragment shows a Menu for a Post with some actions
@@ -31,31 +30,30 @@ public class ImageActionsDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final TopicFragment fragment = (TopicFragment) getTargetFragment();
 
-        // get the menu items
-        AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getBaseActivity());
-        builder.setItems(R.array.image_dialog, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case 0:
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_VIEW);
-                        intent.setDataAndType(Uri.parse(getArguments().getString(ARG_IMAGE_URI)), "image/*");
-                        startActivity(intent);
-                        break;
-                    case 1:
+        return new MaterialDialog.Builder(getActivity())
+                .items(R.array.image_dialog)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+                        switch (i) {
+                            case 0:
+                                Intent intent = new Intent();
+                                intent.setAction(Intent.ACTION_VIEW);
+                                intent.setDataAndType(Uri.parse(getArguments().getString(ARG_IMAGE_URI)), "image/*");
+                                startActivity(intent);
+                                break;
+                            case 1:
 
-                        Intent shareIntent = new Intent();
-                        shareIntent.setAction(Intent.ACTION_SEND);
-                        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(getArguments().getString(ARG_IMAGE_URI)));
-                        shareIntent.setType("image/*");
-                        startActivity(Intent.createChooser(shareIntent, "Share"));
-                        break;
-                }
-            }
-        });
-        return builder.create();
+                                Intent shareIntent = new Intent();
+                                shareIntent.setAction(Intent.ACTION_SEND);
+                                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(getArguments().getString(ARG_IMAGE_URI)));
+                                shareIntent.setType("image/*");
+                                startActivity(Intent.createChooser(shareIntent, "Share"));
+                                break;
+                        }
+                    }
+                }).build();
     }
 
 }

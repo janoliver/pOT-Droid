@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mde.potdroid.R;
 import com.mde.potdroid.TopicActivity;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
@@ -76,7 +77,50 @@ public class BookmarkFragment extends BaseFragment
             }
         });
 
-        registerForContextMenu(listView);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final int pos = position;
+                new MaterialDialog.Builder(getActivity())
+                        .content(R.string.action_remove_bookmark)
+                        .positiveText("Ok")
+                        .negativeText("Abbrechen")
+                        .callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                Bookmark b = mBookmarkList.getBookmarks().get(pos);
+                                final String url = Utils.getAsyncUrl(
+                                        String.format("remove-bookmark.php?BMID=%s&token=%s", b.getId(), b.getRemovetoken()));
+
+                                showLoadingAnimation();
+
+                                Network network = new Network(getActivity());
+                                network.get(url, new Callback() {
+                                    @Override
+                                    public void onResponse(Response response) {
+                                        getBaseActivity().runOnUiThread(new Runnable() {
+
+                                            @Override
+                                            public void run() {
+                                                showSuccess(R.string.msg_bookmark_removed);
+                                                hideLoadingAnimation();
+                                                restartLoader(BookmarkFragment.this);
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onFailure(Request request, IOException error) {
+                                        hideLoadingAnimation();
+                                    }
+                                });
+                            }
+                        })
+                        .show();
+
+                return true;
+            }
+        });
 
         getActionbar().setTitle(R.string.title_bookmarks);
 
@@ -108,55 +152,6 @@ public class BookmarkFragment extends BaseFragment
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getBaseActivity().getMenuInflater();
-        inflater.inflate(R.menu.contextmenu_bookmark, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info =
-                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-        switch (item.getItemId()) {
-            // so far, one can only delete a bookmark through the context menu
-            case R.id.delete:
-                Bookmark b = mBookmarkList.getBookmarks().get((int) info.id);
-                final String url = Utils.getAsyncUrl(
-                        String.format("remove-bookmark.php?BMID=%s&token=%s", b.getId(), b.getRemovetoken()));
-
-                showLoadingAnimation();
-
-                Network network = new Network(getActivity());
-                network.get(url, new Callback() {
-                    @Override
-                    public void onResponse(Response response) {
-                        getBaseActivity().runOnUiThread(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                showSuccess(R.string.msg_bookmark_removed);
-                                hideLoadingAnimation();
-                                restartLoader(BookmarkFragment.this);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onFailure(Request request, IOException error) {
-                        hideLoadingAnimation();
-                    }
-                });
-
-                return true;
-            default:
-                return super.onContextItemSelected(item);
         }
     }
 

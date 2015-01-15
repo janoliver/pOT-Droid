@@ -36,7 +36,7 @@ der App in den Android Settings!]]></string>
     <string name="update_info_cancel">Lass mich in Ruhe!</string>
 
     <!-- actions -->
-    <string name="action_remove_bookmark">Bookmark entfernen</string>
+    <string name="action_remove_bookmark">Bookmark entfernen?</string>
     <string name="action_refresh">Aktualisieren</string>
     <string name="action_previous">Vorherige Seite</string>
     <string name="action_next">Nächste Seite</string>
@@ -46,7 +46,7 @@ der App in den Android Settings!]]></string>
     <string name="action_new_thread">Neuer Thread</string>
     <string name="action_reply">Antworten</string>
     <string name="action_remove_favorite_board">Board entfernen</string>
-    <string name="action_add_favorite_board">Board als Favorit hinzufügen</string>
+    <string name="action_add_favorite_board">Board als Favorit hinzufügen?</string>
     <string name="action_unveil">Zum Beginn der Seite</string>
     <string name="action_tobottom">Zum Ende der Seite</string>
     <string name="action_topage">Gehe zu Seite…</string>

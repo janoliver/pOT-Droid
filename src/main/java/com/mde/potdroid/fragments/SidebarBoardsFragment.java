@@ -8,6 +8,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
 import android.widget.*;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mde.potdroid.BoardActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.DatabaseWrapper;
@@ -84,38 +85,30 @@ public class SidebarBoardsFragment extends BaseFragment implements LoaderManager
             refresh.setVisibility(View.VISIBLE);
         }
 
-        registerForContextMenu(listView);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final int pos = position;
+                new MaterialDialog.Builder(getActivity())
+                        .content(R.string.action_remove_bookmark)
+                        .positiveText("Ok")
+                        .negativeText("Abbrechen")
+                        .callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                DatabaseWrapper db = new DatabaseWrapper(getActivity());
+                                db.removeBoard(mBoards.get(pos));
+                                showSuccess(R.string.msg_remove_success);
+                                refreshBoards();
+                            }
+                        })
+                        .show();
+
+                return true;
+            }
+        });
 
         return v;
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getBaseActivity().getMenuInflater();
-        inflater.inflate(R.menu.contextmenu_favorite_board, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        if (item.getGroupId() != R.id.right_sidebar)
-            return false;
-
-        AdapterView.AdapterContextMenuInfo info =
-                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-        switch (item.getItemId()) {
-            // so far, one can only delete a bookmark through the context menu
-            case R.id.remove:
-                DatabaseWrapper db = new DatabaseWrapper(getActivity());
-                db.removeBoard(mBoards.get((int) info.id));
-                showSuccess(R.string.msg_remove_success);
-                refreshBoards();
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
     }
 
     @Override

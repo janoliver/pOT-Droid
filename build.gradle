@@ -28,6 +28,7 @@ dependencies {
     compile 'com.android.support:support-v4-preferencefragment:1.0.0@aar'
     compile 'com.melnykov:floatingactionbutton:1.1.0'
     compile 'com.afollestad:material-dialogs:0.5.9'
+    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
 }
 
 

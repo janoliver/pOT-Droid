@@ -96,6 +96,7 @@
     <orderEntry type="library" exported="" name="support-v4-preferencefragment-1.0.0" level="project" />
     <orderEntry type="library" exported="" name="material-dialogs-0.5.9" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="systembartint-1.0.3" level="project" />
     <orderEntry type="library" exported="" name="okio-1.2.0" level="project" />
   </component>
 </module>

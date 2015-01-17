@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.library21.custom.SwipeRefreshLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v7.app.ActionBar;
 import android.util.TypedValue;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.ForumActivity;
 import com.mde.potdroid.R;
@@ -17,19 +19,20 @@ import com.mde.potdroid.SettingsActivity;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.views.IconDrawable;
+import com.mde.potdroid.views.BBSwipeRefreshLayout;
 import com.nispok.snackbar.Snackbar;
 
 /**
  * The Base Fragment class that all Fragments should inherit. Provides some methods
  * for convenient access of objects and handles loading animations.
  */
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements BBSwipeRefreshLayout.OnRefreshListener {
 
     // this is the ID of the content loader
     protected static final int CONTENT_LOADER_ID = 0;
 
     // the pulltorefresh instance
-    protected SwipeRefreshLayout mPullToRefreshLayout;
+    protected BBSwipeRefreshLayout mPullToRefreshLayout;
     protected SettingsWrapper mSettings;
 
     public static int COLOR_SUCCESS = Color.parseColor("#669900");
@@ -51,25 +54,22 @@ public abstract class BaseFragment extends Fragment {
         setRetainInstance(true);
 
         // Now find the PullToRefreshLayout to setup
-        mPullToRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.ptr_layout);
+        mPullToRefreshLayout = (BBSwipeRefreshLayout) getView().findViewById(R.id.ptr_layout);
 
-        if (mPullToRefreshLayout == null)
-            mPullToRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.ptr_holder);
+        if(mPullToRefreshLayout == null)
+            mPullToRefreshLayout = (BBSwipeRefreshLayout) getView().findViewById(R.id.ptr_holder);
 
         if (mPullToRefreshLayout != null) {
-            mPullToRefreshLayout.enableSwipeDirection(Gravity.TOP);
-            mPullToRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onTopTrigger() {
-                    onRefresh();
-                }
-            });
+            mPullToRefreshLayout.setOnRefreshListener(this);
+            mPullToRefreshLayout.setColorSchemeColors(
+                    Utils.getColorByAttr(getActivity(), R.attr.bbProgressPrimary),
+                    Utils.getColorByAttr(getActivity(), R.attr.bbProgressSecondary),
+                    Utils.getColorByAttr(getActivity(), R.attr.bbProgressPrimary),
+                    Utils.getColorByAttr(getActivity(), R.attr.bbProgressSecondary));
         }
 
-        if (!mSettings.isSwipeToRefresh())
+        if(!mSettings.isSwipeToRefresh())
             mPullToRefreshLayout.setEnabled(false);
-
-
     }
 
     /**
@@ -108,6 +108,10 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onRefresh() {
+
+    }
 
     public int getNotificationParent() {
         return R.id.content;
@@ -123,17 +127,13 @@ public abstract class BaseFragment extends Fragment {
         stopLoader();
     }
 
-    public void onRefresh() {
-
-    }
-
     /**
      * Get Actionbar height attribute
      */
     public int getActionbarHeight() {
         TypedValue typedValue = new TypedValue();
         getBaseActivity().getTheme().resolveAttribute(R.attr.actionBarSize, typedValue, true);
-        int[] textSizeAttr = new int[]{R.attr.actionBarSize};
+        int[] textSizeAttr = new int[] { R.attr.actionBarSize };
         int indexOfAttr = 0;
         TypedArray a = getBaseActivity().obtainStyledAttributes(typedValue.data, textSizeAttr);
         int abSize = a.getDimensionPixelSize(indexOfAttr, -1);
@@ -254,9 +254,6 @@ public abstract class BaseFragment extends Fragment {
      */
     public void showLoadingAnimation() {
         if (mPullToRefreshLayout != null) {
-            // workaround, see https://code.google.com/p/android/issues/detail?id=77712
-            mPullToRefreshLayout.setProgressViewOffset(false, 0,
-                    (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
             mPullToRefreshLayout.setRefreshing(true);
         }
     }

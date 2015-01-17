@@ -199,7 +199,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mPullToRefreshLayout.setEnabled(false);
+        mPullToRefreshLayout.setSwipeable(false);
 
         mEditText.requestFocus();
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.library21.custom.SwipeRefreshLayout
+<com.mde.potdroid.views.BBSwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/ptr_holder"
         android:layout_width="match_parent"
@@ -14,4 +14,4 @@
             android:childDivider="?attr/bbListSeparatorColor"
             android:divider="@android:color/transparent"
             android:dividerHeight="1dp"/>
-</android.support.library21.custom.SwipeRefreshLayout>
+</com.mde.potdroid.views.BBSwipeRefreshLayout>

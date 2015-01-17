@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.library21.custom.SwipeRefreshLayout;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
@@ -100,7 +101,9 @@ public class TopicFragment extends PaginateFragment implements
         setRetainInstance(true);
 
         setHasOptionsMenu(true);
-        mPullToRefreshLayout.setSwipeDirection(Gravity.BOTTOM);
+
+        setSwipeEnabled(false);
+
 
         setupWebView();
 
@@ -112,7 +115,7 @@ public class TopicFragment extends PaginateFragment implements
                 @Override
                 public void onGlobalLayout() {
                     getBaseActivity().getToolbar().getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    //mPullToRefreshLayout.setTopMargin(getBaseActivity().getToolbar().getHeight());
+                    mPullToRefreshLayout.setTopMargin(getBaseActivity().getToolbar().getHeight());
                 }
             });
         }
@@ -356,7 +359,7 @@ public class TopicFragment extends PaginateFragment implements
 
             refreshTitleAndPagination();
 
-            setSwipeEnabled(true);
+            //setSwipeEnabled(true);
 
             mFab.show();
 
@@ -395,10 +398,43 @@ public class TopicFragment extends PaginateFragment implements
 
         setSwipeTarget(mWebView);
 
-        if (!isLastPage())
-            mPullToRefreshLayout.setEnabled(false);
-        else if (mSettings.isSwipeToRefreshTopic())
-            mPullToRefreshLayout.setEnabled(true);
+        mPullToRefreshLayout.clearSwipeDirections();
+        if (!isFirstPage())
+            mPullToRefreshLayout.enableSwipeDirection(Gravity.LEFT);
+        if (!isLastPage()) {
+            mPullToRefreshLayout.enableSwipeDirection(Gravity.RIGHT);
+        } else {
+            mPullToRefreshLayout.enableSwipeDirection(Gravity.BOTTOM);
+        }
+
+        mPullToRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onBottomTrigger() {
+                onRefresh();
+            }
+
+            @Override
+            public void onLeftTrigger() {
+                goToPrevPage();
+            }
+
+            @Override
+            public void onRightTrigger() {
+                goToNextPage();
+            }
+        });
+
+        mPullToRefreshLayout.setScrollableCallback(new SwipeRefreshLayout.ScrollableCallback() {
+            @Override
+            public boolean canChildScrollUp(SwipeRefreshLayout parent, View target) {
+                return !mWebView.isScrolledToTop();
+            }
+
+            @Override
+            public boolean canChildScrollDown(SwipeRefreshLayout parent, View target) {
+                return !mWebView.isScrolledToBottom();
+            }
+        });
 
         refreshPaginateLayout();
 
@@ -803,7 +839,7 @@ public class TopicFragment extends PaginateFragment implements
             Toolbar t = getBaseActivity().getToolbar();
             int translation = show ? 0 : -t.getHeight();
             ViewPropertyAnimator.animate(t).translationY(translation).setDuration(200).start();
-            //mPullToRefreshLayout.setTopMargin(translation + t.getHeight());
+            mPullToRefreshLayout.setTopMargin(translation + t.getHeight());
         }
 
         private void toggleBottomToolbar(final boolean show) {

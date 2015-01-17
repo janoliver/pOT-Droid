@@ -9,10 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v7.app.ActionBar;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.*;
 import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.ForumActivity;
 import com.mde.potdroid.R;
@@ -26,7 +23,7 @@ import com.nispok.snackbar.Snackbar;
  * The Base Fragment class that all Fragments should inherit. Provides some methods
  * for convenient access of objects and handles loading animations.
  */
-public abstract class BaseFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public abstract class BaseFragment extends Fragment {
 
     // this is the ID of the content loader
     protected static final int CONTENT_LOADER_ID = 0;
@@ -60,17 +57,19 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
             mPullToRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.ptr_holder);
 
         if (mPullToRefreshLayout != null) {
-            mPullToRefreshLayout.setOnRefreshListener(this);
-            //mPullToRefreshLayout.scrollableListener(this);
-            /*mPullToRefreshLayout.setColorSchemeColors(
-                    Utils.getColorByAttr(getActivity(), R.attr.bbProgressPrimary),
-                    Utils.getColorByAttr(getActivity(), R.attr.bbProgressSecondary),
-                    Utils.getColorByAttr(getActivity(), R.attr.bbProgressPrimary),
-                    Utils.getColorByAttr(getActivity(), R.attr.bbProgressSecondary));*/
+            mPullToRefreshLayout.enableSwipeDirection(Gravity.TOP);
+            mPullToRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onTopTrigger() {
+                    onRefresh();
+                }
+            });
         }
 
         if (!mSettings.isSwipeToRefresh())
             mPullToRefreshLayout.setEnabled(false);
+
+
     }
 
     /**
@@ -109,10 +108,6 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         }
     }
 
-    @Override
-    public void onRefresh() {
-
-    }
 
     public int getNotificationParent() {
         return R.id.content;
@@ -126,6 +121,10 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
         super.onDetach();
 
         stopLoader();
+    }
+
+    public void onRefresh() {
+
     }
 
     /**
@@ -255,6 +254,9 @@ public abstract class BaseFragment extends Fragment implements SwipeRefreshLayou
      */
     public void showLoadingAnimation() {
         if (mPullToRefreshLayout != null) {
+            // workaround, see https://code.google.com/p/android/issues/detail?id=77712
+            mPullToRefreshLayout.setProgressViewOffset(false, 0,
+                    (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
             mPullToRefreshLayout.setRefreshing(true);
         }
     }

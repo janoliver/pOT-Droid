@@ -132,10 +132,6 @@ public class BookmarkFragment extends BaseFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
-        mPullToRefreshLayout.setSwipeDirection(Gravity.BOTTOM);
-        mPullToRefreshLayout.setSwipeDirection(Gravity.LEFT);
-
         startLoader(this);
     }
 
@@ -157,12 +153,6 @@ public class BookmarkFragment extends BaseFragment
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onRefresh() {
-        super.onRefresh();
-        restartLoader(this);
     }
 
     @Override

@@ -30,6 +30,10 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Transformation;
 import android.widget.AbsListView;
+import com.mde.potdroid.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The SwipeRefreshLayout should be used whenever the user can refresh the
@@ -71,8 +75,11 @@ public class SwipeRefreshLayout extends ViewGroup {
     private static final float DRAG_RATE = .5f;
 
     // this holds the direction, from which the view is pulled
-    private int mSwipeDirection = Gravity.TOP;
-    private ScrollableCallback mScrollableCallback;
+    private List<Integer> mEnabledSwipeDirections = new ArrayList<>();
+    private int mTriggeredDirection = 0;
+    private ScrollableCallback mScrollableCallback = new ScrollableCallback();
+    private int mAdapterViewId = 0;
+    private View mChildContainer;
 
     // Max amount of circle that can be filled by progress during swipe gesture,
     // where 1.0 is a full circle
@@ -103,7 +110,7 @@ public class SwipeRefreshLayout extends ViewGroup {
 
     private float mInitialMotionY;
     private float mInitialMotionX;
-    private boolean mIsBeingDragged;
+    private int mIsBeingDragged;
     private int mActivePointerId = INVALID_POINTER;
     // Whether this item is scaled up rather than clipped
     private boolean mScale;
@@ -165,7 +172,20 @@ public class SwipeRefreshLayout extends ViewGroup {
                 mProgress.start();
                 if (mNotify) {
                     if (mListener != null) {
-                        mListener.onRefresh();
+                        switch (mTriggeredDirection) {
+                            case Gravity.TOP:
+                                mListener.onTopTrigger();
+                                break;
+                            case Gravity.BOTTOM:
+                                mListener.onBottomTrigger();
+                                break;
+                            case Gravity.LEFT:
+                                mListener.onLeftTrigger();
+                                break;
+                            case Gravity.RIGHT:
+                                mListener.onRightTrigger();
+                                break;
+                        }
                     }
                 }
             } else {
@@ -190,10 +210,26 @@ public class SwipeRefreshLayout extends ViewGroup {
     }
 
     /**
-     * Set the direction, from which the view is pulled to trigger the listener
+     * Add a direction, from which the view is pulled to trigger the listener
      */
-    public void setSwipeDirection(int direction) {
-        mSwipeDirection = direction;
+    public void enableSwipeDirection(Integer direction) {
+        if(!mEnabledSwipeDirections.contains(direction))
+            mEnabledSwipeDirections.add(direction);
+    }
+
+    /**
+     * Remove a direction, from which the view is pulled to trigger the listener
+     */
+    public void removeSwipeDirection(Integer direction) {
+        if(mEnabledSwipeDirections.contains(direction))
+            mEnabledSwipeDirections.remove(direction);
+    }
+
+    /**
+     * Clear the enabled directions, from which the view is pulled to trigger the listener
+     */
+    public void clearSwipeDirections() {
+        mEnabledSwipeDirections.clear();
     }
 
     /**
@@ -238,6 +274,19 @@ public class SwipeRefreshLayout extends ViewGroup {
     }
 
     /**
+     * set the top margin
+     */
+    public void setTopMargin(int margin) {
+        //final DisplayMetrics metrics = getResources().getDisplayMetrics();
+        mCircleView.setVisibility(View.GONE);
+        mOriginalOffsetTop += margin;
+        mCurrentTargetOffsetTop = mOriginalOffsetTop;
+        //mSpinnerFinalOffset = DEFAULT_CIRCLE_TARGET * metrics.density;
+        mUsingCustomStart = true;
+        mCircleView.invalidate();
+    }
+
+    /**
      * One of DEFAULT, or LARGE.
      */
     public void setSize(int size) {
@@ -276,7 +325,7 @@ public class SwipeRefreshLayout extends ViewGroup {
     public SwipeRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop() * 8;
 
         mMediumAnimationDuration = getResources().getInteger(
                 android.R.integer.config_mediumAnimTime);
@@ -284,9 +333,10 @@ public class SwipeRefreshLayout extends ViewGroup {
         setWillNotDraw(false);
         mDecelerateInterpolator = new DecelerateInterpolator(DECELERATE_INTERPOLATION_FACTOR);
 
-        final TypedArray a = context.obtainStyledAttributes(attrs, LAYOUT_ATTRS);
-        setEnabled(a.getBoolean(0, true));
-        a.recycle();
+        TypedArray mStyledAttributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.BBSwipeRefreshLayout, 0, 0);
+        mAdapterViewId = mStyledAttributes.getResourceId (R.styleable.BBSwipeRefreshLayout_adapter_view, 0);
+        setEnabled(mStyledAttributes.getBoolean(R.styleable.BBSwipeRefreshLayout_enabled, true));
+        mStyledAttributes.recycle();
 
         final DisplayMetrics metrics = getResources().getDisplayMetrics();
         mCircleWidth = (int) (CIRCLE_DIAMETER * metrics.density);
@@ -516,17 +566,28 @@ public class SwipeRefreshLayout extends ViewGroup {
     }
 
     private void ensureTarget() {
-        // Don't bother getting the parent height if the parent hasn't been laid
-        // out yet.
-        if (mTarget == null) {
+        if(mChildContainer == null) {
+
             for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
                 if (!child.equals(mCircleView)) {
-                    mTarget = child;
+                    mChildContainer = child;
                     break;
                 }
             }
         }
+        // Don't bother getting the parent height if the parent hasn't been laid
+        // out yet.
+        if(mAdapterViewId != 0) {
+            mTarget = findViewById(mAdapterViewId);
+            if(mTarget != null)
+                return;
+        }
+
+        if (mTarget == null) {
+            mTarget = mChildContainer;
+        }
+
     }
 
     /**
@@ -545,13 +606,13 @@ public class SwipeRefreshLayout extends ViewGroup {
         if (getChildCount() == 0) {
             return;
         }
-        if (mTarget == null) {
+        if (mChildContainer == null) {
             ensureTarget();
         }
-        if (mTarget == null) {
+        if (mChildContainer == null) {
             return;
         }
-        final View child = mTarget;
+        final View child = mChildContainer;
         final int childLeft = getPaddingLeft();
         final int childTop = getPaddingTop();
         final int childWidth = width - getPaddingLeft() - getPaddingRight();
@@ -566,13 +627,13 @@ public class SwipeRefreshLayout extends ViewGroup {
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (mTarget == null) {
+        if (mChildContainer == null) {
             ensureTarget();
         }
-        if (mTarget == null) {
+        if (mChildContainer == null) {
             return;
         }
-        mTarget.measure(MeasureSpec.makeMeasureSpec(
+        mChildContainer.measure(MeasureSpec.makeMeasureSpec(
                 getMeasuredWidth() - getPaddingLeft() - getPaddingRight(),
                 MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(
                 getMeasuredHeight() - getPaddingTop() - getPaddingBottom(), MeasureSpec.EXACTLY));
@@ -592,84 +653,8 @@ public class SwipeRefreshLayout extends ViewGroup {
         }
     }
 
-    /**
-     * @return Whether it is possible for the child view of this layout to
-     *         scroll up. Override this if the child view is a custom view.
-     */
-    public boolean canChildScrollUp() {
-        if (android.os.Build.VERSION.SDK_INT < 14) {
-            if (mTarget instanceof AbsListView) {
-                final AbsListView absListView = (AbsListView) mTarget;
-                return absListView.getChildCount() > 0
-                        && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
-                                .getTop() < absListView.getPaddingTop());
-            } else {
-                return mTarget.getScrollY() > 0;
-            }
-        } else {
-            return ViewCompat.canScrollVertically(mTarget, -1);
-        }
-    }
-
-    /**
-     * @return Whether it is possible for the child view of this layout to
-     *         scroll down. Override this if the child view is a custom view.
-     */
-    public boolean canChildScrollDown() {
-        if (android.os.Build.VERSION.SDK_INT < 14) {
-            if (mTarget instanceof AbsListView) {
-                final AbsListView absListView = (AbsListView) mTarget;
-                return absListView.getChildCount() > 0
-                        && (absListView.getLastVisiblePosition() < absListView.getAdapter().getCount()-1 &&
-                        absListView.getChildAt(absListView.getChildCount() - 1).getBottom() > absListView.getHeight());
-            } else {
-                return mTarget.getBottom()-(getHeight()+getScrollY()+mTarget.getTop()) < 0;
-            }
-        } else {
-            return ViewCompat.canScrollVertically(mTarget, 1);
-        }
-    }
-
-    /**
-     * @return Whether it is possible for the child view of this layout to
-     *         scroll left. Override this if the child view is a custom view.
-     */
-    public boolean canChildScrollLeft() {
-        if (android.os.Build.VERSION.SDK_INT < 14) {
-            return mTarget.getScrollX() > 0;
-        } else {
-            return ViewCompat.canScrollHorizontally(mTarget, -1);
-        }
-    }
-
-    /**
-     * @return Whether it is possible for the child view of this layout to
-     *         scroll right. Override this if the child view is a custom view.
-     */
-    public boolean canChildScrollRight() {
-        if (android.os.Build.VERSION.SDK_INT < 14) {
-            return mTarget.getRight()-(getWidth()+getScrollX()+mTarget.getLeft()) < 0;
-        } else {
-            return ViewCompat.canScrollHorizontally(mTarget, 1);
-        }
-    }
-
-    public boolean canChildScroll() {
-        if(mScrollableCallback == null) {
-            switch (mSwipeDirection) {
-                case Gravity.BOTTOM:
-                    return canChildScrollDown();
-                case Gravity.LEFT:
-                    return canChildScrollLeft();
-                case Gravity.RIGHT:
-                    return canChildScrollRight();
-                default:
-                case Gravity.TOP:
-                    return canChildScrollUp();
-            }
-        } else {
-            return mScrollableCallback.canChildScroll(mSwipeDirection);
-        }
+    public boolean canChildScroll(Integer direction) {
+        return mScrollableCallback.canChildScroll(this, mTarget, direction);
     }
 
     @Override
@@ -682,7 +667,7 @@ public class SwipeRefreshLayout extends ViewGroup {
             mReturningToStart = false;
         }
 
-        if (!isEnabled() || mReturningToStart || canChildScroll() || mRefreshing) {
+        if (!isEnabled() || mReturningToStart || mRefreshing) {
             // Fail fast if we're not in a state where a swipe is possible
             return false;
         }
@@ -691,10 +676,10 @@ public class SwipeRefreshLayout extends ViewGroup {
             case MotionEvent.ACTION_DOWN:
                 setTargetOffsetTopAndBottom(mOriginalOffsetTop - mCircleView.getTop(), true);
                 mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
-                mIsBeingDragged = false;
+                mIsBeingDragged = 0;
                 final float initialMotionY = getMotionEventY(ev, mActivePointerId);
                 final float initialMotionX = getMotionEventX(ev, mActivePointerId);
-                if ((isVerticalSwipe() && initialMotionY == -1) || (isHorizontalSwipe() && initialMotionX == -1)) {
+                if (initialMotionY == -1 || initialMotionX == -1) {
                     return false;
                 }
                 mInitialMotionY = initialMotionY;
@@ -708,18 +693,25 @@ public class SwipeRefreshLayout extends ViewGroup {
 
                 final float y = getMotionEventY(ev, mActivePointerId);
                 final float x = getMotionEventX(ev, mActivePointerId);
-                if ((isVerticalSwipe() && y == -1) || isHorizontalSwipe() && x == -1) {
+                if (y == -1 || x == -1) {
                     return false;
                 }
                 final float yDiff = y - mInitialMotionY;
                 final float xDiff = x - mInitialMotionX;
-                if ((mSwipeDirection == Gravity.TOP && yDiff > mTouchSlop && !mIsBeingDragged) ||
-                    (mSwipeDirection == Gravity.BOTTOM && -yDiff > mTouchSlop && !mIsBeingDragged) ||
-                    (mSwipeDirection == Gravity.LEFT && xDiff > mTouchSlop && !mIsBeingDragged) ||
-                    (mSwipeDirection == Gravity.RIGHT && -xDiff > mTouchSlop && !mIsBeingDragged)) {
-                    mIsBeingDragged = true;
+                if(!canChildScroll(Gravity.TOP) && yDiff > mTouchSlop && mIsBeingDragged == 0
+                        && mEnabledSwipeDirections.contains(Gravity.TOP))
+                    mIsBeingDragged = Gravity.TOP;
+                if(!canChildScroll(Gravity.BOTTOM) && -yDiff > mTouchSlop && mIsBeingDragged == 0
+                        && mEnabledSwipeDirections.contains(Gravity.BOTTOM))
+                    mIsBeingDragged = Gravity.BOTTOM;
+                if(!canChildScroll(Gravity.LEFT) && xDiff > mTouchSlop && mIsBeingDragged == 0
+                        && mEnabledSwipeDirections.contains(Gravity.LEFT))
+                    mIsBeingDragged = Gravity.LEFT;
+                if(!canChildScroll(Gravity.RIGHT) && -xDiff > mTouchSlop && mIsBeingDragged == 0
+                        && mEnabledSwipeDirections.contains(Gravity.RIGHT))
+                    mIsBeingDragged = Gravity.RIGHT;
+                if (mIsBeingDragged != 0)
                     mProgress.setAlpha(STARTING_PROGRESS_ALPHA);
-                }
                 break;
 
             case MotionEventCompat.ACTION_POINTER_UP:
@@ -728,20 +720,12 @@ public class SwipeRefreshLayout extends ViewGroup {
 
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                mIsBeingDragged = false;
+                mIsBeingDragged = 0;
                 mActivePointerId = INVALID_POINTER;
                 break;
         }
 
-        return mIsBeingDragged;
-    }
-
-    private boolean isVerticalSwipe() {
-        return mSwipeDirection == Gravity.TOP || mSwipeDirection == Gravity.BOTTOM;
-    }
-
-    private boolean isHorizontalSwipe() {
-        return mSwipeDirection == Gravity.RIGHT || mSwipeDirection == Gravity.LEFT;
+        return mIsBeingDragged != 0;
     }
 
     private float getMotionEventY(MotionEvent ev, int activePointerId) {
@@ -777,7 +761,7 @@ public class SwipeRefreshLayout extends ViewGroup {
             mReturningToStart = false;
         }
 
-        if (!isEnabled() || mReturningToStart || canChildScroll()) {
+        if (!isEnabled() || mReturningToStart) {
             // Fail fast if we're not in a state where a swipe is possible
             return false;
         }
@@ -785,7 +769,7 @@ public class SwipeRefreshLayout extends ViewGroup {
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
-                mIsBeingDragged = false;
+                mIsBeingDragged = 0;
                 break;
 
             case MotionEvent.ACTION_MOVE: {
@@ -798,7 +782,7 @@ public class SwipeRefreshLayout extends ViewGroup {
                 final float y = MotionEventCompat.getY(ev, pointerIndex);
                 final float x = MotionEventCompat.getX(ev, pointerIndex);
                 float overscroll;
-                switch(mSwipeDirection) {
+                switch(mIsBeingDragged) {
                     case Gravity.BOTTOM:
                         overscroll = -(y - mInitialMotionY) * DRAG_RATE;
                         break;
@@ -814,7 +798,7 @@ public class SwipeRefreshLayout extends ViewGroup {
                         break;
                 }
 
-                if (mIsBeingDragged) {
+                if (mIsBeingDragged != 0) {
                     mProgress.showArrow(true);
                     float originalDragPercent = overscroll / mTotalDragDistance;
                     if (originalDragPercent < 0) {
@@ -889,7 +873,7 @@ public class SwipeRefreshLayout extends ViewGroup {
                 final float y = MotionEventCompat.getY(ev, pointerIndex);
                 final float x = MotionEventCompat.getX(ev, pointerIndex);
                 float overscroll;
-                switch(mSwipeDirection) {
+                switch(mIsBeingDragged) {
                     case Gravity.BOTTOM:
                         overscroll = -(y - mInitialMotionY) * DRAG_RATE;
                         break;
@@ -904,7 +888,8 @@ public class SwipeRefreshLayout extends ViewGroup {
                         overscroll = (y - mInitialMotionY) * DRAG_RATE;
                         break;
                 }
-                mIsBeingDragged = false;
+                mTriggeredDirection = mIsBeingDragged;
+                mIsBeingDragged = 0;
                 if (overscroll > mTotalDragDistance) {
                     setRefreshing(true, true /* notify */);
                 } else {
@@ -1050,14 +1035,93 @@ public class SwipeRefreshLayout extends ViewGroup {
      * Classes that wish to be notified when the swipe gesture correctly
      * triggers a refresh should implement this interface.
      */
-    public interface OnRefreshListener {
-        public void onRefresh();
+    public static class OnRefreshListener {
+        public void onTopTrigger() {}
+        public void onBottomTrigger() {}
+        public void onLeftTrigger() {}
+        public void onRightTrigger() {}
     }
 
     /**
      * Interface to determine, whether the child can still scroll up.
      */
-    public interface ScrollableCallback {
-        public boolean canChildScroll(int scroll_direction);
+    public static class ScrollableCallback {
+        public boolean canChildScroll(SwipeRefreshLayout parent, View target, int scroll_direction) {
+            switch (scroll_direction) {
+                case Gravity.BOTTOM:
+                    return canChildScrollDown(parent, target);
+                case Gravity.LEFT:
+                    return canChildScrollLeft(parent, target);
+                case Gravity.RIGHT:
+                    return canChildScrollRight(parent, target);
+                case Gravity.TOP:
+                    return canChildScrollUp(parent, target);
+            }
+            return false;
+        }
+
+
+        /**
+         * @return Whether it is possible for the child view of this layout to
+         *         scroll up. Override this if the child view is a custom view.
+         */
+        public boolean canChildScrollUp(SwipeRefreshLayout parent, View target) {
+            if (android.os.Build.VERSION.SDK_INT < 14) {
+                if (target instanceof AbsListView) {
+                    final AbsListView absListView = (AbsListView) target;
+                    return absListView.getChildCount() > 0
+                            && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
+                            .getTop() < absListView.getPaddingTop());
+                } else {
+                    return target.getScrollY() > 0;
+                }
+            } else {
+                return ViewCompat.canScrollVertically(target, -1);
+            }
+        }
+
+        /**
+         * @return Whether it is possible for the child view of this layout to
+         *         scroll down. Override this if the child view is a custom view.
+         */
+        public boolean canChildScrollDown(SwipeRefreshLayout parent, View target) {
+            if (android.os.Build.VERSION.SDK_INT < 14) {
+                if (target instanceof AbsListView) {
+                    final AbsListView absListView = (AbsListView) target;
+                    return absListView.getChildCount() > 0
+                            && (absListView.getLastVisiblePosition() < absListView.getAdapter().getCount()-1 &&
+                            absListView.getChildAt(absListView.getChildCount() - 1).getBottom() > absListView.getHeight());
+                } else {
+                    return target.getBottom()-(parent.getHeight()+parent.getScrollY()+target.getTop()) < 0;
+                }
+            } else {
+                return ViewCompat.canScrollVertically(target, 1);
+            }
+        }
+
+        /**
+         * @return Whether it is possible for the child view of this layout to
+         *         scroll left. Override this if the child view is a custom view.
+         */
+        public boolean canChildScrollLeft(SwipeRefreshLayout parent, View target) {
+            if (android.os.Build.VERSION.SDK_INT < 14) {
+                return target.getScrollX() > 0;
+            } else {
+                return ViewCompat.canScrollHorizontally(target, -1);
+            }
+        }
+
+        /**
+         * @return Whether it is possible for the child view of this layout to
+         *         scroll right. Override this if the child view is a custom view.
+         */
+        public boolean canChildScrollRight(SwipeRefreshLayout parent, View target) {
+            if (android.os.Build.VERSION.SDK_INT < 14) {
+                return target.getRight()-(parent.getWidth()+parent.getScrollX()+target.getLeft()) < 0;
+            } else {
+                return ViewCompat.canScrollHorizontally(target, 1);
+            }
+        }
+
     }
 }

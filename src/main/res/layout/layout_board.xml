@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.mde.potdroid.views.BBSwipeRefreshLayout
+<android.support.library21.custom.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:fab="http://schemas.android.com/apk/res-auto"
@@ -30,4 +30,4 @@
                 fab:fab_colorPressed="?attr/bbColorPrimary"
                 fab:fab_colorRipple="@color/transparent"/>
     </FrameLayout>
-</com.mde.potdroid.views.BBSwipeRefreshLayout>
+</android.support.library21.custom.SwipeRefreshLayout>

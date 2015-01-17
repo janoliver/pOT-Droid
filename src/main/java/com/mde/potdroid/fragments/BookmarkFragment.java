@@ -132,6 +132,10 @@ public class BookmarkFragment extends BaseFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
+        mPullToRefreshLayout.setSwipeDirection(Gravity.BOTTOM);
+        mPullToRefreshLayout.setSwipeDirection(Gravity.LEFT);
+
         startLoader(this);
     }
 

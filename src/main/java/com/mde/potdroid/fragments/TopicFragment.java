@@ -100,7 +100,7 @@ public class TopicFragment extends PaginateFragment implements
         setRetainInstance(true);
 
         setHasOptionsMenu(true);
-        mPullToRefreshLayout.setSwipeDown(false);
+        mPullToRefreshLayout.setSwipeDirection(Gravity.BOTTOM);
 
         setupWebView();
 
@@ -112,7 +112,7 @@ public class TopicFragment extends PaginateFragment implements
                 @Override
                 public void onGlobalLayout() {
                     getBaseActivity().getToolbar().getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    mPullToRefreshLayout.setTopMargin(getBaseActivity().getToolbar().getHeight());
+                    //mPullToRefreshLayout.setTopMargin(getBaseActivity().getToolbar().getHeight());
                 }
             });
         }
@@ -803,7 +803,7 @@ public class TopicFragment extends PaginateFragment implements
             Toolbar t = getBaseActivity().getToolbar();
             int translation = show ? 0 : -t.getHeight();
             ViewPropertyAnimator.animate(t).translationY(translation).setDuration(200).start();
-            mPullToRefreshLayout.setTopMargin(translation + t.getHeight());
+            //mPullToRefreshLayout.setTopMargin(translation + t.getHeight());
         }
 
         private void toggleBottomToolbar(final boolean show) {

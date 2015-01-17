@@ -55,7 +55,7 @@
 
     </LinearLayout>
 
-    <com.mde.potdroid.views.BBSwipeRefreshLayout
+    <android.support.library21.custom.SwipeRefreshLayout
             android:id="@+id/ptr_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -101,6 +101,6 @@
 
         </RelativeLayout>
 
-    </com.mde.potdroid.views.BBSwipeRefreshLayout>
+    </android.support.library21.custom.SwipeRefreshLayout>
 
 </LinearLayout>

@@ -92,7 +92,7 @@ public class MessageFragment extends BaseFragment
 
         getActionbar().setTitle(R.string.msg_message_loading);
 
-        mPullToRefreshLayout.setSwipeable(false);
+        mPullToRefreshLayout.setEnabled(false);
 
         if (mMessage == null)
             startLoader(this);

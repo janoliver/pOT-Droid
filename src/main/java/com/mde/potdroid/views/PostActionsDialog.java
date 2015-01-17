@@ -70,7 +70,7 @@ public class PostActionsDialog extends DialogFragment {
             }
         };
 
-        MaterialDialog dialog = new MaterialDialog.Builder(fragment.getBaseActivity())
+        final MaterialDialog dialog = new MaterialDialog.Builder(fragment.getBaseActivity())
                 .items(post_menu)
                 .adapter(adapter)
                 .build();
@@ -80,6 +80,7 @@ public class PostActionsDialog extends DialogFragment {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    dialog.dismiss();
                     switch (position) {
                         case 0:
                             fragment.editPost(getArguments().getInt(ARG_POST_ID));

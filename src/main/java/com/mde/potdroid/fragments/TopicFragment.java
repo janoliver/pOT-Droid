@@ -256,6 +256,10 @@ public class TopicFragment extends PaginateFragment implements
         refreshTitleAndPagination();
     }
 
+    public void registerScroll(int postId) {
+        mJsInterface.registerScroll(postId);
+    }
+
     public void displayContent() {
         // shouldn't be null :(
         if(mWebView == null)

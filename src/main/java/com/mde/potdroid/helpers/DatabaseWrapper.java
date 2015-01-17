@@ -232,8 +232,9 @@ public class DatabaseWrapper {
         ArrayList<Bookmark> ret = new ArrayList<Bookmark>();
 
         // retrieve bookmarks from Database sorted by board, as in the web
-        Cursor c = mDatabase.query(BOOKMARKS_TABLE_NAME, null, null, null, null, null,
-                "board_id, thread_title");
+        Cursor c = mDatabase.rawQuery("SELECT * FROM " +
+                        BOOKMARKS_TABLE_NAME +
+                        " ORDER BY board_id, thread_title COLLATE NOCASE ASC;", null);
 
         try {
             c.moveToFirst();

@@ -12,48 +12,70 @@ import com.mde.potdroid.fragments.TopicFragment;
 public class TopicActivity extends BaseActivity {
 
     private TopicFragment mTopicFragment;
+    private Integer mTopicId = 0;
+    private Integer mPage = 1;
+    private Integer mPostId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Integer tid = 0;
-        Integer page = 1;
-        Integer pid = 0;
-
-        // check, if the activity was opened from externally
-        Intent intent = getIntent();
-        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-
-            Uri u = intent.getData();
-
-            if (u.getQueryParameter("TID") != null)
-                tid = Integer.parseInt(u.getQueryParameter("TID"));
-
-            if (u.getQueryParameter("PID") != null)
-                pid = Integer.parseInt(u.getQueryParameter("PID"));
-
-            if (u.getQueryParameter("page") != null)
-                page = Integer.parseInt(u.getQueryParameter("page"));
-
-        } else {
-
-            tid = mExtras.getInt("thread_id", 0);
-            page = mExtras.getInt("page", 1);
-            pid = mExtras.getInt("post_id", 0);
-
-        }
+        setArgs(getIntent());
 
         // create and add the fragment
         mTopicFragment = (TopicFragment) getSupportFragmentManager().findFragmentByTag("topic");
         if (mTopicFragment == null)
-            mTopicFragment = TopicFragment.newInstance(tid, page, pid);
+            mTopicFragment = TopicFragment.newInstance(mTopicId, mPage, mPostId);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.content, mTopicFragment, "topic")
                     .commit();
         }
+    }
+
+    public void setArgs(Intent i) {
+        Bundle b = i.getExtras();
+
+        if (Intent.ACTION_VIEW.equals(i.getAction())) {
+
+            Uri u = i.getData();
+
+            if (u.getQueryParameter("TID") != null)
+                mTopicId = Integer.parseInt(u.getQueryParameter("TID"));
+
+            if (u.getQueryParameter("PID") != null)
+                mPostId = Integer.parseInt(u.getQueryParameter("PID"));
+
+            if (u.getQueryParameter("page") != null)
+                mPage = Integer.parseInt(u.getQueryParameter("page"));
+
+        } else {
+
+            mTopicId = b.getInt("thread_id", 0);
+            mPage = b.getInt("page", 1);
+            mPostId = b.getInt("post_id", 0);
+
+        }
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        setArgs(intent);
+
+        // close left sidebar
+        Bundle args = mTopicFragment.getArguments();
+        args.putInt(TopicFragment.ARG_TOPIC_ID, mTopicId);
+        args.putInt(TopicFragment.ARG_PAGE, mPage);
+        args.putInt(TopicFragment.ARG_POST_ID, mPostId);
+        mTopicFragment.registerScroll(mPostId);
+
+        mTopicFragment.refreshPage();
+
+        closeLeftDrawer();
     }
 
 }

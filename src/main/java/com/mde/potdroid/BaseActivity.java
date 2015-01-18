@@ -294,6 +294,11 @@ public class BaseActivity extends ActionBarActivity {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
     }
 
+    public void closeRightDrawer() {
+        if (mDrawerLayout != null)
+            mDrawerLayout.closeDrawer(Gravity.RIGHT);
+    }
+
     @TargetApi(19)
     private void setTranslucentStatus(boolean on) {
         Window win = getWindow();

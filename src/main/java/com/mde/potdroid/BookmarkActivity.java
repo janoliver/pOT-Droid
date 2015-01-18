@@ -37,5 +37,6 @@ public class BookmarkActivity extends BaseActivity {
         // close left sidebar
         mBookmarkFragment.onRefresh();
         closeLeftDrawer();
+        closeRightDrawer();
     }
 }

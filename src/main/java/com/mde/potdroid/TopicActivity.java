@@ -76,6 +76,7 @@ public class TopicActivity extends BaseActivity {
         mTopicFragment.refreshPage();
 
         closeLeftDrawer();
+        closeRightDrawer();
     }
 
 }

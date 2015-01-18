@@ -10,42 +10,62 @@ import com.mde.potdroid.fragments.BoardFragment;
  */
 public class BoardActivity extends BaseActivity {
 
+    private BoardFragment mBoardFragment;
+    private Integer mBoardId = 0;
+    private Integer mPage = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Integer bid = 0;
-        Integer page = 0;
+        setArgs(getIntent());
 
-        // check, if the activity was opened from externally
-        Intent intent = getIntent();
+        // create and add the fragment
+        mBoardFragment = (BoardFragment) getSupportFragmentManager().findFragmentByTag("board");
+        if (mBoardFragment == null)
+            mBoardFragment = BoardFragment.newInstance(mBoardId, mPage);
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.content, mBoardFragment, "board")
+                    .commit();
+        }
+    }
+
+    public void setArgs(Intent intent) {
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 
             Uri u = intent.getData();
 
             if (u.getQueryParameter("BID") != null)
-                bid = Integer.parseInt(u.getQueryParameter("BID"));
+                mBoardId = Integer.parseInt(u.getQueryParameter("BID"));
 
             if (u.getQueryParameter("page") != null)
-                page = Integer.parseInt(u.getQueryParameter("page"));
+                mPage = Integer.parseInt(u.getQueryParameter("page"));
 
         } else {
 
-            bid = mExtras.getInt("board_id", 0);
-            page = mExtras.getInt("page", 1);
+            mBoardId = intent.getExtras().getInt("board_id", 0);
+            mPage = intent.getExtras().getInt("page", 1);
 
         }
 
-        // create and add the fragment
-        BoardFragment bm = (BoardFragment) getSupportFragmentManager()
-                .findFragmentByTag("board");
-        if (bm == null)
-            bm = BoardFragment.newInstance(bid, page);
+    }
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.content, bm, "board")
-                    .commit();
-        }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        setArgs(intent);
+
+        // close left sidebar
+        Bundle args = mBoardFragment.getArguments();
+        args.putInt(BoardFragment.ARG_ID, mBoardId);
+        args.putInt(BoardFragment.ARG_PAGE, mPage);
+
+        mBoardFragment.refreshPage();
+
+        closeLeftDrawer();
+        closeRightDrawer();
     }
 }

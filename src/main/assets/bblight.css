@@ -162,6 +162,10 @@ article div blockquote div.content {
     white-space: pre;
 }
 
+pre.inline {
+    display:inline;
+}
+
 div.img i,
 div.video i,
 div.spoiler i,

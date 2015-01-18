@@ -21,6 +21,7 @@ import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.BBSwipeRefreshLayout;
 import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
 
 /**
  * The Base Fragment class that all Fragments should inherit. Provides some methods
@@ -56,7 +57,7 @@ public abstract class BaseFragment extends Fragment implements BBSwipeRefreshLay
         // Now find the PullToRefreshLayout to setup
         mPullToRefreshLayout = (BBSwipeRefreshLayout) getView().findViewById(R.id.ptr_layout);
 
-        if(mPullToRefreshLayout == null)
+        if (mPullToRefreshLayout == null)
             mPullToRefreshLayout = (BBSwipeRefreshLayout) getView().findViewById(R.id.ptr_holder);
 
         if (mPullToRefreshLayout != null) {
@@ -68,7 +69,7 @@ public abstract class BaseFragment extends Fragment implements BBSwipeRefreshLay
                     Utils.getColorByAttr(getActivity(), R.attr.bbProgressSecondary));
         }
 
-        if(!mSettings.isSwipeToRefresh())
+        if (!mSettings.isSwipeToRefresh())
             mPullToRefreshLayout.setEnabled(false);
     }
 
@@ -133,7 +134,7 @@ public abstract class BaseFragment extends Fragment implements BBSwipeRefreshLay
     public int getActionbarHeight() {
         TypedValue typedValue = new TypedValue();
         getBaseActivity().getTheme().resolveAttribute(R.attr.actionBarSize, typedValue, true);
-        int[] textSizeAttr = new int[] { R.attr.actionBarSize };
+        int[] textSizeAttr = new int[]{R.attr.actionBarSize};
         int indexOfAttr = 0;
         TypedArray a = getBaseActivity().obtainStyledAttributes(typedValue.data, textSizeAttr);
         int abSize = a.getDimensionPixelSize(indexOfAttr, -1);
@@ -194,17 +195,17 @@ public abstract class BaseFragment extends Fragment implements BBSwipeRefreshLay
     }
 
     protected void showGenericNotification(String message, int c) {
-        Snackbar.with(getBaseActivity().getApplicationContext())
-                .text(message)
-                .color(c)
-                .show(getBaseActivity());
+        SnackbarManager.show(
+                Snackbar.with(getBaseActivity())
+                        .text(message)
+                        .color(c));
     }
 
     protected void showGenericNotification(int message, int c) {
-        Snackbar.with(getBaseActivity().getApplicationContext())
-                .text(message)
-                .color(c)
-                .show(getBaseActivity());
+        SnackbarManager.show(
+                Snackbar.with(getBaseActivity())
+                        .text(message)
+                        .color(c));
     }
 
     /**

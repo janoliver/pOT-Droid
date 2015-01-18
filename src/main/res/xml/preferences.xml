@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceScreen
+    <PreferenceCategory
             android:title="Account"
             android:key="pref_account_settings"
             android:summary="Account Einstellungen">
@@ -21,7 +21,7 @@
                 android:positiveButtonText="Logout"
                 android:negativeButtonText="Abbrechen"
                 android:enabled="false"/>
-    </PreferenceScreen>
+    </PreferenceCategory>
 
     <PreferenceScreen
             android:title="Style"

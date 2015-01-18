@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
@@ -15,6 +16,9 @@ import com.mde.potdroid.fragments.BaseFragment;
 import com.mde.potdroid.helpers.Network;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
+import com.nispok.snackbar.enums.SnackbarType;
+import com.nispok.snackbar.listeners.ActionClickListener;
 
 /**
  * This class is a DialogPreference for the Login Action. It takes care of showing the login form
@@ -31,10 +35,12 @@ public class LoginDialog extends DialogPreference {
     private EditText mPassword;
     // true if a server request is made, false otherwise
     private Boolean mLoggingIn;
+    private Activity mContext;
 
     public LoginDialog(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        mContext = (Activity) context;
         mSettingsWrapper = new SettingsWrapper(getContext());
         mLoggingIn = false;
 
@@ -82,10 +88,21 @@ public class LoginDialog extends DialogPreference {
                 n.login(user_name, user_password, new Network.LoginCallback() {
                     @Override
                     public void onSuccess() {
-                        Snackbar.with(getContext().getApplicationContext())
-                                .text(R.string.msg_login_success)
-                                .color(BaseFragment.COLOR_SUCCESS)
-                                .show((Activity) getContext());
+                        SnackbarManager.show(
+                                Snackbar.with(mContext)
+                                        .text(R.string.msg_login_success)
+                                        .type(SnackbarType.MULTI_LINE)
+                                        .actionLabel("Neu starten")
+                                        .actionListener(new ActionClickListener() {
+                                            @Override
+                                            public void onActionClicked(Snackbar snackbar) {
+                                                Intent i = mContext.getPackageManager()
+                                                        .getLaunchIntentForPackage(mContext.getPackageName());
+                                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                mContext.startActivity(i);
+                                            }
+                                        })
+                                        .color(BaseFragment.COLOR_SUCCESS), mContext);
 
                         mSettingsWrapper.setUsername(user_name);
                         getDialog().dismiss();
@@ -93,14 +110,15 @@ public class LoginDialog extends DialogPreference {
 
                     @Override
                     public void onFailure() {
-                        ((Activity)getContext()).runOnUiThread(new Runnable() {
+                        mContext.runOnUiThread(new Runnable() {
 
                             @Override
                             public void run() {
-                                Snackbar.with(getContext().getApplicationContext())
-                                        .text(R.string.msg_login_failure)
-                                        .color(BaseFragment.COLOR_ERROR)
-                                        .show((Activity) getContext());
+                                SnackbarManager.show(
+                                        Snackbar.with(mContext)
+                                                .type(SnackbarType.MULTI_LINE)
+                                                .text(R.string.msg_login_failure)
+                                                .color(BaseFragment.COLOR_ERROR), mContext);
                             }
                         });
 

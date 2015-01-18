@@ -14,6 +14,7 @@ import com.mde.potdroid.services.MessagePollingService;
 import com.mde.potdroid.views.LoginDialog;
 import com.mde.potdroid.views.LogoutDialog;
 import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -47,15 +48,14 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         clearCachePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 il.clearDiskCache();
-                Snackbar.with(getActivity().getApplicationContext())
-                        .text("Cache geleert!")
-                        .color(BaseFragment.COLOR_SUCCESS)
-                        .show(getActivity());
+                SnackbarManager.show(
+                        Snackbar.with(getActivity().getApplicationContext())
+                                .text("Cache geleert!")
+                                .color(BaseFragment.COLOR_SUCCESS));
                 return true;
             }
         });
     }
-
 
 
     @Override

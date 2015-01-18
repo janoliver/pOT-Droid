@@ -127,7 +127,8 @@ Es gibt einen pOT-Droid Thread. Den Link findest du auch unter \'Über die App\'
     <string name="post_dialog_browser">Im Browser öffnen</string>
     <string name="post_dialog_pm">PM schicken</string>
     <string name="image_dialog_view">Mit Bild-App öffnen</string>
-    <string name="image_dialog_share">Speichern/Teilen</string>
+    <string name="image_dialog_share">Teilen</string>
+    <string name="image_dialog_download">Herunterladen</string>
     <string name="choose_browser">Browser wählen...</string>
     <string name="no_browser_installed">Kein Browser installiert?</string>
 

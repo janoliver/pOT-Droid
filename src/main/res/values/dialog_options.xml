@@ -10,6 +10,7 @@
     <string-array name="image_dialog">
         <item>@string/image_dialog_view</item>
         <item>@string/image_dialog_share</item>
+        <item>@string/image_dialog_download</item>
     </string-array>
 </resources>
 

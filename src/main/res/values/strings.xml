@@ -82,7 +82,7 @@ Es gibt einen pOT-Droid Thread. Den Link findest du auch unter \'Über die App\'
     <string name="subtitle_settings">Settings</string>
     <string name="subtitle_message"><![CDATA[%1$s <strong>%2$s</strong>]]></string>
     <string name="subtitle_paginate"><![CDATA[Seite <strong>%1$d</strong> von <strong>%2$d</strong>]]></string>
-    <string name="subtitle_bookmarks"><![CDATA[<strong>%1$d</strong> Ungelesene Bookmarks.]]></string>
+    <string name="subtitle_bookmarks"><![CDATA[<strong>%1$d</strong> Ungelesene Posts.]]></string>
     <string name="subtitle_form_write_post">Antwort verfassen</string>
     <string name="subtitle_form_edit_post">Post bearbeiten</string>
     <string name="subtitle_form_write_pm">Nachricht verfassen</string>

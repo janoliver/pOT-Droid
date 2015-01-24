@@ -17,7 +17,6 @@ import android.view.*;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
@@ -253,7 +252,7 @@ public class TopicFragment extends PaginateFragment implements
         }
 
         mWebView.setWebChromeClient(new WebChromeClient());
-        mWebView.setWebViewClient(new WebViewClient());
+        //mWebView.setWebViewClient(new WebViewClient());
 
         displayContent();
 

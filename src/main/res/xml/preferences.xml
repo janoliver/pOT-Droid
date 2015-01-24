@@ -50,12 +50,6 @@
                 android:defaultValue="true"/>
 
         <CheckBoxPreference
-                android:key="pref_hide_global"
-                android:title="Globale Threads ausblenden"
-                android:summary="Blendet Threads und Ankündigungen aus, die global oder wichtig."
-                android:defaultValue="false"/>
-
-        <CheckBoxPreference
                 android:key="pref_show_postinfo"
                 android:title="Post-Titel und Zeit anzeigen"
                 android:defaultValue="true"/>
@@ -87,38 +81,6 @@
                 android:defaultValue="3"
                 android:entries="@array/show_menu"
                 android:entryValues="@array/show_menu_values"/>
-
-        <ListPreference
-                android:key="pref_load_benders"
-                android:title="Bender downloaden"
-                android:summary="Wann sollen Bender mit heruntergeladen werden"
-                android:defaultValue="0"
-                android:entries="@array/load_images"
-                android:entryValues="@array/load_images_values"/>
-
-        <ListPreference
-                android:key="pref_load_images"
-                android:title="Bilder automatisch anzeigen"
-                android:summary="Wann sollen Bilder automatisch angezeigt werden"
-                android:defaultValue="0"
-                android:entries="@array/load_images"
-                android:entryValues="@array/load_images_values"/>
-
-        <ListPreference
-                android:key="pref_load_gifs"
-                android:title="GIF Bilder automatisch anzeigen"
-                android:summary="Wann sollen GIFs automatisch angezeigt werden"
-                android:defaultValue="0"
-                android:entries="@array/load_images"
-                android:entryValues="@array/load_images_values"/>
-
-        <ListPreference
-                android:key="pref_load_videos"
-                android:title="Videos automatisch anzeigen"
-                android:summary="Wann sollen Videos automatisch angezeigt werden"
-                android:defaultValue="0"
-                android:entries="@array/load_images"
-                android:entryValues="@array/load_images_values"/>
 
         <EditTextPreference
                 android:defaultValue="16"
@@ -165,6 +127,44 @@
             android:title="Verhalten"
             android:key="pref_behaviour_settings"
             android:summary="Verhalten der App konfigurieren">
+
+        <CheckBoxPreference
+                android:key="pref_hide_global"
+                android:title="Globale Threads ausblenden"
+                android:summary="Blendet Threads und Ankündigungen aus, die global oder wichtig."
+                android:defaultValue="false"/>
+
+        <ListPreference
+                android:key="pref_load_benders"
+                android:title="Bender downloaden"
+                android:summary="Wann sollen Bender mit heruntergeladen werden"
+                android:defaultValue="0"
+                android:entries="@array/load_images"
+                android:entryValues="@array/load_images_values"/>
+
+        <ListPreference
+                android:key="pref_load_images"
+                android:title="Bilder automatisch anzeigen"
+                android:summary="Wann sollen Bilder automatisch angezeigt werden"
+                android:defaultValue="0"
+                android:entries="@array/load_images"
+                android:entryValues="@array/load_images_values"/>
+
+        <ListPreference
+                android:key="pref_load_gifs"
+                android:title="GIF Bilder automatisch anzeigen"
+                android:summary="Wann sollen GIFs automatisch angezeigt werden"
+                android:defaultValue="0"
+                android:entries="@array/load_images"
+                android:entryValues="@array/load_images_values"/>
+
+        <ListPreference
+                android:key="pref_load_videos"
+                android:title="Videos automatisch anzeigen"
+                android:summary="Wann sollen Videos automatisch angezeigt werden"
+                android:defaultValue="0"
+                android:entries="@array/load_images"
+                android:entryValues="@array/load_images_values"/>
 
         <CheckBoxPreference
                 android:key="pref_fixed_sidebar"

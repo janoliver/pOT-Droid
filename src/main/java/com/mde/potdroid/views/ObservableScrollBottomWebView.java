@@ -9,21 +9,6 @@ public class ObservableScrollBottomWebView extends ObservableWebView
     private boolean mEnd;
     private boolean mStart;
 
-    public ObservableScrollBottomWebView(final Context context)
-    {
-        super(context);
-    }
-
-    public ObservableScrollBottomWebView(final Context context, final AttributeSet attrs)
-    {
-        super(context, attrs);
-    }
-
-    public ObservableScrollBottomWebView(final Context context, final AttributeSet attrs, final int defStyle)
-    {
-        super(context, attrs, defStyle);
-    }
-
     @Override
     protected void onScrollChanged(final int l, final int t, final int oldl, final int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
@@ -51,6 +36,21 @@ public class ObservableScrollBottomWebView extends ObservableWebView
 
     public void scrollToTop() {
         scrollTo(0, 0);
+    }
+
+    @SuppressWarnings("unused")
+    public ObservableScrollBottomWebView(Context context) {
+        super(context);
+    }
+
+    @SuppressWarnings("unused")
+    public ObservableScrollBottomWebView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    @SuppressWarnings("unused")
+    public ObservableScrollBottomWebView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
     }
 
 }

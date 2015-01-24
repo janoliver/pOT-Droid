@@ -45,6 +45,11 @@
                 android:entryValues="@array/pref_theme_variant_values"/>
 
         <CheckBoxPreference
+                android:key="pref_tinted_statusbar"
+                android:title="Statusleiste (unter KitKat) färben"
+                android:defaultValue="true"/>
+
+        <CheckBoxPreference
                 android:key="pref_hide_global"
                 android:title="Globale Threads ausblenden"
                 android:summary="Blendet Threads und Ankündigungen aus, die global oder wichtig."
@@ -95,6 +100,14 @@
                 android:key="pref_load_images"
                 android:title="Bilder automatisch anzeigen"
                 android:summary="Wann sollen Bilder automatisch angezeigt werden"
+                android:defaultValue="0"
+                android:entries="@array/load_images"
+                android:entryValues="@array/load_images_values"/>
+
+        <ListPreference
+                android:key="pref_load_gifs"
+                android:title="GIF Bilder automatisch anzeigen"
+                android:summary="Wann sollen GIFs automatisch angezeigt werden"
                 android:defaultValue="0"
                 android:entries="@array/load_images"
                 android:entryValues="@array/load_images_values"/>

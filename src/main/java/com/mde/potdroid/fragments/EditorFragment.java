@@ -183,6 +183,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             getActionbar().setTitle(R.string.subtitle_form_edit_post);
         else if (getArguments().getInt(ARG_MODE, MODE_REPLY) == MODE_MESSAGE) {
             mIconButton.setVisibility(View.GONE);
+            mBBButton.setVisibility(View.GONE);
             mEditRcpt.setVisibility(View.VISIBLE);
             bbcodeToolbar.setVisibility(View.GONE);
             getActionbar().setTitle(R.string.subtitle_form_write_pm);

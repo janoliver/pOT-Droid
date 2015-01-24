@@ -77,7 +77,7 @@ public class BaseActivity extends ActionBarActivity {
             setContentView(R.layout.main);
 
         // tinted statusbar
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT && mSettings.isTintedStatusbar()) {
             setTranslucentStatus(true);
 
             SystemBarTintManager tintManager = new SystemBarTintManager(this);

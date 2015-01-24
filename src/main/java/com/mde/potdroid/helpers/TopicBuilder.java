@@ -381,7 +381,7 @@ public class TopicBuilder {
 
                 if (m.find() && args.size() > 0) {
                     String extension = m.group(1).substring(m.group(1).length() - 3).toLowerCase();
-                    String icon = "fa-picture-o";
+                    String icon = "fa-picture-o nogif";
                     if (extension.equals("gif"))
                         icon = "fa-film gif";
                     return String.format("<div class=\"img-link\" data-src=\"%1$s\" " +
@@ -420,7 +420,7 @@ public class TopicBuilder {
                             mIcons.get(icon));
                 } else {
                     String extension = content.substring(content.length() - 3).toLowerCase();
-                    String icon = "fa-picture-o";
+                    String icon = "fa-picture-o nogif";
                     if (extension.equals("gif"))
                         icon = "fa-film gif";
                     return String.format("<div class=\"img\" data-src=\"%1$s\"><i class=\"fa " +

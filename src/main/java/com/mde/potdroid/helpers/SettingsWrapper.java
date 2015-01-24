@@ -37,6 +37,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_DEBUG = "pref_debug_mode";
     public static final String PREF_KEY_LOAD_BENDERS = "pref_load_benders";
     public static final String PREF_KEY_LOAD_IMAGES = "pref_load_images";
+    public static final String PREF_KEY_LOAD_GIFS = "pref_load_gifs";
     public static final String PREF_KEY_LOAD_VIDEOS = "pref_load_videos";
     public static final String PREF_KEY_POLL_MESSAGES = "pref_message_polling_interval";
     public static final String PREF_KEY_NOTIFICATION_VIBRATE = "pref_notification_vibrate";
@@ -67,6 +68,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_SWAPPED_SIDEBARS = "pref_swap_sidebars";
     public static final String PREF_KEY_PARSE_BBCODE = "pref_parse_bbcode";
     public static final String PREF_KEY_FAB = "pref_fab";
+    public static final String PREF_KEY_TINTED_STATUSBAR = "pref_tinted_statusbar";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;
@@ -154,6 +156,12 @@ public class SettingsWrapper {
                 Utils.getConnectionType(mContext) != Utils.NETWORK_WIFI));
     }
 
+    public Boolean downloadGifs() {
+        String lb = mSharedPreferences.getString(PREF_KEY_LOAD_GIFS, "0");
+        return !(lb.equals("0") || (lb.equals("1") &&
+                Utils.getConnectionType(mContext) != Utils.NETWORK_WIFI));
+    }
+
     public Boolean downloadVideos() {
         String lb = mSharedPreferences.getString(PREF_KEY_LOAD_VIDEOS, "0");
         return !(lb.equals("0") || (lb.equals("1") &&
@@ -202,6 +210,10 @@ public class SettingsWrapper {
 
     public Boolean isReloadBookmarksOnSidebarOpen() {
         return mSharedPreferences.getBoolean(PREF_KEY_RELOAD_BOOKMARKS, false);
+    }
+
+    public Boolean isTintedStatusbar() {
+        return mSharedPreferences.getBoolean(PREF_KEY_TINTED_STATUSBAR, true);
     }
 
     public Boolean isBoardBookmarks() {

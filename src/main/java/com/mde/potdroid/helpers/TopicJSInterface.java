@@ -126,6 +126,16 @@ public class TopicJSInterface extends BenderJSInterface {
      * @return true if yes
      */
     @JavascriptInterface
+    public boolean isLoadGifs() {
+        return mSettings.downloadGifs();
+    }
+
+    /**
+     * Check if images should be loaded right now
+     *
+     * @return true if yes
+     */
+    @JavascriptInterface
     public boolean isLoadImages() {
         return mSettings.downloadImages();
     }
@@ -425,7 +435,7 @@ public class TopicJSInterface extends BenderJSInterface {
     public void loadAllImages() {
         mActivity.runOnUiThread(new Runnable() {
                 public void run() {
-                    mWebView.loadUrl("javascript:loadAllImages();");
+                    mWebView.loadUrl("javascript:loadAllImages();loadAllGifs();loadAllVideos();");
                 }
         });
     }

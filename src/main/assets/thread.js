@@ -30,6 +30,10 @@ $(document).ready(function() {
         loadAllImages();
     }
 
+    if(api.isLoadGifs()) {
+        loadAllGifs();
+    }
+
     if(api.isLoadVideos()) {
         loadAllVideos();
     }
@@ -192,7 +196,7 @@ function replaceVideo(icon) {
         var id = youtube_parser(src);
         var wrapper = $("<div class=\"videoWrapper\"></div>");
         var iframe = $("<iframe type=\"text/html\" frameborder=\"0\" allowfullscreen></iframe>")
-            .attr("src", "http://www.youtube.com/embed/" + id);
+            .attr("src", "http://www.youtube.com/embed/" + id + "?fs=1");
         wrapper.append(iframe);
         el.replaceWith(wrapper);
     } else {
@@ -235,11 +239,26 @@ function scrollToLastPostByUID(uid) {
 function loadAllImages() {
     var all = [];
     if(api.getScroll() > 0) {
-        var self = $('a[name="' + api.getScroll() + '"]').parent().find('div.img i, div.img-link i.img');
-        var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.img i, div.img-link i.img');
+        var self = $('a[name="' + api.getScroll() + '"]').parent().find('div.img i.img-loader.nogif, div.img-link i.img-loader.nogif');
+        var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.img i.img-loader.nogif, div.img-link i.img-loader.nogif');
         all = $.merge(self, after);
     } else {
-        all = $('div.img i, div.img-link i.img');
+        all = $('div.img i.img-loader.nogif, div.img-link i.img-loader.nogif');
+    }
+    all.each(function() {
+        replaceImage($(this));
+    });
+}
+
+// load all images
+function loadAllGifs() {
+    var all = [];
+    if(api.getScroll() > 0) {
+        var self = $('a[name="' + api.getScroll() + '"]').parent().find('div.img i.img-loader.gif, div.img-link i.img-loader.gif');
+        var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.img i.img-loader.gif, div.img-link i.img-loader.gif');
+        all = $.merge(self, after);
+    } else {
+        all = $('div.img i.img-loader.gif, div.img-link i.img-loader.gif');
     }
     all.each(function() {
         replaceImage($(this));

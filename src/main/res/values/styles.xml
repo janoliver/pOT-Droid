@@ -34,6 +34,7 @@
     </style>
 
     <style name="PotDroidDarkBase" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="windowActionModeOverlay">true</item>
         <item name="colorPrimary">@color/bbstyle_darkblue</item>
         <item name="colorPrimaryDark">@color/bbstyle_darkblue_semi</item>
         <item name="colorControlActivated">@color/white</item>
@@ -84,6 +85,7 @@
     </style>
 
     <style name="PotDroidLightBase" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionModeOverlay">true</item>
         <item name="colorPrimary">@color/bbstyle_lightblue</item>
         <item name="colorPrimaryDark">@color/bbstyle_darkblue</item>
         <item name="colorAccent">@color/bbstyle_lightblue</item>

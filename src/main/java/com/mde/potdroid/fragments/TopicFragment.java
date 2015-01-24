@@ -387,8 +387,8 @@ public class TopicFragment extends PaginateFragment implements
         enableFastScroll(new FastScrollListener() {
             @Override
             public void onUpButtonClicked() {
-                mWebView.scrollToTop();
-                //mJsInterface.unveil();
+                //mWebView.scrollToTop();
+                mJsInterface.scrollToTop();
             }
 
             @Override

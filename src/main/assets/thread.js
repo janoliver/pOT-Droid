@@ -221,6 +221,11 @@ function unveil() {
 }
 
 // unveil dimmed posts
+function scrollToTop() {
+    $('html, body').scrollTop( 0 );
+}
+
+// unveil dimmed posts
 function scrollToBottom() {
     $('html, body').scrollTop( $(document).height() );
 }

@@ -466,4 +466,12 @@ public class TopicJSInterface extends BenderJSInterface {
         });
     }
 
+    public void scrollToTop() {
+        mActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                mWebView.loadUrl("javascript:scrollToTop();");
+            }
+        });
+    }
+
 }

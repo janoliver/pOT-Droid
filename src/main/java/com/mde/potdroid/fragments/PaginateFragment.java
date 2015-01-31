@@ -1,7 +1,5 @@
 package com.mde.potdroid.fragments;
 
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -138,8 +136,8 @@ abstract public class PaginateFragment extends BaseFragment {
         MenuItem next_item = menu.findItem(R.id.next);
 
         if(isFirstPage()) {
-            prev_item.setEnabled(false);
-            prev_icon.mutate().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+            prev_item.setVisible(false);
+            //prev_icon.mutate().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
         }
 
         if(isLastPage()) {

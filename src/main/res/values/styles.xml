@@ -70,7 +70,9 @@
         <item name="md_content_color">@color/white</item>
         <!--By default, the accent color is derived from the colorAccent attribute of
             AppCompat or android:colorAccent attribute of the Material theme.-->
-        <item name="md_accent_color">@color/bbstyle_darkerblue</item>
+        <item name="md_positive_color">@color/bbstyle_darkerblue</item>
+        <item name="md_neutral_color">@color/bbstyle_darkerblue</item>
+        <item name="md_negative_color">@color/bbstyle_darkerblue</item>
         <!--By default, the list item text color is black for the light theme and white for the dark theme.-->
         <item name="md_item_color">@color/white</item>
         <!--This overrides the default dark or light dialog background color.
@@ -122,7 +124,9 @@
         <item name="md_content_color">@color/white</item>
         <!--By default, the accent color is derived from the colorAccent attribute of
             AppCompat or android:colorAccent attribute of the Material theme.-->
-        <item name="md_accent_color">@color/bbstyle_darkerblue</item>
+        <item name="md_positive_color">@color/bbstyle_darkerblue</item>
+        <item name="md_neutral_color">@color/bbstyle_darkerblue</item>
+        <item name="md_negative_color">@color/bbstyle_darkerblue</item>
         <!--By default, the list item text color is black for the light theme and white for the dark theme.-->
         <item name="md_item_color">@color/white</item>
         <!--This overrides the default dark or light dialog background color.

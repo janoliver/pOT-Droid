@@ -56,7 +56,7 @@ public class PostActionsDialog extends DialogFragment {
                         return Utils.isLoggedIn();
                     case 2:
                         return Utils.isLoggedIn();
-                    case 4:
+                    case 5:
                         return Utils.isLoggedIn();
                 }
                 return true;
@@ -95,6 +95,9 @@ public class PostActionsDialog extends DialogFragment {
                             fragment.linkPost(getArguments().getInt(ARG_POST_ID));
                             break;
                         case 4:
+                            fragment.clipboardPostUrl(getArguments().getInt(ARG_POST_ID));
+                            break;
+                        case 5:
                             fragment.pmToAuthor(getArguments().getInt(ARG_POST_ID));
                             break;
                     }

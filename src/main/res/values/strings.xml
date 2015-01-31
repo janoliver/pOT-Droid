@@ -125,6 +125,7 @@ Es gibt einen pOT-Droid Thread. Den Link findest du auch unter \'Über die App\'
     <string name="post_dialog_quote">Zitieren</string>
     <string name="post_dialog_bookmark">Bookmark setzen</string>
     <string name="post_dialog_browser">Im Browser öffnen</string>
+    <string name="post_dialog_clipboard">Link kopieren</string>
     <string name="post_dialog_pm">PM schicken</string>
     <string name="image_dialog_view">Mit Bild-App öffnen</string>
     <string name="image_dialog_share">Teilen</string>

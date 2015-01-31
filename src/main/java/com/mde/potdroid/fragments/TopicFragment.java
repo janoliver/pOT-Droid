@@ -1,7 +1,9 @@
 package com.mde.potdroid.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -661,6 +663,28 @@ public class TopicFragment extends PaginateFragment implements
         } else {
             showError(getString(R.string.no_browser_installed));
         }
+    }
+
+    @SuppressLint("NewApi")
+    public void clipboardPostUrl(final int id) {
+        Post p = mTopic.getPostById(id);
+
+        String url = Utils.getAbsoluteUrl(
+                String.format("thread.php?PID=%d&TID=%d#reply_%d", p.getId(), mTopic.getId(), p.getId()));
+
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.HONEYCOMB){
+            android.content.ClipboardManager clipboard =
+                    (android.content.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText(mTopic.getTitle(), url);
+            clipboard.setPrimaryClip(clip);
+        } else{
+            android.text.ClipboardManager clipboard =
+                    (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+            clipboard.setText(url);
+        }
+
+        showSuccess("Link kopiert.");
     }
 
     /**

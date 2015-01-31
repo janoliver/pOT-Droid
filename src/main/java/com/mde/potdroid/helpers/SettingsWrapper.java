@@ -39,6 +39,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_LOAD_IMAGES = "pref_load_images";
     public static final String PREF_KEY_LOAD_GIFS = "pref_load_gifs";
     public static final String PREF_KEY_LOAD_VIDEOS = "pref_load_videos";
+    public static final String PREF_KEY_PARSE_SMILEYS = "pref_parse_smileys";
     public static final String PREF_KEY_POLL_MESSAGES = "pref_message_polling_interval";
     public static final String PREF_KEY_NOTIFICATION_VIBRATE = "pref_notification_vibrate";
     public static final String PREF_KEY_NOTIFICATION_SOUND = "pref_notification_sound";
@@ -218,6 +219,10 @@ public class SettingsWrapper {
 
     public Boolean isBoardBookmarks() {
         return mSharedPreferences.getBoolean(PREF_KEY_BOARDS_BOOKMARKS, true);
+    }
+
+    public Boolean isParseSmileys() {
+        return mSharedPreferences.getBoolean(PREF_KEY_PARSE_SMILEYS, true);
     }
 
     public Boolean isSwipeToRefreshTopic() {

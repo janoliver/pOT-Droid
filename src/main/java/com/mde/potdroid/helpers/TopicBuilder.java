@@ -148,8 +148,9 @@ public class TopicBuilder {
             int user_id = mSettings.getUserId();
             boolean show_post_info = mSettings.showPostInfo();
             boolean parse_bbcode = mSettings.isParseBBCode();
+            boolean parse_smileys = mSettings.isParseSmileys();
             for (Post p : mTopic.getPosts())
-                pc.add(new PostContext(p, user_id, parse_bbcode, show_post_info));
+                pc.add(new PostContext(p, user_id, parse_bbcode, show_post_info, parse_smileys));
             return pc;
         }
     }
@@ -162,12 +163,14 @@ public class TopicBuilder {
         private int mUserId;
         private boolean mShowPostInfo;
         private boolean mParseBBcode;
+        private boolean mParseSmileys;
         private Post mPost;
 
-        public PostContext(Post p, int user_id, boolean parse_bbcode, boolean show_post_info) {
+        public PostContext(Post p, int user_id, boolean parse_bbcode, boolean show_post_info, boolean parse_smileys) {
             mPost = p;
             mUserId = user_id;
             mParseBBcode = parse_bbcode;
+            mParseSmileys = parse_smileys;
             mShowPostInfo = show_post_info;
         }
 
@@ -234,7 +237,8 @@ public class TopicBuilder {
             String text;
             try {
                 text = getBBCodeParserInstance().parse(mPost.getText());
-                text = parseSmileys(text);
+                if(mParseSmileys)
+                    text = parseSmileys(text);
             } catch (Exception e) {
                 Utils.printException(e);
                 text = "<div class=\"err\"> Post konnte nicht geparsed werden </div><br /><br/>"

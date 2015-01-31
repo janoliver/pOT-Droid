@@ -167,6 +167,11 @@
                 android:entryValues="@array/load_images_values"/>
 
         <CheckBoxPreference
+                android:key="pref_parse_smileys"
+                android:title="Smileys parsen"
+                android:defaultValue="true"/>
+
+        <CheckBoxPreference
                 android:key="pref_fixed_sidebar"
                 android:title="Bookmarks Sidebar immer anzeigen"
                 android:summary="Interessant für große Bildschirme/Tablets"/>

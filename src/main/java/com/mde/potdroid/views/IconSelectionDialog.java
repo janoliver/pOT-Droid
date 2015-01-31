@@ -1,9 +1,7 @@
 package com.mde.potdroid.views;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -11,8 +9,11 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.TopicBuilder;
 import com.mde.potdroid.helpers.Utils;
@@ -67,22 +68,29 @@ public class IconSelectionDialog extends DialogFragment {
 
         } catch (IOException e) { }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                .title(R.string.dialog_icon_selection)
+                .adapter(new IconListAdapter(getActivity()))
+                .build();
 
-        builder.setTitle(R.string.dialog_icon_selection);
-        builder.setAdapter(new IconListAdapter(getActivity()),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(mCallback != null) {
-                            if(mIsSmileys)
-                                mCallback.selected(mIcons.get(which), getKeyByValue(TopicBuilder.mSmileys, mIcons.get(which)));
-                            else
-                                mCallback.selected(mIcons.get(which), null);
-                        }
-
+        ListView listView = dialog.getListView();
+        if (listView != null) {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int which, long id) {
+                    dialog.dismiss();
+                    if(mCallback != null) {
+                        if(mIsSmileys)
+                            mCallback.selected(mIcons.get(which), getKeyByValue(TopicBuilder.mSmileys, mIcons.get(which)));
+                        else
+                            mCallback.selected(mIcons.get(which), null);
                     }
-                });
-        return builder.create();
+
+                }
+            });
+        }
+
+        return dialog;
     }
 
     /**

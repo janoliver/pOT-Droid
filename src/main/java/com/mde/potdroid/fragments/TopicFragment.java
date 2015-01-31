@@ -68,6 +68,7 @@ public class TopicFragment extends PaginateFragment implements
     // we need to invoke some functions on this one outside of the
     // webview initialization, so keep a reference here.
     private TopicJSInterface mJsInterface;
+    private WebViewScrollCallbacks mWebViewScrollCallbacks = new WebViewScrollCallbacks();
 
     // singleton and state indicator for the Kitkat bug workaround
     public static LinkedList<TopicFragment> mWebViewHolder = new LinkedList<TopicFragment>();
@@ -623,6 +624,7 @@ public class TopicFragment extends PaginateFragment implements
                     @Override
                     public void run() {
                         showSuccess(R.string.msg_bookmark_added);
+                        mWebViewScrollCallbacks.toggleTopToolbar(true);
                     }
                 });
 
@@ -744,7 +746,7 @@ public class TopicFragment extends PaginateFragment implements
         }
     }
 
-    private ObservableScrollViewCallbacks mWebViewScrollCallbacks = new ObservableScrollViewCallbacks() {
+    class WebViewScrollCallbacks implements ObservableScrollViewCallbacks {
         private boolean mIsScrolledBottom;
         private boolean mIsScrolledTop;
         private boolean mToolbarHidden;
@@ -788,21 +790,21 @@ public class TopicFragment extends PaginateFragment implements
             mOldScroll = scrollY;
         }
 
-        private void showToolbars() {
+        public void showToolbars() {
             if (mToolbarHidden) {
                 toggleTopToolbar(true);
                 toggleBottomToolbar(true);
             }
         }
 
-        private void hideToolbars() {
+        public void hideToolbars() {
             if (!mToolbarHidden && mSettings.dynamicToolbars() && !mSettings.isFixedSidebar()) {
                 toggleTopToolbar(false);
                 toggleBottomToolbar(false);
             }
         }
 
-        private void toggleTopToolbar(final boolean show) {
+        public void toggleTopToolbar(final boolean show) {
             mToolbarHidden = !show;
             Toolbar t = getBaseActivity().getToolbar();
             int translation = show ? 0 : -t.getHeight();
@@ -810,7 +812,7 @@ public class TopicFragment extends PaginateFragment implements
             mPullToRefreshLayout.setTopMargin(translation + t.getHeight());
         }
 
-        private void toggleBottomToolbar(final boolean show) {
+        public void toggleBottomToolbar(final boolean show) {
             mToolbarHidden = !show;
             RelativeLayout t = getBaseActivity().getBottomToolbar();
             int translation = show ? 0 : t.getHeight();

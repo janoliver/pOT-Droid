@@ -397,6 +397,11 @@ public class TopicBuilder {
 
                 if (args.size() > 0)
                     url = args.get(0);
+
+                // add protocol if the url is malformed.
+                if(!url.contains("://"))
+                    url = "http://" + url;
+
                 return String.format("<a href=\"%1$s\">%2$s</a>", url, content);
             }
         });

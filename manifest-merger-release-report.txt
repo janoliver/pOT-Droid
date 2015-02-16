@@ -40,14 +40,13 @@ ADDED from AndroidManifest.xml:14:5
 MERGED from com.android.support:support-v4:21.0.3:16:5
 MERGED from com.android.support:appcompat-v7:21.0.3:16:5
 MERGED from com.android.support:support-v4:21.0.3:16:5
-MERGED from com.android.support:recyclerview-v7:21.0.2:17:5
+MERGED from com.android.support:recyclerview-v7:21.0.0:17:5
 MERGED from com.android.support:support-v4:21.0.3:16:5
-MERGED from com.nispok:snackbar:2.7.4:10:5
-MERGED from com.android.support:recyclerview-v7:21.0.2:17:5
-MERGED from com.android.support:support-v4:21.0.3:16:5
+MERGED from com.nispok:snackbar:2.7.5:10:5
 MERGED from com.melnykov:floatingactionbutton:1.1.0:12:5
-MERGED from com.android.support:recyclerview-v7:21.0.2:17:5
+MERGED from com.android.support:recyclerview-v7:21.0.0:17:5
 MERGED from com.android.support:support-v4:21.0.3:16:5
+MERGED from com.afollestad:material-dialogs:0.6.2.1:12:5
 MERGED from com.android.support:appcompat-v7:21.0.3:16:5
 MERGED from com.android.support:support-v4:21.0.3:16:5
 	android:label
@@ -187,17 +186,15 @@ INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
 MERGED from com.android.support:support-v4:21.0.3:15:5
 MERGED from com.android.support:appcompat-v7:21.0.3:15:5
 MERGED from com.android.support:support-v4:21.0.3:15:5
-MERGED from com.github.ksoichiro:android-observablescrollview:1.4.0:21:5
-MERGED from com.android.support:recyclerview-v7:21.0.2:15:5
+MERGED from com.github.ksoichiro:android-observablescrollview:1.5.0:21:5
+MERGED from com.android.support:recyclerview-v7:21.0.0:15:5
 MERGED from com.android.support:support-v4:21.0.3:15:5
-MERGED from com.nispok:snackbar:2.7.4:6:5
-MERGED from com.android.support:recyclerview-v7:21.0.2:15:5
-MERGED from com.android.support:support-v4:21.0.3:15:5
+MERGED from com.nispok:snackbar:2.7.5:6:5
 MERGED from com.android.support:support-v4-preferencefragment:1.0.0:15:5
 MERGED from com.melnykov:floatingactionbutton:1.1.0:8:5
-MERGED from com.android.support:recyclerview-v7:21.0.2:15:5
+MERGED from com.android.support:recyclerview-v7:21.0.0:15:5
 MERGED from com.android.support:support-v4:21.0.3:15:5
-MERGED from com.afollestad:material-dialogs:0.6.0:8:5
+MERGED from com.afollestad:material-dialogs:0.6.2.1:8:5
 MERGED from com.android.support:appcompat-v7:21.0.3:15:5
 MERGED from com.android.support:support-v4:21.0.3:15:5
 	android:targetSdkVersion
@@ -207,10 +204,9 @@ MERGED from com.android.support:support-v4:21.0.3:15:5
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0
 activity#android.support.v7.widget.TestActivity
-ADDED from com.android.support:recyclerview-v7:21.0.2:18:9
-MERGED from com.android.support:recyclerview-v7:21.0.2:18:9
-MERGED from com.android.support:recyclerview-v7:21.0.2:18:9
+ADDED from com.android.support:recyclerview-v7:21.0.0:18:9
+MERGED from com.android.support:recyclerview-v7:21.0.0:18:9
 	android:label
-		ADDED from com.android.support:recyclerview-v7:21.0.2:18:19
+		ADDED from com.android.support:recyclerview-v7:21.0.0:18:19
 	android:name
-		ADDED from com.android.support:recyclerview-v7:21.0.2:18:60
+		ADDED from com.android.support:recyclerview-v7:21.0.0:18:60

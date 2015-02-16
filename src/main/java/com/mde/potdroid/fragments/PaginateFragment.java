@@ -112,10 +112,10 @@ abstract public class PaginateFragment extends BaseFragment {
                     goToFirstPage();
                 }
             });
-        }
 
-        if(!Utils.isLoggedIn())
-            mWriteButton.setVisibility(View.GONE);
+            if(!Utils.isLoggedIn())
+                mWriteButton.setVisibility(View.GONE);
+        }
 
         refreshPaginateLayout();
     }

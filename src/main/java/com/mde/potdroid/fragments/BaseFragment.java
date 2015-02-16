@@ -195,14 +195,16 @@ public abstract class BaseFragment extends Fragment implements BBSwipeRefreshLay
     }
 
     protected void showGenericNotification(String message, int c) {
-        SnackbarManager.show(
+        if(getBaseActivity() != null)
+            SnackbarManager.show(
                 Snackbar.with(getBaseActivity())
                         .text(message)
                         .color(c));
     }
 
     protected void showGenericNotification(int message, int c) {
-        SnackbarManager.show(
+        if(getBaseActivity() != null)
+            SnackbarManager.show(
                 Snackbar.with(getBaseActivity())
                         .text(message)
                         .color(c));

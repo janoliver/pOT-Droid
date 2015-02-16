@@ -191,7 +191,16 @@ public abstract class BaseFragment extends Fragment implements BBSwipeRefreshLay
      * Restart the content loader
      */
     public void restartLoader(LoaderManager.LoaderCallbacks l) {
-        getLoaderManager().restartLoader(CONTENT_LOADER_ID, null, l);
+        restartLoader(l, false);
+    }
+
+    /**
+     * Restart the content loader
+     */
+    public void restartLoader(LoaderManager.LoaderCallbacks l, boolean cache) {
+        Bundle args = new Bundle();
+        args.putBoolean("cache", cache);
+        getLoaderManager().restartLoader(CONTENT_LOADER_ID, args, l);
     }
 
     protected void showGenericNotification(String message, int c) {
@@ -265,7 +274,7 @@ public abstract class BaseFragment extends Fragment implements BBSwipeRefreshLay
      * Start the content loader
      */
     public void startLoader(LoaderManager.LoaderCallbacks l) {
-        startLoader(l, null);
+        startLoader(l, new Bundle());
     }
 
     /**

@@ -33,6 +33,15 @@ public class Topic implements Serializable {
     private Post mLastPost;
     private ArrayList<Post> mPosts = new ArrayList<Post>();
     private String mHtmlCache;
+    private Boolean mIsCacheOnly;
+
+    public Boolean getIsCacheOnly() {
+        return mIsCacheOnly;
+    }
+
+    public void setIsCacheOnly(Boolean isCacheOnly) {
+        this.mIsCacheOnly = isCacheOnly;
+    }
 
     // constructor for TopicActivity
     public Topic(Integer id) {

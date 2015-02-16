@@ -60,6 +60,7 @@ public class TopicFragment extends PaginateFragment implements
 
     // the topic Object
     private Topic mTopic;
+    private Topic mNextCache;
 
     // the webview which is attached to the WebContainer
     private ObservableScrollBottomWebView mWebView;
@@ -310,6 +311,29 @@ public class TopicFragment extends PaginateFragment implements
 
         // Handle item selection
         switch (item.getItemId()) {
+            case R.id.next:
+
+                if(mNextCache != null) {
+
+                    // update the topic data
+                    mTopic = mNextCache;
+                    mNextCache = null;
+
+                    // Refresh the bookmarks after the topic loaded
+                    getBaseActivity().getLeftSidebarFragment().refreshBookmarks();
+
+                    displayContent();
+
+                    refreshTitleAndPagination();
+
+                    setSwipeEnabled(true);
+
+                    mFab.show();
+                } else {
+                    goToNextPage();
+                }
+
+                return true;
             case R.id.new_reply:
                 replyPost();
                 return true;
@@ -330,6 +354,9 @@ public class TopicFragment extends PaginateFragment implements
             case R.id.load_images:
                 mJsInterface.loadAllImages();
                 return true;
+            case R.id.preload_next:
+                restartLoader(this, true);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -345,7 +372,7 @@ public class TopicFragment extends PaginateFragment implements
         showLoadingAnimation();
         setSwipeEnabled(false);
 
-        return new AsyncContentLoader(getBaseActivity(), page, tid, pid);
+        return new AsyncContentLoader(getBaseActivity(), args, page, tid, pid);
     }
 
     @Override
@@ -353,19 +380,28 @@ public class TopicFragment extends PaginateFragment implements
         hideLoadingAnimation();
 
         if (data != null) {
-            // update the topic data
-            mTopic = data;
 
-            // Refresh the bookmarks after the topic loaded
-            getBaseActivity().getLeftSidebarFragment().refreshBookmarks();
+            if(data.getIsCacheOnly()) {
+                mNextCache = data;
+                data.setIsCacheOnly(false);
+            } else {
+                mNextCache = null;
 
-            displayContent();
+                // update the topic data
+                mTopic = data;
 
-            refreshTitleAndPagination();
+                // Refresh the bookmarks after the topic loaded
+                getBaseActivity().getLeftSidebarFragment().refreshBookmarks();
 
-            setSwipeEnabled(true);
+                displayContent();
 
-            mFab.show();
+                refreshTitleAndPagination();
+
+                setSwipeEnabled(true);
+
+                mFab.show();
+
+            }
 
         } else {
             showError(getString(R.string.msg_loading_error));
@@ -741,9 +777,11 @@ public class TopicFragment extends PaginateFragment implements
         // For some reason, getContext() returns an ApplicationContext object, which
         // is not sufficient for the TopicBuilder instance. So we store our own.
         private Context mContext;
+        private Bundle mArgs;
 
-        AsyncContentLoader(Context cx, int page, int thread_id, int post_id) {
+        AsyncContentLoader(Context cx, Bundle args, int page, int thread_id, int post_id) {
             super(cx, TopicParser.getUrl(thread_id, page, post_id));
+            mArgs = args;
             mContext = cx;
 
         }
@@ -756,6 +794,9 @@ public class TopicFragment extends PaginateFragment implements
 
                 TopicBuilder b = new TopicBuilder(mContext);
                 t.setHtmlCache(b.parse(t));
+
+                t.setIsCacheOnly(mArgs.getBoolean("cache", false));
+
                 return t;
             } catch (Exception e) {
                 Utils.printException(e);

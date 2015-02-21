@@ -51,6 +51,7 @@ Es gibt einen pOT-Droid Thread. Den Link findest du auch unter \'Über die App\'
     <string name="action_topage">Gehe zu Seite…</string>
     <string name="action_last_own_post">Zum letzten eigenen Post</string>
     <string name="action_load_all_images">Alle Medien laden</string>
+    <string name="action_preload_next">Nächste Seite vorladen</string>
 
     <!-- messages -->
     <string name="msg_login_success">Erfolgreich eingeloggt! Die App sollte neu gestartet werden.</string>

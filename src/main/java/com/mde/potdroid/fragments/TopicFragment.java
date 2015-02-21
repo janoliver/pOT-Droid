@@ -129,7 +129,7 @@ public class TopicFragment extends PaginateFragment implements
             mPullToRefreshLayout.setEnabled(false);
 
         if(mSettings.isBottomToolbar()) {
-            getmWriteButton().setOnClickListener(new View.OnClickListener() {
+            getWriteButton().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     replyPost();
@@ -304,6 +304,9 @@ public class TopicFragment extends PaginateFragment implements
             menu.setGroupVisible(R.id.loggedout_topic, true);
             menu.findItem(R.id.new_reply).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
         }
+
+        if(isLastPage())
+            menu.findItem(R.id.preload_next).setVisible(false);
     }
 
     @Override
@@ -312,27 +315,7 @@ public class TopicFragment extends PaginateFragment implements
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.next:
-
-                if(mNextCache != null) {
-
-                    // update the topic data
-                    mTopic = mNextCache;
-                    mNextCache = null;
-
-                    // Refresh the bookmarks after the topic loaded
-                    getBaseActivity().getLeftSidebarFragment().refreshBookmarks();
-
-                    displayContent();
-
-                    refreshTitleAndPagination();
-
-                    setSwipeEnabled(true);
-
-                    mFab.show();
-                } else {
-                    goToNextPage();
-                }
-
+                goToNextPage();
                 return true;
             case R.id.new_reply:
                 replyPost();
@@ -355,7 +338,7 @@ public class TopicFragment extends PaginateFragment implements
                 mJsInterface.loadAllImages();
                 return true;
             case R.id.preload_next:
-                restartLoader(this, true);
+                startPreloadingNextPage();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -384,6 +367,9 @@ public class TopicFragment extends PaginateFragment implements
             if(data.getIsCacheOnly()) {
                 mNextCache = data;
                 data.setIsCacheOnly(false);
+
+                // display new 'next' button
+                highlightNextButton();
             } else {
                 mNextCache = null;
 
@@ -417,7 +403,6 @@ public class TopicFragment extends PaginateFragment implements
                 mTopic.getPage(), mTopic.getNumberOfPages()));
 
         //getBaseActivity().supportInvalidateOptionsMenu();
-        refreshPaginateLayout();
         getActionbar().setTitle(mTopic.getTitle());
         getActionbar().setSubtitle(subtitleText);
 
@@ -457,11 +442,44 @@ public class TopicFragment extends PaginateFragment implements
     }
 
     public void goToNextPage() {
-        // whether there is a next page was checked in onCreateOptionsMenu
+
+        if(mNextCache != null) {
+            mJsInterface.registerScroll(0);
+
+            // update the topic data
+            mTopic = mNextCache;
+            mNextCache = null;
+
+            // Refresh the bookmarks after the topic loaded
+            getBaseActivity().getLeftSidebarFragment().refreshBookmarks();
+
+            displayContent();
+
+            refreshTitleAndPagination();
+
+            setSwipeEnabled(true);
+
+            mFab.show();
+        } else {
+
+            // whether there is a next page was checked in onCreateOptionsMenu
+            getArguments().putInt(ARG_PAGE, mTopic.getPage() + 1);
+            getArguments().remove(ARG_POST_ID);
+            mJsInterface.registerScroll(0);
+            restartLoader(this);
+        }
+
+    }
+
+    @Override
+    public void nextButtonLongClick() {
+        startPreloadingNextPage();
+    }
+
+    public void startPreloadingNextPage() {
         getArguments().putInt(ARG_PAGE, mTopic.getPage() + 1);
         getArguments().remove(ARG_POST_ID);
-        mJsInterface.registerScroll(0);
-        restartLoader(this);
+        restartLoader(this, true);
     }
 
     public void goToPage(int page) {
@@ -893,6 +911,6 @@ public class TopicFragment extends PaginateFragment implements
         public void onUpOrCancelMotionEvent(ScrollState scrollState) {
 
         }
-    };
+    }
 
 }

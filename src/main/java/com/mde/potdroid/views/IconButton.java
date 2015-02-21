@@ -49,4 +49,13 @@ public class IconButton extends Button {
         setTextColor(getTextColors().withAlpha(204));
     }
 
+    public void setColor(int color) {
+        setTextColor(color);
+        if(isEnabled())
+            setTextColor(getTextColors().withAlpha(204));
+        else
+            setTextColor(getTextColors().withAlpha(76));
+
+    }
+
 }

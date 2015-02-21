@@ -130,7 +130,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             startLoader(this);
 
         if(mSettings.isBottomToolbar()) {
-            getmWriteButton().setOnClickListener(new View.OnClickListener() {
+            getWriteButton().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     newThread();
@@ -249,6 +249,11 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         // whether there is a next page was already checked in onCreateOptionsMenu
         getArguments().putInt(ARG_PAGE, mBoard.getPage() + 1);
         restartLoader(this);
+    }
+
+    @Override
+    public void nextButtonLongClick() {
+        goToLastPage();
     }
 
     public void goToPrevPage() {

@@ -26,8 +26,16 @@ public class IconDrawable extends Drawable {
         return Utils.getColorByAttr(cx, R.attr.bbToolbarColor);
     }
 
+    public static int getHighlightColor(Context cx) {
+        return Utils.getColorByAttr(cx, R.attr.bbToolbarHighlightColor);
+    }
+
+    public static int getDefaultTextSize() {
+        return 24;
+    }
+
     public static IconDrawable getIconDrawable(Context cx, int icon_string) {
-        return getIconDrawable(cx, icon_string, 24, getDefaultColor(cx), 204);
+        return getIconDrawable(cx, icon_string, getDefaultTextSize(), getDefaultColor(cx), 204);
     }
 
     public static IconDrawable getIconDrawable(Context cx, int icon_string, int text_size) {

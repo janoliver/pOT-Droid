@@ -41,12 +41,15 @@ abstract public class PaginateFragment extends BaseFragment {
     private IconButton mRwdButton;
     private IconButton mFrwdButton;
     private IconButton mWriteButton;
+    private boolean mHighlightNextButton;
 
     public abstract void goToFirstPage();
 
     public abstract void goToLastPage();
 
     public abstract void goToNextPage();
+
+    public abstract void nextButtonLongClick();
 
     public abstract void refreshPage();
 
@@ -113,6 +116,14 @@ abstract public class PaginateFragment extends BaseFragment {
                 }
             });
 
+            mFwdButton.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    nextButtonLongClick();
+                    return true;
+                }
+            });
+
             if(!Utils.isLoggedIn())
                 mWriteButton.setVisibility(View.GONE);
         }
@@ -130,14 +141,23 @@ abstract public class PaginateFragment extends BaseFragment {
         inflater.inflate(R.menu.actionmenu_paginate, menu);
         menu.findItem(R.id.refresh).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
 
+        int next_color = IconDrawable.getDefaultColor(getActivity());
+        if(mHighlightNextButton) {
+            mHighlightNextButton = false;
+            next_color = IconDrawable.getHighlightColor(getActivity());
+        }
+
         Drawable prev_icon = IconDrawable.getIconDrawable(getActivity(), R.string.icon_backward);
         MenuItem prev_item = menu.findItem(R.id.prev);
-        Drawable next_icon = IconDrawable.getIconDrawable(getActivity(), R.string.icon_forward);
+        Drawable next_icon = IconDrawable.getIconDrawable(
+                getActivity(),
+                R.string.icon_forward,
+                IconDrawable.getDefaultTextSize(),
+                next_color);
         MenuItem next_item = menu.findItem(R.id.next);
 
         if(isFirstPage()) {
             prev_item.setVisible(false);
-            //prev_icon.mutate().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
         }
 
         if(isLastPage()) {
@@ -199,6 +219,13 @@ abstract public class PaginateFragment extends BaseFragment {
                 mFwdButton.enable();
                 mFfwdButton.enable();
             }
+
+            if(mHighlightNextButton) {
+                mHighlightNextButton = false;
+                mFwdButton.setColor(IconDrawable.getHighlightColor(getBaseActivity()));
+            } else {
+                mFwdButton.setColor(IconDrawable.getDefaultColor(getBaseActivity()));
+            }
         }
 
         mFastscrollLayout = getBaseActivity().getFastscrollLayout();
@@ -255,8 +282,13 @@ abstract public class PaginateFragment extends BaseFragment {
             mUpButton.setVisibility(View.VISIBLE);
     }
 
-    public IconButton getmWriteButton() {
+    public IconButton getWriteButton() {
         return mWriteButton;
+    }
+
+    public void highlightNextButton() {
+        mHighlightNextButton = true;
+        refreshPaginateLayout();
     }
 
     public interface FastScrollListener {

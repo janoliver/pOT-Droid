@@ -53,6 +53,7 @@
         <item name="bbEditTextHintColor">@color/bbstyle_lightblue</item>
         <item name="bbToolbarBackground">@color/bbstyle_darkblue</item>
         <item name="bbToolbarColor">@color/white</item>
+        <item name="bbToolbarHighlightColor">@color/green</item>
         <item name="bbListSeparatorColor">@color/bbstyle_darkblue</item>
         <item name="bbProgressPrimary">@color/white</item>
         <item name="bbProgressSecondary">@color/bbstyle_lighterblue</item>
@@ -106,6 +107,7 @@
         <item name="bbEditTextHintColor">@color/grey</item>
         <item name="bbToolbarBackground">@color/bbstyle_lightblue</item>
         <item name="bbToolbarColor">@color/white</item>
+        <item name="bbToolbarHighlightColor">@color/green</item>
         <item name="bbListSeparatorColor">@color/lightergrey</item>
         <item name="bbProgressPrimary">@color/bbstyle_darkblue</item>
         <item name="bbProgressSecondary">@color/bbstyle_lighterblue</item>

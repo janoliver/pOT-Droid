@@ -13,6 +13,7 @@
     <attr name="bbEditTextHintColor" format="color|reference"/>
     <attr name="bbToolbarBackground" format="color|reference"/>
     <attr name="bbToolbarColor" format="color|reference"/>
+    <attr name="bbToolbarHighlightColor" format="color|reference"/>
     <attr name="bbListSeparatorColor" format="color|reference"/>
     <attr name="bbProgressPrimary" format="color|reference"/>
     <attr name="bbProgressSecondary" format="color|reference"/>

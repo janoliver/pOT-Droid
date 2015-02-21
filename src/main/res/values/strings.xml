@@ -28,9 +28,8 @@
     <string name="default_time_format">dd.MM.yyyy, HH:mm</string>
     <string name="strong"><![CDATA[<strong>%1$s</strong>]]></string>
     <string name="update_info"><![CDATA[Liebe Nutzerin, lieber Nutzer <br /> <br />
-Dies ist eine neue Version von pOT-Droid.
-Zur Version 4 lies dir bitte den Disclaimer in \'Über die App\' durch! <br /> <br />
-Es gibt einen pOT-Droid Thread. Den Link findest du auch unter \'Über die App\'.]]></string>
+Dies ist eine neue Version von pOT-Droid.<br /> <br />
+Es gibt einen pOT-Droid Thread. Den Link und die Änderungen findest du unter \'Über die App\'.]]></string>
     <string name="update_info_about">Über die App</string>
     <string name="update_info_cancel">Lass mich in Ruhe!</string>
 

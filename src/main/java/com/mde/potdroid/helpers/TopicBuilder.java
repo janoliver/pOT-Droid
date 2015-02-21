@@ -53,6 +53,12 @@ public class TopicBuilder {
         mSmileys.put(":xx:", "icon11.gif");
         mSmileys.put(":zzz:", "sleepy.gif");
         mSmileys.put(":tourette:", "tourette.gif");
+        mSmileys.put("[img]http://forum.mods.de/bb/img/icons/icon6.gif[/img]", "icon6.png");
+        mSmileys.put("[img]http://forum.mods.de/bb/img/icons/thumbsup.gif[/img]", "thumbsup.png");
+        mSmileys.put("[img]http://forum.mods.de/bb/img/icons/thumbsdown.gif[/img]", "thumbsdown.png");
+        mSmileys.put("[img]http://forum.mods.de/bb/img/icons/pfeil.gif[/img]", "pfeil.png");
+        mSmileys.put("[img]http://forum.mods.de/bb/img/icons/icon10.gif[/img]", "icon10.png");
+
     }
 
     public static HashMap<String, Integer> mIcons = new HashMap<String, Integer>();
@@ -234,9 +240,10 @@ public class TopicBuilder {
         public String getText() {
             if(!mParseBBcode)
                 return mPost.getText();
-            String text;
+            String text = mPost.getText();
             try {
-                text = getBBCodeParserInstance().parse(mPost.getText());
+                text = getBBCodeParserInstance().parse(text);
+
                 if(mParseSmileys)
                     text = parseSmileys(text);
             } catch (Exception e) {

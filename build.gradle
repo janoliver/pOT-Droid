@@ -24,10 +24,10 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile 'com.github.ksoichiro:android-observablescrollview:1.5.0'
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.nispok:snackbar:2.7.5'
+    compile 'com.nispok:snackbar:2.9.1'
     compile 'com.android.support:support-v4-preferencefragment:1.0.0@aar'
-    compile 'com.melnykov:floatingactionbutton:1.1.0'
-    compile 'com.afollestad:material-dialogs:0.6.2.1'
+    compile 'com.melnykov:floatingactionbutton:1.2.0'
+    compile 'com.afollestad:material-dialogs:0.6.3.1'
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
 }
 

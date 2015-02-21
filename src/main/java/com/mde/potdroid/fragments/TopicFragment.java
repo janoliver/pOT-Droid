@@ -583,6 +583,10 @@ public class TopicFragment extends PaginateFragment implements
         String text = String.format(getString(R.string.quote),
                 mTopic.getId(), p.getId(), p.getAuthor().getNick(), p.getText());
 
+        // convert img to url
+        text = text.replaceAll("\\[url=([^\\[\\]]+)\\]\\s*\\[img\\]\\s*([^\\[\\]]+)\\s*\\[/img\\]\\s*\\[/url\\]", "[url]$1[/url]");
+        text = text.replaceAll("\\[img\\]\\s*([^\\[\\]]+)\\s*\\[/img\\]", "[url]$1[/url]");
+
         Intent intent = new Intent(getBaseActivity(), EditorActivity.class);
         intent.putExtra(EditorFragment.ARG_TOKEN, mTopic.getNewreplytoken());
         intent.putExtra(EditorFragment.ARG_MODE, EditorFragment.MODE_REPLY);

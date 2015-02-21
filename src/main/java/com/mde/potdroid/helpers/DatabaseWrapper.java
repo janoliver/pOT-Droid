@@ -325,6 +325,45 @@ public class DatabaseWrapper {
         return is_bookmark;
     }
 
+    public Bookmark getBookmarkByTopic(Topic topic) {
+        Cursor c = mDatabase.rawQuery("SELECT * FROM " +
+                BOOKMARKS_TABLE_NAME +
+                " ORDER BY board_id, thread_title COLLATE NOCASE ASC WHERE thread_id = ?;",
+                new String[]{topic.getId().toString()});
+
+        try {
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+                // create the objects and return
+
+                Bookmark b = new Bookmark(c.getInt(c.getColumnIndex("id")));
+                b.setRemovetoken(c.getString(c.getColumnIndex("remove_token")));
+                b.setNumberOfNewPosts(c.getInt(c.getColumnIndex("number_new_posts")));
+
+                Board board = new Board(c.getInt(c.getColumnIndex("board_id")));
+                board.setName(c.getString(c.getColumnIndex("board_name")));
+
+                Topic thread = new Topic(c.getInt(c.getColumnIndex("thread_id")));
+                thread.setTitle(c.getString(c.getColumnIndex("thread_title")));
+                thread.setIsClosed(c.getInt(c.getColumnIndex("thread_closed")) == 1);
+                thread.setNumberOfPages(c.getInt(c.getColumnIndex("thread_pages")));
+
+                Post post = new Post(c.getInt(c.getColumnIndex("post_id")));
+
+                post.setTopic(thread);
+                thread.setBoard(board);
+                b.setThread(thread);
+                b.setLastPost(post);
+
+                return b;
+            }
+        } finally {
+            c.close();
+        }
+
+        return null;
+    }
+
     /**
      * Given a User object u, this function populates its fields with the
      * Bender information as known from the Database.

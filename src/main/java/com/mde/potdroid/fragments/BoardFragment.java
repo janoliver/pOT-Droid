@@ -22,6 +22,7 @@ import com.mde.potdroid.helpers.AsyncHttpLoader;
 import com.mde.potdroid.helpers.DatabaseWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Board;
+import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.BoardParser;
@@ -83,10 +84,14 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
-                intent.putExtra(TopicFragment.ARG_TOPIC_ID, mBoard.getFilteredTopics(getActivity()).get(position)
-                        .getId());
-                intent.putExtra(TopicFragment.ARG_PAGE, mBoard.getFilteredTopics(getActivity()).get(position)
-                        .getNumberOfPages());
+                Topic t = mBoard.getFilteredTopics(getActivity()).get(position);
+                Bookmark b = mDatabase.getBookmarkByTopic(t);
+                if(b != null) {
+                    intent.putExtra(TopicFragment.ARG_POST_ID, b.getLastPost().getId());
+                } else {
+                    intent.putExtra(TopicFragment.ARG_PAGE, t.getNumberOfPages());
+                }
+                intent.putExtra(TopicFragment.ARG_TOPIC_ID, t.getId());
                 startActivity(intent);
             }
         });

@@ -21,12 +21,52 @@ import java.util.regex.Pattern;
 public class BBCodeParser {
 
     Pattern mArgsPattern = Pattern.compile("([^,\"]+)|(\"[^\"]+\")");
+
     // the skeleton regex for the bbcodes. %1$s must be replaced by
     // the allowed bbcodes
-    private String mRegexSkeleton =
-            "(.*?)((\\[\\s*(%1$s)\\s*([= ]((\\s*((\"[^\"]+?\")|" +
-            "([^,\\]\"]+?))\\s*,)*(\\s*((\"[^\"]+?\")|([^,\"\\]]+?))\\s*)))?\\])|" +
-            "(\\[/\\s*((%1$s))\\s*\\]))";
+
+
+
+    private String getBBCodeRegex() {
+        return
+            "(.*?)" + // match anything before the first tag
+            "(" + // the following matches the opening tag
+
+                "(\\" +
+                    "[\\s*(%1$s)\\s*" + // the start tag (not closed)
+                    "(" + // in this block, we check if there are arguments after the start tag (none or one)
+                        "[= ]" + // such arguments must start with = or whitespace
+
+                        "(" + // these are the arguments, comma separated list
+
+                            // first, zero or more occurences of arguments, which are either
+                            // surrounded with double quotes and may then contain any characters,
+                            // or are not and may not contain double quotes, commas or closing brackets
+                            "(\\s*" +
+                                "(" +
+                                    "(\"[^\"]+?\")" +
+                                "|" +
+                                    "([^,\\]\"]+?)" +
+                                ")" +
+                            "\\s*,)*" +
+
+                            // then may follow a single additional argument with the same properties as above
+                            "(\\s*" +
+                                "(" +
+                                    "(\"[^\"]+?\")" + // any string without quotes, surrounded with quotes
+                                "|" +
+                                    "([^,\"\\]]+?)" + // any string without quotes and comma and bracket
+                                ")" +
+                            "\\s*)" +
+                        ")" +
+                    ")?\\]" +
+                ")" +
+
+            "|" + // the following matches the closing tag
+                    "(\\[/\\s*((%1$s))\\s*\\])" + // the end tag
+            ")";
+
+    }
 
     // this map holds our registered tags
     private Map<String, BBCodeTag> mTags = new HashMap<String, BBCodeTag>();
@@ -47,7 +87,7 @@ public class BBCodeParser {
             tags += Pattern.quote(entry.getKey()) + "|";
         tags = tags.substring(0, tags.length() - 1);
 
-        return Pattern.compile(String.format(mRegexSkeleton, tags),
+        return Pattern.compile(String.format(getBBCodeRegex(), tags),
                 Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE);
     }
 
@@ -92,7 +132,8 @@ public class BBCodeParser {
                 tokens.add(t);
             }
 
-            if (matcher.group(2).indexOf("[/") > -1) {
+            if (matcher.group(2).contains("[/") &&
+                    matcher.group(2).indexOf("[/") == matcher.group(2).indexOf("[")) {
                 Token t = new Token(Token.TYPE_CLOSE,
                         matcher.group(16).toLowerCase(), matcher.group(2));
                 tokens.add(t);
@@ -539,7 +580,7 @@ public class BBCodeParser {
             // is [quote] and the containing string starts with [b] and ends
             // with [/b], remove the bold tags.
             if (mTag.mTag.equals("quote") && res.startsWith("<strong>") && res.endsWith
-                    ("</strong>"))
+                    ("</strong>") && mArgs.size() == 3)
                 res = res.substring(8, res.length() - 9);
 
             // create the html

@@ -83,6 +83,10 @@ header div.author {
     display:block;
 }
 
+header div.author .number {
+    color:#aaa;
+}
+
 header div.title {
     color:rgba(255,255,255,0.4);
     font-size:0.8em;

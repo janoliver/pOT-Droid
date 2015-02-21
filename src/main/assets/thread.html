@@ -34,7 +34,13 @@
                 </div>
 
                 <div class="bender" {{&avatarBackground}}></div>
-                <div class="author">{{author}}</div>
+                <div class="author">
+                    {{author}}
+
+                    {{#isNumber}}
+                    <span class="number"> ({{-index}})</span>
+                    {{/isNumber}}
+                </div>
                 {{&icon}}
                 <div class="date">{{date}}</div>
                 <div class="title">{{title}}</div>

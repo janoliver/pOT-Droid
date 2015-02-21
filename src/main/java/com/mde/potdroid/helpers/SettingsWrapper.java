@@ -71,6 +71,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_PARSE_BBCODE = "pref_parse_bbcode";
     public static final String PREF_KEY_FAB = "pref_fab";
     public static final String PREF_KEY_TINTED_STATUSBAR = "pref_tinted_statusbar";
+    public static final String PREF_KEY_POSTNUMBERS = "pref_show_postnumbers";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;
@@ -172,6 +173,10 @@ public class SettingsWrapper {
 
     public Boolean showPostInfo() {
         return mSharedPreferences.getBoolean(PREF_KEY_POSTINFO, true);
+    }
+
+    public Boolean showPostNumbers() {
+        return mSharedPreferences.getBoolean(PREF_KEY_POSTNUMBERS, false);
     }
 
     public Boolean isShowEdited() {

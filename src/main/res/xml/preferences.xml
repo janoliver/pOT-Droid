@@ -60,6 +60,11 @@
                 android:defaultValue="true"/>
 
         <CheckBoxPreference
+                android:key="pref_show_postnumbers"
+                android:title="Nummeriere Posts in der Threadansicht"
+                android:defaultValue="false"/>
+
+        <CheckBoxPreference
                 android:key="pref_darken_old_posts"
                 android:title="Gelesene Posts abdunkeln"
                 android:summary="Kann bei langen Posts Grafikfehler verursachen."

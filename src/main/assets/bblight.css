@@ -65,6 +65,10 @@ header div.author {
     display:block;
 }
 
+header div.author .number {
+    color:#aaa;
+}
+
 header div.title {
     color:#aaa;
     font-size:0.8em;

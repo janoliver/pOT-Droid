@@ -156,8 +156,10 @@ public class TopicBuilder {
             boolean parse_bbcode = mSettings.isParseBBCode();
             boolean parse_smileys = mSettings.isParseSmileys();
             boolean show_edited = mSettings.isShowEdited();
+            boolean show_number = mSettings.showPostNumbers();
             for (Post p : mTopic.getPosts())
-                pc.add(new PostContext(p, user_id, parse_bbcode, show_post_info, parse_smileys, show_edited));
+                pc.add(new PostContext(p, user_id, parse_bbcode, show_post_info, parse_smileys,
+                        show_edited, show_number));
             return pc;
         }
     }
@@ -172,16 +174,18 @@ public class TopicBuilder {
         private boolean mParseBBcode;
         private boolean mShowEdited;
         private boolean mParseSmileys;
+        private boolean mShowNumber;
         private Post mPost;
 
         public PostContext(Post p, int user_id, boolean parse_bbcode, boolean show_post_info,
-                           boolean parse_smileys, boolean show_edited) {
+                           boolean parse_smileys, boolean show_edited, boolean show_number) {
             mPost = p;
             mUserId = user_id;
             mParseBBcode = parse_bbcode;
             mParseSmileys = parse_smileys;
             mShowPostInfo = show_post_info;
             mShowEdited = show_edited;
+            mShowNumber = show_number;
         }
 
         public Integer getId() {
@@ -261,6 +265,10 @@ public class TopicBuilder {
 
         public boolean isEdited() {
             return mShowEdited && mPost.getEdited() != null && mPost.getEdited() > 0;
+        }
+
+        public boolean isNumber() {
+            return mShowNumber;
         }
 
         public String getLastEditUser() {

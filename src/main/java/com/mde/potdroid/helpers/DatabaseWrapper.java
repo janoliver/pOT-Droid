@@ -326,10 +326,11 @@ public class DatabaseWrapper {
     }
 
     public Bookmark getBookmarkByTopic(Topic topic) {
-        Cursor c = mDatabase.rawQuery("SELECT * FROM " +
-                BOOKMARKS_TABLE_NAME +
-                " ORDER BY board_id, thread_title COLLATE NOCASE ASC WHERE thread_id = ?;",
-                new String[]{topic.getId().toString()});
+        if(topic == null)
+            return null;
+
+        Cursor c = mDatabase.query(BOOKMARKS_TABLE_NAME, null,
+                "thread_id=?", new String[]{topic.getId().toString()}, null, null, null);
 
         try {
             c.moveToFirst();

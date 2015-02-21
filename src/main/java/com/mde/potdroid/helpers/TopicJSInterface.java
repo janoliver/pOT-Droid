@@ -307,6 +307,20 @@ public class TopicJSInterface extends BenderJSInterface {
     }
 
     /**
+     * copy the link to the post to clipboard
+     *
+     * @param post_id the post id
+     */
+    @JavascriptInterface
+    public void copyPostLink(final int post_id) {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                mTopicFragment.clipboardPostUrl(post_id);
+            }
+        });
+    }
+
+    /**
      * send a PM to the author
      *
      * @param post_id the post id

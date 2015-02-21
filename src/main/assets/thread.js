@@ -92,6 +92,11 @@ $(document).ready(function() {
         api.linkPost(post_id);
     });
 
+    $('i.menu-copy').click(function(e) {
+        var post_id = parseInt($(this).closest('section').attr('data-id'));
+        api.copyPostLink(post_id);
+    });
+
     $('i.menu-pm').click(function(e) {
         var post_id = parseInt($(this).closest('section').attr('data-id'));
         api.pmAuthor(post_id);

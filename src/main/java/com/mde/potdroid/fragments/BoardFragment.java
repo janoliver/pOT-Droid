@@ -423,7 +423,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                 row.findViewById(R.id.icon_locked).setVisibility(View.GONE);
             }
 
-            if (!mDatabase.isBookmark(t)) {
+            if (Utils.isLoggedIn() && !mDatabase.isBookmark(t)) {
                 row.findViewById(R.id.icon_bookmarked).setVisibility(View.GONE);
             }
 

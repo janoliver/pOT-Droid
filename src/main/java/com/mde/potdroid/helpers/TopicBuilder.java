@@ -155,8 +155,9 @@ public class TopicBuilder {
             boolean show_post_info = mSettings.showPostInfo();
             boolean parse_bbcode = mSettings.isParseBBCode();
             boolean parse_smileys = mSettings.isParseSmileys();
+            boolean show_edited = mSettings.isShowEdited();
             for (Post p : mTopic.getPosts())
-                pc.add(new PostContext(p, user_id, parse_bbcode, show_post_info, parse_smileys));
+                pc.add(new PostContext(p, user_id, parse_bbcode, show_post_info, parse_smileys, show_edited));
             return pc;
         }
     }
@@ -169,15 +170,18 @@ public class TopicBuilder {
         private int mUserId;
         private boolean mShowPostInfo;
         private boolean mParseBBcode;
+        private boolean mShowEdited;
         private boolean mParseSmileys;
         private Post mPost;
 
-        public PostContext(Post p, int user_id, boolean parse_bbcode, boolean show_post_info, boolean parse_smileys) {
+        public PostContext(Post p, int user_id, boolean parse_bbcode, boolean show_post_info,
+                           boolean parse_smileys, boolean show_edited) {
             mPost = p;
             mUserId = user_id;
             mParseBBcode = parse_bbcode;
             mParseSmileys = parse_smileys;
             mShowPostInfo = show_post_info;
+            mShowEdited = show_edited;
         }
 
         public Integer getId() {
@@ -253,6 +257,23 @@ public class TopicBuilder {
             }
 
             return text;
+        }
+
+        public boolean isEdited() {
+            return mShowEdited && mPost.getEdited() != null && mPost.getEdited() > 0;
+        }
+
+        public String getLastEditUser() {
+            return mPost.getLastEditUser().getNick();
+        }
+
+        public String getLastEditDate() {
+            return new SimpleDateFormat(mContext.getString(R.string.default_time_format))
+                    .format(mPost.getLastEditDate()) + " Uhr";
+        }
+
+        public Integer numEdited() {
+            return mPost.getEdited();
         }
     }
 

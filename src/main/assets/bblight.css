@@ -166,6 +166,14 @@ pre.inline {
     display:inline;
 }
 
+
+.edited {
+    margin-top:1em;
+    color:#aaa;
+    font-size:0.7em;
+}
+
+
 div.img i,
 div.video i,
 div.spoiler i,

@@ -44,6 +44,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_NOTIFICATION_VIBRATE = "pref_notification_vibrate";
     public static final String PREF_KEY_NOTIFICATION_SOUND = "pref_notification_sound";
     public static final String PREF_KEY_POSTINFO = "pref_show_postinfo";
+    public static final String PREF_KEY_EDITED = "pref_show_edited";
     public static final String PREF_KEY_DARKEN = "pref_darken_old_posts";
     public static final String PREF_KEY_HIDE_GLOBAL = "pref_hide_global";
     public static final String PREF_KEY_START_ACTIVITY = "pref_start_activity";
@@ -171,6 +172,10 @@ public class SettingsWrapper {
 
     public Boolean showPostInfo() {
         return mSharedPreferences.getBoolean(PREF_KEY_POSTINFO, true);
+    }
+
+    public Boolean isShowEdited() {
+        return mSharedPreferences.getBoolean(PREF_KEY_EDITED, true);
     }
 
     public int getCacheSize() {

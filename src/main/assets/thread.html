@@ -42,6 +42,9 @@
             <article>
                 <div class="bender" {{&avatarBackground}}></div>
                 <div>{{&text}}</div>
+                {{#isEdited}}
+                <div class="edited">{{numEdited}}x bearbeitet, zuletzt von {{lastEditUser}}, {{lastEditDate}}</div>
+                {{/isEdited}}
             </article>
         </section>
         {{/posts}}

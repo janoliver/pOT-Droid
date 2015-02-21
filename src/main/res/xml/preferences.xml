@@ -55,6 +55,11 @@
                 android:defaultValue="true"/>
 
         <CheckBoxPreference
+                android:key="pref_show_edited"
+                android:title="Zeige, ob ein Post bearbeitet wurde."
+                android:defaultValue="true"/>
+
+        <CheckBoxPreference
                 android:key="pref_darken_old_posts"
                 android:title="Gelesene Posts abdunkeln"
                 android:summary="Kann bei langen Posts Grafikfehler verursachen."

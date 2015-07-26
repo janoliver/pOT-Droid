@@ -4,24 +4,20 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v7.app.ActionBar;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.*;
 import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.ForumActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.SettingsActivity;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
-import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.BBSwipeRefreshLayout;
-import com.nispok.snackbar.Snackbar;
-import com.nispok.snackbar.SnackbarManager;
+import com.mde.potdroid.views.IconDrawable;
 
 /**
  * The Base Fragment class that all Fragments should inherit. Provides some methods
@@ -204,19 +200,23 @@ public abstract class BaseFragment extends Fragment implements BBSwipeRefreshLay
     }
 
     protected void showGenericNotification(String message, int c) {
-        if(getBaseActivity() != null)
-            SnackbarManager.show(
-                Snackbar.with(getBaseActivity())
-                        .text(message)
-                        .color(c));
+        if(getBaseActivity() != null) {
+            Snackbar snackbar = Snackbar
+                    .make(getBaseActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(c);
+            snackbar.show();
+        }
     }
 
     protected void showGenericNotification(int message, int c) {
-        if(getBaseActivity() != null)
-            SnackbarManager.show(
-                Snackbar.with(getBaseActivity())
-                        .text(message)
-                        .color(c));
+        if(getBaseActivity() != null) {
+            Snackbar snackbar = Snackbar
+                    .make(getBaseActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(c);
+            snackbar.show();
+        }
     }
 
     /**

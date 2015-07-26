@@ -5,16 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v4.preference.PreferenceFragment;
-import android.preference.*;
+import android.view.View;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.services.MessagePollingService;
 import com.mde.potdroid.views.LoginDialog;
 import com.mde.potdroid.views.LogoutDialog;
-import com.nispok.snackbar.Snackbar;
-import com.nispok.snackbar.SnackbarManager;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -48,10 +51,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         clearCachePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 il.clearDiskCache();
-                SnackbarManager.show(
-                        Snackbar.with(getActivity().getApplicationContext())
-                                .text("Cache geleert!")
-                                .color(BaseFragment.COLOR_SUCCESS));
+
+                Snackbar snackbar = Snackbar
+                        .make(getActivity().findViewById(android.R.id.content), "Cache geleert!", Snackbar.LENGTH_LONG);
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundColor(BaseFragment.COLOR_SUCCESS);
+                snackbar.show();
+
                 return true;
             }
         });

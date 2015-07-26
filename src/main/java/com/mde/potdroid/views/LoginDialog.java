@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.DialogPreference;
+import android.support.design.widget.Snackbar;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -15,10 +16,6 @@ import com.mde.potdroid.R;
 import com.mde.potdroid.fragments.BaseFragment;
 import com.mde.potdroid.helpers.Network;
 import com.mde.potdroid.helpers.SettingsWrapper;
-import com.nispok.snackbar.Snackbar;
-import com.nispok.snackbar.SnackbarManager;
-import com.nispok.snackbar.enums.SnackbarType;
-import com.nispok.snackbar.listeners.ActionClickListener;
 
 /**
  * This class is a DialogPreference for the Login Action. It takes care of showing the login form
@@ -88,21 +85,20 @@ public class LoginDialog extends DialogPreference {
                 n.login(user_name, user_password, new Network.LoginCallback() {
                     @Override
                     public void onSuccess() {
-                        SnackbarManager.show(
-                                Snackbar.with(mContext)
-                                        .text(R.string.msg_login_success)
-                                        .type(SnackbarType.MULTI_LINE)
-                                        .actionLabel("Neu starten")
-                                        .actionListener(new ActionClickListener() {
-                                            @Override
-                                            public void onActionClicked(Snackbar snackbar) {
-                                                Intent i = mContext.getPackageManager()
-                                                        .getLaunchIntentForPackage(mContext.getPackageName());
-                                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                mContext.startActivity(i);
-                                            }
-                                        })
-                                        .color(BaseFragment.COLOR_SUCCESS), mContext);
+                        Snackbar snackbar = Snackbar
+                                .make(mContext.findViewById(android.R.id.content), R.string.msg_login_success, Snackbar.LENGTH_LONG)
+                                .setAction("Neu starten", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent i = mContext.getPackageManager()
+                                                .getLaunchIntentForPackage(mContext.getPackageName());
+                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        getContext().startActivity(i);
+                                    }
+                                });
+                        View snackBarView = snackbar.getView();
+                        snackBarView.setBackgroundColor(BaseFragment.COLOR_SUCCESS);
+                        snackbar.show();
 
                         mSettingsWrapper.setUsername(user_name);
                         getDialog().dismiss();
@@ -114,11 +110,11 @@ public class LoginDialog extends DialogPreference {
 
                             @Override
                             public void run() {
-                                SnackbarManager.show(
-                                        Snackbar.with(mContext)
-                                                .type(SnackbarType.MULTI_LINE)
-                                                .text(R.string.msg_login_failure)
-                                                .color(BaseFragment.COLOR_ERROR), mContext);
+                                Snackbar snackbar = Snackbar
+                                        .make(mContext.findViewById(android.R.id.content), R.string.msg_login_failure, Snackbar.LENGTH_LONG);
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(BaseFragment.COLOR_ERROR);
+                                snackbar.show();
                             }
                         });
 

@@ -70,7 +70,7 @@ public class IconSelectionDialog extends DialogFragment {
 
         final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                 .title(R.string.dialog_icon_selection)
-                .adapter(new IconListAdapter(getActivity()))
+                .adapter(new IconListAdapter(getActivity()), null)
                 .build();
 
         ListView listView = dialog.getListView();

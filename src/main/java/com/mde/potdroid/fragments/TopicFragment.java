@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
@@ -30,7 +31,6 @@ import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.TopicParser;
 import com.mde.potdroid.views.*;
-import com.melnykov.fab.FloatingActionButton;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.nostra13.universalimageloader.cache.disc.DiskCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -155,7 +155,7 @@ public class TopicFragment extends PaginateFragment implements
 
         mFab = (FloatingActionButton) v.findViewById(R.id.fab);
         mFab.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
-        mFab.hide(false);
+        mFab.hide();
 
         if (Utils.isLoggedIn() && mSettings.isShowFAB()) {
             mFab.setOnClickListener(new View.OnClickListener() {

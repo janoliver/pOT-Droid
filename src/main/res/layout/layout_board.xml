@@ -3,31 +3,34 @@
 <com.mde.potdroid.views.BBSwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:fab="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ptr_holder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:adapter_view="@+id/forum_list_content">
 
-    <FrameLayout
+    <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinator"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <ListView
+        <android.support.v7.widget.RecyclerView
                 android:id="@+id/forum_list_content"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:divider="?attr/bbListSeparatorColor"
                 android:dividerHeight="1dp"/>
 
-        <com.melnykov.fab.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:layout_margin="16dp"
-                fab:fab_colorNormal="?attr/bbColorSecondary"
-                fab:fab_colorPressed="?attr/bbColorPrimary"
-                fab:fab_colorRipple="@color/transparent"/>
-    </FrameLayout>
+            <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_anchorGravity="bottom|right"
+                    app:layout_anchor="@id/forum_list_content"
+                    app:layout_behavior="com.mde.potdroid.fragments.BoardFragment.ScrollAwareFABBehavior"
+                    app:elevation="6dp"
+                    android:layout_margin="16dp"
+                    app:pressedTranslationZ="12dp"
+                    app:backgroundTint="?attr/bbColorSecondary"
+                    app:rippleColor="?attr/bbColorPrimary"/>
+    </android.support.design.widget.CoordinatorLayout>
 </com.mde.potdroid.views.BBSwipeRefreshLayout>

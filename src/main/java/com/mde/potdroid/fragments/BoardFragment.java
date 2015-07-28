@@ -6,14 +6,17 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.AttributeSet;
 import android.view.*;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import com.mde.potdroid.EditorActivity;
 import com.mde.potdroid.R;
@@ -27,7 +30,6 @@ import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.BoardParser;
 import com.mde.potdroid.views.IconDrawable;
-import com.melnykov.fab.FloatingActionButton;
 import org.apache.http.Header;
 
 import java.io.IOException;
@@ -46,9 +48,11 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     private Board mBoard;
     // the topic list adapter
     private BoardListAdapter mListAdapter;
-    private ListView mListView;
+    private RecyclerView mListView;
     // bookmark database handler
     private DatabaseWrapper mDatabase;
+
+    private LinearLayoutManager mLayoutManager;
 
     private FloatingActionButton mFab;
 
@@ -77,40 +81,18 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         View v = inflater.inflate(R.layout.layout_board, container, false);
 
         mListAdapter = new BoardListAdapter();
-        mListView = (ListView) v.findViewById(R.id.forum_list_content);
+        mListView = (RecyclerView) v.findViewById(R.id.forum_list_content);
         mListView.setAdapter(mListAdapter);
-
-        // clicking on a topic leads to the topicactivity
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
-                Topic t = mBoard.getFilteredTopics(getActivity()).get(position);
-                Bookmark b = mDatabase.getBookmarkByTopic(t);
-                if(b != null) {
-                    intent.putExtra(TopicFragment.ARG_POST_ID, b.getLastPost().getId());
-                } else {
-                    intent.putExtra(TopicFragment.ARG_PAGE, t.getNumberOfPages());
-                }
-                intent.putExtra(TopicFragment.ARG_TOPIC_ID, t.getId());
-                startActivity(intent);
-            }
-        });
-        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
-                intent.putExtra(TopicFragment.ARG_TOPIC_ID, mBoard.getFilteredTopics(getActivity()).get(position)
-                        .getId());
-                intent.putExtra(TopicFragment.ARG_PAGE, 1);
-                startActivity(intent);
-                return true;
-            }
-        });
+        mListView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getBaseActivity());
+        mListView.setLayoutManager(mLayoutManager);
 
         mFab = (FloatingActionButton) v.findViewById(R.id.fab);
         mFab.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
 
         if(Utils.isLoggedIn() && mSettings.isShowFAB()) {
-            mFab.attachToListView(mListView);
+            //mFab.attachToListView(mListView);
+
             mFab.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     newThread();
@@ -238,7 +220,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             setSwipeEnabled(true);
 
             // scroll to top
-            mListView.setSelectionAfterHeaderView();
+            mLayoutManager.scrollToPositionWithOffset(0, 0);
 
         } else {
             showError(getString(R.string.msg_loading_error));
@@ -328,25 +310,52 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
     }
 
-    private class BoardListAdapter extends BaseAdapter {
+    public static class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
 
-        public int getCount() {
+        public ScrollAwareFABBehavior(Context context, AttributeSet attrs) {
+            super();
+        }
+
+        @Override
+        public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout,
+                                           FloatingActionButton child, View directTargetChild, View target, int nestedScrollAxes) {
+            return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL ||
+                    super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target,
+                            nestedScrollAxes);
+        }
+
+        @Override
+        public void onNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child,
+                                   View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+            super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed,
+                    dyUnconsumed);
+
+            if (dyConsumed > 0 && child.getVisibility() == View.VISIBLE) {
+                child.hide();
+            } else if (dyConsumed < 0 && child.getVisibility() != View.VISIBLE) {
+                child.show();
+            }
+        }
+
+    }
+
+    public class BoardListAdapter extends RecyclerView.Adapter<ViewHolder> {
+
+        public int getItemCount() {
             if (mBoard == null)
                 return 0;
             return mBoard.getFilteredTopics(getActivity()).size();
         }
 
-        public Object getItem(int position) {
-            return mBoard.getFilteredTopics(getActivity()).get(position);
-        }
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            // - get element from your dataset at this position
+            // - replace the contents of the view with that element
+            View row = holder.mView;
 
-        public long getItemId(int position) {
-            return position;
-        }
+            Topic t = mBoard.getFilteredTopics(getActivity()).get(position);
 
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View row = getInflater().inflate(R.layout.listitem_thread, null);
-            Topic t = (Topic) getItem(position);
+            holder.bindTopic(t);
 
             // set the name, striked if closed
             TextView title = (TextView) row.findViewById(R.id.title);
@@ -361,7 +370,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             // pages information
             TextView pages = (TextView) row.findViewById(R.id.pages);
             Spanned pages_content = Html.fromHtml(String.format(getString(
-                    R.string.topic_additional_information),
+                            R.string.topic_additional_information),
                     t.getNumberOfPosts(), t.getNumberOfPages()));
             pages.setText(pages_content);
 
@@ -427,7 +436,60 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                 row.findViewById(R.id.icon_bookmarked).setVisibility(View.GONE);
             }
 
-            return row;
+
+        }
+
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+            View row = getInflater().inflate(R.layout.listitem_thread, null);
+
+            // set the view's size, margins, paddings and layout parameters
+            ViewHolder vh = new ViewHolder(row, BoardFragment.this);
+
+            row.setOnClickListener(vh);
+            row.setOnLongClickListener(vh);
+            return vh;
+        }
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+        // each data item is just a string in this case
+        public View mView;
+        public Topic mTopic;
+        public BoardFragment mFragment;
+
+        public ViewHolder(View v, BoardFragment f) {
+            super(v);
+            mView = v;
+            mFragment = f;
+        }
+
+        public void bindTopic(Topic t) {
+            mTopic = t;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(mFragment.getBaseActivity(), TopicActivity.class);
+            Bookmark b = mFragment.mDatabase.getBookmarkByTopic(mTopic);
+            if(b != null) {
+                intent.putExtra(TopicFragment.ARG_POST_ID, b.getLastPost().getId());
+            } else {
+                intent.putExtra(TopicFragment.ARG_PAGE, mTopic.getNumberOfPages());
+            }
+            intent.putExtra(TopicFragment.ARG_TOPIC_ID, mTopic.getId());
+            mFragment.startActivity(intent);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            Intent intent = new Intent(mFragment.getBaseActivity(), TopicActivity.class);
+            intent.putExtra(TopicFragment.ARG_TOPIC_ID, mTopic.getId());
+            intent.putExtra(TopicFragment.ARG_PAGE, 1);
+            mFragment.startActivity(intent);
+            return true;
         }
     }
 

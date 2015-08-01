@@ -15,12 +15,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.AttributeSet;
 import android.view.*;
 import android.widget.TextView;
 import com.mde.potdroid.EditorActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.TopicActivity;
+import com.mde.potdroid.helpers.AbstractViewHolder;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
 import com.mde.potdroid.helpers.DatabaseWrapper;
 import com.mde.potdroid.helpers.Utils;
@@ -312,10 +312,6 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
     public static class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
 
-        public ScrollAwareFABBehavior(Context context, AttributeSet attrs) {
-            super();
-        }
-
         @Override
         public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout,
                                            FloatingActionButton child, View directTargetChild, View target, int nestedScrollAxes) {
@@ -339,7 +335,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
     }
 
-    public class BoardListAdapter extends RecyclerView.Adapter<ViewHolder> {
+    public class BoardListAdapter extends RecyclerView.Adapter<TopicViewHolder> {
 
         public int getItemCount() {
             if (mBoard == null)
@@ -348,14 +344,14 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(TopicViewHolder holder, int position) {
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
-            View row = holder.mView;
+            View row = holder.getView();
 
             Topic t = mBoard.getFilteredTopics(getActivity()).get(position);
 
-            holder.bindTopic(t);
+            holder.bindModel(t);
 
             // set the name, striked if closed
             TextView title = (TextView) row.findViewById(R.id.title);
@@ -441,54 +437,40 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
+        public TopicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View row = getInflater().inflate(R.layout.listitem_thread, null);
-
-            // set the view's size, margins, paddings and layout parameters
-            ViewHolder vh = new ViewHolder(row, BoardFragment.this);
-
-            row.setOnClickListener(vh);
-            row.setOnLongClickListener(vh);
-            return vh;
+            return new TopicViewHolder(row, getBaseActivity());
         }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        // each data item is just a string in this case
-        public View mView;
-        public Topic mTopic;
-        public BoardFragment mFragment;
+    public class TopicViewHolder extends AbstractViewHolder<Topic> {
 
-        public ViewHolder(View v, BoardFragment f) {
-            super(v);
-            mView = v;
-            mFragment = f;
-        }
-
-        public void bindTopic(Topic t) {
-            mTopic = t;
+        public TopicViewHolder(View v, Context c) {
+            super(v, c, true, true);
         }
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(mFragment.getBaseActivity(), TopicActivity.class);
-            Bookmark b = mFragment.mDatabase.getBookmarkByTopic(mTopic);
+            Intent intent = new Intent(getContext(), TopicActivity.class);
+            Topic t = getModel();
+            Bookmark b = BoardFragment.this.mDatabase.getBookmarkByTopic(t);
+
             if(b != null) {
                 intent.putExtra(TopicFragment.ARG_POST_ID, b.getLastPost().getId());
             } else {
-                intent.putExtra(TopicFragment.ARG_PAGE, mTopic.getNumberOfPages());
+                intent.putExtra(TopicFragment.ARG_PAGE, t.getNumberOfPages());
             }
-            intent.putExtra(TopicFragment.ARG_TOPIC_ID, mTopic.getId());
-            mFragment.startActivity(intent);
+
+            intent.putExtra(TopicFragment.ARG_TOPIC_ID, t.getId());
+            getContext().startActivity(intent);
         }
 
         @Override
         public boolean onLongClick(View v) {
-            Intent intent = new Intent(mFragment.getBaseActivity(), TopicActivity.class);
-            intent.putExtra(TopicFragment.ARG_TOPIC_ID, mTopic.getId());
+            Intent intent = new Intent(getContext(), TopicActivity.class);
+            intent.putExtra(TopicFragment.ARG_TOPIC_ID, getModel().getId());
             intent.putExtra(TopicFragment.ARG_PAGE, 1);
-            mFragment.startActivity(intent);
+            getContext().startActivity(intent);
             return true;
         }
     }

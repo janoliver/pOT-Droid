@@ -3,7 +3,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="?attr/bbListItemPaddingTB"
-                android:background="?attr/bbBackgroundList">
+                android:background="?attr/bbBackgroundList"
+                android:layout_marginBottom="1dp">
 
     <TextView
             android:id="@+id/title"

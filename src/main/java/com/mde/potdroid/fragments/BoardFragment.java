@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.AttributeSet;
 import android.view.*;
 import android.widget.TextView;
 import com.mde.potdroid.EditorActivity;
@@ -311,6 +312,9 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     }
 
     public static class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
+        public ScrollAwareFABBehavior(Context context, AttributeSet attrs) {
+            super();
+        }
 
         @Override
         public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout,
@@ -358,6 +362,8 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             title.setText(t.getTitle());
             if (t.isClosed())
                 title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            else
+                title.setPaintFlags(title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
 
             // set the subtitle
             TextView subtitle = (TextView) row.findViewById(R.id.subtitle);
@@ -418,18 +424,33 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
                 v.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getActivity(), R.attr.bbBackgroundListActive));
                 v.setPadding(padding_left, padding_top, padding_right, padding_bottom);
+            } else {
+                View v = row.findViewById(R.id.container);
+                int padding_top = v.getPaddingTop();
+                int padding_bottom = v.getPaddingBottom();
+                int padding_right = v.getPaddingRight();
+                int padding_left = v.getPaddingLeft();
+
+                v.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getActivity(), R.attr.bbBackgroundList));
+                v.setPadding(padding_left, padding_top, padding_right, padding_bottom);
             }
 
             if (!t.isSticky()) {
                 row.findViewById(R.id.icon_pinned).setVisibility(View.GONE);
+            } else {
+                row.findViewById(R.id.icon_pinned).setVisibility(View.VISIBLE);
             }
 
             if (!t.isClosed()) {
                 row.findViewById(R.id.icon_locked).setVisibility(View.GONE);
+            } else {
+                row.findViewById(R.id.icon_locked).setVisibility(View.VISIBLE);
             }
 
             if (Utils.isLoggedIn() && !mDatabase.isBookmark(t)) {
                 row.findViewById(R.id.icon_bookmarked).setVisibility(View.GONE);
+            } else {
+                row.findViewById(R.id.icon_bookmarked).setVisibility(View.VISIBLE);
             }
 
 

@@ -3,6 +3,7 @@ package com.mde.potdroid.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -18,9 +19,11 @@ import android.text.Spanned;
 import android.util.AttributeSet;
 import android.view.*;
 import android.widget.TextView;
+import com.mde.potdroid.BR;
 import com.mde.potdroid.EditorActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.TopicActivity;
+import com.mde.potdroid.databinding.ListitemThreadBinding;
 import com.mde.potdroid.helpers.AbstractViewHolder;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
 import com.mde.potdroid.helpers.DatabaseWrapper;
@@ -354,12 +357,13 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             View row = holder.getView();
 
             Topic t = mBoard.getFilteredTopics(getActivity()).get(position);
+            holder.getmBinding().setVariable(BR.topic, t);
 
             holder.bindModel(t);
 
             // set the name, striked if closed
             TextView title = (TextView) row.findViewById(R.id.title);
-            title.setText(t.getTitle());
+            //title.setText(t.getTitle());
             if (t.isClosed())
                 title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             else
@@ -367,14 +371,14 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
             // set the subtitle
             TextView subtitle = (TextView) row.findViewById(R.id.subtitle);
-            subtitle.setText(t.getSubTitle());
+            //subtitle.setText(t.getSubTitle());
 
             // pages information
             TextView pages = (TextView) row.findViewById(R.id.pages);
             Spanned pages_content = Html.fromHtml(String.format(getString(
                             R.string.topic_additional_information),
                     t.getNumberOfPosts(), t.getNumberOfPages()));
-            pages.setText(pages_content);
+            //pages.setText(pages_content);
 
             // lastpost
             Post displayPost;
@@ -435,7 +439,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                 v.setPadding(padding_left, padding_top, padding_right, padding_bottom);
             }
 
-            if (!t.isSticky()) {
+            /*if (!t.isSticky()) {
                 row.findViewById(R.id.icon_pinned).setVisibility(View.GONE);
             } else {
                 row.findViewById(R.id.icon_pinned).setVisibility(View.VISIBLE);
@@ -445,7 +449,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                 row.findViewById(R.id.icon_locked).setVisibility(View.GONE);
             } else {
                 row.findViewById(R.id.icon_locked).setVisibility(View.VISIBLE);
-            }
+            }*/
 
             if (Utils.isLoggedIn() && !mDatabase.isBookmark(t)) {
                 row.findViewById(R.id.icon_bookmarked).setVisibility(View.GONE);
@@ -459,8 +463,11 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
         @Override
         public TopicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View row = getInflater().inflate(R.layout.listitem_thread, null);
-            return new TopicViewHolder(row, getBaseActivity());
+            ListitemThreadBinding binding = DataBindingUtil.inflate(getInflater(), R.layout.listitem_thread, parent, false);
+
+            TopicViewHolder tv = new TopicViewHolder(binding.getRoot(), getBaseActivity());
+            tv.setBinding(binding);
+            return tv;
         }
     }
 

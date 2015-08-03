@@ -186,7 +186,7 @@ public class Topic implements Serializable {
         mIsImportant = isImportant;
     }
 
-    public Boolean isClosed() {
+    public boolean isClosed() {
         return mIsClosed;
     }
 

@@ -7,8 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
@@ -29,7 +29,7 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 /**
  * The Class all activities should extend. It mainly handles the sidebar(s)
  */
-public class BaseActivity extends ActionBarActivity {
+public class BaseActivity extends AppCompatActivity {
 
     protected static final String TAG_SIDEBAR_BOOKMARKS = "sidebar-bookmarks";
     protected static final String TAG_SIDEBAR_BOARDS = "sidebar-boards";
@@ -191,7 +191,7 @@ public class BaseActivity extends ActionBarActivity {
                 mSettings.getMataAction() != SettingsWrapper.START_SIDEBAR) {
 
             mDrawerToggle.setDrawerIndicatorEnabled(false);
-            mDrawerToggle.setHomeAsUpIndicator(getV7DrawerToggleDelegate().getThemeUpIndicator());
+            mDrawerToggle.setHomeAsUpIndicator(null);
             mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

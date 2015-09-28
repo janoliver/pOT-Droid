@@ -72,7 +72,7 @@ public class PostActionsDialog extends DialogFragment {
 
         final MaterialDialog dialog = new MaterialDialog.Builder(fragment.getBaseActivity())
                 .items(post_menu)
-                .adapter(adapter)
+                .adapter(adapter, null)
                 .build();
 
         ListView listView = dialog.getListView();

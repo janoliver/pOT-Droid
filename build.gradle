@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.0'
+        classpath 'com.android.tools.build:gradle:1.2.3'
     }
 }
 
@@ -14,11 +14,12 @@ repositories {
     maven {
         url "https://raw.github.com/kolavar/android-support-v4-preferencefragment/master/maven-repository/"
     }
+    maven { url 'https://dl.bintray.com/drummer-aidan/maven' }
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:21.0.3'
-    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:support-v4:22.2.1'
+    compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.squareup.okhttp:okhttp:2.2.0'
     compile 'com.samskivert:jmustache:1.9'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
@@ -27,18 +28,18 @@ dependencies {
     compile 'com.nispok:snackbar:2.9.1'
     compile 'com.android.support:support-v4-preferencefragment:1.0.0@aar'
     compile 'com.melnykov:floatingactionbutton:1.2.0'
-    compile 'com.afollestad:material-dialogs:0.6.3.1'
+    compile 'com.afollestad:material-dialogs:0.7.7.0'
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
 }
 
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 21
+        targetSdkVersion 22
     }
 
     buildTypes {

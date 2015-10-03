@@ -11,10 +11,9 @@ apply plugin: 'com.android.application'
 
 repositories {
     jcenter()
-    maven {
-        url "https://raw.github.com/kolavar/android-support-v4-preferencefragment/master/maven-repository/"
-    }
+    maven { url "https://raw.github.com/kolavar/android-support-v4-preferencefragment/master/maven-repository/" }
     maven { url 'https://dl.bintray.com/drummer-aidan/maven' }
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {

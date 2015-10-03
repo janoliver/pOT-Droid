@@ -1,7 +1,6 @@
 package com.mde.potdroid.helpers;
 
 import android.content.Context;
-import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -13,7 +12,6 @@ public abstract class AbstractViewHolder<T> extends RecyclerView.ViewHolder impl
     protected View mView;
     protected T mModel;
     protected Context mContext;
-    private ViewDataBinding mBinding;
 
 
     public AbstractViewHolder(View v, Context c) {
@@ -33,15 +31,6 @@ public abstract class AbstractViewHolder<T> extends RecyclerView.ViewHolder impl
         if(bindLongClickListener)
             v.setOnLongClickListener(this);
     }
-
-    public ViewDataBinding getmBinding() {
-        return mBinding;
-    }
-
-    public void setBinding(ViewDataBinding mBinding) {
-        this.mBinding = mBinding;
-    }
-
 
     public void bindModel(T t) {
         mModel = t;

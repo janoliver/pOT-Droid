@@ -1,106 +1,88 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <data>
-
-        <variable
-                name="topic"
-                type="com.mde.potdroid.models.Topic"/>
-
-        <import type="android.view.View"/>
-    </data>
-
-    <RelativeLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="?attr/bbListItemPaddingTB"
-            android:background="?attr/bbBackgroundList"
-            android:layout_marginBottom="1dp">
-
-        <TextView
-                android:id="@+id/title"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/icons"
-                android:layout_alignParentLeft="true"
-                android:textSize="?attr/bbListItemFontPrimary"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:text="@{topic.title}"
-                android:textColor="?attr/bbTextColorPrimary"
-                android:drawablePadding="5dp"/>
+                android:padding="?attr/bbListItemPaddingTB"
+                android:background="?attr/bbBackgroundList"
+                android:layout_marginBottom="1dp">
 
-        <LinearLayout
-                android:id="@+id/icons"
-                android:layout_width="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+    <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/icons"
+            android:layout_alignParentLeft="true"
+            android:textSize="?attr/bbListItemFontPrimary"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="?attr/bbTextColorPrimary"
+            android:drawablePadding="5dp"/>
 
-            <com.mde.potdroid.views.IconView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:text="@string/icon_lock"
-                    android:layout_marginTop="4dp"
-                    android:id="@+id/icon_locked"
-                    android:textSize="?attr/bbListItemFontSecondary"
-                    android:textColor="?attr/bbTextColorSecondary"
-                    android:visibility="@{topic.closed ? View.VISIBLE : View.GONE}"/>
+    <LinearLayout
+            android:id="@+id/icons"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <com.mde.potdroid.views.IconView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:text="@string/icon_pushpin"
-                    android:layout_marginTop="4dp"
-                    android:id="@+id/icon_pinned"
-                    android:textSize="?attr/bbListItemFontSecondary"
-                    android:textColor="?attr/bbTextColorSecondary"
-                    android:visibility="@{topic.sticky ? View.VISIBLE : View.GONE}"/>
-
-            <com.mde.potdroid.views.IconView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:text="@string/icon_bookmark"
-                    android:layout_marginTop="4dp"
-                    android:id="@+id/icon_bookmarked"
-                    android:textSize="?attr/bbListItemFontSecondary"
-                    android:textColor="?attr/bbTextColorSecondary"/>
-
-        </LinearLayout>
-
-        <TextView
-                android:id="@+id/subtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@{topic.subTitle}"
-                android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@+id/pages"
-                android:layout_below="@+id/title"
-                android:layout_marginRight="15dp"
+        <com.mde.potdroid.views.IconView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:text="@string/icon_lock"
+                android:layout_marginTop="4dp"
+                android:id="@+id/icon_locked"
                 android:textSize="?attr/bbListItemFontSecondary"
                 android:textColor="?attr/bbTextColorSecondary"/>
 
-        <TextView
-                android:id="@+id/pages"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text='@{topic.numberOfPosts + "P " + topic.numberOfPages + "S"}'
-                android:layout_below="@+id/title"
-                android:textSize="?attr/bbListItemFontTertiary"
+        <com.mde.potdroid.views.IconView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:text="@string/icon_pushpin"
+                android:layout_marginTop="4dp"
+                android:id="@+id/icon_pinned"
+                android:textSize="?attr/bbListItemFontSecondary"
                 android:textColor="?attr/bbTextColorSecondary"/>
 
-        <TextView
-                android:id="@+id/author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/pages"
-                android:textSize="?attr/bbListItemFontTertiary"
+        <com.mde.potdroid.views.IconView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:text="@string/icon_bookmark"
+                android:layout_marginTop="4dp"
+                android:id="@+id/icon_bookmarked"
+                android:textSize="?attr/bbListItemFontSecondary"
                 android:textColor="?attr/bbTextColorSecondary"/>
 
-    </RelativeLayout>
-</layout>
+    </LinearLayout>
+
+    <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/pages"
+            android:layout_below="@+id/title"
+            android:layout_marginRight="15dp"
+            android:textSize="?attr/bbListItemFontSecondary"
+            android:textColor="?attr/bbTextColorSecondary"/>
+
+    <TextView
+            android:id="@+id/pages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/title"
+            android:textSize="?attr/bbListItemFontTertiary"
+            android:textColor="?attr/bbTextColorSecondary"/>
+
+    <TextView
+            android:id="@+id/author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/pages"
+            android:textSize="?attr/bbListItemFontTertiary"
+            android:textColor="?attr/bbTextColorSecondary"/>
+
+</RelativeLayout>

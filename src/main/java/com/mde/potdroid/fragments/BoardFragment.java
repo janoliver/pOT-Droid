@@ -6,22 +6,19 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.AttributeSet;
 import android.view.*;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.mde.potdroid.EditorActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.TopicActivity;
-import com.mde.potdroid.helpers.AbstractViewHolder;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
 import com.mde.potdroid.helpers.DatabaseWrapper;
 import com.mde.potdroid.helpers.Utils;
@@ -31,10 +28,17 @@ import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.BoardParser;
 import com.mde.potdroid.views.IconDrawable;
+import com.mde.potdroid.views.IconView;
 import org.apache.http.Header;
+import uk.co.ribot.easyadapter.EasyRecyclerAdapter;
+import uk.co.ribot.easyadapter.ItemViewHolder;
+import uk.co.ribot.easyadapter.PositionInfo;
+import uk.co.ribot.easyadapter.annotations.LayoutId;
+import uk.co.ribot.easyadapter.annotations.ViewId;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -45,17 +49,19 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     // the tags of the fragment arguments
     public static final String ARG_ID = "board_id";
     public static final String ARG_PAGE = "page";
+
     // the board object
     private Board mBoard;
-    // the topic list adapter
-    private BoardListAdapter mListAdapter;
+
     private RecyclerView mListView;
-    // bookmark database handler
-    private DatabaseWrapper mDatabase;
+
+    EasyRecyclerAdapter<Topic> mListAdapter;
 
     private LinearLayoutManager mLayoutManager;
 
     private FloatingActionButton mFab;
+
+    private DatabaseWrapper mDatabase;
 
     /**
      * Returns an instance of the BoardFragment and sets required parameters as Arguments
@@ -81,7 +87,36 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_board, container, false);
 
-        mListAdapter = new BoardListAdapter();
+        mDatabase = new DatabaseWrapper(getActivity());
+
+        TopicViewHolder.TopicListener listener = new TopicViewHolder.TopicListener() {
+            @Override
+            public void onClick(Topic t) {
+                Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
+                Bookmark b = mDatabase.getBookmarkByTopic(t);
+                if(b != null) {
+                    intent.putExtra(TopicFragment.ARG_POST_ID, b.getLastPost().getId());
+                } else {
+                    intent.putExtra(TopicFragment.ARG_PAGE, t.getNumberOfPages());
+                }
+                intent.putExtra(TopicFragment.ARG_TOPIC_ID, t.getId());
+                startActivity(intent);
+            }
+
+            @Override
+            public boolean onLongClick(Topic t) {
+                Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
+                intent.putExtra(TopicFragment.ARG_TOPIC_ID, t.getId());
+                intent.putExtra(TopicFragment.ARG_PAGE, 1);
+                startActivity(intent);
+                return true;
+            }
+        };
+
+
+        mListAdapter = new EasyRecyclerAdapter<>(getActivity(), TopicViewHolder.class,
+                new ArrayList<Topic>(), listener);
+
         mListView = (RecyclerView) v.findViewById(R.id.forum_list_content);
         mListView.setAdapter(mListAdapter);
         mListView.setHasFixedSize(true);
@@ -102,8 +137,6 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         } else {
             mFab.setVisibility(View.GONE);
         }
-
-        mDatabase = new DatabaseWrapper(getActivity());
 
         return v;
     }
@@ -205,7 +238,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             mBoard = data;
 
             // refresh the list
-            mListAdapter.notifyDataSetChanged();
+            mListAdapter.setItems(mBoard.getFilteredTopics(getActivity()));
 
             // refresh the OptionsMenu, because of new pagination possibilities
             //getBaseActivity().supportInvalidateOptionsMenu();
@@ -311,70 +344,49 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
     }
 
-    public static class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
-        public ScrollAwareFABBehavior(Context context, AttributeSet attrs) {
-            super();
+    //Annotate the class with the layout ID of the item.
+    @LayoutId(R.layout.listitem_thread)
+    public static class TopicViewHolder extends ItemViewHolder<Topic> {
+
+        @ViewId(R.id.container)
+        RelativeLayout mContainer;
+
+        @ViewId(R.id.title)
+        TextView mTextTitle;
+
+        @ViewId(R.id.subtitle)
+        TextView mTextSubtitle;
+
+        @ViewId(R.id.pages)
+        TextView mTextPages;
+
+        @ViewId(R.id.author)
+        TextView mTextAuthor;
+
+        @ViewId(R.id.icon_pinned)
+        IconView mIconPinned;
+
+        @ViewId(R.id.icon_locked)
+        IconView mIconLock;
+
+        @ViewId(R.id.icon_bookmarked)
+        IconView mIconBookmark;
+
+        //Extend ItemViewHolder and call super(view)
+        public TopicViewHolder(View view) {
+            super(view);
         }
 
+        //Override onSetValues() to set the values of the items in the views.
         @Override
-        public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout,
-                                           FloatingActionButton child, View directTargetChild, View target, int nestedScrollAxes) {
-            return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL ||
-                    super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target,
-                            nestedScrollAxes);
-        }
-
-        @Override
-        public void onNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child,
-                                   View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
-            super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed,
-                    dyUnconsumed);
-
-            if (dyConsumed > 0 && child.getVisibility() == View.VISIBLE) {
-                child.hide();
-            } else if (dyConsumed < 0 && child.getVisibility() != View.VISIBLE) {
-                child.show();
-            }
-        }
-
-    }
-
-    public class BoardListAdapter extends RecyclerView.Adapter<TopicViewHolder> {
-
-        public int getItemCount() {
-            if (mBoard == null)
-                return 0;
-            return mBoard.getFilteredTopics(getActivity()).size();
-        }
-
-        @Override
-        public void onBindViewHolder(TopicViewHolder holder, int position) {
-            // - get element from your dataset at this position
-            // - replace the contents of the view with that element
-            View row = holder.getView();
-
-            Topic t = mBoard.getFilteredTopics(getActivity()).get(position);
-
-            holder.bindModel(t);
-
-            // set the name, striked if closed
-            TextView title = (TextView) row.findViewById(R.id.title);
-            title.setText(t.getTitle());
+        public void onSetValues(Topic t, PositionInfo positionInfo) {
+            mTextTitle.setText(t.getTitle());
             if (t.isClosed())
-                title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                mTextTitle.setPaintFlags(mTextTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             else
-                title.setPaintFlags(title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                mTextTitle.setPaintFlags(mTextTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
 
-            // set the subtitle
-            TextView subtitle = (TextView) row.findViewById(R.id.subtitle);
-            subtitle.setText(t.getSubTitle());
-
-            // pages information
-            TextView pages = (TextView) row.findViewById(R.id.pages);
-            Spanned pages_content = Html.fromHtml(String.format(getString(
-                            R.string.topic_additional_information),
-                    t.getNumberOfPosts(), t.getNumberOfPages()));
-            pages.setText(pages_content);
+            mTextSubtitle.setText(t.getSubTitle());
 
             // lastpost
             Post displayPost;
@@ -385,7 +397,6 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                 displayPost = t.getFirstPost();
             }
 
-            // some smarter date formatting
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(displayPost.getDate());
             Calendar today = Calendar.getInstance();
@@ -396,104 +407,101 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                 fmt = "dd.MM., HH:mm";
             }
 
-            TextView lastpost = (TextView) row.findViewById(R.id.author);
             String time = new SimpleDateFormat(fmt).format(displayPost.getDate());
-            lastpost.setText(Html.fromHtml(String.format(
-                    getString(R.string.thread_lastpost), displayPost.getAuthor().getNick(), time)));
+            mTextAuthor.setText(Html.fromHtml(String.format(
+                    getContext().getString(R.string.thread_lastpost), displayPost.getAuthor().getNick(), time)));
 
-            // icon
+
             if (t.getIconId() != null) {
                 try {
-                    Drawable d = Utils.getIcon(getActivity(), t.getIconId());
-                    d.setBounds(0, 0, (int)title.getTextSize(), (int)title.getTextSize());
-                    title.setCompoundDrawables(d, null, null, null);
+                    Drawable d = Utils.getIcon(getContext(), t.getIconId());
+                    d.setBounds(0, 0, (int)mTextTitle.getTextSize(), (int)mTextTitle.getTextSize());
+                    mTextTitle.setCompoundDrawables(d, null, null, null);
                 } catch (IOException e) {
                     Utils.printException(e);
                 }
             }
 
+            Spanned pages_content = Html.fromHtml(String.format(getContext().getString(
+                            R.string.topic_additional_information),
+                    t.getNumberOfPosts(), t.getNumberOfPages()));
+            mTextPages.setText(pages_content);
+
             // all important topics get a different background.
             // the padding stuff is apparently an android bug...
             // see http://stackoverflow.com/questions/5890379
             if (t.isSticky() || t.isImportant() || t.isAnnouncement() || t.isGlobal()) {
-                View v = row.findViewById(R.id.container);
+                View v = mContainer.findViewById(R.id.container);
                 int padding_top = v.getPaddingTop();
                 int padding_bottom = v.getPaddingBottom();
                 int padding_right = v.getPaddingRight();
                 int padding_left = v.getPaddingLeft();
 
-                v.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getActivity(), R.attr.bbBackgroundListActive));
+                v.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getContext(), R.attr.bbBackgroundListActive));
                 v.setPadding(padding_left, padding_top, padding_right, padding_bottom);
             } else {
-                View v = row.findViewById(R.id.container);
+                View v = mContainer.findViewById(R.id.container);
                 int padding_top = v.getPaddingTop();
                 int padding_bottom = v.getPaddingBottom();
                 int padding_right = v.getPaddingRight();
                 int padding_left = v.getPaddingLeft();
 
-                v.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getActivity(), R.attr.bbBackgroundList));
+                v.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getContext(), R.attr.bbBackgroundList));
                 v.setPadding(padding_left, padding_top, padding_right, padding_bottom);
             }
 
             if (!t.isSticky()) {
-                row.findViewById(R.id.icon_pinned).setVisibility(View.GONE);
+                mIconPinned.setVisibility(View.GONE);
             } else {
-                row.findViewById(R.id.icon_pinned).setVisibility(View.VISIBLE);
+                mIconPinned.setVisibility(View.VISIBLE);
             }
 
             if (!t.isClosed()) {
-                row.findViewById(R.id.icon_locked).setVisibility(View.GONE);
+                mIconLock.setVisibility(View.GONE);
             } else {
-                row.findViewById(R.id.icon_locked).setVisibility(View.VISIBLE);
+                mIconLock.setVisibility(View.VISIBLE);
             }
 
-            if (Utils.isLoggedIn() && !mDatabase.isBookmark(t)) {
-                row.findViewById(R.id.icon_bookmarked).setVisibility(View.GONE);
+            DatabaseWrapper db = new DatabaseWrapper(getContext());
+            if (Utils.isLoggedIn() && !db.isBookmark(t)) {
+                mIconBookmark.setVisibility(View.GONE);
             } else {
-                row.findViewById(R.id.icon_bookmarked).setVisibility(View.VISIBLE);
+                mIconBookmark.setVisibility(View.VISIBLE);
             }
-
-
         }
 
-
         @Override
-        public TopicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View row = getInflater().inflate(R.layout.listitem_thread, null);
-            return new TopicViewHolder(row, getBaseActivity());
+        public void onSetListeners() {
+            mContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Get your custom listener and call the method.
+                    TopicListener listener = getListener(TopicListener.class);
+                    if (listener != null) {
+                        listener.onClick(getItem());
+                    }
+                }
+            });
+
+            mContainer.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    //Get your custom listener and call the method.
+                    TopicListener listener = getListener(TopicListener.class);
+                    if (listener != null) {
+                        listener.onLongClick(getItem());
+                    }
+                    return true;
+                }
+            });
+        }
+
+        public interface TopicListener {
+            public void onClick(Topic t);
+            public boolean onLongClick(Topic t);
+
         }
     }
 
-    public class TopicViewHolder extends AbstractViewHolder<Topic> {
-
-        public TopicViewHolder(View v, Context c) {
-            super(v, c, true, true);
-        }
-
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(getContext(), TopicActivity.class);
-            Topic t = getModel();
-            Bookmark b = BoardFragment.this.mDatabase.getBookmarkByTopic(t);
-
-            if(b != null) {
-                intent.putExtra(TopicFragment.ARG_POST_ID, b.getLastPost().getId());
-            } else {
-                intent.putExtra(TopicFragment.ARG_PAGE, t.getNumberOfPages());
-            }
-
-            intent.putExtra(TopicFragment.ARG_TOPIC_ID, t.getId());
-            getContext().startActivity(intent);
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-            Intent intent = new Intent(getContext(), TopicActivity.class);
-            intent.putExtra(TopicFragment.ARG_TOPIC_ID, getModel().getId());
-            intent.putExtra(TopicFragment.ARG_PAGE, 1);
-            getContext().startActivity(intent);
-            return true;
-        }
-    }
 
 }

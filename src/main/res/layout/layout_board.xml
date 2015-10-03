@@ -25,7 +25,7 @@
                     android:layout_height="wrap_content"
                     app:layout_anchorGravity="bottom|right"
                     app:layout_anchor="@id/forum_list_content"
-                    app:layout_behavior="com.mde.potdroid.fragments.BoardFragment$ScrollAwareFABBehavior"
+                    app:layout_behavior="com.mde.potdroid.helpers.ScrollAwareFABBehavior"
                     app:elevation="6dp"
                     android:layout_margin="16dp"
                     app:pressedTranslationZ="12dp"

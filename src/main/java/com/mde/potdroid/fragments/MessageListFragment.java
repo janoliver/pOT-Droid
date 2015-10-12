@@ -8,10 +8,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import com.mde.potdroid.EditorActivity;
 import com.mde.potdroid.MessageActivity;
 import com.mde.potdroid.R;
@@ -21,9 +25,15 @@ import com.mde.potdroid.models.MessageList;
 import com.mde.potdroid.parsers.MessageListParser;
 import com.mde.potdroid.views.IconDrawable;
 import org.apache.http.Header;
+import uk.co.ribot.easyadapter.EasyRecyclerAdapter;
+import uk.co.ribot.easyadapter.ItemViewHolder;
+import uk.co.ribot.easyadapter.PositionInfo;
+import uk.co.ribot.easyadapter.annotations.LayoutId;
+import uk.co.ribot.easyadapter.annotations.ViewId;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 /**
  * This fragment displays a list of messages below a Tab bar for the inbox/outbox folders.
@@ -35,18 +45,14 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
     // the tags of the fragment arguments
     public static final String ARG_MODE = "mode";
     public static final String MODE_INBOX = "inbox";
-    public static final String MODE_OUTBOX = "inbox";
+    public static final String MODE_OUTBOX = "outbox";
 
     // this variable also serves as fragmentmanager tag, so we have to use a String
     private String mMode;
 
     // message list and adapter
     private MessageList mMessageList;
-    private MessageListAdapter mListAdapter;
-
-    // the BenderHandler is used to display benders in front of the lines
-    private BenderHandler mBenderHandler;
-    private SettingsWrapper mSettings;
+    private EasyRecyclerAdapter<Message> mListAdapter;
 
     /**
      * Returns an instance of the Fragment and sets required parameters as Arguments
@@ -80,17 +86,23 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_message_list, container, false);
 
-        mListAdapter = new MessageListAdapter();
-        ListView mListView = (ListView) v.findViewById(R.id.forum_list_content);
-        mListView.setAdapter(mListAdapter);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        MessageViewHolder.MessageListener listener = new MessageViewHolder.MessageListener() {
+            @Override
+            public void onClick(Message t) {
                 Intent intent = new Intent(getBaseActivity(), MessageActivity.class);
-                intent.putExtra(MessageFragment.ARG_ID, mMessageList.getMessages().get(position)
-                        .getId());
+                intent.putExtra(MessageFragment.ARG_ID, t.getId());
                 startActivity(intent);
             }
-        });
+        };
+
+        mListAdapter = new EasyRecyclerAdapter<>(getActivity(), MessageViewHolder.class,
+                new ArrayList<Message>(), listener);
+
+
+        RecyclerView listView = (RecyclerView) v.findViewById(R.id.forum_list_content);
+        listView.setAdapter(mListAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getBaseActivity());
+        listView.setLayoutManager(layoutManager);
 
         getActionbar().setTitle(R.string.title_messages);
         getActionbar().setSubtitle(mMode.equals(MODE_INBOX) ? R.string.tab_inbox : R.string.tab_outbox);
@@ -101,8 +113,6 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        mBenderHandler = new BenderHandler(getBaseActivity());
 
         if (mMessageList == null)
             startLoader(this);
@@ -160,7 +170,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
         hideLoadingAnimation();
         if (data != null) {
             mMessageList = data;
-            mListAdapter.notifyDataSetChanged();
+            mListAdapter.setItems(mMessageList.getMessages());
 
             getBaseActivity().supportInvalidateOptionsMenu();
         } else {
@@ -179,110 +189,131 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
         restartLoader(this);
     }
 
-    private class MessageListAdapter extends BaseAdapter {
+    public String getMode() {
+        return mMode;
+    }
 
-        public int getCount() {
-            if (mMessageList == null)
-                return 0;
-            return mMessageList.getMessages().size();
+
+    @LayoutId(R.layout.listitem_message)
+    public static class MessageViewHolder extends ItemViewHolder<Message> {
+
+        @ViewId(R.id.container)
+        RelativeLayout mContainer;
+
+        @ViewId(R.id.title)
+        TextView mTextTitle;
+
+        @ViewId(R.id.pages)
+        TextView mTextDescription;
+
+        @ViewId(R.id.bender)
+        ImageView mBender;
+
+        public MessageViewHolder(View view) {
+            super(view);
         }
 
-        public Object getItem(int position) {
-            return mMessageList.getMessages().get(position);
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public View getView(int position, View row, ViewGroup parent) {
-            if(row == null) {
-                row = getInflater().inflate(R.layout.listitem_message, null);
-            }
-
-            Message m = (Message) getItem(position);
+        @Override
+        public void onSetValues(Message m, PositionInfo positionInfo) {
 
             // set the name, striked if closed
-            TextView title = (TextView) row.findViewById(R.id.title);
-            title.setText(Html.fromHtml(m.getTitle()));
+            mTextTitle.setText(Html.fromHtml(m.getTitle()));
 
             // last post information
             String author = m.isSystem() ?
-                    getActivity().getString(R.string.pm_author_system) :
+                    getContext().getString(R.string.pm_author_system) :
                     m.getFrom().getNick();
 
-            TextView description = (TextView) row.findViewById(R.id.pages);
-            Spanned content = Html.fromHtml(getString(R.string.message_description,
+            String mMode = m.getPostbox();
+
+            Spanned content = Html.fromHtml(getContext().getString(R.string.message_description,
                     mMode.equals(MessageList.TAG_INBOX) ? "von" : "an",
                     author, mMode.equals(MessageList.TAG_INBOX) ? "erhalten" : "gesendet",
-                    new SimpleDateFormat(getString(R.string.default_time_format)).format(m
+                    new SimpleDateFormat(getContext().getString(R.string.default_time_format)).format(m
                             .getDate())));
-            description.setText(content);
+            mTextDescription.setText(content);
 
-            View v = row.findViewById(R.id.container);
-            int padding_top = v.getPaddingTop();
-            int padding_bottom = v.getPaddingBottom();
-            int padding_right = v.getPaddingRight();
-            int padding_left = v.getPaddingLeft();
+            int padding_top = mContainer.getPaddingTop();
+            int padding_bottom = mContainer.getPaddingBottom();
+            int padding_right = mContainer.getPaddingRight();
+            int padding_left = mContainer.getPaddingLeft();
 
             if (m.isUnread())
-                v.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getActivity(), R.attr.bbBackgroundListActive));
+                mContainer.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getContext(), R.attr.bbBackgroundListActive));
             else
-                v.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getActivity(), R.attr.bbBackgroundList));
+                mContainer.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getContext(), R.attr.bbBackgroundList));
 
-            v.setPadding(padding_left, padding_top, padding_right, padding_bottom);
+            mContainer.setPadding(padding_left, padding_top, padding_right, padding_bottom);
 
             // bender. Show an alias as long as the real bender is not present. If the sender
             // is "System", hide the view.
-            final ImageView bender_img = (ImageView) row.findViewById(R.id.bender);
+            SettingsWrapper settings = new SettingsWrapper(getContext());
+            BenderHandler benderHandler = new BenderHandler(getContext());
+            if (!m.isSystem() && settings.showBenders()) {
 
-            if (!m.isSystem() && mSettings.showBenders()) {
-
-                mBenderHandler.getAvatar(m.getFrom(), new BenderHandler.BenderListener() {
+                benderHandler.getAvatar(m.getFrom(), new BenderHandler.BenderListener() {
                     @Override
                     public void onSuccess(String path) {
-                        bender_img.setImageURI(Uri.parse(path));
+                        mBender.setImageURI(Uri.parse(path));
                     }
 
                     @Override
                     public void onFailure() {
                         // this functionality uses some primitive caching
-                        if(MessageListFragment.mBenderPlaceholder == null) {
+                        if (MessageListFragment.mBenderPlaceholder == null) {
                             try {
                                 MessageListFragment.mBenderPlaceholder =
-                                        Utils.getDrawableFromAsset(getBaseActivity(),
-                                        "images/placeholder_bender.png");
+                                        Utils.getDrawableFromAsset(getContext(),
+                                                "images/placeholder_bender.png");
 
                             } catch (IOException e) {
                                 Utils.printException(e);
                             }
                         }
 
-                        if(MessageListFragment.mBenderPlaceholder == null) {
-                            bender_img.setVisibility(View.GONE);
+                        if (MessageListFragment.mBenderPlaceholder == null) {
+                            mBender.setVisibility(View.GONE);
                         } else {
-                            bender_img.setImageDrawable(MessageListFragment.mBenderPlaceholder);
+                            mBender.setImageDrawable(MessageListFragment.mBenderPlaceholder);
                         }
                     }
                 });
             } else {
-                bender_img.setVisibility(View.GONE);
+                mBender.setVisibility(View.GONE);
             }
+        }
 
-            return row;
+        @Override
+        public void onSetListeners() {
+            mContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Get your custom listener and call the method.
+                    MessageListener listener = getListener(MessageListener.class);
+                    if (listener != null) {
+                        listener.onClick(getItem());
+                    }
+                }
+            });
+        }
+
+        public interface MessageListener {
+            void onClick(Message msg);
         }
     }
 
     static class AsyncContentLoader extends AsyncHttpLoader<MessageList> {
+        private String mMode;
 
         AsyncContentLoader(Context cx, String mode) {
             super(cx, MessageListParser.getUrl(mode), GET, null, Network.ENCODING_ISO);
+            mMode = mode;
         }
 
         @Override
         public MessageList processNetworkResponse(String response) {
             try {
-                MessageListParser parser = new MessageListParser();
+                MessageListParser parser = new MessageListParser(mMode);
                 return parser.parse(response);
             } catch (Exception e) {
                 return null;

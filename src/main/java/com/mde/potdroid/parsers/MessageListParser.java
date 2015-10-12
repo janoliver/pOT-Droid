@@ -19,6 +19,7 @@ public class MessageListParser {
 
     public static final String INBOX_URL = "pm/?a=0&cid=1";
     public static final String OUTBOX_URL = "pm/?a=0&cid=2";
+    private String mMode;
     private MessageList mMessageList;
     private Pattern mMessagePaggern = Pattern.compile("<a href='\\?a=2&mid=([0-9]+)'>([^<]+)" +
             "</a></td> "
@@ -26,8 +27,9 @@ public class MessageListParser {
             + "target='_blank'>([^<]+)</a>|System)</td> <td (class=\"bold\" |)style='width: 15%'>" +
             "([.: 0-9]+)</td>");
 
-    public MessageListParser() {
+    public MessageListParser(String mode) {
         mMessageList = new MessageList();
+        mMode = mode;
     }
 
     public static String getUrl(String mode) {
@@ -48,6 +50,7 @@ public class MessageListParser {
             message.setId(Integer.parseInt(m.group(1)));
             message.setTitle(m.group(2));
             message.setUnread(m.group(3).compareTo("") != 0);
+            message.setPostbox(mMode);
 
             if (m.group(4).equals("System")) {
                 message.setSystem(true);

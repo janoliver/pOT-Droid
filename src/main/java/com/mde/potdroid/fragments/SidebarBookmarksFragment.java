@@ -5,12 +5,12 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.mde.potdroid.*;
 import com.mde.potdroid.helpers.Utils;
@@ -18,6 +18,13 @@ import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.BookmarkList;
 import com.mde.potdroid.parsers.BookmarkParser;
 import com.mde.potdroid.views.IconButton;
+import uk.co.ribot.easyadapter.EasyRecyclerAdapter;
+import uk.co.ribot.easyadapter.ItemViewHolder;
+import uk.co.ribot.easyadapter.PositionInfo;
+import uk.co.ribot.easyadapter.annotations.LayoutId;
+import uk.co.ribot.easyadapter.annotations.ViewId;
+
+import java.util.ArrayList;
 
 /**
  * This is the Sidebar containing a list of unread Bookmarks and the navigation.
@@ -27,7 +34,8 @@ public class SidebarBookmarksFragment extends BaseFragment
 
     // the bookmark list and adapter
     private BookmarkList mBookmarkList;
-    private BookmarkListAdapter mListAdapter;
+    private EasyRecyclerAdapter<Bookmark>  mListAdapter;
+    private TextView mEmptyListView;
     private IconButton mPmButton;
     private IconButton mBookmarksButton;
 
@@ -55,21 +63,28 @@ public class SidebarBookmarksFragment extends BaseFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_sidebar_left, container, false);
 
-        mListAdapter = new BookmarkListAdapter();
-
-        ListView listView = (ListView) v.findViewById(R.id.listview_bookmarks);
-        listView.setAdapter(mListAdapter);
-        listView.setEmptyView(v.findViewById(R.id.empty_bookmarks_text));
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        BookmarkViewHolder.BookmarkListener listener = new BookmarkViewHolder.BookmarkListener() {
+            @Override
+            public void onClick(Bookmark t) {
                 Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
-                intent.putExtra(TopicFragment.ARG_POST_ID,
-                        mBookmarkList.getUnreadBookmarks().get(position).getLastPost().getId());
-                intent.putExtra(TopicFragment.ARG_TOPIC_ID,
-                        mBookmarkList.getUnreadBookmarks().get(position).getThread().getId());
+                intent.putExtra(TopicFragment.ARG_POST_ID, t.getLastPost().getId());
+                intent.putExtra(TopicFragment.ARG_TOPIC_ID, t.getThread().getId());
                 startActivity(intent);
             }
-        });
+        };
+
+        mEmptyListView = (TextView) v.findViewById(R.id.empty_bookmarks_text);
+
+
+        mListAdapter = new EasyRecyclerAdapter<>(getActivity(), BookmarkViewHolder.class,
+                new ArrayList<Bookmark>(), listener);
+        setNewBookmarks();
+
+        RecyclerView listView = (RecyclerView) v.findViewById(R.id.listview_bookmarks);
+        listView.setAdapter(mListAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getBaseActivity());
+        listView.setLayoutManager(layoutManager);
+
 
         IconButton home = (IconButton) v.findViewById(R.id.button_home);
         home.setOnClickListener(new View.OnClickListener() {
@@ -159,7 +174,7 @@ public class SidebarBookmarksFragment extends BaseFragment
             if(success.getException() instanceof Utils.NotLoggedInException) {
                 Utils.setNotLoggedIn();
                 mBookmarkList.clearBookmarksCache();
-                mListAdapter.notifyDataSetChanged();
+                setNewBookmarks();
                 showError(getString(R.string.notloggedin));
                 TextView indicator = (TextView)getView().findViewById(R.id.empty_bookmarks_text);
                 indicator.setText(R.string.notloggedin);
@@ -170,7 +185,7 @@ public class SidebarBookmarksFragment extends BaseFragment
         } else if (success != null) {
 
             mBookmarkList.refresh(success.getBookmarks(), success.getNumberOfNewPosts());
-            mListAdapter.notifyDataSetChanged();
+            setNewBookmarks();
 
         } else {
             showError(getString(R.string.msg_loading_error));
@@ -199,40 +214,60 @@ public class SidebarBookmarksFragment extends BaseFragment
     @Override
     public void onResume() {
         super.onResume();
-        mListAdapter.notifyDataSetChanged();
+        setNewBookmarks();
     }
 
-    private class BookmarkListAdapter extends BaseAdapter {
+    private void setNewBookmarks() {
+        mListAdapter.setItems(mBookmarkList.getUnreadBookmarks());
 
-        public int getCount() {
-            if (mBookmarkList == null)
-                return 0;
-            return mBookmarkList.getUnreadBookmarks().size();
+        if(mBookmarkList.getUnreadBookmarks().isEmpty())
+            mEmptyListView.setVisibility(View.VISIBLE);
+        else
+            mEmptyListView.setVisibility(View.GONE);
+    }
+
+    @LayoutId(R.layout.listitem_sidebar_bookmark)
+    public static class BookmarkViewHolder extends ItemViewHolder<Bookmark> {
+
+        @ViewId(R.id.container)
+        RelativeLayout mContainer;
+
+        @ViewId(R.id.name)
+        TextView mTextTitle;
+
+        @ViewId(R.id.newposts)
+        TextView mTextNewposts;
+
+        public BookmarkViewHolder(View view) {
+            super(view);
         }
 
-        public Object getItem(int position) {
-            return mBookmarkList.getUnreadBookmarks().get(position);
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View row = getInflater().inflate(R.layout.listitem_sidebar_bookmark, null);
-            Bookmark b = (Bookmark) getItem(position);
-
-            // set the name, striked if closed
-            TextView title = (TextView) row.findViewById(R.id.name);
-            title.setText(b.getThread().getTitle());
+        @Override
+        public void onSetValues(Bookmark b, PositionInfo positionInfo) {
+            mTextTitle.setText(b.getThread().getTitle());
             if (b.getThread().isClosed())
-                title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                mTextTitle.setPaintFlags(mTextTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-            // set the number of new posts
-            TextView newposts = (TextView) row.findViewById(R.id.newposts);
-            newposts.setText(b.getNumberOfNewPosts().toString());
+            mTextNewposts.setText(b.getNumberOfNewPosts().toString());
+        }
 
-            return row;
+        @Override
+        public void onSetListeners() {
+            mContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Get your custom listener and call the method.
+                    BookmarkListener listener = getListener(BookmarkListener.class);
+                    if (listener != null) {
+                        listener.onClick(getItem());
+                    }
+                }
+            });
+
+        }
+
+        public interface BookmarkListener {
+            void onClick(Bookmark bookmark);
         }
     }
 

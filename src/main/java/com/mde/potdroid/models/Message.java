@@ -18,6 +18,7 @@ public class Message {
     private Boolean mUnread;
     private Boolean mSystem = false;
     private String mHtmlCache;
+    private String mPostbox;
 
     public Integer getId() {
         return mId;
@@ -77,6 +78,14 @@ public class Message {
 
     public String getHtmlCache() {
         return mHtmlCache;
+    }
+
+    public void setPostbox(String postbox) {
+        mPostbox = postbox;
+    }
+
+    public String getPostbox() {
+        return mPostbox;
     }
 
 

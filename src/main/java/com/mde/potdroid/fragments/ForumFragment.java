@@ -5,14 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
-import android.widget.AdapterView;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
+import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
+import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
+import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
 import com.mde.potdroid.BoardActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
@@ -26,6 +30,8 @@ import com.mde.potdroid.views.IconDrawable;
 import org.apache.http.Header;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Forum list fragment. It shows an ExpandableList with Categories as groups and
@@ -37,7 +43,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
     private Forum mForum;
 
     private ForumListAdapter mListAdapter;
-    private ExpandableListView mListView;
+    private RecyclerView mListView;
 
     /**
      * Return new instance of ForumFragment. Although this fragment has no parameters,
@@ -60,57 +66,15 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_forum, container, false);
 
-        mListAdapter = new ForumListAdapter();
-        mListView = (ExpandableListView) v.findViewById(R.id.forum_list_content);
+        List<CategoryItem> items = new ArrayList<>();
+        mListAdapter = new ForumListAdapter(items);
 
-        mListView.setGroupIndicator(null);
+        mListView = (RecyclerView) v.findViewById(R.id.forum_list_content);
         mListView.setAdapter(mListAdapter);
-        mListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
-                                        int childPosition, long id) {
-
-                int bid = mForum.getCategories()
-                        .get(groupPosition).getBoards().get(childPosition).getId();
-
-                Intent intent = new Intent(getBaseActivity(), BoardActivity.class);
-                intent.putExtra(BoardFragment.ARG_ID, bid);
-                intent.putExtra(BoardFragment.ARG_PAGE, 1);
-                startActivity(intent);
-
-                return true;
-            }
-        });
-        mListView.setOnItemLongClickListener(new ExpandableListView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-                    final int groupPosition = ExpandableListView.getPackedPositionGroup(id);
-                    final int childPosition = ExpandableListView.getPackedPositionChild(id);
-
-                    new MaterialDialog.Builder(getActivity())
-                            .content(R.string.action_add_favorite_board)
-                            .positiveText("Ok")
-                            .negativeText("Abbrechen")
-                            .callback(new MaterialDialog.ButtonCallback() {
-                                @Override
-                                public void onPositive(MaterialDialog dialog) {
-                                    DatabaseWrapper db = new DatabaseWrapper(getActivity());
-                                    Board b = mForum.
-                                            getCategories().get(groupPosition).
-                                            getBoards().get(childPosition);
-
-                                    db.addBoard(b);
-                                    showSuccess(R.string.msg_marked_favorite);
-                                }
-                            })
-                            .show();
-
-                    return true;
-                }
-
-                return false;
-            }
-        });
+        mListView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        //mListView.setGroupIndicator(null);
+        mListView.setAdapter(mListAdapter);
+        /**/
 
         getActionbar().setTitle(R.string.title_forum);
 
@@ -166,10 +130,73 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
         hideLoadingAnimation();
         if (data != null) {
             mForum = data;
-            mListAdapter.notifyDataSetChanged();
+            List<CategoryItem> items = new ArrayList<>();
+            for(Category c : mForum.getCategories())
+                items.add(new CategoryItem(c));
+
+            mListAdapter = new ForumListAdapter(items);
+            mListView.setAdapter(mListAdapter);
         } else {
             showError(getString(R.string.msg_loading_error));
         }
+    }
+
+    public class CategoryItem implements ParentListItem {
+
+        /* Create an instance variable for your list of children */
+        private Category mCategory;
+
+        public CategoryItem(Category category) {
+            mCategory = category;
+        }
+
+        public Category getCategory() {
+            return mCategory;
+        }
+
+        @Override
+        public List<?> getChildItemList() {
+            return mCategory.getBoards();
+        }
+
+        @Override
+        public boolean isInitiallyExpanded() {
+            return false;
+        }
+    }
+
+    public static class CategoryViewHolder extends ParentViewHolder {
+
+        RelativeLayout mContainer;
+        TextView mTextDescription;
+        TextView mTextName;
+
+        public CategoryViewHolder(View view) {
+            super(view);
+
+            mContainer = (RelativeLayout) view.findViewById(R.id.container);
+            mTextDescription = (TextView) view.findViewById(R.id.text_description);
+            mTextName = (TextView) view.findViewById(R.id.text_name);
+        }
+
+    }
+
+    public static class BoardViewHolder extends ChildViewHolder {
+
+        RelativeLayout mContainer;
+        TextView mTextDescription;
+        TextView mTextLastPost;
+        TextView mTextName;
+
+        public BoardViewHolder(View view) {
+            super(view);
+
+            mContainer = (RelativeLayout) view.findViewById(R.id.container);
+            mTextDescription = (TextView) view.findViewById(R.id.text_description);
+            mTextName = (TextView) view.findViewById(R.id.text_name);
+            mTextLastPost = (TextView) view.findViewById(R.id.last_post);
+        }
+
     }
 
     @Override
@@ -177,85 +204,80 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
         hideLoadingAnimation();
     }
 
-    public class ForumListAdapter extends BaseExpandableListAdapter {
+    public class ForumListAdapter extends ExpandableRecyclerAdapter<CategoryViewHolder, BoardViewHolder> {
 
-        public Object getChild(int groupPosition, int childPosition) {
-            return mForum.getCategories().get(groupPosition).getBoards().get(childPosition);
+        public ForumListAdapter(List<? extends ParentListItem> parentItemList) {
+            super(parentItemList);
         }
 
-        public long getChildId(int groupPosition, int childPosition) {
-            return childPosition;
+        @Override
+        public CategoryViewHolder onCreateParentViewHolder(ViewGroup parentViewGroup) {
+            View view = getInflater().inflate(R.layout.listitem_category, parentViewGroup, false);
+            return new CategoryViewHolder(view);
         }
 
-        public int getChildrenCount(int groupPosition) {
-            if (mForum.getCategories().get(groupPosition).getBoards() == null)
-                return 0;
-            return mForum.getCategories().get(groupPosition).getBoards().size();
+        @Override
+        public BoardViewHolder onCreateChildViewHolder(ViewGroup childViewGroup) {
+            View view = getInflater().inflate(R.layout.listitem_forum, childViewGroup, false);
+            return new BoardViewHolder(view);
         }
 
-        public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
-                                 View convertView, ViewGroup parent) {
-            View row = getInflater().inflate(R.layout.listitem_forum, null);
+        @Override
+        public void onBindParentViewHolder(CategoryViewHolder parentViewHolder, int position, ParentListItem parentListItem) {
+            CategoryItem category = (CategoryItem) parentListItem;
 
-            Board b = (Board) getChild(groupPosition, childPosition);
+            parentViewHolder.mTextName.setText(category.getCategory().getName());
+            parentViewHolder.mTextDescription.setText(category.getCategory().getDescription());
+        }
 
-            TextView name = (TextView) row.findViewById(R.id.text_name);
-            name.setText(b.getName());
+        @Override
+        public void onBindChildViewHolder(BoardViewHolder childViewHolder, int position, Object item) {
+            final Board board = (Board) item;
+            childViewHolder.mTextName.setText(board.getName());
+            childViewHolder.mTextDescription.setText(board.getDescription());
 
-            TextView descr = (TextView) row.findViewById(R.id.text_description);
-            descr.setText(b.getDescription());
-
-
-            if(b.getLastPost() != null) {
-                TextView lastpost = (TextView) row.findViewById(R.id.last_post);
-                String time = new SimpleDateFormat(getString(R.string.default_time_format)).format(b
-                        .getLastPost().getDate());
+            if(board.getLastPost() != null) {
+                String time = new SimpleDateFormat(getContext()
+                        .getString(R.string.default_time_format)).format(board.getLastPost().getDate());
                 Spanned lastpost_text = Html.fromHtml(String.format(
-                        getString(R.string.last_post), b.getLastPost().getAuthor().getNick(), time));
-                lastpost.setText(lastpost_text);
+                        getContext().getString(R.string.last_post), board.getLastPost().getAuthor().getNick(), time));
+                childViewHolder.mTextLastPost.setText(lastpost_text);
             }
 
-            return (row);
+            childViewHolder.mContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int bid = board.getId();
 
+                    Intent intent = new Intent(getBaseActivity(), BoardActivity.class);
+                    intent.putExtra(BoardFragment.ARG_ID, bid);
+                    intent.putExtra(BoardFragment.ARG_PAGE, 1);
+                    startActivity(intent);
+                }
+            });
+
+            childViewHolder.mContainer.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    new MaterialDialog.Builder(getActivity())
+                            .content(R.string.action_add_favorite_board)
+                            .positiveText("Ok")
+                            .negativeText("Abbrechen")
+                            .callback(new MaterialDialog.ButtonCallback() {
+                                @Override
+                                public void onPositive(MaterialDialog dialog) {
+                                    DatabaseWrapper db = new DatabaseWrapper(getActivity());
+                                    db.addBoard(board);
+                                    showSuccess(R.string.msg_marked_favorite);
+                                }
+                            })
+                            .show();
+
+                    return true;
+                }
+            });
         }
-
-        public Object getGroup(int groupPosition) {
-            return mForum.getCategories().get(groupPosition);
-        }
-
-        public int getGroupCount() {
-            if (mForum == null)
-                return 0;
-            return mForum.getCategories().size();
-        }
-
-        public long getGroupId(int groupPosition) {
-            return groupPosition;
-        }
-
-        public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
-                                 ViewGroup parent) {
-            View row = getInflater().inflate(R.layout.listitem_category, null);
-
-            Category cat = (Category) getGroup(groupPosition);
-
-            TextView name = (TextView) row.findViewById(R.id.text_name);
-            name.setText(cat.getName());
-
-            TextView descr = (TextView) row.findViewById(R.id.text_description);
-            descr.setText(cat.getDescription());
-
-            return row;
-        }
-
-        public boolean isChildSelectable(int groupPosition, int childPosition) {
-            return true;
-        }
-
-        public boolean hasStableIds() {
-            return true;
-        }
-
     }
 
     static class AsyncContentLoader extends AsyncHttpLoader<Forum> {

@@ -52,7 +52,7 @@ public class MessagePollingAlarm extends BroadcastReceiver {
                     } catch (UnsupportedEncodingException e) {
                         stringResult = response.body().string();
                     }
-                    MessageListParser p = new MessageListParser();
+                    MessageListParser p = new MessageListParser(MessageList.TAG_INBOX);
                     MessageList list = p.parse(stringResult);
                     handleNotification(list, context);
                 } catch (IOException e) {

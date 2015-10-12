@@ -17,7 +17,8 @@ import com.mde.potdroid.models.MessageList;
  * inbox and outbox folders.
  */
 public class MessageListActivity extends BaseActivity {
-    FragmentPagerAdapter adapterViewPager;
+    MessageListPagerAdapter adapterViewPager;
+    ViewPager vpPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +30,9 @@ public class MessageListActivity extends BaseActivity {
         FrameLayout content = (FrameLayout) findViewById(R.id.content);
         getLayoutInflater().inflate(R.layout.layout_messages_container, content, true);
 
-        ViewPager vpPager = (ViewPager) findViewById(R.id.pager);
+        vpPager = (ViewPager) findViewById(R.id.pager);
         adapterViewPager = new MessageListPagerAdapter(getSupportFragmentManager(), this);
         vpPager.setAdapter(adapterViewPager);
-
 
         PagerTabStrip strip = (PagerTabStrip) findViewById(R.id.pager_header);
         strip.setDrawFullUnderline(false);
@@ -57,39 +57,33 @@ public class MessageListActivity extends BaseActivity {
         // Returns the fragment to display for that page
         @Override
         public Fragment getItem(int position) {
-            switch (position) {
-                case 0: // Fragment # 0 - This will show FirstFragment
-                    return mActivity.getFragmentByTag(MessageList.TAG_INBOX);
-                case 1: // Fragment # 0 - This will show FirstFragment different title
-                    return mActivity.getFragmentByTag(MessageList.TAG_OUTBOX);
-                default:
-                    return null;
-            }
+            return MessageListFragment.newInstance(getTagByPosition(position));
         }
 
         // Returns the page title for the top indicator
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0: // Fragment # 0 - This will show FirstFragment
+                case 0:
                     return mActivity.getResources().getString(R.string.tab_inbox);
-                case 1: // Fragment # 0 - This will show FirstFragment different title
+                case 1:
                     return mActivity.getResources().getString(R.string.tab_outbox);
                 default:
                     return null;
             }
         }
 
+        public String getTagByPosition(int position) {
+            switch (position) {
+                case 0:
+                    return MessageList.TAG_INBOX;
+                case 1:
+                    return MessageList.TAG_OUTBOX;
+                default:
+                    return null;
+            }
+        }
     }
-
-    public Fragment getFragmentByTag(String tag) {
-        MessageListFragment fr = (MessageListFragment) getSupportFragmentManager()
-                .findFragmentByTag(tag);
-        if (fr == null)
-            fr = MessageListFragment.newInstance(tag);
-        return fr;
-    }
-
 
     @Override
     protected void onNewIntent(Intent intent) {

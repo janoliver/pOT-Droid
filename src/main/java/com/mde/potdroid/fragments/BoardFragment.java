@@ -59,10 +59,6 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
     private LinearLayoutManager mLayoutManager;
 
-    private FloatingActionButton mFab;
-
-    private DatabaseWrapper mDatabase;
-
     /**
      * Returns an instance of the BoardFragment and sets required parameters as Arguments
      *
@@ -87,14 +83,12 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_board, container, false);
 
-        mDatabase = new DatabaseWrapper(getActivity());
-
         TopicViewHolder.TopicListener listener = new TopicViewHolder.TopicListener() {
             @Override
             public void onClick(Topic t) {
                 Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
                 Bookmark b = mDatabase.getBookmarkByTopic(t);
-                if(b != null) {
+                if (b != null) {
                     intent.putExtra(TopicFragment.ARG_POST_ID, b.getLastPost().getId());
                 } else {
                     intent.putExtra(TopicFragment.ARG_PAGE, t.getNumberOfPages());
@@ -123,19 +117,19 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         mLayoutManager = new LinearLayoutManager(getBaseActivity());
         mListView.setLayoutManager(mLayoutManager);
 
-        mFab = (FloatingActionButton) v.findViewById(R.id.fab);
-        mFab.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
+        FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
+        fab.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
 
-        if(Utils.isLoggedIn() && mSettings.isShowFAB()) {
+        if (Utils.isLoggedIn() && mSettings.isShowFAB()) {
             //mFab.attachToListView(mListView);
 
-            mFab.setOnClickListener(new View.OnClickListener() {
+            fab.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     newThread();
                 }
             });
         } else {
-            mFab.setVisibility(View.GONE);
+            fab.setVisibility(View.GONE);
         }
 
         return v;
@@ -150,7 +144,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         if (mBoard == null)
             startLoader(this);
 
-        if(mSettings.isBottomToolbar()) {
+        if (mSettings.isBottomToolbar()) {
             getWriteButton().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -179,7 +173,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_board, menu);
-        if(!Utils.isLoggedIn() || mSettings.isBottomToolbar())
+        if (!Utils.isLoggedIn() || mSettings.isBottomToolbar())
             menu.findItem(R.id.new_thread).setVisible(false);
         else
             menu.findItem(R.id.new_thread).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
@@ -189,7 +183,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
      * Open the form for a new thread
      */
     public void newThread() {
-        if(mBoard == null)
+        if (mBoard == null)
             return;
 
         Intent intent = new Intent(getBaseActivity(), EditorActivity.class);
@@ -344,7 +338,6 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
     }
 
-    //Annotate the class with the layout ID of the item.
     @LayoutId(R.layout.listitem_thread)
     public static class TopicViewHolder extends ItemViewHolder<Topic> {
 
@@ -372,12 +365,10 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         @ViewId(R.id.icon_bookmarked)
         IconView mIconBookmark;
 
-        //Extend ItemViewHolder and call super(view)
         public TopicViewHolder(View view) {
             super(view);
         }
 
-        //Override onSetValues() to set the values of the items in the views.
         @Override
         public void onSetValues(Topic t, PositionInfo positionInfo) {
             mTextTitle.setText(t.getTitle());
@@ -391,7 +382,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             // lastpost
             Post displayPost;
 
-            if(t.getLastPost() != null) {
+            if (t.getLastPost() != null) {
                 displayPost = t.getLastPost();
             } else {
                 displayPost = t.getFirstPost();
@@ -415,7 +406,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             if (t.getIconId() != null) {
                 try {
                     Drawable d = Utils.getIcon(getContext(), t.getIconId());
-                    d.setBounds(0, 0, (int)mTextTitle.getTextSize(), (int)mTextTitle.getTextSize());
+                    d.setBounds(0, 0, (int) mTextTitle.getTextSize(), (int) mTextTitle.getTextSize());
                     mTextTitle.setCompoundDrawables(d, null, null, null);
                 } catch (IOException e) {
                     Utils.printException(e);
@@ -498,6 +489,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
         public interface TopicListener {
             public void onClick(Topic t);
+
             public boolean onLongClick(Topic t);
 
         }

@@ -14,6 +14,7 @@ import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.ForumActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.SettingsActivity;
+import com.mde.potdroid.helpers.DatabaseWrapper;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.views.BBSwipeRefreshLayout;
@@ -31,6 +32,7 @@ public abstract class BaseFragment extends Fragment implements BBSwipeRefreshLay
     // the pulltorefresh instance
     protected BBSwipeRefreshLayout mPullToRefreshLayout;
     protected SettingsWrapper mSettings;
+    protected DatabaseWrapper mDatabase;
 
     public static int COLOR_SUCCESS = Color.parseColor("#669900");
     public static int COLOR_ERROR = Color.parseColor("#cc0000");
@@ -41,6 +43,7 @@ public abstract class BaseFragment extends Fragment implements BBSwipeRefreshLay
         super.onCreate(savedInstanceState);
 
         mSettings = new SettingsWrapper(getBaseActivity());
+        mDatabase = new DatabaseWrapper(getBaseActivity());
     }
 
     @Override

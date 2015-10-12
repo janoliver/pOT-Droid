@@ -37,13 +37,10 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-            <ListView
+            <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:choiceMode="singleChoice"
-                    android:id="@+id/listview_boards"
-                    android:divider="?attr/bbListSeparatorColor"
-                    android:dividerHeight="1dp"/>
+                    android:id="@+id/listview_boards"/>
 
             <TextView
                     android:id="@+id/empty_bookmarks_text"

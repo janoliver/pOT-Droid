@@ -67,13 +67,18 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-            <ListView
+            <!--<ListView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:choiceMode="singleChoice"
                     android:id="@+id/listview_bookmarks"
                     android:divider="?attr/bbListSeparatorColor"
-                    android:dividerHeight="1dp"/>
+                    android:dividerHeight="1dp"/>-->
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/listview_bookmarks"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/bbListSeparatorColor"/>
 
             <TextView
                     android:id="@+id/empty_bookmarks_text"
@@ -83,7 +88,6 @@
                     android:textSize="14sp"
                     android:gravity="center"
                     android:text="@string/no_unread_bookmarks"
-                    android:visibility="gone"
                     android:clickable="false"/>
 
             <com.mde.potdroid.views.IconButton

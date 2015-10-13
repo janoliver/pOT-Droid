@@ -21,6 +21,7 @@ import com.mde.potdroid.fragments.BoardFragment;
 import com.mde.potdroid.fragments.SidebarBoardsFragment;
 import com.mde.potdroid.fragments.SidebarBookmarksFragment;
 import com.mde.potdroid.helpers.CustomExceptionHandler;
+import com.mde.potdroid.helpers.DatabaseWrapper;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.views.UpdateInfoDialog;
@@ -31,18 +32,29 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
  */
 public class BaseActivity extends AppCompatActivity {
 
+    // the fragment tags
     protected static final String TAG_SIDEBAR_BOOKMARKS = "sidebar-bookmarks";
     protected static final String TAG_SIDEBAR_BOARDS = "sidebar-boards";
+
+    // these are some variables to be available in inheriting classes. Access to settings,
+    // database, Extras and so on.
     protected SettingsWrapper mSettings;
     protected Bundle mExtras;
+    protected DatabaseWrapper mDatabase;
+
+    // the two sidebars and the toolbars
     protected SidebarBookmarksFragment mBookmarksSidebar;
     protected SidebarBoardsFragment mBoardsSidebar;
+    protected Toolbar mTopToolbar;
+    protected Toolbar mBottomToolbar;
+
+    // layout
     protected DrawerLayout mDrawerLayout;
-    protected Toolbar mToolbar;
-    protected RelativeLayout mBottomToolbar;
     protected LinearLayout mFastscrollLayout;
     protected FrameLayout mContentView;
     protected ActionBarDrawerToggle mDrawerToggle;
+
+    // determine the overlay behaviour
     protected boolean mOverlayToolbars;
 
     @Override
@@ -50,17 +62,20 @@ public class BaseActivity extends AppCompatActivity {
 
         // load default preference values from xml
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-
         mSettings = new SettingsWrapper(this);
 
+        // set the app theme
         setTheme(mSettings.getTheme());
 
+        // all of the above calls should be done before calling the super class's
+        // onCreate method.
         super.onCreate(savedInstanceState);
 
         // register an application context singleton in the Utils class.
         Utils.setApplicationContext(getApplicationContext());
 
         mExtras = getIntent().getExtras();
+        mDatabase = new DatabaseWrapper(this);
 
         // debug mode. We write exceptions to the SDCard with a custom default exceptionhandler
         if (mSettings.isDebug()) {
@@ -69,8 +84,7 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
 
-        // see getLayout function. We implement it as a function
-        // so it can be overridden for a custom layout.
+        // determine how to lay out the views
         if (mSettings.isFixedSidebar())
             setContentView(R.layout.main_fixedsidebar);
         else
@@ -96,10 +110,10 @@ public class BaseActivity extends AppCompatActivity {
         mFastscrollLayout = (LinearLayout) findViewById(R.id.fastscroll_view);
 
         // our toolbar (the new ActionBar)
-        mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mBottomToolbar = (RelativeLayout) findViewById(R.id.bottom_toolbar);
+        mTopToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        mBottomToolbar = (Toolbar) findViewById(R.id.bottom_toolbar);
 
-        setSupportActionBar(mToolbar);
+        setSupportActionBar(mTopToolbar);
 
         setupDrawerToggle();
 
@@ -164,7 +178,7 @@ public class BaseActivity extends AppCompatActivity {
     public void setupDrawerToggle() {
         // create the drawer toggle with the listeners
         mDrawerToggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, mToolbar, R.string.open_drawer, R.string.close_drawer) {
+                this, mDrawerLayout, mTopToolbar, R.string.open_drawer, R.string.close_drawer) {
 
             public void onDrawerClosed(View view) {
             }
@@ -230,10 +244,10 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public Toolbar getToolbar() {
-        return mToolbar;
+        return mTopToolbar;
     }
 
-    public RelativeLayout getBottomToolbar() {
+    public Toolbar getBottomToolbar() {
         return mBottomToolbar;
     }
 

@@ -1,70 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+
+<android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/bottom_toolbar"
         android:layout_height="?attr/actionBarSize"
         android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
         android:background="?attr/colorPrimary"
+        android:layout_alignParentBottom="true"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:visibility="gone">
 
-    <com.mde.potdroid.views.IconButton
-            android:layout_width="45dp"
-            android:layout_height="?attr/actionBarSize"
-            android:text="@string/icon_fast_backward"
-            android:id="@+id/button_frwd"
-            android:layout_toLeftOf="@+id/button_rwd"
-            android:textSize="24sp"
-            android:background="?attr/bbBackgroundTransparentClickable"
-            android:textColor="?attr/bbToolbarColor"/>
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <com.mde.potdroid.views.IconButton
-            android:layout_width="45dp"
-            android:layout_height="?attr/actionBarSize"
-            android:text="@string/icon_backward"
-            android:layout_toLeftOf="@+id/button_refresh"
-            android:id="@+id/button_rwd"
-            android:background="?attr/bbBackgroundTransparentClickable"
-            android:textSize="24sp"
-            android:textColor="?attr/bbToolbarColor"/>
+        <com.mde.potdroid.views.IconButton
+                android:layout_width="45dp"
+                android:layout_height="?attr/actionBarSize"
+                android:text="@string/icon_fast_backward"
+                android:id="@+id/button_frwd"
+                android:layout_toLeftOf="@+id/button_rwd"
+                android:textSize="24sp"
+                android:background="?attr/bbBackgroundTransparentClickable"
+                android:textColor="?attr/bbToolbarColor"/>
 
-    <com.mde.potdroid.views.IconButton
-            android:layout_width="45dp"
-            android:layout_height="?attr/actionBarSize"
-            android:text="@string/icon_refresh"
-            android:id="@+id/button_refresh"
-            android:layout_centerHorizontal="true"
-            android:background="?attr/bbBackgroundTransparentClickable"
-            android:textSize="24sp"
-            android:textColor="?attr/bbToolbarColor"/>
+        <com.mde.potdroid.views.IconButton
+                android:layout_width="45dp"
+                android:layout_height="?attr/actionBarSize"
+                android:text="@string/icon_backward"
+                android:layout_toLeftOf="@+id/button_refresh"
+                android:id="@+id/button_rwd"
+                android:background="?attr/bbBackgroundTransparentClickable"
+                android:textSize="24sp"
+                android:textColor="?attr/bbToolbarColor"/>
 
-    <com.mde.potdroid.views.IconButton
-            android:layout_width="45dp"
-            android:layout_height="?attr/actionBarSize"
-            android:text="@string/icon_forward"
-            android:layout_toRightOf="@+id/button_refresh"
-            android:background="?attr/bbBackgroundTransparentClickable"
-            android:id="@+id/button_fwd"
-            android:textSize="24sp"
-            android:textColor="?attr/bbToolbarColor"/>
+        <com.mde.potdroid.views.IconButton
+                android:layout_width="45dp"
+                android:layout_height="?attr/actionBarSize"
+                android:text="@string/icon_refresh"
+                android:id="@+id/button_refresh"
+                android:layout_centerHorizontal="true"
+                android:background="?attr/bbBackgroundTransparentClickable"
+                android:textSize="24sp"
+                android:textColor="?attr/bbToolbarColor"/>
 
-    <com.mde.potdroid.views.IconButton
-            android:layout_width="45dp"
-            android:layout_height="?attr/actionBarSize"
-            android:text="@string/icon_fast_forward"
-            android:layout_toRightOf="@+id/button_fwd"
-            android:background="?attr/bbBackgroundTransparentClickable"
-            android:id="@+id/button_ffwd"
-            android:textSize="24sp"
-            android:textColor="?attr/bbToolbarColor"/>
+        <com.mde.potdroid.views.IconButton
+                android:layout_width="45dp"
+                android:layout_height="?attr/actionBarSize"
+                android:text="@string/icon_forward"
+                android:layout_toRightOf="@+id/button_refresh"
+                android:background="?attr/bbBackgroundTransparentClickable"
+                android:id="@+id/button_fwd"
+                android:textSize="24sp"
+                android:textColor="?attr/bbToolbarColor"/>
 
-    <com.mde.potdroid.views.IconButton
-            android:layout_width="45dp"
-            android:layout_height="?attr/actionBarSize"
-            android:text="@string/icon_pencil"
-            android:layout_alignParentRight="true"
-            android:background="?attr/bbBackgroundTransparentClickable"
-            android:id="@+id/button_write"
-            android:textSize="24sp"
-            android:textColor="?attr/bbToolbarColor"/>
-</RelativeLayout>
+        <com.mde.potdroid.views.IconButton
+                android:layout_width="45dp"
+                android:layout_height="?attr/actionBarSize"
+                android:text="@string/icon_fast_forward"
+                android:layout_toRightOf="@+id/button_fwd"
+                android:background="?attr/bbBackgroundTransparentClickable"
+                android:id="@+id/button_ffwd"
+                android:textSize="24sp"
+                android:textColor="?attr/bbToolbarColor"/>
+
+        <com.mde.potdroid.views.IconButton
+                android:layout_width="45dp"
+                android:layout_height="?attr/actionBarSize"
+                android:text="@string/icon_pencil"
+                android:layout_alignParentRight="true"
+                android:background="?attr/bbBackgroundTransparentClickable"
+                android:id="@+id/button_write"
+                android:textSize="24sp"
+                android:textColor="?attr/bbToolbarColor"/>
+    </RelativeLayout>
+</android.support.v7.widget.Toolbar>

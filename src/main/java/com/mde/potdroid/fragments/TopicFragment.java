@@ -21,7 +21,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.RelativeLayout;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.mde.potdroid.EditorActivity;
@@ -910,7 +909,7 @@ public class TopicFragment extends PaginateFragment implements
 
         public void toggleBottomToolbar(final boolean show) {
             mToolbarHidden = !show;
-            RelativeLayout t = getBaseActivity().getBottomToolbar();
+            Toolbar t = getBaseActivity().getBottomToolbar();
             int translation = show ? 0 : t.getHeight();
             ViewPropertyAnimator.animate(t).translationY(translation).setDuration(200).start();
         }

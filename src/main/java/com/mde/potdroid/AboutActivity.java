@@ -9,20 +9,21 @@ import com.mde.potdroid.fragments.AboutFragment;
  */
 public class AboutActivity extends BaseActivity {
 
-    private AboutFragment mAboutFragment;
+    private static final String FRAGMENT_TAG = "about";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // create and add the fragment
-        mAboutFragment = (AboutFragment) getSupportFragmentManager().findFragmentByTag("about");
-        if (mAboutFragment == null)
-            mAboutFragment = AboutFragment.newInstance();
+        AboutFragment fragment = (AboutFragment) getSupportFragmentManager()
+                .findFragmentByTag(FRAGMENT_TAG);
+        if (fragment == null)
+            fragment = AboutFragment.newInstance();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.content, mAboutFragment, "about")
+                    .add(R.id.content, fragment, FRAGMENT_TAG)
                     .commit();
         }
     }

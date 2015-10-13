@@ -93,6 +93,11 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
                 intent.putExtra(MessageFragment.ARG_ID, t.getId());
                 startActivity(intent);
             }
+
+            @Override
+            public String getMode() {
+                return mMode;
+            }
         };
 
         mListAdapter = new EasyRecyclerAdapter<>(getActivity(), MessageViewHolder.class,
@@ -224,7 +229,8 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
                     getContext().getString(R.string.pm_author_system) :
                     m.getFrom().getNick();
 
-            String mMode = m.getPostbox();
+            MessageListener listener = getListener(MessageListener.class);
+            String mMode = listener.getMode();
 
             Spanned content = Html.fromHtml(getContext().getString(R.string.message_description,
                     mMode.equals(MessageList.TAG_INBOX) ? "von" : "an",
@@ -299,21 +305,20 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
 
         public interface MessageListener {
             void onClick(Message msg);
+            String getMode();
         }
     }
 
     static class AsyncContentLoader extends AsyncHttpLoader<MessageList> {
-        private String mMode;
 
         AsyncContentLoader(Context cx, String mode) {
             super(cx, MessageListParser.getUrl(mode), GET, null, Network.ENCODING_ISO);
-            mMode = mode;
         }
 
         @Override
         public MessageList processNetworkResponse(String response) {
             try {
-                MessageListParser parser = new MessageListParser(mMode);
+                MessageListParser parser = new MessageListParser();
                 return parser.parse(response);
             } catch (Exception e) {
                 return null;

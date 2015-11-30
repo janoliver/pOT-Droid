@@ -44,7 +44,6 @@ import org.apache.http.Header;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.LinkedList;
 
 /**
  * This Fragment displays a Topic in a WebView. Since the WebView has a memory leak,
@@ -72,9 +71,6 @@ public class TopicFragment extends PaginateFragment implements
     // webview initialization, so keep a reference here.
     private TopicJSInterface mJsInterface;
     private WebViewScrollCallbacks mWebViewScrollCallbacks = new WebViewScrollCallbacks();
-
-    // singleton and state indicator for the Kitkat bug workaround
-    public static LinkedList<TopicFragment> mWebViewHolder = new LinkedList<TopicFragment>();
 
 
     /**
@@ -139,16 +135,6 @@ public class TopicFragment extends PaginateFragment implements
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        mPullToRefreshLayout.removeAllViews();
-
-        mWebView.destroy();
-        mWebView = null;
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_topic, container, false);
 
@@ -156,16 +142,15 @@ public class TopicFragment extends PaginateFragment implements
         mFab.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
         mFab.hide();
 
+        mWebView = (ObservableScrollBottomWebView) v.findViewById(R.id.topic_webview);
+
         if (Utils.isLoggedIn() && mSettings.isShowFAB() && !mSettings.isBottomToolbar()) {
             mFab.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     replyPost();
                 }
             });
-        } else {
-            mFab.setVisibility(View.GONE);
         }
-
 
         return v;
     }
@@ -224,36 +209,27 @@ public class TopicFragment extends PaginateFragment implements
      */
     public void setupWebView() {
 
-        // create a webview if there is none already
-        if (mWebView == null) {
-            mWebView = new ObservableScrollBottomWebView(getBaseActivity());
-            mWebView.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
-            ));
-
-            mWebView.setScrollViewCallbacks(mWebViewScrollCallbacks);
-
-            if (mJsInterface == null) {
-                mJsInterface = new TopicJSInterface(mWebView, getBaseActivity(), this);
-                mJsInterface.registerScroll(getArguments().getInt(ARG_POST_ID, 0));
-            }
-
-            mWebView.getSettings().setJavaScriptEnabled(true);
-            mWebView.getSettings().setDefaultFontSize(mSettings.getDefaultFontSize());
-            mWebView.setBackgroundColor(0x00000000);
-            mWebView.getSettings().setAllowFileAccess(true);
-            mWebView.getSettings().setUseWideViewPort(true);
-            mWebView.getSettings().setAppCacheEnabled(false);
-            mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-            mWebView.getSettings().setLoadWithOverviewMode(true);
-
-            // broken on 2.3.3
-            mWebView.addJavascriptInterface(mJsInterface, "api");
-
-            registerForContextMenu(mWebView);
-
-            mJsInterface.setWebView(mWebView);
+        if (mJsInterface == null) {
+            mJsInterface = new TopicJSInterface(mWebView, getBaseActivity(), this);
+            mJsInterface.registerScroll(getArguments().getInt(ARG_POST_ID, 0));
         }
+
+        mWebView.setScrollViewCallbacks(mWebViewScrollCallbacks);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setDefaultFontSize(mSettings.getDefaultFontSize());
+        mWebView.setBackgroundColor(0x00000000);
+        mWebView.getSettings().setAllowFileAccess(true);
+        mWebView.getSettings().setUseWideViewPort(true);
+        mWebView.getSettings().setAppCacheEnabled(false);
+        mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        mWebView.getSettings().setLoadWithOverviewMode(true);
+
+        // broken on 2.3.3
+        mWebView.addJavascriptInterface(mJsInterface, "api");
+
+        registerForContextMenu(mWebView);
+
+        mJsInterface.setWebView(mWebView);
 
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.setWebViewClient(new WebViewClient() {
@@ -268,7 +244,6 @@ public class TopicFragment extends PaginateFragment implements
 
         displayContent();
 
-        mPullToRefreshLayout.addView(mWebView);
         refreshTitleAndPagination();
     }
 
@@ -393,13 +368,18 @@ public class TopicFragment extends PaginateFragment implements
 
                 setSwipeEnabled(true);
 
-                mFab.show();
+                showFloatingActionButton();
 
             }
 
         } else {
             showError(getString(R.string.msg_loading_error));
         }
+    }
+
+    private void showFloatingActionButton() {
+        if(Utils.isLoggedIn() && mSettings.isShowFAB() && !mSettings.isBottomToolbar())
+            mFab.show();
     }
 
     public void refreshTitleAndPagination() {
@@ -467,7 +447,7 @@ public class TopicFragment extends PaginateFragment implements
 
             setSwipeEnabled(true);
 
-            mFab.show();
+            showFloatingActionButton();
         } else {
 
             // whether there is a next page was checked in onCreateOptionsMenu
@@ -869,7 +849,7 @@ public class TopicFragment extends PaginateFragment implements
                 (!scrollingDown && mIsScrolledBottom)) {
                 mFab.hide();
             } else {
-                mFab.show();
+                showFloatingActionButton();
             }
 
             if (mSettings.fastscroll()) {

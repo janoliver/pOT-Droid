@@ -5,7 +5,8 @@
               android:layout_height="wrap_content"
               android:background="?attr/bbBackgroundList"
               android:padding="?attr/bbListItemPaddingLR"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              android:layout_marginBottom="1dp">
 
     <TextView
             android:id="@+id/name"

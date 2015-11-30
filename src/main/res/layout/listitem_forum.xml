@@ -3,7 +3,8 @@
                 android:id="@+id/container"
                 android:layout_height="wrap_content"
                 android:padding="?attr/bbListItemPaddingTB"
-                android:background="?attr/bbBackgroundListActive">
+                android:background="?attr/bbBackgroundListActive"
+                android:layout_marginBottom="1dp">
 
     <TextView
             android:id="@+id/text_name"

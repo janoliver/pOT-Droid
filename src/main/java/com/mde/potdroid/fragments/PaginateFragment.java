@@ -3,13 +3,13 @@ package com.mde.potdroid.fragments;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.view.*;
 import android.widget.LinearLayout;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.views.IconButton;
 import com.mde.potdroid.views.IconDrawable;
-import com.melnykov.fab.FloatingActionButton;
 
 /**
  * This Fragment extends BaseFragment and provides some more methods and an interface

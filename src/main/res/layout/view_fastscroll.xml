@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:fab="http://schemas.android.com/apk/res-auto"
+              xmlns:app="http://schemas.android.com/tools"
               android:id="@+id/fastscroll_view"
               android:layout_width="wrap_content"
               android:layout_centerVertical="true"
@@ -10,28 +11,32 @@
               android:layout_alignParentRight="true"
               android:visibility="invisible">
 
-    <com.melnykov.fab.FloatingActionButton
+    <android.support.design.widget.FloatingActionButton
             android:id="@+id/button_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|right"
             android:layout_margin="16dp"
-            fab:fab_type="mini"
-            fab:fab_colorNormal="?attr/bbColorSecondary"
-            fab:fab_colorPressed="?attr/bbColorPrimary"
-            fab:fab_colorRipple="@color/transparent"
+            app:layout_anchorGravity="bottom|right"
+            app:layout_behavior="com.mde.potdroid.helpers.ScrollAwareFABBehavior"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"
+            app:backgroundTint="?attr/bbColorSecondary"
+            app:rippleColor="?attr/bbColorPrimary"
             android:visibility="gone"/>
 
-    <com.melnykov.fab.FloatingActionButton
+    <android.support.design.widget.FloatingActionButton
             android:id="@+id/button_down"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|right"
             android:layout_margin="16dp"
-            fab:fab_type="mini"
-            fab:fab_colorNormal="?attr/bbColorSecondary"
-            fab:fab_colorPressed="?attr/bbColorPrimary"
-            fab:fab_colorRipple="@color/transparent"
+            app:layout_anchorGravity="bottom|right"
+            app:layout_behavior="com.mde.potdroid.helpers.ScrollAwareFABBehavior"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"
+            app:backgroundTint="?attr/bbColorSecondary"
+            app:rippleColor="?attr/bbColorPrimary"
             android:visibility="gone"/>
 
 </LinearLayout>

@@ -156,7 +156,7 @@ public class TopicFragment extends PaginateFragment implements
         mFab.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
         mFab.hide();
 
-        if (Utils.isLoggedIn() && mSettings.isShowFAB()) {
+        if (Utils.isLoggedIn() && mSettings.isShowFAB() && !mSettings.isBottomToolbar()) {
             mFab.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     replyPost();

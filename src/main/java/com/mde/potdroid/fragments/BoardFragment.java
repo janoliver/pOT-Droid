@@ -120,9 +120,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
         fab.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
 
-        if (Utils.isLoggedIn() && mSettings.isShowFAB()) {
-            //mFab.attachToListView(mListView);
-
+        if (Utils.isLoggedIn() && mSettings.isShowFAB() && !mSettings.isBottomToolbar()) {
             fab.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     newThread();

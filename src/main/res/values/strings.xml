@@ -130,7 +130,7 @@ Es gibt einen pOT-Droid Thread. Den Link und die Änderungen findest du unter \'
     <string name="image_dialog_view">Mit Bild-App öffnen</string>
     <string name="image_dialog_share">Teilen</string>
     <string name="image_dialog_download">Herunterladen</string>
-    <string name="choose_browser">Browser wählen...</string>
+    <string name="choose_browser">Browser wählen…</string>
     <string name="no_browser_installed">Kein Browser installiert?</string>
 
 

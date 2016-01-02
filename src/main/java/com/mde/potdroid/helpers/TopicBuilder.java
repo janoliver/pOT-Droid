@@ -58,6 +58,7 @@ public class TopicBuilder {
         mSmileys.put("[img]http://forum.mods.de/bb/img/icons/thumbsdown.gif[/img]", "thumbsdown.png");
         mSmileys.put("[img]http://forum.mods.de/bb/img/icons/pfeil.gif[/img]", "pfeil.png");
         mSmileys.put("[img]http://forum.mods.de/bb/img/icons/icon10.gif[/img]", "icon10.png");
+        mSmileys.put("[img]http://i.imgur.com/lNddx3D.gif[/img]", "matolf.gif");
 
     }
 

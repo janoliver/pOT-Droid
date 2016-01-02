@@ -8,11 +8,7 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.webkit.MimeTypeMap;
-import com.mde.potdroid.PotDroidApplication;
-import com.nostra13.universalimageloader.cache.disc.DiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.utils.DiskCacheUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,25 +25,21 @@ public class CacheContentProvider extends ContentProvider {
             MediaStore.MediaColumns.SIZE,
             MediaStore.MediaColumns.TITLE };
     public static final Uri CONTENT_URI = Uri.parse("content://com.mde.potdroid.files/");
-    private DiskCache mCache;
 
     @Override
     public boolean onCreate() {
-        PotDroidApplication.initImageLoader(getContext());
-        final ImageLoader il = ImageLoader.getInstance();
-        mCache = il.getDiskCache();
         return true;
     }
 
     @Override
     public String getType(Uri uri) {
-        final File file = getFileForUri(uri);
-
-        final int lastDot = file.getName().lastIndexOf('.');
+        final int lastDot = uri.toString().lastIndexOf('.');
         if (lastDot >= 0) {
-            final String extension = file.getName().substring(lastDot + 1);
+            final String extension = uri.toString().substring(lastDot + 1).toLowerCase();
             final String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+
             if (mime != null) {
+                Utils.log(mime);
                 return mime;
             }
         }
@@ -67,7 +59,8 @@ public class CacheContentProvider extends ContentProvider {
     }
 
     private File getFileForUri(Uri uri) {
-        return DiskCacheUtils.findInCache(uri.toString(), mCache);
+        String filename = getFilenameForCache(uri.toString());
+        return new File(ImageHandler.getCacheDir(getContext()), filename);
     }
 
     @Override
@@ -151,6 +144,11 @@ public class CacheContentProvider extends ContentProvider {
         final Object[] result = new Object[newLength];
         System.arraycopy(original, 0, result, 0, newLength);
         return result;
+    }
+
+    public static String getFilenameForCache(String url) {
+        HashFileNameGenerator generator = new HashFileNameGenerator();
+        return generator.generate(url);
     }
 
     public static class HashFileNameGenerator extends Md5FileNameGenerator {

@@ -57,6 +57,10 @@ public class Network {
         mHttpClient.setCookieHandler(CookieHandler.getDefault());
     }
 
+    OkHttpClient getHttpClient() {
+        return mHttpClient;
+    }
+
     /**
      * Get a xml document from the mods.de api
      */

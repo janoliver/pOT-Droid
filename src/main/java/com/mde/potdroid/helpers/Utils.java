@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import android.util.TypedValue;
+import com.facebook.imageformat.ImageFormat;
 
 import java.io.File;
 import java.io.IOException;
@@ -251,6 +252,20 @@ public class Utils {
     public static File getCacheDir(Context context) {
         File ext_root = Environment.getExternalStorageDirectory();
         return new File(ext_root, "Android/data/" + context.getPackageName() + CACHE_DIR);
+    }
+
+    public static String getExtension(ImageFormat imageFormat) {
+        if(imageFormat == ImageFormat.BMP)
+            return ".bmp";
+        else if(imageFormat == ImageFormat.JPEG)
+            return ".jpg";
+        else if(imageFormat == ImageFormat.PNG)
+            return ".png";
+        else if(imageFormat == ImageFormat.GIF)
+            return ".gif";
+        else
+            return ".webp";
+
     }
 
     public static class NotLoggedInException extends Exception {

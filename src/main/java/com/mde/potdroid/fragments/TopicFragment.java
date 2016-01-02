@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,17 +30,13 @@ import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.TopicParser;
 import com.mde.potdroid.views.*;
 import com.nineoldandroids.view.ViewPropertyAnimator;
-import com.nostra13.universalimageloader.cache.disc.DiskCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.utils.DiskCacheUtils;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import org.apache.http.Header;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
@@ -124,7 +119,7 @@ public class TopicFragment extends PaginateFragment implements
         if (!mSettings.isSwipeToRefreshTopic())
             mPullToRefreshLayout.setEnabled(false);
 
-        if(mSettings.isBottomToolbar()) {
+        if (mSettings.isBottomToolbar()) {
             getWriteButton().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -204,6 +199,15 @@ public class TopicFragment extends PaginateFragment implements
         restartLoader(this);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+
+        ImageHandler ih = new ImageHandler(getActivity());
+        ih.clearCache();
+    }
+
     /**
      * Set up the webview programmatically, to workaround the kitkat memory leak.
      */
@@ -236,7 +240,7 @@ public class TopicFragment extends PaginateFragment implements
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 view.getContext().startActivity(i);
                 return true;
             }
@@ -253,7 +257,7 @@ public class TopicFragment extends PaginateFragment implements
 
     public void displayContent() {
         // shouldn't be null :(
-        if(mWebView == null)
+        if (mWebView == null)
             return;
         if (mTopic != null) {
             mWebView.loadDataWithBaseURL(
@@ -288,7 +292,7 @@ public class TopicFragment extends PaginateFragment implements
             menu.findItem(R.id.new_reply).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
         }
 
-        if(isLastPage())
+        if (isLastPage())
             menu.findItem(R.id.preload_next).setVisible(false);
     }
 
@@ -347,7 +351,7 @@ public class TopicFragment extends PaginateFragment implements
 
         if (data != null) {
 
-            if(data.getIsCacheOnly()) {
+            if (data.getIsCacheOnly()) {
                 mNextCache = data;
                 data.setIsCacheOnly(false);
 
@@ -378,7 +382,7 @@ public class TopicFragment extends PaginateFragment implements
     }
 
     private void showFloatingActionButton() {
-        if(Utils.isLoggedIn() && mSettings.isShowFAB() && !mSettings.isBottomToolbar())
+        if (Utils.isLoggedIn() && mSettings.isShowFAB() && !mSettings.isBottomToolbar())
             mFab.show();
     }
 
@@ -431,7 +435,7 @@ public class TopicFragment extends PaginateFragment implements
 
     public void goToNextPage() {
 
-        if(mNextCache != null) {
+        if (mNextCache != null) {
             mJsInterface.registerScroll(0);
 
             // update the topic data
@@ -664,7 +668,7 @@ public class TopicFragment extends PaginateFragment implements
             @Override
             public void onResponse(Response response) {
                 // fail silently if the Activity is not present anymore
-                if(getBaseActivity() == null)
+                if (getBaseActivity() == null)
                     return;
 
                 getBaseActivity().runOnUiThread(new Runnable() {
@@ -719,12 +723,12 @@ public class TopicFragment extends PaginateFragment implements
                 String.format("thread.php?PID=%d&TID=%d#reply_%d", p.getId(), mTopic.getId(), p.getId()));
 
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentapiVersion >= android.os.Build.VERSION_CODES.HONEYCOMB){
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.HONEYCOMB) {
             android.content.ClipboardManager clipboard =
                     (android.content.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText(mTopic.getTitle(), url);
             clipboard.setPrimaryClip(clip);
-        } else{
+        } else {
             android.text.ClipboardManager clipboard =
                     (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
             clipboard.setText(url);
@@ -747,35 +751,20 @@ public class TopicFragment extends PaginateFragment implements
         startActivityForResult(intent, EditorFragment.MODE_MESSAGE);
     }
 
-    public void loadImage(String url, final String id) {
-        final ImageLoader il = ImageLoader.getInstance();
-        final DiskCache cache = il.getDiskCache();
+    public void loadImage(final String url, final String id) {
+        ImageHandler ih = new ImageHandler(getActivity());
+        ih.retrieveImage(url, new ImageHandler.ImageHandlerCallback() {
+            @Override
+            public void onSuccess(String url, String path) {
+                mJsInterface.displayImage(url, path, id);
+            }
 
-        Uri localUri = CacheContentProvider.getContentUriFromUrlOrUri(url);
-        File f = DiskCacheUtils.findInCache(localUri.toString(), cache);
-
-        if (f != null) {
-            mJsInterface.displayImage(url, localUri.toString(), id);
-        } else {
-            il.loadImage(url, new SimpleImageLoadingListener() {
-                @Override
-                public void onLoadingComplete(String url, View view, Bitmap loadedImage) {
-                    Uri localUri = CacheContentProvider.getContentUriFromUrlOrUri(url);
-                    File f = DiskCacheUtils.findInCache(localUri.toString(), cache);
-                    if (f != null)
-                        mJsInterface.displayImage(url, localUri.toString(), id);
-                    else
-                        showError(R.string.msg_img_loading_error);
-
-                }
-
-                @Override
-                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                    mJsInterface.displayImageLoader(id);
-                    showError(R.string.msg_img_loading_error);
-                }
-            });
-        }
+            @Override
+            public void onFailure(String url) {
+                mJsInterface.displayImageLoader(id);
+                showError(R.string.msg_img_loading_error);
+            }
+        });
     }
 
     public boolean isImageCached(String url) {
@@ -846,7 +835,7 @@ public class TopicFragment extends PaginateFragment implements
             }
 
             if ((scrollingDown && !mIsScrolledTop && !mIsScrolledBottom) ||
-                (!scrollingDown && mIsScrolledBottom)) {
+                    (!scrollingDown && mIsScrolledBottom)) {
                 mFab.hide();
             } else {
                 showFloatingActionButton();

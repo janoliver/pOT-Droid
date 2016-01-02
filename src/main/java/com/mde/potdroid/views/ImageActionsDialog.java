@@ -41,23 +41,22 @@ public class ImageActionsDialog extends DialogFragment {
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+                        final Uri uri = Uri.parse(getArguments().getString(ARG_IMAGE_URI));
                         switch (i) {
                             case 0:
                                 Intent intent = new Intent();
                                 intent.setAction(Intent.ACTION_VIEW);
-                                intent.setDataAndType(Uri.parse(getArguments().getString(ARG_IMAGE_URI)), "image/*");
+                                intent.setDataAndType(uri, "image/*");
                                 startActivity(intent);
                                 break;
                             case 1:
-
                                 Intent shareIntent = new Intent();
                                 shareIntent.setAction(Intent.ACTION_SEND);
-                                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(getArguments().getString(ARG_IMAGE_URI)));
+                                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
                                 shareIntent.setType("image/*");
-                                startActivity(Intent.createChooser(shareIntent, "Share"));
+                                startActivity(Intent.createChooser(shareIntent, "Share with"));
                                 break;
                             case 2:
-                                Uri uri = Uri.parse(getArguments().getString(ARG_IMAGE_URI));
                                 InputStream inStream = null;
                                 try {
                                     inStream = getActivity().getContentResolver().openInputStream(uri);

@@ -36,7 +36,12 @@
 
                 <div class="bender" {{&avatarBackground}}></div>
                 <div class="author">
+                    {{#getAuthorLocked}}
+                    <strike>{{author}}</strike>
+                    {{/getAuthorLocked}}
+                    {{^getAuthorLocked}}
                     {{author}}
+                    {{/getAuthorLocked}}
 
                     {{#isNumber}}
                     <span class="number"> ({{-index}})</span>

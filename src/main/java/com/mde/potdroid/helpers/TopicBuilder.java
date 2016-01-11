@@ -193,6 +193,10 @@ public class TopicBuilder {
             return mPost.getId();
         }
 
+        public boolean getAuthorLocked() {
+            return mPost.getAuthor().getLocked();
+        }
+
         public String getAuthor() {
             return mPost.getAuthor().getNick();
         }

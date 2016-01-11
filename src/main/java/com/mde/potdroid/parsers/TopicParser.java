@@ -68,6 +68,7 @@ public class TopicParser extends DefaultHandler {
     public static String USER_TAG = "user";
     public static String AVATAR_TAG = "avatar";
     public static String AVATAR_ATTRIBUTE = "id";
+    public static String LOCKED_ATTRIBUTE = "locked";
     public static String URL = "xml/thread.php";
     private Post mCurrentPost;
     private User mCurrentUser;
@@ -264,6 +265,8 @@ public class TopicParser extends DefaultHandler {
             @Override
             public void start(Attributes attributes) {
                 mCurrentUser = new User(Integer.parseInt(attributes.getValue(ID_ATTRIBUTE)));
+                if(attributes.getValue(LOCKED_ATTRIBUTE) != null)
+                    mCurrentUser.setLocked(attributes.getValue(LOCKED_ATTRIBUTE).equals("1"));
             }
         });
         post.requireChild(DATE_TAG).setStartElementListener(new StartElementListener() {
@@ -350,6 +353,8 @@ public class TopicParser extends DefaultHandler {
             public void start(Attributes attributes) {
                 mCurrentLastEditUser = new User(Integer.parseInt(attributes.getValue
                         (ID_ATTRIBUTE)));
+                if(attributes.getValue(LOCKED_ATTRIBUTE) != null)
+                    mCurrentLastEditUser.setLocked(attributes.getValue(LOCKED_ATTRIBUTE).equals("1"));
             }
         });
         lastedit.getChild(DATE_TAG).setStartElementListener(new StartElementListener() {

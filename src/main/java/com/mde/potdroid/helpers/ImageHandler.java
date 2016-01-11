@@ -3,6 +3,9 @@ package com.mde.potdroid.helpers;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
+import com.facebook.binaryresource.BinaryResource;
+import com.facebook.binaryresource.FileBinaryResource;
+import com.facebook.cache.common.CacheKey;
 import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.common.internal.Closeables;
 import com.facebook.common.references.CloseableReference;
@@ -11,7 +14,9 @@ import com.facebook.datasource.DataSource;
 import com.facebook.datasource.DataSubscriber;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.backends.okhttp.OkHttpImagePipelineConfigFactory;
+import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.facebook.imagepipeline.memory.PooledByteBuffer;
 import com.facebook.imagepipeline.memory.PooledByteBufferInputStream;
 import com.facebook.imagepipeline.request.ImageRequest;
@@ -102,6 +107,30 @@ public class ImageHandler {
                     }
                 };
         dataSource.subscribe(dataSubscriber, CallerThreadExecutor.getInstance());
+    }
+
+    public static boolean isImageDownloaded(Uri loadUri) {
+        if (loadUri == null) {
+            return false;
+        }
+        CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(ImageRequest.fromUri(loadUri));
+        return ImagePipelineFactory.getInstance().getMainDiskStorageCache().hasKey(cacheKey) || ImagePipelineFactory.getInstance().getSmallImageDiskStorageCache().hasKey(cacheKey);
+    }
+
+    //return file or null
+    public static File getCachedImageOnDisk(Uri loadUri) {
+        File localFile = null;
+        if (loadUri != null) {
+            CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(ImageRequest.fromUri(loadUri));
+            if (ImagePipelineFactory.getInstance().getMainDiskStorageCache().hasKey(cacheKey)) {
+                BinaryResource resource = ImagePipelineFactory.getInstance().getMainDiskStorageCache().getResource(cacheKey);
+                localFile = ((FileBinaryResource) resource).getFile();
+            } else if (ImagePipelineFactory.getInstance().getSmallImageDiskStorageCache().hasKey(cacheKey)) {
+                BinaryResource resource = ImagePipelineFactory.getInstance().getSmallImageDiskStorageCache().getResource(cacheKey);
+                localFile = ((FileBinaryResource) resource).getFile();
+            }
+        }
+        return localFile;
     }
 
     public static void saveInputStream(final File outFile, final PooledByteBufferInputStream is,

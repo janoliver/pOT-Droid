@@ -14,6 +14,7 @@ public class User implements Serializable {
     private String mAvatarFile;
     private Integer mAvatarId;
     private Integer mGroup;
+    private Boolean mLocked = false;
 
     public User(Integer id) {
         mId = id;
@@ -55,5 +56,11 @@ public class User implements Serializable {
         return mId;
     }
 
+    public void setLocked(boolean locked) {
+        mLocked = locked;
+    }
 
+    public boolean getLocked() {
+        return mLocked;
+    }
 }

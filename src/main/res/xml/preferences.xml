@@ -289,9 +289,6 @@
             android:title="System"
             android:key="pref_system_settings"
             android:summary="Sonstige Einstellungen">
-        <Preference
-                android:key="pref_clear_cache"
-                android:title="Cache leeren"/>
 
         <EditTextPreference
                 android:defaultValue="50"

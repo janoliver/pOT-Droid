@@ -116,7 +116,6 @@
     <orderEntry type="library" exported="" name="android-observablescrollview-1.6.0" level="project" />
     <orderEntry type="library" exported="" name="imagepipeline-base-0.9.0" level="project" />
     <orderEntry type="library" exported="" name="okhttp-2.6.0" level="project" />
-    <orderEntry type="library" exported="" name="universal-image-loader-1.9.5" level="project" />
     <orderEntry type="library" exported="" name="fbcore-0.9.0" level="project" />
     <orderEntry type="library" exported="" name="design-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="jmustache-1.12" level="project" />

@@ -9,16 +9,13 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
 import android.support.v4.preference.PreferenceFragment;
-import android.view.View;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.services.MessagePollingService;
 import com.mde.potdroid.views.LoginDialog;
 import com.mde.potdroid.views.LogoutDialog;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by oli on 1/2/15.
@@ -45,22 +42,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         CheckBoxPreference preference = (CheckBoxPreference) findPreference("pref_fixed_sidebar");
         preference.setChecked(def);
         preference.setDefaultValue(def);
-
-        final ImageLoader il = ImageLoader.getInstance();
-        Preference clearCachePref = findPreference("pref_clear_cache");
-        clearCachePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            public boolean onPreferenceClick(Preference preference) {
-                il.clearDiskCache();
-
-                Snackbar snackbar = Snackbar
-                        .make(getActivity().findViewById(android.R.id.content), "Cache geleert!", Snackbar.LENGTH_LONG);
-                View snackBarView = snackbar.getView();
-                snackBarView.setBackgroundColor(BaseFragment.COLOR_SUCCESS);
-                snackbar.show();
-
-                return true;
-            }
-        });
     }
 
 

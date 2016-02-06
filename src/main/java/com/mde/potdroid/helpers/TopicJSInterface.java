@@ -93,14 +93,6 @@ public class TopicJSInterface extends BenderJSInterface {
     }
 
     /**
-     * Loads an image in the background, and, if done, inserts it into the webview
-     */
-    @JavascriptInterface
-    public boolean isCached(final String url) {
-        return mTopicFragment.isImageCached(url);
-    }
-
-    /**
      * Return the menu status
      *
      * @return 1 -> show always, 2 -> show icon, 3 -> orientation dependent

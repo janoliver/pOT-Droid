@@ -8,12 +8,14 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.webkit.MimeTypeMap;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class CacheContentProvider extends ContentProvider {
     private static final String[] COLUMNS= {
@@ -151,13 +153,31 @@ public class CacheContentProvider extends ContentProvider {
         return generator.generate(url);
     }
 
-    public static class HashFileNameGenerator extends Md5FileNameGenerator {
-        @Override
-        public String generate(String url) {
-            Uri uri = getContentUriFromUrlOrUri(url);
-            if(uri == null)
-                return super.generate(url);
-            return super.generate(uri.toString());
+    public static class HashFileNameGenerator {
+
+        private static final String HASH_ALGORITHM = "MD5";
+        private static final int RADIX = 10 + 26; // 10 digits + 26 letters
+
+        public String generate(String imageUri) {
+            Uri uri = getContentUriFromUrlOrUri(imageUri);
+            if(uri != null)
+                imageUri = uri.toString();
+
+            byte[] md5 = getMD5(imageUri.getBytes());
+            BigInteger bi = new BigInteger(md5).abs();
+            return bi.toString(RADIX);
+        }
+
+        private byte[] getMD5(byte[] data) {
+            byte[] hash = null;
+            try {
+                MessageDigest digest = MessageDigest.getInstance(HASH_ALGORITHM);
+                digest.update(data);
+                hash = digest.digest();
+            } catch (NoSuchAlgorithmException e) {
+                // nothing
+            }
+            return hash;
         }
     }
 

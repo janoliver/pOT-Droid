@@ -30,8 +30,6 @@ import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.TopicParser;
 import com.mde.potdroid.views.*;
 import com.nineoldandroids.view.ViewPropertyAnimator;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.utils.DiskCacheUtils;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -765,10 +763,6 @@ public class TopicFragment extends PaginateFragment implements
                 showError(R.string.msg_img_loading_error);
             }
         });
-    }
-
-    public boolean isImageCached(String url) {
-        return DiskCacheUtils.findInCache(url, ImageLoader.getInstance().getDiskCache()) != null;
     }
 
     static class AsyncContentLoader extends AsyncHttpLoader<Topic> {

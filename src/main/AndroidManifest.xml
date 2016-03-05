@@ -32,8 +32,7 @@
         </activity>
 
         <activity
-                android:name=".ForumActivity"
-                android:launchMode="singleTask">
+                android:name=".ForumActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -48,8 +47,7 @@
 
         </activity>
 
-        <activity android:name=".BoardActivity"
-                  android:launchMode="singleTask">
+        <activity android:name=".BoardActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -65,15 +63,13 @@
         </activity>
 
         <activity
-                android:name=".BookmarkActivity"
-                android:launchMode="singleTask"/>
+                android:name=".BookmarkActivity"/>
 
         <activity
                 android:name=".EditorActivity"/>
 
         <activity
-                android:name=".TopicActivity"
-                android:launchMode="singleTask">
+                android:name=".TopicActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -89,8 +85,7 @@
         </activity>
 
         <activity
-                android:name=".MessageListActivity"
-                android:launchMode="singleTask">
+                android:name=".MessageListActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

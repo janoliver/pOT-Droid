@@ -43,6 +43,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     public static final String BOARD_URL_POST = "newreply.php";
     public static final String BOARD_URL_THREAD = "newthread.php";
     public static final String BOARD_URL_EDITPOST = "editreply.php";
+    protected static final String ARG_CLOSED = "closed";
     protected static final String ARG_MODE = "mode";
     protected static final String ARG_TOPIC_ID = "topic_id";
     protected static final String ARG_POST_ID = "post_id";
@@ -199,6 +200,9 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        if(getArguments().getBoolean(ARG_CLOSED, false))
+            showInfo(R.string.msg_topic_closed);
 
         mPullToRefreshLayout.setSwipeable(false);
 

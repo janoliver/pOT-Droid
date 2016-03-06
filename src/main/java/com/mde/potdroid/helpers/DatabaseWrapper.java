@@ -326,6 +326,9 @@ public class DatabaseWrapper {
     }
 
     public Bookmark getBookmarkByTopic(Topic topic) {
+        if(topic == null)
+            return null;
+        
         Cursor c = mDatabase.rawQuery("SELECT * FROM " +
                 BOOKMARKS_TABLE_NAME +
                 " WHERE thread_id = ?  ORDER BY board_id, thread_title COLLATE NOCASE ASC;",

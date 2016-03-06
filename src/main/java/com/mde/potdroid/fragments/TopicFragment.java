@@ -591,9 +591,6 @@ public class TopicFragment extends PaginateFragment implements
     public void quotePost(final int id) {
         Post p = mTopic.getPostById(id);
 
-        if (mTopic.isClosed())
-            showInfo(R.string.msg_topic_closed);
-
         String text = String.format(getString(R.string.quote),
                 mTopic.getId(), p.getId(), p.getAuthor().getNick(), p.getText());
 
@@ -606,6 +603,7 @@ public class TopicFragment extends PaginateFragment implements
         intent.putExtra(EditorFragment.ARG_MODE, EditorFragment.MODE_REPLY);
         intent.putExtra(EditorFragment.ARG_TOPIC_ID, mTopic.getId());
         intent.putExtra(EditorFragment.ARG_TEXT, text);
+        intent.putExtra(EditorFragment.ARG_CLOSED, mTopic.isClosed());
 
         startActivityForResult(intent, EditorFragment.MODE_REPLY);
     }
@@ -617,13 +615,11 @@ public class TopicFragment extends PaginateFragment implements
         if (mTopic == null)
             return;
 
-        if (mTopic.isClosed())
-            showInfo(R.string.msg_topic_closed);
-
         Intent intent = new Intent(getBaseActivity(), EditorActivity.class);
         intent.putExtra(EditorFragment.ARG_MODE, EditorFragment.MODE_REPLY);
         intent.putExtra(EditorFragment.ARG_TOPIC_ID, mTopic.getId());
         intent.putExtra(EditorFragment.ARG_TOKEN, mTopic.getNewreplytoken());
+        intent.putExtra(EditorFragment.ARG_CLOSED, mTopic.isClosed());
 
         startActivityForResult(intent, EditorFragment.MODE_REPLY);
     }

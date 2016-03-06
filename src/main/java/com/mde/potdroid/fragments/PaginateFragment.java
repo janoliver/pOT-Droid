@@ -1,12 +1,17 @@
 package com.mde.potdroid.fragments;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.view.*;
 import android.widget.LinearLayout;
+import com.mde.potdroid.BoardActivity;
+import com.mde.potdroid.BookmarkActivity;
+import com.mde.potdroid.ForumActivity;
 import com.mde.potdroid.R;
+import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.views.IconButton;
 import com.mde.potdroid.views.IconDrawable;
@@ -36,6 +41,7 @@ abstract public class PaginateFragment extends BaseFragment {
     };
     private boolean mSwipeEnabled = true;
     private IconButton mRefreshButton;
+    private IconButton mHomeButton;
     private IconButton mFwdButton;
     private IconButton mFfwdButton;
     private IconButton mRwdButton;
@@ -84,6 +90,7 @@ abstract public class PaginateFragment extends BaseFragment {
             mRwdButton = (IconButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_rwd);
             mFrwdButton = (IconButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_frwd);
             mWriteButton = (IconButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_write);
+            mHomeButton = (IconButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_home);
 
             mRefreshButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -115,6 +122,12 @@ abstract public class PaginateFragment extends BaseFragment {
                     goToFirstPage();
                 }
             });
+            mHomeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToHomePage();
+                }
+            });
 
             mFwdButton.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -129,6 +142,21 @@ abstract public class PaginateFragment extends BaseFragment {
         }
 
         refreshPaginateLayout();
+    }
+
+    public void goToHomePage() {
+        Intent intent;
+        if(mSettings.getStartActivity() == SettingsWrapper.START_FORUM) {
+            intent = new Intent(getBaseActivity(), BoardActivity.class);
+            intent.putExtra(BoardFragment.ARG_ID, mSettings.getStartForum());
+            intent.putExtra(BoardFragment.ARG_PAGE, 1);
+        } else if(mSettings.getStartActivity() == SettingsWrapper.START_BOOKMARKS && Utils.isLoggedIn()) {
+            intent = new Intent(getBaseActivity(), BookmarkActivity.class);
+        } else {
+            intent = new Intent(getBaseActivity(), ForumActivity.class);
+        }
+
+        startActivity(intent);
     }
 
     @Override

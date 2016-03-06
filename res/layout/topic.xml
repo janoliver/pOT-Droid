@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/linlayout"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:padding="0pt">
+    
+
+	<WebView  xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/webview"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:autoLink="none"
+	    android:padding="0pt"
+	    android:paddingLeft="0pt"
+	    android:paddingTop="0pt"
+	    android:paddingRight="0pt"
+	    android:paddingBottom="0pt"
+	    android:layout_margin="0pt"
+	    android:scrollbarStyle="outsideOverlay" />
+
+</LinearLayout>

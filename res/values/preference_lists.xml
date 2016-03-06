@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="forumStyle">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>BB Style</item>
+    </string-array>
+    <string-array name="forumStyleValues">
+        <item>threadcss_light</item>
+        <item>threadcss_dark</item>
+        <item>threadcss_bbstyle</item>
+    </string-array>
+    <string-array name="themes">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+    <string-array name="themesValues">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="loadImages">
+        <item>Nie</item>
+        <item>Nur mit WLAN</item>
+        <item>Immer</item>
+    </string-array>
+    <string-array name="loadImagesValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="notificationRefreshTimeValues">
+        <item>10</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>300</item>
+        <item>600</item>
+        <item>1800</item>
+        <item>3600</item>
+    </string-array>
+    <string-array name="notificationRefreshTime">
+        <item>alle 10 Sekunden</item>
+        <item>alle 30 Sekunden</item>
+        <item>minütlich</item>
+        <item>alle zwei Minuten</item>
+        <item>alle fünf Minuten</item>
+        <item>alle zehn Minuten</item>
+        <item>halbstündlich</item>
+        <item>stündlich</item>
+    </string-array>
+    <string-array name="touchDurationValues">
+        <item>200</item>
+        <item>300</item>
+        <item>400</item>
+        <item>500</item>
+        <item>600</item>
+        <item>700</item>
+        <item>800</item>
+        <item>900</item>
+        <item>1000</item>
+    </string-array>
+    <string-array name="touchDuration">
+        <item>0.2 Sekunden</item>
+        <item>0.3 Sekunden</item>
+        <item>0.4 Sekunden</item>
+        <item>0.5 Sekunden</item>
+        <item>0.6 Sekunden</item>
+        <item>0.7 Sekunden</item>
+        <item>0.8 Sekunden</item>
+        <item>0.9 Sekunden</item>
+        <item>1 Sekunde</item>
+    </string-array>
+    <string-array name="mataLoc">
+        <item>Lesezeichen</item>
+        <item>Forenübersicht</item>
+        <item>pOT</item>
+    </string-array>
+    <string-array name="mataLocValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="startActivity">
+        <item>Forenübersicht</item>
+        <item>Bookmarks</item>
+        <item>Forum</item>
+    </string-array>
+    <string-array name="startActivityValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+</resources>

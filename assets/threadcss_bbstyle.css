@@ -1,0 +1,132 @@
+* {
+    padding: 0; margin:0; border:0;
+}
+
+body {
+    font-size:13px;
+    background:#394E63;
+}
+
+.title {
+    padding:2px;
+    background:#091827;
+    color:#fff;
+}
+
+.title .nick {
+    font-weight:bold;
+    font-size:14px;
+}
+
+.title .date {
+    float:right;
+    font-size:10px;
+    padding-top:3px;
+    color:#777;
+}
+
+.content {
+    padding:3px 3px 5px 3px;
+    background:#394E63;
+    color:#fff;
+    
+}
+
+.content .posttitle {
+    color:#ccc;
+    text-align:right;
+    font-size:0.9em;
+}
+
+
+.curruser .title, .curruser .content {
+    border-left:2px solid darkred;
+}
+
+.newpost {
+    border-right:4px solid yellow;
+}
+
+.content a {
+	color:#999;
+}
+
+.spoiler {
+	background:#000;
+	color: #eee;
+}
+
+.mod {
+	color:#FACC2E;
+	font-size:14px;
+	font-weight:bold;
+}
+
+blockquote {
+    /*border-left:2px solid #666666;*/
+    color:#bbb;
+    margin:5px 3px 5px 3px;
+    background:#21354C;
+    padding:2px;
+    padding-left:4px;
+    border-radius:3px;
+}
+
+blockquote .author {
+    font-weight:bold;
+    margin-bottom:2px;
+}
+
+blockquote blockquote {
+	background: #1E3044;
+	color:#aaa;
+}
+
+blockquote blockquote blockquote {
+    background: #1A2A3D;
+    color:#999;
+}
+
+blockquote blockquote blockquote blockquote {
+    background: #172535;
+    color:#888;
+}
+
+blockquote blockquote blockquote blockquote blockquote {
+    background: #14202E;
+    color:#777;
+}
+
+blockquote blockquote blockquote blockquote blockquote blockquote {
+    background: #101A26;
+    color:#666;
+}
+
+
+ul {
+    margin-left:20px;
+}
+
+input.loadimage,input.spoiler {
+    padding:3px;
+    background:#CCC;
+    padding:15px 5px;
+    font-size:14px;
+    color:#000;
+    
+}
+
+table,td
+{
+    border:1px solid black;
+    
+}
+
+table {
+    border-collapse:collapse;
+}
+
+td,tr,th {
+	text-align:left;
+    vertical-align:top;
+}

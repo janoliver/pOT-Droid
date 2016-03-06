@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="PotLight" parent="android:Theme.Holo.Light">
+        <item name="textColor1">#000000</item>
+        <item name="textColor2">#333333</item>
+        <item name="textColor3">#666666</item>
+        <item name="bgColor1">#ffffff</item>
+        <item name="bgColor2">#000000</item>
+        <item name="bgColor3">#000000</item>
+    </style>
+    
+    <style name="PotDark" parent="android:Theme.Holo">
+        <item name="textColor1">#ffffff</item>
+        <item name="textColor2">#eeeeee</item>
+        <item name="textColor3">#bbbbbb</item>
+        <item name="bgColor1">#000000</item>
+        <item name="bgColor2">#ffffff</item>
+        <item name="bgColor3">#ffffff</item>
+    </style>
+
+</resources>

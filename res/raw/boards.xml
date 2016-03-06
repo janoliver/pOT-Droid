@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<categories xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://forum.mods.de/bb/forum.xsd" current-user-id="74373" count="10">
+  <category id="6">
+    <name><![CDATA[Allgemeines]]></name>
+    <description><![CDATA[Seitenübergreifende Themen]]></description>
+    <boards count="4">
+      <board id="95">
+        <name><![CDATA[3DSupply.de]]></name>
+        <description><![CDATA[Alles rund um 3D Supply]]></description>
+        <in-category id="6"/>
+      </board>
+      <board id="69">
+        <name><![CDATA[MTA-Lan]]></name>
+        <description><![CDATA[Lanparty im Feriendorf]]></description>
+        <in-category id="6"/>
+      </board>
+      <board id="14">
+        <name><![CDATA[Public Offtopic]]></name>
+        <description><![CDATA[für das was nicht passt und sonstige geistige Höhenflüge]]></description>
+        <in-category id="6"/>
+      </board>
+      <board id="16">
+        <name><![CDATA[Offtopic- und Funforum]]></name>
+        <description><![CDATA[legendär elitär]]></description>
+        <in-category id="6"/>
+      </board>
+    </boards>
+  </category>
+  <category id="7">
+    <name><![CDATA[Counter-Strike / Half-Life 2]]></name>
+    <description><![CDATA[Alles rund um Valves Spiele]]></description>
+    <boards count="7">
+      <board id="18">
+        <name><![CDATA[Hauptforum]]></name>
+        <description><![CDATA[Alles rund ums Thema Counter-Strike!]]></description>
+        <in-category id="7"/>
+      </board>
+      <board id="19">
+        <name><![CDATA[CS-Help]]></name>
+        <description><![CDATA[Sorgen und Nöte mit CS?]]></description>
+        <in-category id="7"/>
+      </board>
+      <board id="70">
+        <name><![CDATA[Half-Life 2/Portal]]></name>
+        <description><![CDATA[Über Brechstangen und farbige Portale]]></description>
+        <in-category id="7"/>
+      </board>
+      <board id="113">
+        <name><![CDATA[Team Fortress 2]]></name>
+        <description><![CDATA[Wenn der Heavy mit dem Pyro...]]></description>
+        <in-category id="7"/>
+      </board>
+      <board id="122">
+        <name><![CDATA[Left 4 Dead]]></name>
+        <description><![CDATA[Multiplayer-Shooter-Zombie-Mayhem]]></description>
+        <in-category id="7"/>
+      </board>
+      <board id="20">
+        <name><![CDATA[Config/Alias/Bind/Scripts Forum]]></name>
+        <description><![CDATA[Scripting, Binding & Commands]]></description>
+        <in-category id="7"/>
+      </board>
+      <board id="44">
+        <name><![CDATA[Taktik, Bots und Crosshairs]]></name>
+        <description><![CDATA[Taktiken, Tips und Tricks Maps & Bots und Crosshairs diskutieren]]></description>
+        <in-category id="7"/>
+      </board>
+    </boards>
+  </category>
+  <category id="20">
+    <name><![CDATA[Gaming allgemein]]></name>
+    <description><![CDATA[Allgemeine Foren rund ums Zocken]]></description>
+    <boards count="6">
+      <board id="9">
+        <name><![CDATA[Clanforum]]></name>
+        <description><![CDATA[Clanwars, Recruitments etc.]]></description>
+        <in-category id="20"/>
+      </board>
+      <board id="13">
+        <name><![CDATA[Lanparty-Forum]]></name>
+        <description><![CDATA[Alles rund um Lanpartytermine, Organisationshilfen und -tricks]]></description>
+        <in-category id="20"/>
+      </board>
+      <board id="42">
+        <name><![CDATA[Server OP Forum]]></name>
+        <description><![CDATA[Alle Fragen zu Servern und Tools unter Linux und Windows]]></description>
+        <in-category id="20"/>
+      </board>
+      <board id="99">
+        <name><![CDATA[codnation.de]]></name>
+        <description><![CDATA[Alles rund um Call of Duty]]></description>
+        <in-category id="20"/>
+      </board>
+      <board id="97">
+        <name><![CDATA[MMORPG / Browsergames]]></name>
+        <description><![CDATA[Seid umschlungen, virtuelle Welten!]]></description>
+        <in-category id="20"/>
+      </board>
+      <board id="66">
+        <name><![CDATA[Rollenspieler]]></name>
+        <description><![CDATA[Pen&Paper für Anfänger und Fortgeschrittene]]></description>
+        <in-category id="20"/>
+      </board>
+    </boards>
+  </category>
+  <category id="9">
+    <name><![CDATA[Battlefield]]></name>
+    <description><![CDATA[Von den Schlachtfeldern Europas bis nach Vietnam]]></description>
+    <boards count="2">
+      <board id="31">
+        <name><![CDATA[Stammtisch Battlefield]]></name>
+        <description><![CDATA[Rotorenpoliermittel, Dieselpreise und Sprengfallentechniken bis der Arzt kommt]]></description>
+        <in-category id="9"/>
+      </board>
+      <board id="101">
+        <name><![CDATA[Battlefield Helpforum]]></name>
+        <description><![CDATA[Hilfe zu allen Battlefield-Teilen]]></description>
+        <in-category id="9"/>
+      </board>
+    </boards>
+  </category>
+  <category id="23">
+    <name><![CDATA[Systernals]]></name>
+    <description><![CDATA[Alles rund um die EDV]]></description>
+    <boards count="3">
+      <board id="86">
+        <name><![CDATA[Windows]]></name>
+        <description><![CDATA[Alles was sich um "Windows" dreht]]></description>
+        <in-category id="23"/>
+      </board>
+      <board id="87">
+        <name><![CDATA[Linux]]></name>
+        <description><![CDATA[Like a wigwam, no windows, no gates and an apache inside!]]></description>
+        <in-category id="23"/>
+      </board>
+      <board id="10">
+        <name><![CDATA[Hardware & Netzwerk]]></name>
+        <description><![CDATA[Alles rund um Hardware & Netzwerk]]></description>
+        <in-category id="23"/>
+      </board>
+    </boards>
+  </category>
+  <category id="21">
+    <name><![CDATA[Kreativabteilung]]></name>
+    <description><![CDATA[Alles rund um Web-, Grafik-, und Gamedesign]]></description>
+    <boards count="8">
+      <board id="91">
+        <name><![CDATA[Benderforum]]></name>
+        <description><![CDATA[Alles über die kleinen Gelben, Fragen & Präsentationen, wenn das Wunder der Bender Blüten trägt...]]></description>
+        <in-category id="21"/>
+      </board>
+      <board id="92">
+        <name><![CDATA[Bender Request]]></name>
+        <description><![CDATA[Du willst einen Custom-Bender? Hier werden Sie geholfen]]></description>
+        <in-category id="21"/>
+      </board>
+      <board id="43">
+        <name><![CDATA[Webdesign & Coding]]></name>
+        <description><![CDATA[Hello World!]]></description>
+        <in-category id="21"/>
+      </board>
+      <board id="23">
+        <name><![CDATA[Sound/GFX/Modcoding]]></name>
+        <description><![CDATA[über SDKs und sonstige Abkürzungen]]></description>
+        <in-category id="21"/>
+      </board>
+      <board id="45">
+        <name><![CDATA[Modelling & Skinning]]></name>
+        <description><![CDATA[Der Platz für alle, für die Milkshape kein Getränk und 3DMax keine neue Colasorte ist]]></description>
+        <in-category id="21"/>
+      </board>
+      <board id="25">
+        <name><![CDATA[Mapping -> Half-Life]]></name>
+        <description><![CDATA[Mapping & Map Reviews für Half-Life]]></description>
+        <in-category id="21"/>
+      </board>
+      <board id="96">
+        <name><![CDATA[Mapping -> Half-Life2]]></name>
+        <description><![CDATA[Alles zu HL2, CS Source und DoD - Mapping]]></description>
+        <in-category id="21"/>
+      </board>
+      <board id="29">
+        <name><![CDATA[Mapping -> Pimpage]]></name>
+        <description><![CDATA[Der Prüfstein für fertige Maps aller Art - Lob, Kritik und die totale Vernichtung inklusive (Bewertungs- und Bilderforum)]]></description>
+        <in-category id="21"/>
+      </board>
+    </boards>
+  </category>
+  <category id="12">
+    <name><![CDATA[Treffpunkt Bundesländer]]></name>
+    <description><![CDATA[Regionalbezogene Diskussionen]]></description>
+    <boards count="18">
+      <board id="46">
+        <name><![CDATA[Baden-Württemberg]]></name>
+        <description><![CDATA[Der wilde Süden]]></description>
+        <in-category id="12"/>
+      </board>
+      <board id="47">
+        <name><![CDATA[Bayern]]></name>
+        <description><![CDATA[Bier, Brezn und de Wiesn]]></description>
+        <in-category id="12"/>
+      </board>
+      <board id="48">
+        <name><![CDATA[Berlin]]></name>
+        <description><![CDATA[Da wo selbst der Kanzler zockt]]></description>
+        <in-category id="12"/>
+      </board>
+      <board id="49">
+        <name><![CDATA[Brandenburg]]></name>
+        <description><![CDATA[Märkische Krieger auf preußischen Sand]]></description>
+        <in-category id="12"/>
+      </board>
+      <board id="50">
+        <name><![CDATA[Bremen]]></name>
+        <description><![CDATA[Dat geiht narms bunter to as op in Bremen.]]></description>
+        <in-category id="12"/>
+      </board>
+      <board id="51">
+        <name><![CDATA[Hamburg]]></name>
+        <description><![CDATA[Hamburg, die Macht im Norden]]></description>
+        <in-category id="12"/>
+      </board>
+      <board id="52">
+        <name><![CDATA[Hessen]]></name>
+        <description><![CDATA[Erbarme, zu spät, die Hesse komme!]]></description>
+        <in-category id="12"/>
+      </board>
+      <board id="53">
+        <name><![CDATA[Mecklenburg-Vorpommern]]></name>
+        <description><![CDATA[Fischköppe]]></description>
+        <in-category id="12"/>
+      </board>
+      <board id="54">
+        <name><![CDATA[Niedersachsen]]></name>
+        <description><![CDATA[Da wo Auch nach viel Gutem Bier noch Hochdeutsch Gesprochen wird]]></description>
+        <in-category id="12"/>
+      </board>
+      <board id="55">
+        <name><![CDATA[Nordrhein-Westfalen]]></name>
+        <description><![CDATA[Wir begradigen den Rhein so lange, bis es kein Holland mehr gibt!]]></description>
+        <in-category id="12"/>
+      </board>
+      <board id="67">
+        <name><![CDATA[Österreich]]></name>
+        <description><![CDATA[No kangaroos in Austria]]></description>
+        <in-category id="12"/>
+      </board>
+      <board id="56">
+        <name><![CDATA[Rheinland-Pfalz]]></name>
+        <description><![CDATA[Wir sind nur ein Karnevalsverein!]]></description>
+        <in-category id="12"/>
+      </board>
+      <board id="57">
+        <name><![CDATA[Saarland]]></name>
+        <description><![CDATA[Für den Schwenker, für das Land]]></description>
+        <in-category id="12"/>
+      </board>
+      <board id="58">
+        <name><![CDATA[Sachsen]]></name>
+        <description><![CDATA[Gemütliche Stammtisch-Runde im fernen Osten]]></description>
+        <in-category id="12"/>
+      </board>
+      <board id="59">
+        <name><![CDATA[Sachsen-Anhalt]]></name>
+        <description><![CDATA[Per Sachsen-Anhalter durch die Galaxis!]]></description>
+        <in-category id="12"/>
+      </board>
+      <board id="60">
+        <name><![CDATA[Schleswig-Holstein]]></name>
+        <description><![CDATA[Nordisch by Nature]]></description>
+        <in-category id="12"/>
+      </board>
+      <board id="68">
+        <name><![CDATA[Schweiz]]></name>
+        <description><![CDATA[Unsere Tobleronelutscher... :p]]></description>
+        <in-category id="12"/>
+      </board>
+      <board id="61">
+        <name><![CDATA[Thüringen]]></name>
+        <description><![CDATA[Campen im schönen Thüringer Wald]]></description>
+        <in-category id="12"/>
+      </board>
+    </boards>
+  </category>
+  <category id="13">
+    <name><![CDATA[Nicht-öffentliche Foren]]></name>
+    <description><![CDATA[...aus welchen Gründen auch immer.]]></description>
+    <boards count="2">
+      <board id="102">
+        <name><![CDATA[Bender Battles]]></name>
+        <description><![CDATA[Wo selbst um den Untertitel gebattlet wurde...]]></description>
+        <in-category id="13"/>
+      </board>
+      <board id="75">
+        <name><![CDATA[testboard]]></name>
+        <description><![CDATA[test - 123 - test]]></description>
+        <in-category id="13"/>
+      </board>
+    </boards>
+  </category>
+  <category id="24">
+    <name><![CDATA[mods.de intern]]></name>
+    <description><![CDATA[Interna für Staffies]]></description>
+  </category>
+  <category id="26">
+    <name><![CDATA[Archive]]></name>
+    <description><![CDATA[...zu schön zum löschen]]></description>
+    <boards count="2">
+      <board id="108">
+        <name><![CDATA[Archiv: Public Offtopic]]></name>
+        <description/>
+        <in-category id="26"/>
+      </board>
+      <board id="131">
+        <name><![CDATA[Archiv: Krieg der Töpfe]]></name>
+        <description><![CDATA[Hier landen alle abgeschlossenen KdT-Threads. Eintritt nur mit Kochmütze.]]></description>
+        <in-category id="26"/>
+      </board>
+    </boards>
+  </category>
+</categories>

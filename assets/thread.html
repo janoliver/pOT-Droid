@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <meta http-equiv='content-type' content='text/html; charset=UTF-8' />
+        <script type="text/javascript" src="file:///android_asset/jquery.js"></script>
+        <script type="text/javascript" src="file:///android_asset/threadjs.js"></script>
+        <link rel="stylesheet" href="file:///android_asset/${css}.css" type="text/css" />
+    </head>
+    
+    <body>
+        <!-- $beginBlock post -->
+        <div class="post ${currentUser} ${newPost}" id="post${number}" postid="${postId}">
+		    <div id="${postId}" class="title">
+		        <span class="nick">${author}</span>
+		        <span class="date">${date}</span>
+		    </div>
+		    <div class="content">
+		        <div class="posttitle">${postTitle}</div>
+		        ${postText}
+		    </div>
+		</div>
+        <!-- $endBlock post -->
+    </body>
+</html>

@@ -248,6 +248,8 @@ public class SidebarBookmarksFragment extends BaseFragment
             mTextTitle.setText(b.getThread().getTitle());
             if (b.getThread().isClosed())
                 mTextTitle.setPaintFlags(mTextTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            else
+                mTextTitle.setPaintFlags(mTextTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
 
             mTextNewposts.setText(b.getNumberOfNewPosts().toString());
 

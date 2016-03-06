@@ -8,6 +8,9 @@ import android.util.DisplayMetrics;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import com.mde.potdroid.fragments.TopicFragment;
+import org.json.JSONArray;
+
+import java.util.ArrayList;
 
 /**
  * The Javascript interface for the Topic Webviews, extended from the Bender js interface.
@@ -20,6 +23,8 @@ public class TopicJSInterface extends BenderJSInterface {
 
     // a reference to the topic fragment
     private TopicFragment mTopicFragment;
+
+    private boolean mLightboxOpen = false;
 
     public TopicJSInterface(WebView wv, Activity cx, TopicFragment fragment) {
         super(wv, cx);
@@ -416,6 +421,32 @@ public class TopicJSInterface extends BenderJSInterface {
         mActivity.runOnUiThread(new Runnable() {
             public void run() {
                 mWebView.loadUrl("javascript:unveil();");
+            }
+        });
+    }
+
+    public void showLightBox(ArrayList<String> media) {
+        final JSONArray jsArray = new JSONArray(media);
+        mActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                mWebView.loadUrl("javascript:showLightbox(" + jsArray + ");");
+            }
+        });
+    }
+
+    @JavascriptInterface
+    public void lightboxOpen(boolean open) {
+        mLightboxOpen = open;
+    }
+
+    public boolean isLightbox() {
+        return mLightboxOpen;
+    }
+
+    public void closeLightbox() {
+        mActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                mWebView.loadUrl("javascript:closeLightbox();");
             }
         });
     }

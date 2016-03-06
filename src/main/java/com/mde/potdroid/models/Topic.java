@@ -34,6 +34,7 @@ public class Topic implements Serializable {
     private ArrayList<Post> mPosts = new ArrayList<Post>();
     private String mHtmlCache;
     private Boolean mIsCacheOnly;
+    private ArrayList<String> mMedia = new ArrayList<>();
 
     public Boolean getIsCacheOnly() {
         return mIsCacheOnly;
@@ -252,6 +253,26 @@ public class Topic implements Serializable {
 
     public Boolean isLastPage() {
         return mPage.equals(getNumberOfPages());
+    }
+
+    public void clearMedia() {
+        mMedia.clear();
+    }
+
+    public void addVideoMedia(String url) {
+        mMedia.add("V"+ url);
+    }
+
+    public void addImageMedia(String url) {
+        mMedia.add("I"+ url);
+    }
+
+    public void setMedia(ArrayList<String> media) {
+        mMedia = media;
+    }
+
+    public ArrayList<String> getMedia() {
+        return mMedia;
     }
 
     public Post getPostById(int id) {

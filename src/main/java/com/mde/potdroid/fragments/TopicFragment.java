@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +38,8 @@ import org.apache.http.Header;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This Fragment displays a Topic in a WebView. Since the WebView has a memory leak,
@@ -64,6 +67,9 @@ public class TopicFragment extends PaginateFragment implements
     // webview initialization, so keep a reference here.
     private TopicJSInterface mJsInterface;
     private WebViewScrollCallbacks mWebViewScrollCallbacks = new WebViewScrollCallbacks();
+
+    // images that appear
+    public ArrayList<String> mImagesInThread = new ArrayList<String>();
 
 
     /**
@@ -244,6 +250,12 @@ public class TopicFragment extends PaginateFragment implements
             }
         });
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (0 != (getActivity().getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE)) {
+                WebView.setWebContentsDebuggingEnabled(true);
+            }
+        }
+
         displayContent();
 
         refreshTitleAndPagination();
@@ -325,8 +337,20 @@ public class TopicFragment extends PaginateFragment implements
             case R.id.preload_next:
                 startPreloadingNextPage();
                 return true;
+            case R.id.gallery:
+                mJsInterface.showLightBox(getTopic().getMedia());
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public boolean backPressed() {
+        if(mJsInterface.isLightbox()) {
+            mJsInterface.closeLightbox();
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -783,10 +807,20 @@ public class TopicFragment extends PaginateFragment implements
         public Topic processNetworkResponse(String response) {
             try {
                 TopicParser parser = new TopicParser();
-                Topic t = parser.parse(response);
+                final Topic t = parser.parse(response);
+                final ArrayList<String> media = new ArrayList<>();
 
-                TopicBuilder b = new TopicBuilder(mContext);
+                TopicBuilder b = new TopicBuilder(mContext, new TopicBuilder.TagCallback() {
+                    @Override
+                    public void onTag(String tag, String content, List<String> args) {
+                        if(tag.equals("img"))
+                            media.add("I" + content);
+                        else if(tag.equals("video"))
+                            media.add("V" + content);
+                    }
+                });
                 t.setHtmlCache(b.parse(t));
+                t.setMedia(media);
 
                 t.setIsCacheOnly(mArgs.getBoolean("cache", false));
 

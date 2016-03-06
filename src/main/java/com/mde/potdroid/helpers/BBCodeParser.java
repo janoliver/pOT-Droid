@@ -24,8 +24,15 @@ public class BBCodeParser {
 
     // the skeleton regex for the bbcodes. %1$s must be replaced by
     // the allowed bbcodes
+    TopicBuilder.TagCallback mCallback;
 
+    public void setCallback(TopicBuilder.TagCallback callback) {
+        mCallback = callback;
+    }
 
+    public TopicBuilder.TagCallback getCallback() {
+        return mCallback;
+    }
 
     private String getBBCodeRegex() {
         return

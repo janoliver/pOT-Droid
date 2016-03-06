@@ -23,6 +23,7 @@ public class TopicBuilder {
     // context reference
     private Context mContext;
     private Map<User, String> mAvatarCache = new HashMap<>();
+    private TagCallback mCallback;
 
     // a HashMap with the smileys
     public static HashMap<String, String> mSmileys = new HashMap<String, String>();
@@ -90,10 +91,11 @@ public class TopicBuilder {
     protected BenderHandler mBenderHandler;
 
 
-    public TopicBuilder(Context cx) {
+    public TopicBuilder(Context cx, TagCallback callback) {
         mContext = cx;
         mSettings = new SettingsWrapper(cx);
         mBenderHandler = new BenderHandler(cx);
+        mCallback = callback;
     }
 
     /**
@@ -255,7 +257,7 @@ public class TopicBuilder {
                 return mPost.getText();
             String text = mPost.getText();
             try {
-                text = getBBCodeParserInstance().parse(text);
+                text = getBBCodeParserInstance(mCallback).parse(text);
 
                 if(mParseSmileys)
                     text = parseSmileys(text);
@@ -295,12 +297,15 @@ public class TopicBuilder {
      *
      * @return BBCodeParser object
      */
-    public static BBCodeParser getBBCodeParserInstance() {
-        if (mParser != null)
+    public static BBCodeParser getBBCodeParserInstance(final TagCallback callback) {
+        if (mParser != null) {
+            mParser.setCallback(callback);
             return mParser;
+        }
 
         // instantiate it
         mParser = new BBCodeParser();
+        mParser.setCallback(callback);
 
         // the tags allowed in links
         String inLinks = "string, b, u, s, i, mod, img, url, list, table, m";
@@ -327,6 +332,7 @@ public class TopicBuilder {
         mParser.registerTag(new SimpleTag("b", "bold") {
             @Override
             public String html(String content, List<String> args) {
+                mParser.getCallback().onTag("b", content, args);
                 return String.format("<strong>%1$s</strong>", content);
             }
         });
@@ -334,6 +340,7 @@ public class TopicBuilder {
         mParser.registerTag(new SimpleTag("m", "monotype", "string") {
             @Override
             public String html(String content, List<String> args) {
+                mParser.getCallback().onTag("m", content, args);
                 return String.format("<pre class=\"inline\">%1$s</pre>", content);
             }
         });
@@ -341,6 +348,7 @@ public class TopicBuilder {
         mParser.registerTag(new SimpleTag("u", "underline") {
             @Override
             public String html(String content, List<String> args) {
+                mParser.getCallback().onTag("u", content, args);
                 return String.format("<u>%1$s</u>", content);
             }
         });
@@ -348,6 +356,7 @@ public class TopicBuilder {
         mParser.registerTag(new SimpleTag("s", "strike") {
             @Override
             public String html(String content, List<String> args) {
+                mParser.getCallback().onTag("s", content, args);
                 return String.format("<span class=\"strike\">%1$s</span>", content);
             }
         });
@@ -355,6 +364,7 @@ public class TopicBuilder {
         mParser.registerTag(new SimpleTag("i", "italic") {
             @Override
             public String html(String content, List<String> args) {
+                mParser.getCallback().onTag("i", content, args);
                 return String.format("<em>%1$s</em>", content);
             }
         });
@@ -363,6 +373,7 @@ public class TopicBuilder {
             @Override
             public String html(String content, List<String> args) {
                 content = content.replace("<br />", "");
+                mParser.getCallback().onTag("code", content, args);
                 return String.format("<span class=\"code\">%1$s</span>", content);
             }
         });
@@ -370,6 +381,7 @@ public class TopicBuilder {
         mParser.registerTag(new SimpleTag("spoiler", "spoiler") {
             @Override
             public String html(String content, List<String> args) {
+                mParser.getCallback().onTag("spoiler", content, args);
                 return String.format("<div class=\"spoiler\"><i class=\"fa fa-warning\"></i>" +
                         "<div>%1$s</div></div>", content);
             }
@@ -378,6 +390,7 @@ public class TopicBuilder {
         mParser.registerTag(new SimpleTag("mod", "mod") {
             @Override
             public String html(String content, List<String> args) {
+                mParser.getCallback().onTag("mod", content, args);
                 return String.format("<span class=\"mod\">%1$s</span>", content);
             }
         });
@@ -385,6 +398,7 @@ public class TopicBuilder {
         mParser.registerTag(new SimpleTag("trigger", "trigger") {
             @Override
             public String html(String content, List<String> args) {
+                mParser.getCallback().onTag("trigger", content, args);
                 return String.format("<span class=\"trigger\">%1$s</span>", content);
             }
         });
@@ -392,6 +406,7 @@ public class TopicBuilder {
         BBCodeParser.BBCodeTag list = new BBCodeParser.BBCodeTag("list", "list", "*") {
             @Override
             public String html(String content, List<String> args) {
+                mParser.getCallback().onTag("list", content, args);
                 return String.format("<ul>%1$s</ul>", content);
             }
         };
@@ -404,6 +419,7 @@ public class TopicBuilder {
         BBCodeParser.BBCodeTag item = new BBCodeParser.BBCodeTag("*", "listitem") {
             @Override
             public String html(String content, List<String> args) {
+                mParser.getCallback().onTag("*", content, args);
                 if (content.replace("<br />", "").trim().length() == 0)
                     return "";
                 else
@@ -417,6 +433,7 @@ public class TopicBuilder {
         mParser.registerTag(new BBCodeParser.BBCodeTag("url", "link", inLinks) {
             @Override
             public String html(String content, List<String> args) {
+                mParser.getCallback().onTag("url", content, args);
 
                 String url = content;
 
@@ -450,6 +467,7 @@ public class TopicBuilder {
         mParser.registerTag(new SimpleTag("quote", "quote") {
             @Override
             public String html(String content, List<String> args) {
+                mParser.getCallback().onTag("quote", content, args);
                 if (args.size() == 3)
                     return String.format("<blockquote><a href=\"http://forum.mods.de/bb/thread.php?TID=%3$s&PID=%4$s\" class=\"author\">%1$s</a>" +
                             "<div class=\"content\">%2$s</div></blockquote>", args.get(2), content, args.get(0), args.get(1));
@@ -469,6 +487,7 @@ public class TopicBuilder {
                     return String.format("<img src=\"thread-icons/icon%1$d.png\" alt=\"icon%1$d.png\" />",
                             mIcons.get(icon));
                 } else {
+                    mParser.getCallback().onTag("img", content, args);
                     String extension = content.substring(content.length() - 3).toLowerCase();
                     String icon = "fa-picture-o nogif";
                     if (extension.equals("gif"))
@@ -482,6 +501,7 @@ public class TopicBuilder {
         mParser.registerTag(new SimpleTag("video", "video", "string") {
             @Override
             public String html(String content, List<String> args) {
+                mParser.getCallback().onTag("video", content, args);
                 if(content.contains("youtube") || content.contains("youtu.be")) {
                     return String.format("<div class=\"video yt\" data-src=\"%1$s\">" +
                             "<i class=\"link fa fa-external-link-square\"></i><i class=\"fa vid " +
@@ -497,6 +517,7 @@ public class TopicBuilder {
         mParser.registerTag(new SimpleTag("tex", "latex", "string") {
             @Override
             public String html(String content, List<String> args) {
+                mParser.getCallback().onTag("tex", content, args);
                 String code = content;
                 try {
                     code = URLEncoder.encode(code, "utf-8");
@@ -514,6 +535,7 @@ public class TopicBuilder {
         BBCodeParser.BBCodeTag table = new BBCodeParser.BBCodeTag("table", "table", "--") {
             @Override
             public String html(String content, List<String> args) {
+                mParser.getCallback().onTag("table", content, args);
                 return String.format("<table>%1$s</table>", content);
             }
         };
@@ -526,6 +548,7 @@ public class TopicBuilder {
         BBCodeParser.BBCodeTag row = new BBCodeParser.BBCodeTag("--", "tablerow", "||") {
             @Override
             public String html(String content, List<String> args) {
+                mParser.getCallback().onTag("--", content, args);
                 return String.format("<tr>%1$s</tr>", content);
             }
         };
@@ -538,6 +561,7 @@ public class TopicBuilder {
         BBCodeParser.BBCodeTag col = new BBCodeParser.BBCodeTag("||", "tablecol") {
             @Override
             public String html(String content, List<String> args) {
+                mParser.getCallback().onTag("||", content, args);
                 return String.format("<td>%1$s</td>", content);
             }
         };
@@ -546,6 +570,10 @@ public class TopicBuilder {
         mParser.registerTag(col);
 
         return mParser;
+    }
+
+    public interface TagCallback {
+        void onTag(final String tag, String content, List<String> args);
     }
 
 }

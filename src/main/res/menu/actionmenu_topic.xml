@@ -32,4 +32,9 @@
             android:id="@+id/preload_next"
             android:title="@string/action_preload_next"
             potdroid:showAsAction="never"/>
+
+    <item
+            android:id="@+id/gallery"
+            android:title="@string/action_gallery"
+            potdroid:showAsAction="never"/>
 </menu>

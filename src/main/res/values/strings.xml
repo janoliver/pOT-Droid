@@ -51,6 +51,7 @@ Es gibt einen pOT-Droid Thread. Den Link und die Änderungen findest du unter \'
     <string name="action_last_own_post">Zum letzten eigenen Post</string>
     <string name="action_load_all_images">Alle Medien laden</string>
     <string name="action_preload_next">Nächste Seite vorladen</string>
+    <string name="action_gallery">Galerie</string>
 
     <!-- messages -->
     <string name="msg_login_success">Erfolgreich eingeloggt! Die App sollte neu gestartet werden.</string>

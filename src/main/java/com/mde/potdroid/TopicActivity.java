@@ -79,4 +79,11 @@ public class TopicActivity extends BaseActivity {
         closeRightDrawer();
     }
 
+    @Override
+    public void onBackPressed() {
+        if(!mTopicFragment.backPressed()) {
+            super.onBackPressed();
+        }
+    }
+
 }

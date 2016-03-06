@@ -2,6 +2,25 @@
 
 ## Version 4
 
+###  Version 4.2.X
+  * Alle ListViews sind jetzt Recyclerviews
+  * Galerie Funktion hinzugefügt
+  * In der Seitenleiste können auch gelesene Bookmarks angezeigt werden
+  * App ist auf SD Karte bewegbar
+  * Home Button in der Blättern Toolbar
+  * :matolf:
+  * Gesperrte User werden angezeigt
+  * Neue Bild Download engine (Facebook fresco)
+  * Diverse kleinere Änderungen, siehe git commits.
+    
+### Version 4.1.X
+  * Die nächste Threadseite kann vorgeladen werden
+  * Posts können nummeriert werden
+  * BBCode Bugs behoben
+  * Mehr Smileys (Post Icons)
+  * Letzter Edit info wird angezeigt
+  * Kleinere Bugfixes und Verbesserungen
+
 ### Changelog 4.0.X
 
   * Viele kleine Verbesserungen

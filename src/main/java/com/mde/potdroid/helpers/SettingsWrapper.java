@@ -63,6 +63,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_SWIPE_TO_REFRESH_TOPIC = "pref_swipe_to_refresh_topic";
     public static final String PREF_KEY_SWIPE_TO_PAGINATE = "pref_swipe_to_paginate";
     public static final String PREF_KEY_FIXED_SIDEBAR = "pref_fixed_sidebar";
+    public static final String PREF_KEY_READ_SIDEBAR = "pref_sidebar_showread";
     public static final String PREF_KEY_FONT_SIZE = "pref_font_size";
     public static final String PREF_KEY_BOARDS_BOOKMARKS = "pref_board_bookmarks";
     public static final String PREF_KEY_SHOW_END_INDICATOR = "pref_show_end_indicator";
@@ -271,6 +272,10 @@ public class SettingsWrapper {
         DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
         float w = displayMetrics.widthPixels / displayMetrics.density;
         return mSharedPreferences.getBoolean(PREF_KEY_FIXED_SIDEBAR, w > 768);
+    }
+
+    public Boolean isReadSidebar() {
+        return mSharedPreferences.getBoolean(PREF_KEY_READ_SIDEBAR, false);
     }
 
     public void setUsername(String username) {

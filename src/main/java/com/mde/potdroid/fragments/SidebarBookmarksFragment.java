@@ -218,9 +218,10 @@ public class SidebarBookmarksFragment extends BaseFragment
     }
 
     private void setNewBookmarks() {
-        mListAdapter.setItems(mBookmarkList.getUnreadBookmarks());
 
-        if(mBookmarkList.getUnreadBookmarks().isEmpty())
+        mListAdapter.setItems(mBookmarkList.getUnreadBookmarks(mSettings.isReadSidebar()));
+
+        if(mListAdapter.getItemCount() == 0)
             mEmptyListView.setVisibility(View.VISIBLE);
         else
             mEmptyListView.setVisibility(View.GONE);
@@ -249,6 +250,12 @@ public class SidebarBookmarksFragment extends BaseFragment
                 mTextTitle.setPaintFlags(mTextTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
             mTextNewposts.setText(b.getNumberOfNewPosts().toString());
+
+            if(b.getNumberOfNewPosts() == 0)
+                mTextNewposts.setVisibility(View.GONE);
+            else
+                mTextNewposts.setVisibility(View.VISIBLE);
+
         }
 
         @Override

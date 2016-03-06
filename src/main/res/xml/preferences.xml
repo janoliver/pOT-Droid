@@ -198,6 +198,10 @@
                 android:summary="Soll die rechte Sidebar mit den Board Bookmarks verwendet werden?"
                 android:defaultValue="true"/>
 
+        <CheckBoxPreference
+                android:key="pref_sidebar_showread"
+                android:title="In der Bookmark Sidebar auch gelesene Bookmarks anzeigen"/>
+
         <ListPreference
                 android:title="Startscreen"
                 android:summary="Was soll beim Starten der App angezeigt werden?"

@@ -39,12 +39,18 @@ public class BookmarkList implements Serializable {
         return mBookmarkDatabase.getBookmarks();
     }
 
-    public ArrayList<Bookmark> getUnreadBookmarks() {
+    public ArrayList<Bookmark> getUnreadBookmarks(boolean with_read) {
         ArrayList<Bookmark> unread = new ArrayList<Bookmark>();
         for (Bookmark b : getBookmarks()) {
             if (b.getNumberOfNewPosts() > 0)
                 unread.add(b);
         }
+
+        if(with_read)
+            for (Bookmark b : getBookmarks()) {
+                if (b.getNumberOfNewPosts() == 0)
+                    unread.add(b);
+            }
         return unread;
     }
 

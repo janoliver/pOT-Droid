@@ -11,8 +11,14 @@ import android.view.View;
  * Created by oli on 10/3/15.
  */
 public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
+
+    private boolean mEnabled;
+
     public ScrollAwareFABBehavior(Context context, AttributeSet attrs) {
         super();
+
+        SettingsWrapper s = new SettingsWrapper(context);
+        mEnabled = Utils.isLoggedIn() && s.isShowFAB() && !s.isBottomToolbar();
     }
 
     @Override
@@ -28,6 +34,9 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
                                View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed,
                 dyUnconsumed);
+
+        if(!mEnabled)
+            return;
 
         if (dyConsumed > 0 && child.getVisibility() == View.VISIBLE) {
             child.hide();

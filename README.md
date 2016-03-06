@@ -1,14 +1,11 @@
-# [Projekt Homepage und Bug Tracker](http://projects.oelerich.org/projects/pot-droid)
-
-Bitte verwendet diesen neuen Bug Tracker. Das Github Repository ist lediglich ein Mirror
-auf den Code für einfachere Zusammenarbeit.
-
------------
-
 # pOT Droid
 
 pOT Droid ist eine Android (2.3+) Applikation, die das surfen im mods.de Forum
 auf Android Handys erleichtert und beschleunigt.
+
+## APK Downloaden
+
+Das geht entweder auf Github bei den [Releases](https://github.com/janoliver/pOT-Droid/releases), oder für ältere Versionen [hier](http://potdroid.oelerich.org/).
 
 ## Features
 

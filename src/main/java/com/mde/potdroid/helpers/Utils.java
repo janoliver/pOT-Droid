@@ -10,12 +10,10 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.os.Environment;
 import android.util.Log;
 import android.util.TypedValue;
 import com.facebook.imageformat.ImageFormat;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -247,11 +245,6 @@ public class Utils {
         if(relativeUrl.startsWith("http://"))
             return relativeUrl;
         return ASYNC_URL + relativeUrl;
-    }
-
-    public static File getCacheDir(Context context) {
-        File ext_root = Environment.getExternalStorageDirectory();
-        return new File(ext_root, "Android/data/" + context.getPackageName() + CACHE_DIR);
     }
 
     public static String getExtension(ImageFormat imageFormat) {

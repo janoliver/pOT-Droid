@@ -220,7 +220,6 @@ public class BenderHandler {
      * @return File object
      */
     public File getBenderStorageDir() {
-        File ext_root = Environment.getExternalStorageDirectory();
-        return new File(ext_root, "Android/data/" + mContext.getPackageName() + BENDER_STORAGE_DIR);
+        return new File(mContext.getExternalFilesDir(null), BENDER_STORAGE_DIR);
     }
 }

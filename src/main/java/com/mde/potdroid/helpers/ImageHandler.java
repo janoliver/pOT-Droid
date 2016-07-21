@@ -2,7 +2,6 @@ package com.mde.potdroid.helpers;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.Environment;
 import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.common.internal.Closeables;
 import com.facebook.common.references.CloseableReference;
@@ -129,9 +128,8 @@ public class ImageHandler {
     }
 
     public static File getCacheDir(Context cx) {
-        File ext_root = Environment.getExternalStorageDirectory();
-        return new File(ext_root, "Android/data/" + cx.getPackageName() + "/fresco_cache/");
-        //return new File(cx.getCacheDir(), "fresco_cache/");
+        return new File(cx.getExternalFilesDir(null), "fresco_cache/");
+
     }
 
     public void clearCache() {

@@ -7,6 +7,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.mde.potdroid.helpers.Utils.mContext;
+
 /**
  * This class writes an exception to the SDCard and then forwards the Exception to
  * the usual exception handler.
@@ -43,7 +45,7 @@ public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
         String filename = dateFormat.format(date) + ".stacktrace";
 
         File ext_root = Environment.getExternalStorageDirectory();
-        File path = new File(ext_root, "Android/data/com.mde.potdroid/files/log/");
+        File path = new File(mContext.getExternalFilesDir(null), "log");
         path.mkdirs();
 
         try {

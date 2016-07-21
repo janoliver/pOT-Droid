@@ -96,7 +96,7 @@ public class SettingsWrapper {
 
             // and delete the old benders
             File ext_root = Environment.getExternalStorageDirectory();
-            File dir = new File(ext_root, "Android/data/" + mContext.getPackageName() + "/files/avatare");
+            File dir = new File(mContext.getExternalFilesDir(null), "avatare");
 
             if (dir.exists())
                 dir.delete();

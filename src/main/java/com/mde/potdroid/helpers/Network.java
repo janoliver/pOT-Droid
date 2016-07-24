@@ -2,10 +2,13 @@ package com.mde.potdroid.helpers;
 
 import android.app.Activity;
 import android.content.Context;
-import com.squareup.okhttp.*;
+import okhttp3.*;
+import okhttp3.internal.JavaNetCookieJar;
 
 import java.io.IOException;
 import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,7 +32,7 @@ public class Network {
     public static final String LOGIN_URL = "http://login.mods.de/";
 
     // the User agent template
-    public static final String UAGENT_TPL = "okhttp/potdroid-%1$s";
+    public static final String UAGENT_TPL = "okhttp3/potdroid-%1$s";
 
     // the only two required encodings
     public static final String ENCODING_UTF8 = "UTF-8";
@@ -42,19 +45,20 @@ public class Network {
         mContext = context;
         mSettings = new SettingsWrapper(mContext);
 
-        if(mHttpClient == null) {
-            mHttpClient = new OkHttpClient();
-            mHttpClient.setConnectTimeout(mSettings.getConnectionTimeout(), TimeUnit.SECONDS);
-            mHttpClient.setReadTimeout(mSettings.getConnectionTimeout(), TimeUnit.SECONDS);
+        if (mHttpClient == null) {
+            //ClearableCookieJar cookieJar =
+            //        new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(mContext));
+            CookieHandler cookieHandler = new CookieManager(
+                    new PersistentCookieStore(mContext), CookiePolicy.ACCEPT_ALL);
+            mHttpClient = new OkHttpClient.Builder()
+                    .connectTimeout(mSettings.getConnectionTimeout(), TimeUnit.SECONDS)
+                    .readTimeout(mSettings.getConnectionTimeout(), TimeUnit.SECONDS)
+                    .cookieJar(new JavaNetCookieJar(cookieHandler))
+                    .build();
         }
-        initHttpClient();
-    }
-
-    void initHttpClient() {
         mHeaders = new Headers.Builder()
                 .add("User-Agent", mSettings.getUserAgent())
                 .build();
-        mHttpClient.setCookieHandler(CookieHandler.getDefault());
     }
 
     OkHttpClient getHttpClient() {
@@ -90,21 +94,21 @@ public class Network {
      * Try to cancel the current loading of the httpclient
      */
     public void cancelLoad() {
-        mHttpClient.cancel(null);
+        //mHttpClient.cancel(null);
     }
 
     /**
      * Change timeout
      */
     public void setTimeout(Integer seconds) {
-        mHttpClient.setConnectTimeout(seconds, TimeUnit.SECONDS);
+        //mHttpClient.setConnectTimeout(seconds, TimeUnit.SECONDS);
     }
 
     /**
      * Get the current timeout
      */
     public Integer getTimeout() {
-        return mHttpClient.getConnectTimeout() / 1000;
+        return mHttpClient.connectTimeoutMillis() / 1000;
     }
 
     public String getUserAgent() {
@@ -124,7 +128,9 @@ public class Network {
         // first, create new random user agent, since the mde login system partly
         // works with User agents
         mSettings.generateUniqueUserAgent();
-        initHttpClient();
+        mHeaders = new Headers.Builder()
+                .add("User-Agent", mSettings.getUserAgent())
+                .build();
 
         if (username.equals("") || password.equals(""))
             callback.onFailure();
@@ -138,12 +144,12 @@ public class Network {
 
         post(LOGIN_URL, formBody, new Callback() {
             @Override
-            public void onFailure(Request request, IOException throwable) {
-                Utils.printException(throwable);
+            public void onFailure(Call call, IOException e) {
+                Utils.printException(e);
             }
 
             @Override
-            public void onResponse(Response response) throws IOException {
+            public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful())
                     throw new IOException("Unexpected code " + response);
 
@@ -158,24 +164,31 @@ public class Network {
 
                     get(m.group(0), new Callback() {
                         @Override
-                        public void onFailure(Request request, IOException throwable) {
+                        public void onFailure(Call call, IOException e) {
                             callback.onFailure();
                         }
 
                         @Override
-                        public void onResponse(Response response) throws IOException {
+                        public void onResponse(Call call, final Response response) throws IOException {
                             // do nothing, cookie was hopefully saved... :)
                             ((Activity) mContext).runOnUiThread(new Runnable() {
                                 public void run() {
+                                    try {
+                                        Utils.log(response.body().string());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
                                     callback.onSuccess();
                                 }
                             });
                         }
+
                     });
                 } else {
                     callback.onFailure();
                 }
             }
+
         });
 
     }

@@ -20,9 +20,9 @@ import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.MessageList;
 import com.mde.potdroid.parsers.MessageListParser;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -43,7 +43,12 @@ public class MessagePollingAlarm extends BroadcastReceiver {
         Network network = new Network(context);
         network.get(MessageListParser.INBOX_URL, new Callback() {
             @Override
-            public void onResponse(Response response) {
+            public void onFailure(Call call, IOException e) {
+                Utils.printException(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
 
                 try {
                     String stringResult;
@@ -58,11 +63,6 @@ public class MessagePollingAlarm extends BroadcastReceiver {
                 } catch (IOException e) {
                     Utils.printException(e);
                 }
-            }
-
-            @Override
-            public void onFailure(Request request, IOException error) {
-                Utils.printException(error);
             }
         });
 

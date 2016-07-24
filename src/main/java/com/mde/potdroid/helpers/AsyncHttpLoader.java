@@ -5,10 +5,10 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.content.Loader;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import org.apache.http.Header;
 
 import java.io.IOException;
@@ -53,16 +53,16 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
 
     private Callback mHandler = new Callback() {
         @Override
-        public void onFailure(Request request, final IOException throwable) {
+        public void onFailure(Call call, final IOException e) {
             getActivity().runOnUiThread(new Runnable() {
                 public void run() {
-                    AsyncHttpLoader.this.onNetworkFailure(0, null, "", throwable);
+                    AsyncHttpLoader.this.onNetworkFailure(0, null, "", e);
                 }
             });
         }
 
         @Override
-        public void onResponse(Response response) throws IOException {
+        public void onResponse(Call call, Response response) throws IOException {
             if (!response.isSuccessful())
                 throw new IOException("Unexpected code " + response);
 

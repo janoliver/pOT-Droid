@@ -62,7 +62,7 @@ public class CacheContentProvider extends ContentProvider {
 
     private File getFileForUri(Uri uri) {
         String filename = getFilenameForCache(uri.toString());
-        return new File(ImageHandler.getCacheDir(getContext()), filename);
+        return new File(ImageHandler.getCacheDir(getContext(), "topic_images"), filename);
     }
 
     @Override

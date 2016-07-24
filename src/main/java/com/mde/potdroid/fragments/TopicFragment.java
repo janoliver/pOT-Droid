@@ -31,9 +31,9 @@ import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.TopicParser;
 import com.mde.potdroid.views.*;
 import com.nineoldandroids.view.ViewPropertyAnimator;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 import org.apache.http.Header;
 
 import java.io.IOException;
@@ -208,8 +208,8 @@ public class TopicFragment extends PaginateFragment implements
         super.onDestroy();
 
 
-        ImageHandler ih = new ImageHandler(getActivity());
-        ih.clearCache();
+        //ImageHandler ih = new ImageHandler(getActivity());
+        //ih.clearCache();
     }
 
     /**
@@ -684,7 +684,13 @@ public class TopicFragment extends PaginateFragment implements
         Network network = new Network(getActivity());
         network.get(url, new Callback() {
             @Override
-            public void onResponse(Response response) {
+            public void onFailure(Call call, IOException e) {
+                //Utils.printException(error);
+                hideLoadingAnimation();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
                 // fail silently if the Activity is not present anymore
                 if (getBaseActivity() == null)
                     return;
@@ -701,12 +707,6 @@ public class TopicFragment extends PaginateFragment implements
                 hideLoadingAnimation();
                 if (d != null)
                     d.cancel();
-            }
-
-            @Override
-            public void onFailure(Request request, IOException error) {
-                Utils.printException(error);
-                hideLoadingAnimation();
             }
         });
     }
@@ -770,19 +770,23 @@ public class TopicFragment extends PaginateFragment implements
     }
 
     public void loadImage(final String url, final String id) {
-        ImageHandler ih = new ImageHandler(getActivity());
-        ih.retrieveImage(url, new ImageHandler.ImageHandlerCallback() {
-            @Override
-            public void onSuccess(String url, String path) {
-                mJsInterface.displayImage(url, path, id);
-            }
+        ImageHandler ih = new ImageHandler(getActivity(), "topic_images", 1024*1024*50);
+        try {
+            ih.retrieveImage(url, new ImageHandler.ImageHandlerCallback() {
+                @Override
+                public void onSuccess(String url, String path) {
+                    mJsInterface.displayImage(url, path, id);
+                }
 
-            @Override
-            public void onFailure(String url) {
-                mJsInterface.displayImageLoader(id);
-                showError(R.string.msg_img_loading_error);
-            }
-        });
+                @Override
+                public void onFailure(String url) {
+                    mJsInterface.displayImageLoader(id);
+                    showError(R.string.msg_img_loading_error);
+                }
+            }, "topic_images");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     static class AsyncContentLoader extends AsyncHttpLoader<Topic> {

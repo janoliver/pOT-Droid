@@ -23,9 +23,9 @@ import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.BookmarkList;
 import com.mde.potdroid.parsers.BookmarkParser;
 import com.mde.potdroid.views.IconDrawable;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 import org.apache.http.Header;
 
 import java.io.IOException;
@@ -97,7 +97,12 @@ public class BookmarkFragment extends BaseFragment
                                 Network network = new Network(getActivity());
                                 network.get(url, new Callback() {
                                     @Override
-                                    public void onResponse(Response response) {
+                                    public void onFailure(Call call, IOException e) {
+                                        hideLoadingAnimation();
+                                    }
+
+                                    @Override
+                                    public void onResponse(Call call, Response response) throws IOException {
                                         getBaseActivity().runOnUiThread(new Runnable() {
 
                                             @Override
@@ -107,11 +112,6 @@ public class BookmarkFragment extends BaseFragment
                                                 restartLoader(BookmarkFragment.this);
                                             }
                                         });
-                                    }
-
-                                    @Override
-                                    public void onFailure(Request request, IOException error) {
-                                        hideLoadingAnimation();
                                     }
                                 });
                             }

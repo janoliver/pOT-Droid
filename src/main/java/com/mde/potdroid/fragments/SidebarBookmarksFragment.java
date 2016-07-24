@@ -34,7 +34,7 @@ public class SidebarBookmarksFragment extends BaseFragment
 
     // the bookmark list and adapter
     private BookmarkList mBookmarkList;
-    private EasyRecyclerAdapter<Bookmark>  mListAdapter;
+    private EasyRecyclerAdapter<Bookmark> mListAdapter;
     private TextView mEmptyListView;
     private IconButton mPmButton;
     private IconButton mBookmarksButton;
@@ -122,13 +122,13 @@ public class SidebarBookmarksFragment extends BaseFragment
             }
         });
 
-        if(!Utils.isLoggedIn()) {
+        if (!Utils.isLoggedIn()) {
             mPmButton.disable();
             mBookmarksButton.disable();
         }
 
         IconButton refresh = (IconButton) v.findViewById(R.id.button_refresh);
-        if(!mSettings.isSwipeToRefresh()) {
+        if (!mSettings.isSwipeToRefresh()) {
             refresh.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -170,13 +170,13 @@ public class SidebarBookmarksFragment extends BaseFragment
                                BookmarkParser.BookmarksContainer success) {
         hideLoadingAnimation();
 
-        if(success != null && success.getException() != null) {
-            if(success.getException() instanceof Utils.NotLoggedInException) {
+        if (success != null && success.getException() != null) {
+            if (success.getException() instanceof Utils.NotLoggedInException) {
                 Utils.setNotLoggedIn();
                 mBookmarkList.clearBookmarksCache();
                 setNewBookmarks();
                 showError(getString(R.string.notloggedin));
-                TextView indicator = (TextView)getView().findViewById(R.id.empty_bookmarks_text);
+                TextView indicator = (TextView) getView().findViewById(R.id.empty_bookmarks_text);
                 indicator.setText(R.string.notloggedin);
 
                 mPmButton.disable();
@@ -193,7 +193,7 @@ public class SidebarBookmarksFragment extends BaseFragment
 
         // if the setting to refresh bookmarks on sidebar open is set to true,
         // we immediately set dirty again so the bookmarks become updated
-        if(mSettings.isReloadBookmarksOnSidebarOpen())
+        if (mSettings.isReloadBookmarksOnSidebarOpen())
             mDirty = true;
     }
 
@@ -221,7 +221,7 @@ public class SidebarBookmarksFragment extends BaseFragment
 
         mListAdapter.setItems(mBookmarkList.getUnreadBookmarks(mSettings.isReadSidebar()));
 
-        if(mListAdapter.getItemCount() == 0)
+        if (mListAdapter.getItemCount() == 0)
             mEmptyListView.setVisibility(View.VISIBLE);
         else
             mEmptyListView.setVisibility(View.GONE);
@@ -253,7 +253,7 @@ public class SidebarBookmarksFragment extends BaseFragment
 
             mTextNewposts.setText(b.getNumberOfNewPosts().toString());
 
-            if(b.getNumberOfNewPosts() == 0)
+            if (b.getNumberOfNewPosts() == 0)
                 mTextNewposts.setVisibility(View.GONE);
             else
                 mTextNewposts.setVisibility(View.VISIBLE);

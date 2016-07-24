@@ -12,7 +12,6 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
 import android.util.TypedValue;
-import com.facebook.imageformat.ImageFormat;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -245,20 +244,6 @@ public class Utils {
         if(relativeUrl.startsWith("http://"))
             return relativeUrl;
         return ASYNC_URL + relativeUrl;
-    }
-
-    public static String getExtension(ImageFormat imageFormat) {
-        if(imageFormat == ImageFormat.BMP)
-            return ".bmp";
-        else if(imageFormat == ImageFormat.JPEG)
-            return ".jpg";
-        else if(imageFormat == ImageFormat.PNG)
-            return ".png";
-        else if(imageFormat == ImageFormat.GIF)
-            return ".gif";
-        else
-            return ".webp";
-
     }
 
     public static class NotLoggedInException extends Exception {

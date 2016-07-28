@@ -46,8 +46,6 @@ public class Network {
         mSettings = new SettingsWrapper(mContext);
 
         if (mHttpClient == null) {
-            //ClearableCookieJar cookieJar =
-            //        new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(mContext));
             CookieHandler cookieHandler = new CookieManager(
                     new PersistentCookieStore(mContext), CookiePolicy.ACCEPT_ALL);
             mHttpClient = new OkHttpClient.Builder()

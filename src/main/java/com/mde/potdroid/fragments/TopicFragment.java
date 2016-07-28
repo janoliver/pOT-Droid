@@ -770,7 +770,7 @@ public class TopicFragment extends PaginateFragment implements
     }
 
     public void loadImage(final String url, final String id) {
-        ImageHandler ih = new ImageHandler(getActivity(), "topic_images", 1024*1024*50);
+        ImageHandler ih = ImageHandler.getPictureHandler(getActivity());
         try {
             ih.retrieveImage(url, new ImageHandler.ImageHandlerCallback() {
                 @Override
@@ -783,8 +783,8 @@ public class TopicFragment extends PaginateFragment implements
                     mJsInterface.displayImageLoader(id);
                     showError(R.string.msg_img_loading_error);
                 }
-            }, "topic_images");
-        } catch (IOException e) {
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

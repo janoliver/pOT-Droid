@@ -2,22 +2,23 @@ package com.mde.potdroid.helpers;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
-import android.webkit.MimeTypeMap;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.math.BigInteger;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.net.URLConnection;
 
-public class CacheContentProvider extends ContentProvider {
+public class CacheContentProvider extends ContentProvider implements ContentProvider.PipeDataWriter<Object> {
     private static final String[] COLUMNS= {
             MediaStore.MediaColumns.DATA,
             MediaStore.MediaColumns.DATE_ADDED,
@@ -35,41 +36,19 @@ public class CacheContentProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        final int lastDot = uri.toString().lastIndexOf('.');
-        if (lastDot >= 0) {
-            final String extension = uri.toString().substring(lastDot + 1).toLowerCase();
-            final String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-
-            if (mime != null) {
-                Utils.log(mime);
-                return mime;
-            }
-        }
-
-        return "application/octet-stream";
+        return(URLConnection.guessContentTypeFromName(uri.toString()));
     }
 
     @Override
-    public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
-        final File f = getFileForUri(getContentUriFromUrlOrUri(uri.toString()));
+    public ParcelFileDescriptor openFile(Uri uri, String mode)
+            throws FileNotFoundException {
 
-        if (f.exists()) {
-            return ParcelFileDescriptor.open(f, ParcelFileDescriptor.MODE_READ_ONLY);
-        }
-
-        throw new FileNotFoundException(uri.getPath());
-    }
-
-    private File getFileForUri(Uri uri) {
-        String filename = getFilenameForCache(uri.toString());
-        return new File(ImageHandler.getCacheDir(getContext(), "topic_images"), filename);
+        return openPipeHelper(uri, getType(uri), null, null, this);
     }
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
-        final File file = getFileForUri(uri);
-
         if (projection == null) {
             projection = COLUMNS;
         }
@@ -78,16 +57,7 @@ public class CacheContentProvider extends ContentProvider {
         Object[] vals = new Object[projection.length];
         int i = 0;
         for (String col : projection) {
-            if (MediaStore.MediaColumns.DATA.equals(col)) {
-                cols[i] = MediaStore.MediaColumns.DATA;
-                vals[i] = file;
-            } else if (MediaStore.MediaColumns.DATE_ADDED.equals(col)) {
-                cols[i] = MediaStore.MediaColumns.DATE_ADDED;
-                vals[i] = file.lastModified();
-            } else if (MediaStore.MediaColumns.DATE_MODIFIED.equals(col)) {
-                cols[i] = MediaStore.MediaColumns.DATE_MODIFIED;
-                vals[i] = file.lastModified();
-            } else if (MediaStore.MediaColumns.DISPLAY_NAME.equals(col)) {
+            if (MediaStore.MediaColumns.DISPLAY_NAME.equals(col)) {
                 cols[i] = MediaStore.MediaColumns.DISPLAY_NAME;
                 vals[i] = uri.getLastPathSegment();
             } else if (MediaStore.MediaColumns.MIME_TYPE.equals(col)) {
@@ -98,7 +68,7 @@ public class CacheContentProvider extends ContentProvider {
                 vals[i] = uri.getLastPathSegment();
             } else if (MediaStore.MediaColumns.SIZE.equals(col)) {
                 cols[i] = MediaStore.MediaColumns.SIZE;
-                vals[i] = file.length();
+                vals[i] = AssetFileDescriptor.UNKNOWN_LENGTH;
             }
             i++;
         }
@@ -124,12 +94,14 @@ public class CacheContentProvider extends ContentProvider {
         throw new RuntimeException("Operation not supported");
     }
 
-    public static Uri getContentUriFromUrlOrUri(String rawUrl) {
+    public static Uri getContentUriFromUrlOrUri(String rawUrl, String sub_directory) {
         if(rawUrl.startsWith(CONTENT_URI.toString()))
             return Uri.parse(rawUrl);
         try {
             URL url = new URL(rawUrl.replace("%20","+"));
-            return Uri.parse(CONTENT_URI + url.getHost() + url.getPath());
+            if(!sub_directory.endsWith("/"))
+                sub_directory += "/";
+            return Uri.parse(CONTENT_URI + sub_directory + url.getHost() + url.getPath());
         } catch (MalformedURLException e) {
             Utils.printException(e);
             return null;
@@ -148,36 +120,35 @@ public class CacheContentProvider extends ContentProvider {
         return result;
     }
 
-    public static String getFilenameForCache(String url) {
-        HashFileNameGenerator generator = new HashFileNameGenerator();
-        return generator.generate(url);
-    }
+    @Override
+    public void writeDataToPipe(ParcelFileDescriptor output, Uri uri, String mimeType, Bundle opts, Object args) {
+        FileOutputStream fout = new FileOutputStream(output.getFileDescriptor());
 
-    public static class HashFileNameGenerator {
+        ImageHandler h;
 
-        private static final String HASH_ALGORITHM = "MD5";
-        private static final int RADIX = 10 + 26; // 10 digits + 26 letters
+        // only two possibilities.
+        if(uri.toString().startsWith(CONTENT_URI + ImageHandler.BENDER_SUBDIR))
+            h = ImageHandler.getBenderHandler(getContext().getApplicationContext());
+        else
+            h = ImageHandler.getPictureHandler(getContext().getApplicationContext());
 
-        public String generate(String imageUri) {
-            Uri uri = getContentUriFromUrlOrUri(imageUri);
-            if(uri != null)
-                imageUri = uri.toString();
+        InputStream in = h.getEntry(Utils.md5(uri.toString()));
 
-            byte[] md5 = getMD5(imageUri.getBytes());
-            BigInteger bi = new BigInteger(md5).abs();
-            return bi.toString(RADIX);
-        }
-
-        private byte[] getMD5(byte[] data) {
-            byte[] hash = null;
-            try {
-                MessageDigest digest = MessageDigest.getInstance(HASH_ALGORITHM);
-                digest.update(data);
-                hash = digest.digest();
-            } catch (NoSuchAlgorithmException e) {
-                // nothing
+        byte[] buffer = new byte[1024];
+        int len;
+        try {
+            while ((len = in.read(buffer)) != -1) {
+                fout.write(buffer, 0, len);
             }
-            return hash;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                in.close();
+                fout.close();
+            } catch (IOException ignored) {
+                // ignored
+            }
         }
     }
 

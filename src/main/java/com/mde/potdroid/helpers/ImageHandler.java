@@ -1,20 +1,13 @@
 package com.mde.potdroid.helpers;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.util.Log;
 import com.jakewharton.disklrucache.DiskLruCache;
-import com.mde.potdroid.BuildConfig;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,25 +18,46 @@ import java.io.InputStream;
 public class ImageHandler {
 
     private final Context mContext;
+    private final String mDir;
     private DiskLruCache mDiskCache;
     private static final int APP_VERSION = 1;
     private static final int VALUE_COUNT = 1;
-    public static final int IO_BUFFER_SIZE = 8 * 1024;
+
+    public static final String BENDER_SUBDIR = "benders";
+    public static final String PICTURE_SUBDIR = "pictures";
+
+    private static ImageHandler mCachedBenderHandler;
+    private static ImageHandler mCachedPictureHandler;
+
+    public static synchronized ImageHandler getPictureHandler(Context context) {
+        if (mCachedPictureHandler == null) {
+            mCachedPictureHandler = new ImageHandler(context.getApplicationContext(), PICTURE_SUBDIR, 1024 * 1024 * 50);
+        }
+        return mCachedPictureHandler;
+    }
+
+    public static synchronized ImageHandler getBenderHandler(Context context) {
+        if (mCachedBenderHandler == null) {
+            mCachedBenderHandler = new ImageHandler(context.getApplicationContext(), BENDER_SUBDIR, 1024 * 1024 * 50);
+        }
+        return mCachedBenderHandler;
+    }
 
     public ImageHandler(Context cx, String uniqueName, int diskCacheSize) {
         mContext = cx;
+        mDir = uniqueName;
 
-        getCacheDir(mContext, uniqueName).mkdirs();
+        getCacheDir(mContext, mDir).mkdirs();
 
         try {
-            final File diskCacheDir = getCacheDir(mContext, uniqueName);
+            final File diskCacheDir = getCacheDir(mContext, mDir);
             mDiskCache = DiskLruCache.open(diskCacheDir, APP_VERSION, VALUE_COUNT, diskCacheSize);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void put(String key, BufferedSource data) {
+    public synchronized void put(String key, BufferedSource data) {
 
         DiskLruCache.Editor editor = null;
         try {
@@ -63,54 +77,32 @@ public class ImageHandler {
 
             mDiskCache.flush();
             editor.commit();
-            if (BuildConfig.DEBUG) {
-                Log.d("cache_test_DISK_", "image put on disk cache " + key);
-            }
 
         } catch (IOException e) {
-            if (BuildConfig.DEBUG) {
-                Log.d("cache_test_DISK_", "ERROR on: image put on disk cache " + key);
-            }
             try {
                 if (editor != null) {
                     editor.abort();
                 }
             } catch (IOException ignored) {
+                // ignored
             }
         }
 
     }
 
-    public Bitmap getBitmap(String key) {
-
-        Bitmap bitmap = null;
-        DiskLruCache.Snapshot snapshot = null;
+    public synchronized InputStream getEntry(String key) {
+        InputStream in = null;
         try {
-
-            snapshot = mDiskCache.get(key);
+            DiskLruCache.Snapshot snapshot = mDiskCache.get(key);
             if (snapshot == null) {
                 return null;
             }
-            final InputStream in = snapshot.getInputStream(0);
-            if (in != null) {
-                final BufferedInputStream buffIn =
-                        new BufferedInputStream(in, IO_BUFFER_SIZE);
-                bitmap = BitmapFactory.decodeStream(buffIn);
-            }
+            in = snapshot.getInputStream(0);
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (snapshot != null) {
-                snapshot.close();
-            }
         }
 
-        if (BuildConfig.DEBUG) {
-            Log.d("cache_test_DISK_", bitmap == null ? "" : "image read from disk " + key);
-        }
-
-        return bitmap;
-
+        return in;
     }
 
     public boolean containsKey(String key) {
@@ -133,9 +125,6 @@ public class ImageHandler {
     }
 
     public void clearCache() {
-        if (BuildConfig.DEBUG) {
-            Log.d("cache_test_DISK_", "disk cache CLEARED");
-        }
         try {
             mDiskCache.delete();
         } catch (IOException e) {
@@ -153,93 +142,33 @@ public class ImageHandler {
      *
      * @param url the url of the image to be retrieved.
      */
-    public void retrieveImage(final String url, final ImageHandlerCallback callback, String uniqueName) throws IOException {
-        final String filename = CacheContentProvider.getFilenameForCache(url);
-        final File tempFile = new File(getCacheDir(mContext, uniqueName), filename);
-        final Uri localUri = CacheContentProvider.getContentUriFromUrlOrUri(url);
+    public void retrieveImage(final String url, final ImageHandlerCallback callback) throws IOException {
+        final Uri localUri = CacheContentProvider.getContentUriFromUrlOrUri(url, mDir);
+        final String cacheKey = Utils.md5(localUri.toString());
 
-        if (tempFile.exists()) {
+        if (containsKey(cacheKey)) {
             callback.onSuccess(url, localUri.toString());
             return;
         }
 
-        OkHttpClient client = new OkHttpClient();
+        Network network = new Network(mContext);
         Request request = new Request.Builder().url(url).build();
-        Response response = client.newCall(request).execute();
-        put(filename, response.body().source());
-        response.body().close();
-
-        callback.onSuccess(url, localUri.toString());
-
-        /*final ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url)).
-                setLowestPermittedRequestLevel(ImageRequest.RequestLevel.FULL_FETCH).build();
-        DataSource<CloseableReference<PooledByteBuffer>> dataSource =
-                Fresco.getImagePipeline().fetchEncodedImage(request, mContext);
-
-        DataSubscriber<CloseableReference<PooledByteBuffer>> dataSubscriber =
-                new BaseDataSubscriber<CloseableReference<PooledByteBuffer>>() {
-                    @Override
-                    protected void onNewResultImpl(
-                            DataSource<CloseableReference<PooledByteBuffer>> dataSource) {
-                        if (!dataSource.isFinished()) {
-                            return;
-                        }
-
-                        CloseableReference<PooledByteBuffer> buffRef = dataSource.getResult();
-                        if (buffRef != null) {
-                            PooledByteBufferInputStream is = new PooledByteBufferInputStream(buffRef.get());
-                            try {
-                                saveInputStream(tempFile, is, new FileSaverCallback() {
-                                    @Override
-                                    public void onSuccess() {
-                                        callback.onSuccess(url, localUri.toString());
-                                    }
-
-                                    @Override
-                                    public void onFailure() {
-                                        callback.onFailure(url);
-                                    }
-                                });
-                            } finally {
-                                Closeables.closeQuietly(is);
-                                CloseableReference.closeSafely(buffRef);
-                            }
-                        }
-                    }
-
-                    @Override
-                    protected void onFailureImpl(
-                            DataSource<CloseableReference<PooledByteBuffer>> dataSource) {
-                        callback.onFailure(url);
-                    }
-                };
-        dataSource.subscribe(dataSubscriber, CallerThreadExecutor.getInstance());*/
-    }
-
-    /*public static void saveInputStream(final File outFile, final PooledByteBufferInputStream is,
-                                       FileSaverCallback callback) {
-        try {
-            OutputStream output = new FileOutputStream(outFile);
-
-            try {
-                byte[] buffer = new byte[4 * 1024];
-                int read;
-
-                while ((read = is.read(buffer)) != -1)
-                    output.write(buffer, 0, read);
-
-                output.flush();
-            } finally {
-                output.close();
-
-                callback.onSuccess();
+        network.getHttpClient().newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onFailure(url);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            callback.onFailure();
-        }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                put(cacheKey, response.body().source());
+                response.body().close();
+                callback.onSuccess(url, localUri.toString());
+            }
+        });
+
     }
-*/
+
     public static File getCacheDir(Context cx, String uniqueName) {
         return new File(cx.getExternalFilesDir(null), uniqueName);
     }
@@ -248,11 +177,5 @@ public class ImageHandler {
         void onSuccess(final String url, final String path);
 
         void onFailure(final String url);
-    }
-
-    private interface FileSaverCallback {
-        void onSuccess();
-
-        void onFailure();
     }
 }

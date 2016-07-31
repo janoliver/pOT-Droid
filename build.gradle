@@ -29,9 +29,6 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.android.support:support-v4-preferencefragment:1.0.0@aar'
     compile 'com.github.afollestad.material-dialogs:core:0.8.6.2@aar'
-    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
-    compile 'uk.co.ribot:easyadapter:1.5.0@aar'
-    compile 'com.jakewharton:disklrucache:2.0.2'
     compile "com.squareup.okhttp3:okhttp-urlconnection:3.0.0-RC1"
 }
 

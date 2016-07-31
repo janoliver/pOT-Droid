@@ -1,9 +1,7 @@
 package com.mde.potdroid;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
@@ -12,8 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,7 +21,6 @@ import com.mde.potdroid.helpers.DatabaseWrapper;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.views.UpdateInfoDialog;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 /**
  * The Class all activities should extend. It mainly handles the sidebar(s)
@@ -90,15 +85,6 @@ public class BaseActivity extends AppCompatActivity {
         else
             setContentView(R.layout.main);
 
-        // tinted statusbar
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT && mSettings.isTintedStatusbar()) {
-            setTranslucentStatus(true);
-
-            SystemBarTintManager tintManager = new SystemBarTintManager(this);
-            tintManager.setStatusBarTintEnabled(true);
-            tintManager.setStatusBarTintColor(Utils.getColorByAttr(this, R.attr.colorPrimary));
-
-        }
 
         mContentView = (FrameLayout) findViewById(R.id.content);
 
@@ -311,19 +297,6 @@ public class BaseActivity extends AppCompatActivity {
     public void closeRightDrawer() {
         if (mDrawerLayout != null)
             mDrawerLayout.closeDrawer(Gravity.RIGHT);
-    }
-
-    @TargetApi(19)
-    private void setTranslucentStatus(boolean on) {
-        Window win = getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        win.setAttributes(winParams);
     }
 
 }

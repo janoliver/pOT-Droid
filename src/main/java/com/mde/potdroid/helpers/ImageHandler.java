@@ -231,7 +231,7 @@ public class ImageHandler {
         final Uri localUri = CacheContentProvider.getContentUriFromUrlOrUri(url, mDir);
         final String cacheKey = Utils.md5(localUri.toString());
 
-        if (containsKey(cacheKey)) {
+       if (containsKey(cacheKey)) {
             return localUri.toString();
         }
 

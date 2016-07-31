@@ -25,11 +25,6 @@ import com.mde.potdroid.models.MessageList;
 import com.mde.potdroid.parsers.MessageListParser;
 import com.mde.potdroid.views.IconDrawable;
 import org.apache.http.Header;
-import uk.co.ribot.easyadapter.EasyRecyclerAdapter;
-import uk.co.ribot.easyadapter.ItemViewHolder;
-import uk.co.ribot.easyadapter.PositionInfo;
-import uk.co.ribot.easyadapter.annotations.LayoutId;
-import uk.co.ribot.easyadapter.annotations.ViewId;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -52,7 +47,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
 
     // message list and adapter
     private MessageList mMessageList;
-    private EasyRecyclerAdapter<Message> mListAdapter;
+    private MessageListAdapter mListAdapter;
 
     /**
      * Returns an instance of the Fragment and sets required parameters as Arguments
@@ -86,23 +81,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_message_list, container, false);
 
-        MessageViewHolder.MessageListener listener = new MessageViewHolder.MessageListener() {
-            @Override
-            public void onClick(Message t) {
-                Intent intent = new Intent(getBaseActivity(), MessageActivity.class);
-                intent.putExtra(MessageFragment.ARG_ID, t.getId());
-                startActivity(intent);
-            }
-
-            @Override
-            public String getMode() {
-                return mMode;
-            }
-        };
-
-        mListAdapter = new EasyRecyclerAdapter<>(getActivity(), MessageViewHolder.class,
-                new ArrayList<Message>(), listener);
-
+        mListAdapter = new MessageListAdapter(new ArrayList<Message>(), mMode);
 
         RecyclerView listView = (RecyclerView) v.findViewById(R.id.forum_list_content);
         listView.setAdapter(mListAdapter);
@@ -173,6 +152,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
     @Override
     public void onLoadFinished(Loader<MessageList> loader, MessageList data) {
         hideLoadingAnimation();
+
         if (data != null) {
             mMessageList = data;
             mListAdapter.setItems(mMessageList.getMessages());
@@ -194,118 +174,130 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
         restartLoader(this);
     }
 
-    public String getMode() {
-        return mMode;
-    }
+    public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.ViewHolder> {
+        private ArrayList<Message> mDataset;
+        public String mMode;
+        SettingsWrapper mSettings;
+        BenderHandler mBenderHandler;
 
 
-    @LayoutId(R.layout.listitem_message)
-    public static class MessageViewHolder extends ItemViewHolder<Message> {
+        public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @ViewId(R.id.container)
-        RelativeLayout mContainer;
+            public RelativeLayout mContainer;
+            public TextView mTextTitle;
+            public TextView mTextDescription;
+            public ImageView mBender;
 
-        @ViewId(R.id.title)
-        TextView mTextTitle;
-
-        @ViewId(R.id.pages)
-        TextView mTextDescription;
-
-        @ViewId(R.id.bender)
-        ImageView mBender;
-
-        public MessageViewHolder(View view) {
-            super(view);
+            public ViewHolder(RelativeLayout container) {
+                super(container);
+                mContainer = container;
+                mTextTitle = (TextView)mContainer.findViewById(R.id.title);
+                mBender = (ImageView)mContainer.findViewById(R.id.bender);
+                mTextDescription = (TextView)mContainer.findViewById(R.id.pages);
+            }
         }
 
-        @Override
-        public void onSetValues(Message m, PositionInfo positionInfo) {
+        public MessageListAdapter(ArrayList<Message> data, String mode) {
+            mDataset = data;
+            mMode = mode;
 
-            // set the name, striked if closed
-            mTextTitle.setText(Html.fromHtml(m.getTitle()));
+            mSettings = new SettingsWrapper(getContext());
+            mBenderHandler = new BenderHandler(getContext());
+        }
+
+        public void setItems(ArrayList<Message> data) {
+            mDataset = data;
+            notifyDataSetChanged();
+        }
+
+        // Create new views (invoked by the layout manager)
+        @Override
+        public MessageListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            // create a new view
+            RelativeLayout v = (RelativeLayout)LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.listitem_message, parent, false);
+
+            return new ViewHolder(v);
+        }
+
+        // Replace the contents of a view (invoked by the layout manager)
+        @Override
+        public void onBindViewHolder(final ViewHolder holder, int position) {
+            // - get element from your dataset at this position
+            // - replace the contents of the view with that element
+            final Message m = mDataset.get(position);
+
+            holder.mTextTitle.setText(Html.fromHtml(m.getTitle()));
 
             // last post information
             String author = m.isSystem() ?
                     getContext().getString(R.string.pm_author_system) :
                     m.getFrom().getNick();
 
-            MessageListener listener = getListener(MessageListener.class);
-            String mMode = listener.getMode();
-
             Spanned content = Html.fromHtml(getContext().getString(R.string.message_description,
                     mMode.equals(MessageList.TAG_INBOX) ? "von" : "an",
                     author, mMode.equals(MessageList.TAG_INBOX) ? "erhalten" : "gesendet",
                     new SimpleDateFormat(getContext().getString(R.string.default_time_format)).format(m
                             .getDate())));
-            mTextDescription.setText(content);
+            holder.mTextDescription.setText(content);
 
-            int padding_top = mContainer.getPaddingTop();
-            int padding_bottom = mContainer.getPaddingBottom();
-            int padding_right = mContainer.getPaddingRight();
-            int padding_left = mContainer.getPaddingLeft();
+            int padding_top = holder.mContainer.getPaddingTop();
+            int padding_bottom = holder.mContainer.getPaddingBottom();
+            int padding_right = holder.mContainer.getPaddingRight();
+            int padding_left = holder.mContainer.getPaddingLeft();
 
             if (m.isUnread())
-                mContainer.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getContext(), R.attr.bbBackgroundListActive));
+                holder.mContainer.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getContext(), R.attr.bbBackgroundListActive));
             else
-                mContainer.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getContext(), R.attr.bbBackgroundList));
+                holder.mContainer.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getContext(), R.attr.bbBackgroundList));
 
-            mContainer.setPadding(padding_left, padding_top, padding_right, padding_bottom);
+            holder.mContainer.setPadding(padding_left, padding_top, padding_right, padding_bottom);
 
             // bender. Show an alias as long as the real bender is not present. If the sender
             // is "System", hide the view.
-            SettingsWrapper settings = new SettingsWrapper(getContext());
-            BenderHandler benderHandler = new BenderHandler(getContext());
-            if (!m.isSystem() && settings.showBenders()) {
 
-                benderHandler.getAvatar(m.getFrom(), new BenderHandler.BenderListener() {
-                    @Override
-                    public void onSuccess(String path) {
-                        mBender.setImageURI(Uri.parse(path));
-                    }
+            holder.mBender.setVisibility(View.INVISIBLE);
+            if (!m.isSystem() && mSettings.showBenders()) {
+                holder.mBender.setVisibility(View.VISIBLE);
 
-                    @Override
-                    public void onFailure() {
-                        // this functionality uses some primitive caching
-                        if (MessageListFragment.mBenderPlaceholder == null) {
-                            try {
-                                MessageListFragment.mBenderPlaceholder =
-                                        Utils.getDrawableFromAsset(getContext(),
-                                                "images/placeholder_bender.png");
+                String bender_path = mBenderHandler.getAvatarFilePathIfExists(m.getFrom());
+                if(bender_path != null) {
+                    holder.mBender.setImageURI(Uri.parse(bender_path));
+                } else {
+                    // this functionality uses some primitive caching
+                    if (MessageListFragment.mBenderPlaceholder == null) {
+                        try {
+                            MessageListFragment.mBenderPlaceholder =
+                                    Utils.getDrawableFromAsset(getContext(),
+                                            "images/placeholder_bender.png");
 
-                            } catch (IOException e) {
-                                Utils.printException(e);
-                            }
-                        }
-
-                        if (MessageListFragment.mBenderPlaceholder == null) {
-                            mBender.setVisibility(View.GONE);
-                        } else {
-                            mBender.setImageDrawable(MessageListFragment.mBenderPlaceholder);
+                        } catch (IOException e) {
+                            Utils.printException(e);
                         }
                     }
-                });
-            } else {
-                mBender.setVisibility(View.GONE);
+
+                    if (MessageListFragment.mBenderPlaceholder == null) {
+                        holder.mBender.setVisibility(View.INVISIBLE);
+                    } else {
+                        holder.mBender.setImageDrawable(MessageListFragment.mBenderPlaceholder);
+                    }
+                }
             }
+
+            holder.mContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getBaseActivity(), MessageActivity.class);
+                    intent.putExtra(MessageFragment.ARG_ID, m.getId());
+                    startActivity(intent);
+                }
+            });
+
         }
 
         @Override
-        public void onSetListeners() {
-            mContainer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Get your custom listener and call the method.
-                    MessageListener listener = getListener(MessageListener.class);
-                    if (listener != null) {
-                        listener.onClick(getItem());
-                    }
-                }
-            });
-        }
-
-        public interface MessageListener {
-            void onClick(Message msg);
-            String getMode();
+        public int getItemCount() {
+            return mDataset.size();
         }
     }
 

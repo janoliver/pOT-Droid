@@ -18,11 +18,6 @@ import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.BookmarkList;
 import com.mde.potdroid.parsers.BookmarkParser;
 import com.mde.potdroid.views.IconButton;
-import uk.co.ribot.easyadapter.EasyRecyclerAdapter;
-import uk.co.ribot.easyadapter.ItemViewHolder;
-import uk.co.ribot.easyadapter.PositionInfo;
-import uk.co.ribot.easyadapter.annotations.LayoutId;
-import uk.co.ribot.easyadapter.annotations.ViewId;
 
 import java.util.ArrayList;
 
@@ -34,7 +29,7 @@ public class SidebarBookmarksFragment extends BaseFragment
 
     // the bookmark list and adapter
     private BookmarkList mBookmarkList;
-    private EasyRecyclerAdapter<Bookmark> mListAdapter;
+    private BookmarkListAdapter mListAdapter;
     private TextView mEmptyListView;
     private IconButton mPmButton;
     private IconButton mBookmarksButton;
@@ -63,28 +58,15 @@ public class SidebarBookmarksFragment extends BaseFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_sidebar_left, container, false);
 
-        BookmarkViewHolder.BookmarkListener listener = new BookmarkViewHolder.BookmarkListener() {
-            @Override
-            public void onClick(Bookmark t) {
-                Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
-                intent.putExtra(TopicFragment.ARG_POST_ID, t.getLastPost().getId());
-                intent.putExtra(TopicFragment.ARG_TOPIC_ID, t.getThread().getId());
-                startActivity(intent);
-            }
-        };
-
         mEmptyListView = (TextView) v.findViewById(R.id.empty_bookmarks_text);
 
-
-        mListAdapter = new EasyRecyclerAdapter<>(getActivity(), BookmarkViewHolder.class,
-                new ArrayList<Bookmark>(), listener);
+        mListAdapter = new BookmarkListAdapter(new ArrayList<Bookmark>());
         setNewBookmarks();
 
         RecyclerView listView = (RecyclerView) v.findViewById(R.id.listview_bookmarks);
         listView.setAdapter(mListAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getBaseActivity());
         listView.setLayoutManager(layoutManager);
-
 
         IconButton home = (IconButton) v.findViewById(R.id.button_home);
         home.setOnClickListener(new View.OnClickListener() {
@@ -227,58 +209,81 @@ public class SidebarBookmarksFragment extends BaseFragment
             mEmptyListView.setVisibility(View.GONE);
     }
 
-    @LayoutId(R.layout.listitem_sidebar_bookmark)
-    public static class BookmarkViewHolder extends ItemViewHolder<Bookmark> {
+    public class BookmarkListAdapter extends RecyclerView.Adapter<BookmarkListAdapter.ViewHolder> {
+        private ArrayList<Bookmark> mDataset;
 
-        @ViewId(R.id.container)
-        RelativeLayout mContainer;
+        public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @ViewId(R.id.name)
-        TextView mTextTitle;
+            public RelativeLayout mContainer;
+            public TextView mTextTitle;
+            public TextView mTextNewposts;
 
-        @ViewId(R.id.newposts)
-        TextView mTextNewposts;
-
-        public BookmarkViewHolder(View view) {
-            super(view);
+            public ViewHolder(RelativeLayout container) {
+                super(container);
+                mContainer = container;
+                mTextTitle = (TextView)mContainer.findViewById(R.id.name);
+                mTextNewposts = (TextView)mContainer.findViewById(R.id.newposts);
+            }
         }
 
-        @Override
-        public void onSetValues(Bookmark b, PositionInfo positionInfo) {
-            mTextTitle.setText(b.getThread().getTitle());
-            if (b.getThread().isClosed())
-                mTextTitle.setPaintFlags(mTextTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            else
-                mTextTitle.setPaintFlags(mTextTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+        public BookmarkListAdapter(ArrayList<Bookmark> data) {
+            mDataset = data;
+        }
 
-            mTextNewposts.setText(b.getNumberOfNewPosts().toString());
+        public void setItems(ArrayList<Bookmark> data) {
+            mDataset = data;
+            notifyDataSetChanged();
+        }
+
+        // Create new views (invoked by the layout manager)
+        @Override
+        public BookmarkListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            // create a new view
+            RelativeLayout v = (RelativeLayout)LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.listitem_sidebar_bookmark, parent, false);
+
+            return new ViewHolder(v);
+        }
+
+        // Replace the contents of a view (invoked by the layout manager)
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            // - get element from your dataset at this position
+            // - replace the contents of the view with that element
+            final Bookmark b = mDataset.get(position);
+
+            holder.mTextTitle.setText(b.getThread().getTitle());
+            if (b.getThread().isClosed())
+                holder.mTextTitle.setPaintFlags(holder.mTextTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            else
+                holder.mTextTitle.setPaintFlags(holder.mTextTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+
+            holder.mTextNewposts.setText(b.getNumberOfNewPosts().toString());
 
             if (b.getNumberOfNewPosts() == 0)
-                mTextNewposts.setVisibility(View.GONE);
+                holder.mTextNewposts.setVisibility(View.GONE);
             else
-                mTextNewposts.setVisibility(View.VISIBLE);
+                holder.mTextNewposts.setVisibility(View.VISIBLE);
 
-        }
+            holder.mContainer.setOnClickListener(new View.OnClickListener() {
 
-        @Override
-        public void onSetListeners() {
-            mContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    //Get your custom listener and call the method.
-                    BookmarkListener listener = getListener(BookmarkListener.class);
-                    if (listener != null) {
-                        listener.onClick(getItem());
-                    }
+                public void onClick(View view) {
+                    Intent intent = new Intent(getBaseActivity(), TopicActivity.class);
+                    intent.putExtra(TopicFragment.ARG_POST_ID, b.getLastPost().getId());
+                    intent.putExtra(TopicFragment.ARG_TOPIC_ID, b.getThread().getId());
+                    startActivity(intent);
                 }
             });
 
         }
 
-        public interface BookmarkListener {
-            void onClick(Bookmark bookmark);
+        @Override
+        public int getItemCount() {
+            return mDataset.size();
         }
     }
+
 
 
 }

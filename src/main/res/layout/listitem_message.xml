@@ -7,12 +7,12 @@
                 android:layout_marginBottom="1dp">
 
     <ImageView
+            android:id="@+id/bender"
             android:contentDescription="@string/none"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:maxWidth="40dp"
             android:layout_marginRight="10dp"
-            android:id="@+id/bender"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:adjustViewBounds="true"/>

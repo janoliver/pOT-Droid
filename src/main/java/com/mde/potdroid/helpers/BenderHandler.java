@@ -95,6 +95,9 @@ public class BenderHandler {
             return null;
         }
 
+        if(url == null)
+            return null;
+
         ImageHandler ih = ImageHandler.getBenderHandler(mContext.getApplicationContext());
         return ih.getImagePathIfExists(url);
     }

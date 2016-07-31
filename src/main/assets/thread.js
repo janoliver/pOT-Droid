@@ -39,7 +39,7 @@ $(document).ready(function() {
     }
 
     // manual image loader
-    $("div.img i.img-loader").on("click", function() {
+    $("div.img").on("click", "i.img-loader", function() {
         replaceImage($(this), "");
     });
 
@@ -59,7 +59,7 @@ $(document).ready(function() {
     });
 
     // manual image with link loader
-    $("div.img-link i.img-loader").on("click", function() {
+    $("div.img-link").on("click", "i.img-loader", function() {
         replaceImage($(this), $(this).parent().attr('data-href'));
     });
 
@@ -165,7 +165,7 @@ function displayImageLoader(id) {
     else
         classes = classes + " fa-picture-o";
     icon.attr("class", classes);
-    el.attr("id", "");
+    el.removeAttr('id');
 }
 
 function displayImage(url, path, id) {

@@ -6,19 +6,15 @@ import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class CacheContentProvider extends ContentProvider implements ContentProvider.PipeDataWriter<Object> {
+public class CacheContentProvider extends ContentProvider {
     private static final String[] COLUMNS= {
             MediaStore.MediaColumns.DATA,
             MediaStore.MediaColumns.DATE_ADDED,
@@ -43,7 +39,15 @@ public class CacheContentProvider extends ContentProvider implements ContentProv
     public ParcelFileDescriptor openFile(Uri uri, String mode)
             throws FileNotFoundException {
 
-        return openPipeHelper(uri, getType(uri), null, null, this);
+        ImageHandler h;
+
+        // only two possibilities.
+        if(uri.toString().startsWith(CONTENT_URI + ImageHandler.BENDER_SUBDIR))
+            h = ImageHandler.getBenderHandler(getContext().getApplicationContext());
+        else
+            h = ImageHandler.getPictureHandler(getContext().getApplicationContext());
+
+        return h.getEntry(Utils.md5(uri.toString()));
     }
 
     @Override
@@ -120,7 +124,7 @@ public class CacheContentProvider extends ContentProvider implements ContentProv
         return result;
     }
 
-    @Override
+    /*@Override
     public void writeDataToPipe(ParcelFileDescriptor output, Uri uri, String mimeType, Bundle opts, Object args) {
         FileOutputStream fout = new FileOutputStream(output.getFileDescriptor());
 
@@ -132,7 +136,8 @@ public class CacheContentProvider extends ContentProvider implements ContentProv
         else
             h = ImageHandler.getPictureHandler(getContext().getApplicationContext());
 
-        InputStream in = h.getEntry(Utils.md5(uri.toString()));
+        Bitmap bm = h.getEntry(Utils.md5(uri.toString()));
+        InputStream in = bm.
 
         byte[] buffer = new byte[1024];
         int len;
@@ -150,6 +155,6 @@ public class CacheContentProvider extends ContentProvider implements ContentProv
                 // ignored
             }
         }
-    }
+    }*/
 
 }

@@ -2,15 +2,18 @@ package com.mde.potdroid.helpers;
 
 import android.content.Context;
 import android.net.Uri;
-import com.jakewharton.disklrucache.DiskLruCache;
-import okhttp3.*;
+import android.os.ParcelFileDescriptor;
+import com.mde.potdroid.helpers.cache.DiskLruCache;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Request;
+import okhttp3.Response;
 import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Handles the downloading and caching of images.
@@ -19,9 +22,13 @@ public class ImageHandler {
 
     private final Context mContext;
     private final String mDir;
+    private final int mCacheSize;
     private DiskLruCache mDiskCache;
     private static final int APP_VERSION = 1;
     private static final int VALUE_COUNT = 1;
+
+    private boolean mHttpDiskCacheStarting = true;
+    private final Object mHttpDiskCacheLock = new Object();
 
     public static final String BENDER_SUBDIR = "benders";
     public static final String PICTURE_SUBDIR = "pictures";
@@ -43,17 +50,69 @@ public class ImageHandler {
         return mCachedBenderHandler;
     }
 
-    public ImageHandler(Context cx, String uniqueName, int diskCacheSize) {
+    private ImageHandler(Context cx, String uniqueName, int diskCacheSize) {
         mContext = cx;
         mDir = uniqueName;
+        mCacheSize = diskCacheSize;
 
-        getCacheDir(mContext, mDir).mkdirs();
+        initCache();
+    }
 
-        try {
-            final File diskCacheDir = getCacheDir(mContext, mDir);
-            mDiskCache = DiskLruCache.open(diskCacheDir, APP_VERSION, VALUE_COUNT, diskCacheSize);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void initCache() {
+        File cacheDir = getCacheDir(mContext, mDir);
+        if (!cacheDir.exists())
+            cacheDir.mkdirs();
+
+        synchronized (mHttpDiskCacheLock) {
+            try {
+                mDiskCache = DiskLruCache.open(cacheDir, APP_VERSION, VALUE_COUNT, mCacheSize);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mHttpDiskCacheStarting = false;
+            mHttpDiskCacheLock.notifyAll();
+        }
+    }
+
+    protected void clearCacheInternal() {
+        synchronized (mHttpDiskCacheLock) {
+            if (mDiskCache != null && !mDiskCache.isClosed()) {
+                try {
+                    mDiskCache.delete();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                mDiskCache = null;
+                mHttpDiskCacheStarting = true;
+                initCache();
+            }
+        }
+    }
+
+    protected void flushCacheInternal() {
+        synchronized (mHttpDiskCacheLock) {
+            if (mDiskCache != null) {
+                try {
+                    mDiskCache.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    protected void closeCacheInternal() {
+        synchronized (mHttpDiskCacheLock) {
+            if (mDiskCache != null) {
+                try {
+                    if (!mDiskCache.isClosed()) {
+                        mDiskCache.close();
+                        mDiskCache = null;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -90,50 +149,47 @@ public class ImageHandler {
 
     }
 
-    public synchronized InputStream getEntry(String key) {
-        InputStream in = null;
-        try {
-            DiskLruCache.Snapshot snapshot = mDiskCache.get(key);
-            if (snapshot == null) {
-                return null;
+    public synchronized ParcelFileDescriptor getEntry(String key) {
+        DiskLruCache.Snapshot snapshot;
+        synchronized (mHttpDiskCacheLock) {
+            // Wait for disk cache to initialize
+            while (mHttpDiskCacheStarting) {
+                try {
+                    mHttpDiskCacheLock.wait();
+                } catch (InterruptedException e) {
+                    // ignore
+                }
             }
-            in = snapshot.getInputStream(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        return in;
+            if (mDiskCache != null) {
+                try {
+                    snapshot = mDiskCache.get(key);
+                    if (snapshot != null) {
+                        return ParcelFileDescriptor.open(snapshot.getFile(0), ParcelFileDescriptor.MODE_READ_ONLY);
+                    } else {
+                        return null;
+                    }
+                } catch (IOException | IllegalStateException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
     }
 
     public boolean containsKey(String key) {
 
         boolean contained = false;
-        DiskLruCache.Snapshot snapshot = null;
+        DiskLruCache.Snapshot snapshot;
         try {
             snapshot = mDiskCache.get(key);
             contained = snapshot != null;
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (snapshot != null) {
-                snapshot.close();
-            }
         }
 
         return contained;
 
-    }
-
-    public void clearCache() {
-        try {
-            mDiskCache.delete();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public File getCacheFolder() {
-        return mDiskCache.getDirectory();
     }
 
     /**

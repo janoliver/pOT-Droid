@@ -774,7 +774,7 @@ public class TopicFragment extends PaginateFragment implements
         try {
             ih.retrieveImage(url, new ImageHandler.ImageHandlerCallback() {
                 @Override
-                public void onSuccess(String url, String path) {
+                public void onSuccess(String url, String path, boolean from_cache) {
                     mJsInterface.displayImage(url, path, id);
                 }
 

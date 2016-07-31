@@ -203,7 +203,7 @@ public class ImageHandler {
         final String cacheKey = Utils.md5(localUri.toString());
 
         if (containsKey(cacheKey)) {
-            callback.onSuccess(url, localUri.toString());
+            callback.onSuccess(url, localUri.toString(), true);
             return;
         }
 
@@ -219,10 +219,21 @@ public class ImageHandler {
             public void onResponse(Call call, Response response) throws IOException {
                 put(cacheKey, response.body().source());
                 response.body().close();
-                callback.onSuccess(url, localUri.toString());
+                callback.onSuccess(url, localUri.toString(), false);
             }
         });
 
+    }
+
+    public String getImagePathIfExists(final String url) {
+        final Uri localUri = CacheContentProvider.getContentUriFromUrlOrUri(url, mDir);
+        final String cacheKey = Utils.md5(localUri.toString());
+
+        if (containsKey(cacheKey)) {
+            return localUri.toString();
+        }
+
+        return null;
     }
 
     public static File getCacheDir(Context cx, String uniqueName) {
@@ -230,7 +241,7 @@ public class ImageHandler {
     }
 
     public interface ImageHandlerCallback {
-        void onSuccess(final String url, final String path);
+        void onSuccess(final String url, final String path, boolean from_cache);
 
         void onFailure(final String url);
     }

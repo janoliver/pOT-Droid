@@ -1,16 +1,9 @@
 package com.mde.potdroid.helpers;
 
 import android.content.Context;
-import android.os.Environment;
 import android.text.TextUtils;
 import com.mde.potdroid.models.User;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
@@ -22,8 +15,6 @@ import java.util.List;
  * information in the database.
  */
 public class BenderHandler {
-
-    protected static final String BENDER_STORAGE_DIR = "/files/avatars";
 
     // the context
     private Context mContext;
@@ -41,15 +32,6 @@ public class BenderHandler {
     }
 
     /**
-     * Check, whether the external files dir is writable
-     *
-     * @return writable or not
-     */
-    private boolean isWritable() {
-        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
-    }
-
-    /**
      * Get the path to the avatar of User user. If the user object has an Avatar field set,
      * this is taken (and, if needed, downloaded). If not, we look for the last seen
      * avatar of this user in the Database. If this is not available either, return null.
@@ -57,40 +39,7 @@ public class BenderHandler {
      * @param user     User object
      * @param callback Callback
      */
-    public void getAvatar(User user, BenderListener callback) {
-
-        File avatar = getAvatarFile(user);
-
-        // figure out, if it already exists in the storage
-        if (avatar == null) {
-
-            callback.onFailure();
-
-        } else if (avatar.exists()) {
-            callback.onSuccess(getAvatarFilePath(user));
-
-        } else if (!isWritable()) {
-
-            callback.onFailure();
-
-        } else if (mSettings.downloadBenders()) {
-            downloadBender(callback, user);
-
-        }
-
-    }
-
-    /**
-     * Perform the downloading of a bender an, upon success or failure, call the corresponding
-     * method of the callback.
-     *
-     * @param callback The BenderListener callback implementation
-     * @param user     the user object
-     */
-    public void downloadBender(final BenderListener callback, final User user) {
-        Network network = new Network(mContext);
-
-        // try to find out the url, call onFailure upon error.
+    public void getAvatar(final User user, final BenderListener callback) {
         String url;
         try {
             url = getAvatarUrl(user);
@@ -99,53 +48,36 @@ public class BenderHandler {
             return;
         }
 
-        network.get(url, new Callback() {
-
-            @Override
-            public void onFailure(Call call, IOException e) {
+        if (!mSettings.downloadBenders()) {
+            String path = getAvatarFilePathIfExists(user);
+            if (path != null)
+                callback.onSuccess(path);
+            else
                 callback.onFailure();
-            }
+            return;
+        }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if(!response.body().contentType().type().equals("image")) {
-                    callback.onFailure();
-                    return;
+        ImageHandler ih = ImageHandler.getBenderHandler(mContext.getApplicationContext());
+        try {
+            ih.retrieveImage(url, new ImageHandler.ImageHandlerCallback() {
+                @Override
+                public void onSuccess(String url, String path, boolean from_cache) {
+                    if (!from_cache) {
+                        Date date = new Date();
+                        mDatabase.updateBender(user.getAvatarId(), user.getId(),
+                                user.getAvatarFile(), new Timestamp(date.getTime()));
+                        callback.onSuccess(path);
+                    }
                 }
 
-                try {
-                    getBenderStorageDir().mkdirs();
-
-                    FileOutputStream fos = new FileOutputStream(getAvatarFile(user));
-                    fos.write(response.body().bytes());
-                    fos.close();
-
-                    Date date = new Date();
-                    mDatabase.updateBender(user.getAvatarId(), user.getId(),
-                            user.getAvatarFile(), new Timestamp(date.getTime()));
-
-                    callback.onSuccess(getAvatarFilePath(user));
-                } catch (Exception e) {
-                    Utils.printException(e);
+                @Override
+                public void onFailure(String url) {
                     callback.onFailure();
                 }
-            }
-        });
-
-    }
-
-    /**
-     * This function returns the theoretical path of a User's avatar, regardless of
-     * whether it exists or not.
-     *
-     * @param user user object
-     * @return path
-     */
-    public String getAvatarFilePath(User user) {
-        if(getAvatarFile(user) != null)
-            return "file://" + getAvatarFile(user).getAbsolutePath();
-        else
-            return null;
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -156,32 +88,15 @@ public class BenderHandler {
      * @return path
      */
     public String getAvatarFilePathIfExists(User user) {
-        File f = getAvatarFile(user);
-        if(f == null || !f.exists())
+        String url;
+        try {
+            url = getAvatarUrl(user);
+        } catch (UnsupportedEncodingException e) {
             return null;
-        return "file://" + getAvatarFile(user).getAbsolutePath();
+        }
 
-    }
-
-    /**
-     * This function returns the file object of a User's avatar, regardless of
-     * whether it exists or not.
-     *
-     * @param user User object
-     * @return file object
-     */
-    public File getAvatarFile(User user) {
-        // if the information is not known in the user object, try to retrieve it
-        // from the database
-        if ((user.getAvatarFile() == null || user.getAvatarFile().equals("") ||
-                user.getAvatarId() == 0) &&
-                !mDatabase.setCurrentBenderInformation(user))
-            return null;
-
-        String[] parts = user.getAvatarFile().split("\\.");
-        String filename = user.getAvatarId() + "." + parts[parts.length - 1];
-
-        return new File(getBenderStorageDir(), filename);
+        ImageHandler ih = ImageHandler.getBenderHandler(mContext.getApplicationContext());
+        return ih.getImagePathIfExists(url);
     }
 
     public void updateLastSeenBenderInformation(List<User> user_list) {
@@ -197,10 +112,13 @@ public class BenderHandler {
      * @throws UnsupportedEncodingException
      */
     public String getAvatarUrl(User user) throws UnsupportedEncodingException {
+        if ((user.getAvatarFile() == null || user.getAvatarFile().equals("") ||
+                user.getAvatarId() == 0) && !mDatabase.setCurrentBenderInformation(user))
+            return null;
+
         String[] parts = user.getAvatarFile().split("/");
-        parts[parts.length - 1] = URLEncoder.encode(parts[parts.length - 1],
-                "UTF-8").replace("+", "%20");
-        return TextUtils.join("/", parts);
+        parts[parts.length - 1] = URLEncoder.encode(parts[parts.length - 1], "UTF-8").replace("+", "%20");
+        return Utils.getAbsoluteUrl(TextUtils.join("/", parts));
     }
 
     /**
@@ -208,18 +126,8 @@ public class BenderHandler {
      */
     public interface BenderListener {
 
-        public abstract void onSuccess(String path);
+        abstract void onSuccess(String path);
 
-        public abstract void onFailure();
-    }
-
-    /**
-     * Return a File object pointing to the bender storage dir.
-     * Compatible with API < 8
-     *
-     * @return File object
-     */
-    public File getBenderStorageDir() {
-        return new File(mContext.getExternalFilesDir(null), BENDER_STORAGE_DIR);
+        abstract void onFailure();
     }
 }

@@ -52,12 +52,10 @@ public class Network {
                     .connectTimeout(mSettings.getConnectionTimeout(), TimeUnit.SECONDS)
                     .readTimeout(mSettings.getConnectionTimeout(), TimeUnit.SECONDS)
                     .cookieJar(new JavaNetCookieJar(cookieHandler))
-                    .retryOnConnectionFailure(false)
                     .build();
         }
         mHeaders = new Headers.Builder()
                 .add("User-Agent", mSettings.getUserAgent())
-                .add("Connection","close")
                 .build();
     }
 

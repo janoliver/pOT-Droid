@@ -66,8 +66,8 @@ public class BenderHandler {
                         Date date = new Date();
                         mDatabase.updateBender(user.getAvatarId(), user.getId(),
                                 user.getAvatarFile(), new Timestamp(date.getTime()));
-                        callback.onSuccess(path);
                     }
+                    callback.onSuccess(path);
                 }
 
                 @Override

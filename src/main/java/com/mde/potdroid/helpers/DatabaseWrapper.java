@@ -271,7 +271,7 @@ public class DatabaseWrapper {
     }
 
     // update or create bender information of a user
-    public void updateBender(int id, int user_id, String filename, Date last_seen) {
+    public synchronized void updateBender(int id, int user_id, String filename, Date last_seen) {
         try {
             mDatabase.beginTransaction();
 

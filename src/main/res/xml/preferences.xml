@@ -304,6 +304,15 @@
                 android:title="Cache Größe" />
 
         <EditTextPreference
+                android:defaultValue="50"
+                android:dialogTitle="Bender Cache Größe in MB"
+                android:inputType="number"
+                android:numeric="integer"
+                android:key="pref_bender_cache_size"
+                android:summary="Größe des Bender Caches in MB"
+                android:title="Cache Größe" />
+
+        <EditTextPreference
                 android:defaultValue="60"
                 android:dialogTitle="Connection Timeout"
                 android:inputType="number"

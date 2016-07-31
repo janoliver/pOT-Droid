@@ -55,6 +55,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_MARK_NEW_POSTS = "pref_mark_new_posts";
     public static final String PREF_KEY_BBCODE_EDITOR = "pref_bbcode_editor";
     public static final String PREF_KEY_CACHE_SIZE = "pref_cache_size";
+    public static final String PREF_KEY_BENDER_CACHE_SIZE = "pref_bender_cache_size";
     public static final String PREF_KEY_CONNECTION_TIMEOUT = "pref_connection_timeout";
     public static final String PREF_KEY_DYNAMIC_TOOLBARS = "pref_dynamic_toolbars";
     public static final String PREF_KEY_FASTSCROLL = "pref_fastscroll";
@@ -186,6 +187,10 @@ public class SettingsWrapper {
 
     public int getCacheSize() {
         return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_CACHE_SIZE, "50")) * 1024 * 1024;
+    }
+
+    public int getBenderCacheSize() {
+        return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_BENDER_CACHE_SIZE, "50")) * 1024 * 1024;
     }
 
     public int getDefaultFontSize() {

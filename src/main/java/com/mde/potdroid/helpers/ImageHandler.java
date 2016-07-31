@@ -38,14 +38,16 @@ public class ImageHandler {
 
     public static synchronized ImageHandler getPictureHandler(Context context) {
         if (mCachedPictureHandler == null) {
-            mCachedPictureHandler = new ImageHandler(context.getApplicationContext(), PICTURE_SUBDIR, 1024 * 1024 * 50);
+            SettingsWrapper settings = new SettingsWrapper(context);
+            mCachedPictureHandler = new ImageHandler(context.getApplicationContext(), PICTURE_SUBDIR, settings.getCacheSize());
         }
         return mCachedPictureHandler;
     }
 
     public static synchronized ImageHandler getBenderHandler(Context context) {
         if (mCachedBenderHandler == null) {
-            mCachedBenderHandler = new ImageHandler(context.getApplicationContext(), BENDER_SUBDIR, 1024 * 1024 * 50);
+            SettingsWrapper settings = new SettingsWrapper(context);
+            mCachedBenderHandler = new ImageHandler(context.getApplicationContext(), BENDER_SUBDIR, settings.getBenderCacheSize());
         }
         return mCachedBenderHandler;
     }

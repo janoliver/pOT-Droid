@@ -57,6 +57,7 @@ public class Network {
         }
         mHeaders = new Headers.Builder()
                 .add("User-Agent", mSettings.getUserAgent())
+                .add("Connection","close")
                 .build();
     }
 
@@ -67,18 +68,20 @@ public class Network {
     /**
      * Get a xml document from the mods.de api
      */
-    public void get(String url, Callback responseHandler) {
+    public Call get(String url, Callback responseHandler) {
         Request request = new Request.Builder()
                 .url(Utils.getAbsoluteUrl(url))
                 .headers(mHeaders)
                 .build();
-        mHttpClient.newCall(request).enqueue(responseHandler);
+        Call c = mHttpClient.newCall(request);
+        c.enqueue(responseHandler);
+        return c;
     }
 
     /**
      * Get a xml document from the mods.de api
      */
-    public void post(String url, RequestBody params, Callback responseHandler) {
+    public Call post(String url, RequestBody params, Callback responseHandler) {
 
         Request request = new Request.Builder()
                 .url(Utils.getAbsoluteUrl(url))
@@ -86,32 +89,9 @@ public class Network {
                 .post(params)
                 .build();
 
-        mHttpClient.newCall(request).enqueue(responseHandler);
-    }
-
-    /**
-     * Try to cancel the current loading of the httpclient
-     */
-    public void cancelLoad() {
-        //mHttpClient.cancel(null);
-    }
-
-    /**
-     * Change timeout
-     */
-    public void setTimeout(Integer seconds) {
-        //mHttpClient.setConnectTimeout(seconds, TimeUnit.SECONDS);
-    }
-
-    /**
-     * Get the current timeout
-     */
-    public Integer getTimeout() {
-        return mHttpClient.connectTimeoutMillis() / 1000;
-    }
-
-    public String getUserAgent() {
-        return mSettings.getUserAgent();
+        Call c = mHttpClient.newCall(request);
+        c.enqueue(responseHandler);
+        return c;
     }
 
     /**

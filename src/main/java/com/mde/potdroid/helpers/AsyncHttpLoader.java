@@ -35,6 +35,7 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
 
     // the instance of the Network class
     protected Network mNetwork;
+    protected Call mCall;
 
     // request URL (without (!) the Network.BASE_URL part)
     protected String mRequestUrl;
@@ -145,15 +146,6 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
     }
 
     /**
-     * Change the timout
-     *
-     * @param seconds the timeout
-     */
-    public void setTimeout(Integer seconds) {
-        mNetwork.setTimeout(seconds);
-    }
-
-    /**
      * Update the request parameters
      *
      * @param p The new request parameters.
@@ -218,9 +210,9 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
         super.onForceLoad();
 
         if (mMode.equals(GET)) {
-            mNetwork.get(mRequestUrl, mHandler);
+            mCall = mNetwork.get(mRequestUrl, mHandler);
         } else if (mMode.equals(POST)) {
-            mNetwork.post(mRequestUrl, mParams, mHandler);
+            mCall = mNetwork.post(mRequestUrl, mParams, mHandler);
         }
     }
 
@@ -231,7 +223,8 @@ public abstract class AsyncHttpLoader<E> extends Loader<E> {
     protected void onStopLoading() {
         super.onStopLoading();
 
-        mNetwork.cancelLoad();
+        if(mCall != null)
+            mCall.cancel();
     }
 
     /**

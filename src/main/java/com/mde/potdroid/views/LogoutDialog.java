@@ -1,36 +1,43 @@
 package com.mde.potdroid.views;
 
 import android.app.Activity;
-import android.content.Context;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.preference.DialogPreference;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.util.AttributeSet;
+import android.support.v7.preference.PreferenceDialogFragmentCompat;
 import android.view.View;
 import com.mde.potdroid.R;
 import com.mde.potdroid.fragments.BaseFragment;
 import com.mde.potdroid.helpers.SettingsWrapper;
 
-/**
- * Simple PreferenceDialog that deletes the stored cookie and username/userid for the user.
- * This is equal to a "logout" action.
- */
-public class LogoutDialog extends DialogPreference {
+public class LogoutDialog extends PreferenceDialogFragmentCompat {
 
     private Activity mContext;
     private SettingsWrapper mSettingsWrapper;
 
-    public LogoutDialog(Context context, AttributeSet attrs) {
-        super(context, attrs);
 
-        mContext = (Activity)context;
-        mSettingsWrapper = new SettingsWrapper(mContext);
+    public static LogoutDialog newInstance(String key) {
+        final LogoutDialog fragment = new LogoutDialog();
+        final Bundle b = new Bundle(1);
+        b.putString(ARG_KEY, key);
+        fragment.setArguments(b);
+
+        return fragment;
     }
 
     @Override
-    protected void onDialogClosed(boolean positiveResult) {
-        super.onDialogClosed(positiveResult);
-        if (positiveResult) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mContext = getActivity();
+        mSettingsWrapper = new SettingsWrapper(getContext());
+    }
+
+    @Override
+    public void onClick(final DialogInterface dialog, int which) {
+        if(which == Dialog.BUTTON_POSITIVE) {
             mSettingsWrapper.clearCookie();
             mSettingsWrapper.clearUsername();
             mSettingsWrapper.clearUserId();
@@ -48,7 +55,13 @@ public class LogoutDialog extends DialogPreference {
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundColor(BaseFragment.COLOR_SUCCESS);
             snackbar.show();
+        } else {
+            dialog.dismiss();
         }
+    }
+
+    @Override
+    public void onDialogClosed(boolean positiveResult) {
     }
 
 }

@@ -55,8 +55,9 @@ Es gibt einen pOT-Droid Thread. Den Link und die Änderungen findest du unter \'
 
     <!-- messages -->
     <string name="msg_login_success">Erfolgreich eingeloggt! Die App sollte neu gestartet werden.</string>
-    <string name="msg_login_failure">Fehler!</string>
+    <string name="msg_login_failure">Fehler beim Login!</string>
     <string name="msg_logout_success">Daten gelöscht! Die App sollte neu gestartet werden.</string>
+    <string name="msg_logout">Hiermit wird der Cookie gelöscht.</string>
     <string name="msg_login_dialog_warning">Das Passwort wird NICHT gespeichert! Es wird lediglich ein Cookie erstellt.</string>
     <string name="msg_loading_error">Fehler beim Laden der Daten.</string>
     <string name="msg_posting_error">Fehler beim Posten. Vorsicht! Ggf. wurde trotzdem erfolgreich gesendet!</string>

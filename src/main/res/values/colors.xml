@@ -28,4 +28,6 @@
     <color name="bbstyle_middleblue">#ff414f5c</color>
     <color name="bbstyle_middleblue_semi">#bb414f5c</color>
     <color name="pressed_bbdarkstyle">#CCFFFFFF</color>
+
+    <color name="preference_accent">@color/bbstyle_lightblue</color>
 </resources>

@@ -21,13 +21,13 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.1.1'
     compile 'com.android.support:design:24.1.1'
     compile 'com.android.support:recyclerview-v7:24.1.1'
+    compile 'com.takisoft.fix:preference-v7:24.1.1.1'
     compile 'com.bignerdranch.android:expandablerecyclerview:2.1.1'
     compile 'com.squareup.okio:okio:1.9.0'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.samskivert:jmustache:1.12'
     compile 'com.github.ksoichiro:android-observablescrollview:1.6.0'
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.android.support:support-v4-preferencefragment:1.0.0@aar'
     compile 'com.github.afollestad.material-dialogs:core:0.8.6.2@aar'
     compile "com.squareup.okhttp3:okhttp-urlconnection:3.0.0-RC1"
 }

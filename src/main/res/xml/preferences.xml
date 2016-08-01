@@ -1,34 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory
+<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <android.support.v7.preference.PreferenceCategory
             android:title="Account"
             android:key="pref_account_settings"
             android:summary="Account Einstellungen">
-        <com.mde.potdroid.views.LoginDialog
+        <com.mde.potdroid.helpers.LoginPreference
                 android:key="pref_login"
-                android:dialogIcon="@android:drawable/ic_dialog_alert"
                 android:title="Login"
                 android:summary="Login um Bookmarks, PMs etc. zu nutzen"
-                android:dialogMessage="Blablabla"
                 android:positiveButtonText="Login"
                 android:negativeButtonText="Abbrechen"/>
-        <com.mde.potdroid.views.LogoutDialog
+        <com.mde.potdroid.helpers.LogoutPreference
                 android:key="pref_logout"
-                android:dialogIcon="@android:drawable/ic_dialog_alert"
                 android:title="Logout"
                 android:summary="Cookie und Usernamen aus dem Speicher löschen."
                 android:dialogMessage="Mit Click auf 'Logout' werden der gespeicherte Cookie sowie die Informationen über Usernamen und ID gelöscht."
                 android:positiveButtonText="Logout"
                 android:negativeButtonText="Abbrechen"
                 android:enabled="false"/>
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-    <PreferenceScreen
+    <android.support.v7.preference.PreferenceScreen
             android:title="Style"
             android:key="pref_style_settings"
             android:summary="Aussehen der App konfigurieren">
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
                 android:key="pref_theme"
                 android:title="App Theme"
                 android:summary="Welches Theme soll die App haben?"
@@ -36,7 +33,7 @@
                 android:entries="@array/pref_theme_entries"
                 android:entryValues="@array/pref_theme_values"/>
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
                 android:key="pref_theme_dark_variant"
                 android:title="Dark Theme Variante"
                 android:summary="Theme Variante des Dark Themes für die Topic Ansicht"
@@ -44,39 +41,39 @@
                 android:entries="@array/pref_theme_variant_entries"
                 android:entryValues="@array/pref_theme_variant_values"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_tinted_statusbar"
                 android:title="Statusleiste (unter KitKat) färben"
                 android:defaultValue="true"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_show_postinfo"
                 android:title="Post-Titel und Zeit anzeigen"
                 android:defaultValue="true"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_show_edited"
                 android:title="Zeige, ob ein Post bearbeitet wurde."
                 android:defaultValue="true"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_show_postnumbers"
                 android:title="Nummeriere Posts in der Threadansicht"
                 android:defaultValue="false"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_darken_old_posts"
                 android:title="Gelesene Posts abdunkeln"
                 android:summary="Kann bei langen Posts Grafikfehler verursachen."
                 android:defaultValue="true"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_mark_new_posts"
                 android:title="Neue posts markieren"
                 android:summary="Verhält sich wie in pOT-Droid 2"
                 android:defaultValue="false"/>
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
                 android:key="pref_bender_position"
                 android:title="Bender anzeigen"
                 android:summary="Wie sollen Bender angezeigt werden?"
@@ -84,7 +81,7 @@
                 android:entries="@array/show_benders"
                 android:entryValues="@array/show_benders_values"/>
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
                 android:key="pref_show_menu"
                 android:title="Post-Menü anzeigen"
                 android:summary="Wie soll das Post-Menü angezeigt werden?"
@@ -92,7 +89,7 @@
                 android:entries="@array/show_menu"
                 android:entryValues="@array/show_menu_values"/>
 
-        <EditTextPreference
+        <android.support.v7.preference.EditTextPreference
                 android:defaultValue="16"
                 android:dialogTitle="Textgröße in Topics"
                 android:inputType="number"
@@ -101,20 +98,20 @@
                 android:summary="Schriftgröße in Threads (16 ist Standard)"
                 android:title="Topic Schriftgröße" />
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_show_end_indicator"
                 android:title="Threadende anzeigen"
                 android:summary="Hinweis für Pull to Refresh am Ende des Threads anzeigen"
                 android:defaultValue="true"/>
 
-    </PreferenceScreen>
+    </android.support.v7.preference.PreferenceScreen>
 
-    <PreferenceScreen
+    <android.support.v7.preference.PreferenceScreen
             android:title="PMs"
-            android:key="pref_style_settings"
+            android:key="pref_pm_settings"
             android:summary="PM Polling Optionen">
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
                 android:title="Nach neuen PMs checken"
                 android:key="pref_message_polling_interval"
                 android:summary="Wie häufig nach neuen PMs geschaut wird."
@@ -122,29 +119,29 @@
                 android:entryValues="@array/pref_poll_messages_values"
                 android:defaultValue="0"/>
 
-        <RingtonePreference
+        <android.support.v7.preference.Preference
                 android:key="pref_notification_sound"
                 android:ringtoneType="notification"
                 android:summary="Benachrichtigungston bei ungelesener PM"
                 android:title="Benachrichtigungston"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_notification_vibrate"
                 android:title="Vibrieren bei Benachrichtigung"/>
-    </PreferenceScreen>
+    </android.support.v7.preference.PreferenceScreen>
 
-    <PreferenceScreen
+    <android.support.v7.preference.PreferenceScreen
             android:title="Verhalten"
             android:key="pref_behaviour_settings"
             android:summary="Verhalten der App konfigurieren">
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_hide_global"
                 android:title="Globale Threads ausblenden"
                 android:summary="Blendet Threads und Ankündigungen aus, die global oder wichtig."
                 android:defaultValue="false"/>
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
                 android:key="pref_load_benders"
                 android:title="Bender downloaden"
                 android:summary="Wann sollen Bender mit heruntergeladen werden"
@@ -152,7 +149,7 @@
                 android:entries="@array/load_images"
                 android:entryValues="@array/load_images_values"/>
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
                 android:key="pref_load_images"
                 android:title="Bilder automatisch anzeigen"
                 android:summary="Wann sollen Bilder automatisch angezeigt werden"
@@ -160,7 +157,7 @@
                 android:entries="@array/load_images"
                 android:entryValues="@array/load_images_values"/>
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
                 android:key="pref_load_gifs"
                 android:title="GIF Bilder automatisch anzeigen"
                 android:summary="Wann sollen GIFs automatisch angezeigt werden"
@@ -168,7 +165,7 @@
                 android:entries="@array/load_images"
                 android:entryValues="@array/load_images_values"/>
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
                 android:key="pref_load_videos"
                 android:title="Videos automatisch anzeigen"
                 android:summary="Wann sollen Videos automatisch angezeigt werden"
@@ -176,33 +173,33 @@
                 android:entries="@array/load_images"
                 android:entryValues="@array/load_images_values"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_parse_smileys"
                 android:title="Smileys parsen"
                 android:defaultValue="true"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_fixed_sidebar"
                 android:title="Bookmarks Sidebar immer anzeigen"
                 android:summary="Interessant für große Bildschirme/Tablets"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_swap_sidebars"
                 android:title="Sidebars tauschen"
                 android:summary="Bookmarks erscheinen rechts, Boards links"
                 android:defaultValue="false"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_board_bookmarks"
                 android:title="Board Bookmark Sidebar aktivieren"
                 android:summary="Soll die rechte Sidebar mit den Board Bookmarks verwendet werden?"
                 android:defaultValue="true"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_sidebar_showread"
                 android:title="In der Bookmark Sidebar auch gelesene Bookmarks anzeigen"/>
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
                 android:title="Startscreen"
                 android:summary="Was soll beim Starten der App angezeigt werden?"
                 android:key="pref_start_activity"
@@ -210,7 +207,7 @@
                 android:entries="@array/pref_start_activity"
                 android:entryValues="@array/pref_start_activity_values" />
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
                 android:title="Startforum"
                 android:summary="Nur wichtig, falls 'Startscreen' auf 'Forum' steht"
                 android:key="pref_start_forum"
@@ -218,7 +215,7 @@
                 android:entries="@array/pref_start_forum"
                 android:entryValues="@array/pref_start_forum_values"/>
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
                 android:title="Ziel Home Button"
                 android:summary="Was soll beim Druck auf den Mata Button passieren?"
                 android:key="pref_mata"
@@ -226,7 +223,7 @@
                 android:entries="@array/pref_mata"
                 android:entryValues="@array/pref_mata_values" />
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
                 android:title="Home Forum"
                 android:summary="Nur wichtig, falls 'Ziel Home Button' auf 'Forum' steht"
                 android:key="pref_mata_forum"
@@ -234,67 +231,67 @@
                 android:entries="@array/pref_start_forum"
                 android:entryValues="@array/pref_start_forum_values"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_bbcode_editor"
                 android:title="BBCode Editor aktivieren"
                 android:summary="Nutze BBCode Editor"
                 android:defaultValue="true"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_swipe_to_paginate"
                 android:title="Blättern per Swipe"
                 android:summary="Soll per links/rechts swipe geblättert werden?"
                 android:defaultValue="true"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_swipe_to_refresh"
                 android:title="Aktualisieren per Swipe"
                 android:summary="Sollen Listen per down swipe aktualisiert werden?"
                 android:defaultValue="true"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_swipe_to_refresh_topic"
                 android:title="Topic aktualisieren per Swipe"
                 android:summary="Sollen Topics auf der letzten Seite per up swipe aktualisiert werden?"
                 android:defaultValue="true"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_show_paginate_toolbar"
                 android:title="Zeige Blättern Toolbar"
                 android:summary="Soll eine Toolbar zum Blättern angezeigt werden?"
                 android:defaultValue="false"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_dynamic_toolbars"
                 android:title="Dynamische Toolbar"
                 android:summary="Aktiviere dynamische Toolbar in der Threadview (Nicht auf Tablets)"
                 android:defaultValue="true"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_fastscroll"
                 android:title="Fastscroll Buttons"
                 android:summary="Aktiviere Fastscroll (Hoch/Runter) Buttons in der Threadview"
                 android:defaultValue="true"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_fab"
                 android:title="Zeige Floating Action Button"
                 android:summary="Zeige Floating Action Button für 'Neuer Post' und 'Neuer Thread"
                 android:defaultValue="true"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_reload_bookmarks"
                 android:title="Sidebar Bookmarks neu laden"
                 android:summary="Bookmarks in der Sidebar beim Öffnen neu laden"
                 android:defaultValue="false"/>
-    </PreferenceScreen>
+    </android.support.v7.preference.PreferenceScreen>
 
-    <PreferenceScreen
+    <android.support.v7.preference.PreferenceScreen
             android:title="System"
             android:key="pref_system_settings"
             android:summary="Sonstige Einstellungen">
 
-        <EditTextPreference
+        <android.support.v7.preference.EditTextPreference
                 android:defaultValue="50"
                 android:dialogTitle="Bilder Cache Größe in MB"
                 android:inputType="number"
@@ -303,7 +300,7 @@
                 android:summary="Größe des Bilder Caches in MB"
                 android:title="Cache Größe" />
 
-        <EditTextPreference
+        <android.support.v7.preference.EditTextPreference
                 android:defaultValue="50"
                 android:dialogTitle="Bender Cache Größe in MB"
                 android:inputType="number"
@@ -312,7 +309,7 @@
                 android:summary="Größe des Bender Caches in MB"
                 android:title="Cache Größe" />
 
-        <EditTextPreference
+        <android.support.v7.preference.EditTextPreference
                 android:defaultValue="60"
                 android:dialogTitle="Connection Timeout"
                 android:inputType="number"
@@ -321,23 +318,23 @@
                 android:summary="Timeout von Verbindungen in sek"
                 android:title="Connection Timeout" />
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_debug_mode"
                 android:title="Debug Modus"
                 android:defaultValue="false"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_parse_bbcode"
                 android:title="BBCode Parsen"
                 android:defaultValue="true"/>
 
-    </PreferenceScreen>
+    </android.support.v7.preference.PreferenceScreen>
 
-    <PreferenceScreen
+    <android.support.v7.preference.PreferenceScreen
             android:key="pref_about"
             android:title="Über die App"
             android:summary="Changelog, Infos, uvm.">
         <intent android:action=".AboutActivity"/>
-    </PreferenceScreen>
+    </android.support.v7.preference.PreferenceScreen>
 
-</PreferenceScreen>
+</android.support.v7.preference.PreferenceScreen>

@@ -5,20 +5,17 @@
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               android:padding="10dp">
-
     <TextView
             android:id="@+id/text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/msg_login_dialog_warning"/>
-
     <EditText
             android:id="@+id/user_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:hint="@string/dialog_username_hint"/>
-
     <EditText
             android:id="@+id/user_password"
             android:layout_width="fill_parent"
@@ -26,7 +23,6 @@
             android:inputType="textPassword"
             android:hint="@string/dialog_password_hint"
             android:layout_marginBottom="15dp"/>
-
     <ProgressBar
             android:id="@+id/login_progress"
             style="?android:attr/progressBarStyleHorizontal"
@@ -37,6 +33,4 @@
             android:minHeight="10dip"
             android:progress="50"
             android:visibility="invisible"/>
-
-
 </LinearLayout>

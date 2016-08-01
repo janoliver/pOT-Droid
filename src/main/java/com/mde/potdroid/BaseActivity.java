@@ -73,7 +73,7 @@ public class BaseActivity extends AppCompatActivity {
         mDatabase = new DatabaseWrapper(this);
 
         // debug mode. We write exceptions to the SDCard with a custom default exceptionhandler
-        if (mSettings.isDebug()) {
+        if (true || mSettings.isDebug()) {
             if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
                 Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler());
             }

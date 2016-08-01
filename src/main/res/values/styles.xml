@@ -117,7 +117,6 @@
         <item name="bbBackgroundTransparentClickable">@drawable/light_background_transparent_clickable</item>
         <item name="bbCircularTransparentClickable">@drawable/light_circular_translucent_button_background</item>
 
-
         <!-- All dialogs will default to Theme.DARK with this set to true.-->
         <item name="md_dark_theme">false</item>
         <!-- By default, the title text is black or white based on the theme.-->
@@ -140,6 +139,38 @@
         <item name="md_selector">@drawable/selector</item>-->
         <!--This overrides the selector used on action buttons
         <item name="md_btn_selector">@drawable/selector</item>-->
+    </style>
+
+    <!-- Settings theme -->
+    <style name="Theme.pOTSettings" parent="@style/PreferenceFixTheme.Light.NoActionBar">
+        <item name="colorPrimary">@color/bbstyle_lightblue</item>
+        <item name="colorPrimaryDark">@color/bbstyle_darkblue</item>
+        <item name="drawerArrowStyle">@style/Theme.pOTSettings.DrawerArrowStyle</item>
+        <item name="toolbarStyle">@style/Theme.pOTSettings.Toolbar</item>
+        <!-- If you find the preference categories' bottom margin too big, uncomment this -->
+        <!--<item name="preferenceCategory_marginBottom">0dp</item>-->
+    </style>
+
+    <style name="Theme.pOTSettings.DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@android:color/white</item>
+    </style>
+
+    <style name="Theme.pOTSettings.Toolbar" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="color">@android:color/white</item>
+        <item name="titleTextAppearance">@style/Theme.MyTheme.Toolbar.TextAppearance</item>
+        <item name="subtitleTextAppearance">@style/Theme.MyTheme.Toolbar.TextAppearance.Subtitle
+        </item>
+    </style>
+
+    <style name="Theme.MyTheme.Toolbar.TextAppearance" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="Theme.MyTheme.Toolbar.TextAppearance.Subtitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
 </resources>

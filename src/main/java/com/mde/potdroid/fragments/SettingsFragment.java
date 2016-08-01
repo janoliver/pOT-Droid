@@ -1,49 +1,54 @@
 package com.mde.potdroid.fragments;
 
 import android.app.ActivityManager;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceManager;
-import android.support.v4.preference.PreferenceFragment;
+import android.provider.Settings;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceManager;
+import android.view.View;
+import android.widget.Button;
 import com.mde.potdroid.R;
+import com.mde.potdroid.helpers.LoginPreference;
+import com.mde.potdroid.helpers.LogoutPreference;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.services.MessagePollingService;
 import com.mde.potdroid.views.LoginDialog;
 import com.mde.potdroid.views.LogoutDialog;
+import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompatDividers;
 
-/**
- * Created by oli on 1/2/15.
- */
-public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+public class SettingsFragment extends PreferenceFragmentCompatDividers implements SharedPreferences.OnSharedPreferenceChangeListener {
     private SettingsWrapper mSettings;
+
+    private static final int NOTIFICATION_SOUND_REQUEST_CODE = 1;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferencesFix(Bundle savedInstanceState, String rootKey) {
 
         mSettings = new SettingsWrapper(getActivity());
-
-        boolean def = mSettings.isFixedSidebar();
+        //boolean def = mSettings.isFixedSidebar();
 
         getActivity().setTitle(R.string.subtitle_settings);
 
         // Load the preferences from an XML resource
-        addPreferencesFromResource(R.xml.preferences);
-        CheckBoxPreference preference = (CheckBoxPreference) findPreference("pref_fixed_sidebar");
+        setPreferencesFromResource(R.xml.preferences, rootKey);
+        /*CheckBoxPreference preference = (CheckBoxPreference) findPreference("pref_fixed_sidebar");
         preference.setChecked(def);
-        preference.setDefaultValue(def);
+        preference.setDefaultValue(def);*/
     }
-
 
     @Override
     public void onResume() {
@@ -82,6 +87,30 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         setPreferenceDescription(key);
     }
 
+    @Override
+    public void onDisplayPreferenceDialog(Preference preference) {
+        // Try if the preference is one of our custom Preferences
+        DialogFragment dialogFragment = null;
+
+        if (preference instanceof LoginPreference) {
+            dialogFragment = LoginDialog.newInstance(preference.getKey());
+            if (dialogFragment != null) {
+                dialogFragment.setTargetFragment(this, 0);
+                dialogFragment.show(this.getFragmentManager(),
+                        "android.support.v7.preference.PreferenceFragment.DIALOG");
+            }
+        } else if(preference instanceof LogoutPreference) {
+            dialogFragment = LogoutDialog.newInstance(preference.getKey());
+            if (dialogFragment != null) {
+                dialogFragment.setTargetFragment(this, 0);
+                dialogFragment.show(this.getFragmentManager(),
+                        "android.support.v7.preference.PreferenceFragment.DIALOG");
+            }
+        } else {
+            super.onDisplayPreferenceDialog(preference);
+        }
+    }
+
     private void setPreferenceDescription(String key) {
         Preference preference = findPreference(key);
 
@@ -96,9 +125,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
             // set the description of the login state and enable/disable
             // the logout button.
-            LoginDialog loginPreference = (LoginDialog) findPreference(SettingsWrapper
+            LoginPreference loginPreference = (LoginPreference) findPreference(SettingsWrapper
                     .PREF_KEY_LOGIN);
-            LogoutDialog logoutPreference = (LogoutDialog) findPreference(SettingsWrapper
+            LogoutPreference logoutPreference = (LogoutPreference) findPreference(SettingsWrapper
                     .PREF_KEY_LOGOUT);
 
             if (Utils.isLoggedIn()) {
@@ -122,6 +151,55 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 if (!isPollingServiceRunning())
                     getActivity().startService(pollServiceIntent);
             }
+        }
+    }
+
+    @Override
+    public boolean onPreferenceTreeClick(Preference preference) {
+        if (preference.getKey().equals(SettingsWrapper.PREF_KEY_NOTIFICATION_SOUND)) {
+            Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true);
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
+
+            String existingValue = mSettings.getNotificationSoundURI(); // TODO
+            if (existingValue != null) {
+                if (existingValue.length() == 0) {
+                    // Select "Silent"
+                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
+                } else {
+                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(existingValue));
+                }
+            } else {
+                // No ringtone has been selected, set to the default
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
+            }
+
+            startActivityForResult(intent, NOTIFICATION_SOUND_REQUEST_CODE);
+            return true;
+        } else {
+            return super.onPreferenceTreeClick(preference);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == NOTIFICATION_SOUND_REQUEST_CODE && data != null) {
+            Uri ringtone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+            SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getContext());
+            SharedPreferences.Editor editor = p.edit();
+
+            if (ringtone != null) {
+                editor.putString(SettingsWrapper.PREF_KEY_NOTIFICATION_SOUND, ringtone.toString());
+            } else {
+                // "Silent" was selected
+                editor.putString(SettingsWrapper.PREF_KEY_NOTIFICATION_SOUND, "");
+            }
+
+            editor.commit();
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 

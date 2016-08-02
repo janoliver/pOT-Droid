@@ -171,7 +171,6 @@ function displayImageLoader(id) {
 function displayImage(url, path, id) {
     var el = $("#" + id);
     var href = el.attr("data-href");
-    var img = $('<img/>').attr('src',path).attr('alt', url).addClass('gallery-img');
     img.load(function() {
         if(typeof href === "undefined") {
             el.replaceWith(img);
@@ -222,46 +221,6 @@ function loadBender(user_id, path) {
 function unveil() {
     $("*").css({ opacity: 1.0 });
     $('html, body').scrollTop( 0 );
-}
-
-// unveil dimmed posts
-var $lg = $("#paddings");
-function showLightbox(media) {
-    elements = [];
-    jQuery.each(media, function() {
-        if(this.substr(0, 1) === "I")
-            elements.push({'src': this.substr(1), 'thumb': this.substr(1)});
-        else if(this.substr(0, 1) === "V") {
-            var url = this.substr(1);
-            if(url.indexOf("youtu") < 0) {
-                var wrapper = $("<div><video class=\"lg-video-object lg-html5\" controls preload=\"none\"><source src=\"" + url + "\"></source></video></div>");
-                elements.push({'html': wrapper.html(), 'thumb': 'lightgallery/img/video-play.png'});
-            } else {
-                elements.push({'src': url});
-            }
-        }
-    });
-    if(elements.length > 0) {
-        $lg.lightGallery({
-            dynamic: true,
-            dynamicEl: elements,
-            autoplay: false
-        });
-
-        $lg.on('onAfterOpen.lg',function(event){
-            api.lightboxOpen(true);
-        });
-
-        $lg.on('onCloseAfter.lg',function(event){
-            api.lightboxOpen(false);
-        });
-    } else {
-        api.error("Keine Medien auf dieser Seite.")
-    }
-}
-
-function closeLightbox() {
-    $lg.data('lightGallery').destroy(true);
 }
 
 // unveil dimmed posts

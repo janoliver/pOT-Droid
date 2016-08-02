@@ -13,10 +13,6 @@ import android.view.*;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
-import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
-import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
-import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
 import com.mde.potdroid.BoardActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
@@ -27,11 +23,11 @@ import com.mde.potdroid.models.Category;
 import com.mde.potdroid.models.Forum;
 import com.mde.potdroid.parsers.ForumParser;
 import com.mde.potdroid.views.IconDrawable;
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
+import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 import org.apache.http.Header;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The Forum list fragment. It shows an ExpandableList with Categories as groups and
@@ -42,7 +38,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
     private Forum mForum;
 
-    private ForumListAdapter mListAdapter;
+    private SectionedRecyclerViewAdapter mListAdapter;
     private RecyclerView mListView;
 
     /**
@@ -66,15 +62,11 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_forum, container, false);
 
-        List<CategoryItem> items = new ArrayList<>();
-        mListAdapter = new ForumListAdapter(items);
+        mListAdapter = new SectionedRecyclerViewAdapter();
 
         mListView = (RecyclerView) v.findViewById(R.id.forum_list_content);
         mListView.setAdapter(mListAdapter);
         mListView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        //mListView.setGroupIndicator(null);
-        mListView.setAdapter(mListAdapter);
-        /**/
 
         getActionbar().setTitle(R.string.title_forum);
 
@@ -130,42 +122,16 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
         hideLoadingAnimation();
         if (data != null) {
             mForum = data;
-            List<CategoryItem> items = new ArrayList<>();
             for(Category c : mForum.getCategories())
-                items.add(new CategoryItem(c));
+                mListAdapter.addSection(new CategorySection(c));
 
-            mListAdapter = new ForumListAdapter(items);
-            mListView.setAdapter(mListAdapter);
+            mListAdapter.notifyDataSetChanged();
         } else {
             showError(getString(R.string.msg_loading_error));
         }
     }
 
-    public class CategoryItem implements ParentListItem {
-
-        /* Create an instance variable for your list of children */
-        private Category mCategory;
-
-        public CategoryItem(Category category) {
-            mCategory = category;
-        }
-
-        public Category getCategory() {
-            return mCategory;
-        }
-
-        @Override
-        public List<?> getChildItemList() {
-            return mCategory.getBoards();
-        }
-
-        @Override
-        public boolean isInitiallyExpanded() {
-            return false;
-        }
-    }
-
-    public static class CategoryViewHolder extends ParentViewHolder {
+    public static class CategoryViewHolder extends RecyclerView.ViewHolder {
 
         RelativeLayout mContainer;
         TextView mTextDescription;
@@ -181,14 +147,19 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
     }
 
-    public static class BoardViewHolder extends ChildViewHolder {
+    @Override
+    public void onLoaderReset(Loader<Forum> loader) {
+        hideLoadingAnimation();
+    }
+
+    class ForumViewHolder extends RecyclerView.ViewHolder {
 
         RelativeLayout mContainer;
         TextView mTextDescription;
         TextView mTextLastPost;
         TextView mTextName;
 
-        public BoardViewHolder(View view) {
+        public ForumViewHolder(View view) {
             super(view);
 
             mContainer = (RelativeLayout) view.findViewById(R.id.container);
@@ -197,54 +168,19 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
             mTextLastPost = (TextView) view.findViewById(R.id.last_post);
         }
 
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Forum> loader) {
-        hideLoadingAnimation();
-    }
-
-    public class ForumListAdapter extends ExpandableRecyclerAdapter<CategoryViewHolder, BoardViewHolder> {
-
-        public ForumListAdapter(List<? extends ParentListItem> parentItemList) {
-            super(parentItemList);
-        }
-
-        @Override
-        public CategoryViewHolder onCreateParentViewHolder(ViewGroup parentViewGroup) {
-            View view = getInflater().inflate(R.layout.listitem_category, parentViewGroup, false);
-            return new CategoryViewHolder(view);
-        }
-
-        @Override
-        public BoardViewHolder onCreateChildViewHolder(ViewGroup childViewGroup) {
-            View view = getInflater().inflate(R.layout.listitem_forum, childViewGroup, false);
-            return new BoardViewHolder(view);
-        }
-
-        @Override
-        public void onBindParentViewHolder(CategoryViewHolder parentViewHolder, int position, ParentListItem parentListItem) {
-            CategoryItem category = (CategoryItem) parentListItem;
-
-            parentViewHolder.mTextName.setText(category.getCategory().getName());
-            parentViewHolder.mTextDescription.setText(category.getCategory().getDescription());
-        }
-
-        @Override
-        public void onBindChildViewHolder(BoardViewHolder childViewHolder, int position, Object item) {
-            final Board board = (Board) item;
-            childViewHolder.mTextName.setText(board.getName());
-            childViewHolder.mTextDescription.setText(board.getDescription());
+        public void bindTo(final Board board) {
+            mTextName.setText(board.getName());
+            mTextDescription.setText(board.getDescription());
 
             if(board.getLastPost() != null) {
                 String time = new SimpleDateFormat(getContext()
                         .getString(R.string.default_time_format)).format(board.getLastPost().getDate());
                 Spanned lastpost_text = Html.fromHtml(String.format(
                         getContext().getString(R.string.last_post), board.getLastPost().getAuthor().getNick(), time));
-                childViewHolder.mTextLastPost.setText(lastpost_text);
+                mTextLastPost.setText(lastpost_text);
             }
 
-            childViewHolder.mContainer.setOnClickListener(new View.OnClickListener() {
+            mContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int bid = board.getId();
@@ -256,7 +192,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
                 }
             });
 
-            childViewHolder.mContainer.setOnLongClickListener(new View.OnLongClickListener() {
+            mContainer.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
 
@@ -275,6 +211,59 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
                             .show();
 
                     return true;
+                }
+            });
+        }
+    }
+
+    class CategorySection extends StatelessSection {
+
+        Category mCategory;
+        boolean expanded = false;
+
+        public CategorySection(Category c) {
+            // call constructor with layout resources for this Section header and items
+            super(R.layout.listitem_category, R.layout.listitem_forum);
+
+            mCategory = c;
+        }
+
+        @Override
+        public int getContentItemsTotal() {
+            return expanded? mCategory.getBoards().size() : 0;
+        }
+
+        @Override
+        public RecyclerView.ViewHolder getItemViewHolder(View view) {
+            // return a custom instance of ViewHolder for the items of this section
+            return new ForumViewHolder(view);
+        }
+
+        @Override
+        public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
+            ForumViewHolder itemHolder = (ForumViewHolder) holder;
+
+            // bind your view here
+            itemHolder.bindTo(mCategory.getBoards().get(position));
+        }
+
+        @Override
+        public RecyclerView.ViewHolder getHeaderViewHolder(View view) {
+            return new CategoryViewHolder(view);
+        }
+
+        @Override
+        public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder) {
+            final CategoryViewHolder headerHolder = (CategoryViewHolder) holder;
+
+            headerHolder.mTextName.setText(mCategory.getName());
+            headerHolder.mTextDescription.setText(mCategory.getDescription());
+
+            headerHolder.mContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    expanded = !expanded;
+                    mListAdapter.notifyDataSetChanged();
                 }
             });
         }

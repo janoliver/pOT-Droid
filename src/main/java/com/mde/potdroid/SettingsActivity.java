@@ -34,7 +34,7 @@ public class SettingsActivity extends AppCompatActivity implements
         Utils.setApplicationContext(getApplicationContext());
 
         // debug mode. We write exceptions to the SDCard with a custom default exceptionhandler
-        if (true || mSettings.isDebug()) {
+        if (mSettings.isDebug()) {
             if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
                 Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler());
             }

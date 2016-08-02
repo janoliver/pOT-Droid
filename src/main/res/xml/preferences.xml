@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <android.support.v7.preference.PreferenceCategory
+    <!--<android.support.v7.preference.PreferenceCategory
             android:title="Account"
             android:key="pref_account_settings"
-            android:summary="Account Einstellungen">
+            android:summary="Account Einstellungen">-->
         <com.mde.potdroid.helpers.LoginPreference
                 android:key="pref_login"
                 android:title="Login"
@@ -18,7 +18,7 @@
                 android:positiveButtonText="Logout"
                 android:negativeButtonText="Abbrechen"
                 android:enabled="false"/>
-    </android.support.v7.preference.PreferenceCategory>
+    <!--</android.support.v7.preference.PreferenceCategory>-->
 
     <android.support.v7.preference.PreferenceScreen
             android:title="Style"

@@ -150,11 +150,6 @@ public class Network {
                             // do nothing, cookie was hopefully saved... :)
                             ((Activity) mContext).runOnUiThread(new Runnable() {
                                 public void run() {
-                                    try {
-                                        Utils.log(response.body().string());
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
                                     callback.onSuccess();
                                 }
                             });

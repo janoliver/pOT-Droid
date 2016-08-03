@@ -14,6 +14,7 @@ import okio.Okio;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Handles the downloading and caching of images.
@@ -120,39 +121,55 @@ public class ImageHandler {
 
     public synchronized void put(String key, BufferedSource data) {
 
-        DiskLruCache.Editor editor = null;
-        try {
-            editor = mDiskCache.edit(key);
-            if (editor == null) {
-                return;
-            }
-
-            BufferedSink sink = null;
-            try {
-                sink = Okio.buffer(Okio.sink(editor.newOutputStream(0)));
-                sink.writeAll(data);
-                sink.close();
-            } finally {
-                sink.close();
-            }
-
-            mDiskCache.flush();
-            editor.commit();
-
-        } catch (IOException e) {
-            try {
-                if (editor != null) {
-                    editor.abort();
+        synchronized (mHttpDiskCacheLock) {
+            // Wait for disk cache to initialize
+            while (mHttpDiskCacheStarting) {
+                try {
+                    mHttpDiskCacheLock.wait();
+                } catch (InterruptedException e) {
+                    // ignore
                 }
-            } catch (IOException ignored) {
-                // ignored
+            }
+
+            if (mDiskCache != null) {
+                OutputStream out = null;
+                try {
+                    DiskLruCache.Snapshot snapshot = mDiskCache.get(key);
+                    if (snapshot == null) {
+                        DiskLruCache.Editor editor = mDiskCache.edit(key);
+                        if (editor == null)
+                            return;
+
+                        BufferedSink sink = null;
+                        try {
+                            out = editor.newOutputStream(0);
+                            sink = Okio.buffer(Okio.sink(out));
+                            sink.writeAll(data);
+                            sink.close();
+                        } catch(Exception e) {
+                            editor.abort();
+                        } finally {
+                            if (sink != null)
+                                sink.close();
+                            editor.commit();
+                        }
+                    }
+                } catch (IOException | IllegalStateException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (out != null)
+                            out.close();
+                    } catch (IOException e) {
+                        // ignore
+                    }
+                }
             }
         }
 
     }
 
-    public synchronized ParcelFileDescriptor getEntry(String key) {
-        DiskLruCache.Snapshot snapshot;
+    public ParcelFileDescriptor getEntry(String key) {
         synchronized (mHttpDiskCacheLock) {
             // Wait for disk cache to initialize
             while (mHttpDiskCacheStarting) {
@@ -165,7 +182,7 @@ public class ImageHandler {
 
             if (mDiskCache != null) {
                 try {
-                    snapshot = mDiskCache.get(key);
+                    DiskLruCache.Snapshot snapshot = mDiskCache.get(key);
                     if (snapshot != null) {
                         return ParcelFileDescriptor.open(snapshot.getFile(0), ParcelFileDescriptor.MODE_READ_ONLY);
                     } else {
@@ -181,16 +198,27 @@ public class ImageHandler {
 
     public boolean containsKey(String key) {
 
-        boolean contained = false;
-        DiskLruCache.Snapshot snapshot;
-        try {
-            snapshot = mDiskCache.get(key);
-            contained = snapshot != null;
-        } catch (IOException e) {
-            e.printStackTrace();
+        synchronized (mHttpDiskCacheLock) {
+            // Wait for disk cache to initialize
+            while (mHttpDiskCacheStarting) {
+                try {
+                    mHttpDiskCacheLock.wait();
+                } catch (InterruptedException e) {
+                    // ignore
+                }
+            }
+
+            if (mDiskCache != null) {
+                try {
+                    DiskLruCache.Snapshot snapshot = mDiskCache.get(key);
+                    return (snapshot != null);
+                } catch (IOException | IllegalStateException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
-        return contained;
+        return false;
 
     }
 
@@ -231,7 +259,7 @@ public class ImageHandler {
         final Uri localUri = CacheContentProvider.getContentUriFromUrlOrUri(url, mDir);
         final String cacheKey = Utils.md5(localUri.toString());
 
-       if (containsKey(cacheKey)) {
+        if (containsKey(cacheKey)) {
             return localUri.toString();
         }
 

@@ -171,6 +171,7 @@ function displayImageLoader(id) {
 function displayImage(url, path, id) {
     var el = $("#" + id);
     var href = el.attr("data-href");
+    var img = $('<img/>').attr('src',path).attr('alt', url);
     img.load(function() {
         if(typeof href === "undefined") {
             el.replaceWith(img);

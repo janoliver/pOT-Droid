@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.util.Log;
 import android.util.TypedValue;
 
 import java.io.IOException;
@@ -34,15 +33,6 @@ public class Utils {
     private static final String CACHE_DIR = "cache";
     // some static reference to any context for settings retrieval
     protected static Context mContext;
-
-    /**
-     * Log something to logcat
-     *
-     * @param msg the message to log
-     */
-    public static void log(String msg) {
-        Log.v(Utils.LOG_TAG, msg);
-    }
 
     /**
      * Get a drawable asset file

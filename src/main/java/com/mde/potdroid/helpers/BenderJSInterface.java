@@ -1,6 +1,7 @@
 package com.mde.potdroid.helpers;
 
 import android.app.Activity;
+import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import com.mde.potdroid.models.User;
@@ -24,6 +25,9 @@ public class BenderJSInterface {
     protected SettingsWrapper mSettings;
 
 
+    private static final String TAG = "JsInterface";
+
+
     public BenderJSInterface(WebView wv, Activity cx) {
         mWebView = wv;
         mActivity = cx;
@@ -42,7 +46,7 @@ public class BenderJSInterface {
      */
     @JavascriptInterface
     public void log(String msg) {
-        Utils.log(msg);
+        Log.i(TAG, msg);
     }
 
     /**

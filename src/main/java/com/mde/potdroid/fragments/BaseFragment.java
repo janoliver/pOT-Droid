@@ -17,20 +17,21 @@ import com.mde.potdroid.SettingsActivity;
 import com.mde.potdroid.helpers.DatabaseWrapper;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
-import com.mde.potdroid.views.BBSwipeRefreshLayout;
 import com.mde.potdroid.views.IconDrawable;
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 
 /**
  * The Base Fragment class that all Fragments should inherit. Provides some methods
  * for convenient access of objects and handles loading animations.
  */
-public abstract class BaseFragment extends Fragment implements BBSwipeRefreshLayout.OnRefreshListener {
+public abstract class BaseFragment extends Fragment implements SwipyRefreshLayout.OnRefreshListener {
 
     // this is the ID of the content loader
     protected static final int CONTENT_LOADER_ID = 0;
 
     // the pulltorefresh instance
-    protected BBSwipeRefreshLayout mPullToRefreshLayout;
+    protected SwipyRefreshLayout mPullToRefreshLayout;
     protected SettingsWrapper mSettings;
     protected DatabaseWrapper mDatabase;
 
@@ -54,18 +55,13 @@ public abstract class BaseFragment extends Fragment implements BBSwipeRefreshLay
         setRetainInstance(true);
 
         // Now find the PullToRefreshLayout to setup
-        mPullToRefreshLayout = (BBSwipeRefreshLayout) getView().findViewById(R.id.ptr_layout);
-
-        if (mPullToRefreshLayout == null)
-            mPullToRefreshLayout = (BBSwipeRefreshLayout) getView().findViewById(R.id.ptr_holder);
+        mPullToRefreshLayout = (SwipyRefreshLayout) getView().findViewById(R.id.ptr_holder);
 
         if (mPullToRefreshLayout != null) {
             mPullToRefreshLayout.setOnRefreshListener(this);
             mPullToRefreshLayout.setColorSchemeColors(
-                    Utils.getColorByAttr(getActivity(), R.attr.bbProgressPrimary),
                     Utils.getColorByAttr(getActivity(), R.attr.bbProgressSecondary),
-                    Utils.getColorByAttr(getActivity(), R.attr.bbProgressPrimary),
-                    Utils.getColorByAttr(getActivity(), R.attr.bbProgressSecondary));
+                    Utils.getColorByAttr(getActivity(), R.attr.bbProgressPrimary));
         }
 
         if (!mSettings.isSwipeToRefresh())
@@ -109,7 +105,7 @@ public abstract class BaseFragment extends Fragment implements BBSwipeRefreshLay
     }
 
     @Override
-    public void onRefresh() {
+    public void onRefresh(SwipyRefreshLayoutDirection direction) {
 
     }
 

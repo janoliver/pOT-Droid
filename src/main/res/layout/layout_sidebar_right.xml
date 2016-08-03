@@ -25,8 +25,8 @@
                 android:gravity="left|center_vertical"/>
     </LinearLayout>
 
-    <com.mde.potdroid.views.BBSwipeRefreshLayout
-            android:id="@+id/ptr_layout"
+    <com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
+            android:id="@+id/ptr_holder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:adapter_view="@+id/listview_boards">
@@ -67,7 +67,7 @@
                     android:visibility="invisible"/>
         </RelativeLayout>
 
-    </com.mde.potdroid.views.BBSwipeRefreshLayout>
+    </com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout>
 
 
 </LinearLayout>

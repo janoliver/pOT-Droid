@@ -24,6 +24,7 @@ import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.MessageList;
 import com.mde.potdroid.parsers.MessageListParser;
 import com.mde.potdroid.views.IconDrawable;
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 import org.apache.http.Header;
 
 import java.io.IOException;
@@ -169,8 +170,8 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
     }
 
     @Override
-    public void onRefresh() {
-        super.onRefresh();
+    public void onRefresh(SwipyRefreshLayoutDirection direction) {
+        super.onRefresh(direction);
         restartLoader(this);
     }
 

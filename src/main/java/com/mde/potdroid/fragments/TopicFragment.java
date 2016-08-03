@@ -22,6 +22,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ObservableWebView;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.mde.potdroid.EditorActivity;
 import com.mde.potdroid.R;
@@ -31,6 +32,7 @@ import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.TopicParser;
 import com.mde.potdroid.views.*;
 import com.nineoldandroids.view.ViewPropertyAnimator;
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -58,7 +60,7 @@ public class TopicFragment extends PaginateFragment implements
     private Topic mNextCache;
 
     // the webview which is attached to the WebContainer
-    private ObservableScrollBottomWebView mWebView;
+    private ObservableWebView mWebView;
     private boolean mUserInteraction;
     private int mOldScroll;
     private FloatingActionButton mFab;
@@ -100,7 +102,6 @@ public class TopicFragment extends PaginateFragment implements
         setRetainInstance(true);
 
         setHasOptionsMenu(true);
-        mPullToRefreshLayout.setSwipeDown(false);
 
         setupWebView();
 
@@ -112,7 +113,7 @@ public class TopicFragment extends PaginateFragment implements
                 @Override
                 public void onGlobalLayout() {
                     getBaseActivity().getToolbar().getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    mPullToRefreshLayout.setTopMargin(getBaseActivity().getToolbar().getHeight());
+                    //mPullToRefreshLayout.setTopMargin(getBaseActivity().getToolbar().getHeight());
                 }
             });
         }
@@ -141,7 +142,7 @@ public class TopicFragment extends PaginateFragment implements
         mFab.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
         mFab.hide();
 
-        mWebView = (ObservableScrollBottomWebView) v.findViewById(R.id.topic_webview);
+        mWebView = (ObservableWebView) v.findViewById(R.id.topic_webview);
 
         if (Utils.isLoggedIn() && mSettings.isShowFAB() && !mSettings.isBottomToolbar()) {
             mFab.setOnClickListener(new View.OnClickListener() {
@@ -198,8 +199,8 @@ public class TopicFragment extends PaginateFragment implements
     }
 
     @Override
-    public void onRefresh() {
-        super.onRefresh();
+    public void onRefresh(SwipyRefreshLayoutDirection direction) {
+        super.onRefresh(direction);
         restartLoader(this);
     }
 
@@ -318,7 +319,7 @@ public class TopicFragment extends PaginateFragment implements
                 replyPost();
                 return true;
             case R.id.unveil:
-                mWebView.scrollToTop();
+                mJsInterface.scrollToTop();
                 return true;
             case R.id.tobottom:
                 mJsInterface.scrollToBottom();
@@ -901,7 +902,7 @@ public class TopicFragment extends PaginateFragment implements
             Toolbar t = getBaseActivity().getToolbar();
             int translation = show ? 0 : -t.getHeight();
             ViewPropertyAnimator.animate(t).translationY(translation).setDuration(200).start();
-            mPullToRefreshLayout.setTopMargin(translation + t.getHeight());
+            //mPullToRefreshLayout.setTopMargin(translation + t.getHeight());
         }
 
         public void toggleBottomToolbar(final boolean show) {

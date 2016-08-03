@@ -18,6 +18,7 @@ import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.BookmarkList;
 import com.mde.potdroid.parsers.BookmarkParser;
 import com.mde.potdroid.views.IconButton;
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 
 import java.util.ArrayList;
 
@@ -130,8 +131,8 @@ public class SidebarBookmarksFragment extends BaseFragment
     }
 
     @Override
-    public void onRefresh() {
-        super.onRefresh();
+    public void onRefresh(SwipyRefreshLayoutDirection direction) {
+        super.onRefresh(direction);
         restartLoader(this);
     }
 

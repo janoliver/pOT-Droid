@@ -30,7 +30,7 @@ public class ForumActivity extends BaseActivity {
         super.onNewIntent(intent);
 
         // close left sidebar
-        mForumFragment.onRefresh();
+        mForumFragment.onRefresh(null);
         closeLeftDrawer();
     }
 }

@@ -204,8 +204,6 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         if(getArguments().getBoolean(ARG_CLOSED, false))
             showInfo(R.string.msg_topic_closed);
 
-        mPullToRefreshLayout.setSwipeable(false);
-
         mEditText.requestFocus();
 
         hideLoadingAnimation();

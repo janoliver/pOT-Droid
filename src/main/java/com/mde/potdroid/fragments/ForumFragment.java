@@ -23,6 +23,7 @@ import com.mde.potdroid.models.Category;
 import com.mde.potdroid.models.Forum;
 import com.mde.potdroid.parsers.ForumParser;
 import com.mde.potdroid.views.IconDrawable;
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 import org.apache.http.Header;
@@ -92,8 +93,8 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
     }
 
     @Override
-    public void onRefresh() {
-        super.onRefresh();
+    public void onRefresh(SwipyRefreshLayoutDirection direction) {
+        super.onRefresh(direction);
         restartLoader(this);
     }
 

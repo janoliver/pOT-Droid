@@ -16,6 +16,9 @@ import android.text.Spanned;
 import android.view.*;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.mde.potdroid.EditorActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.TopicActivity;
@@ -29,6 +32,7 @@ import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.BoardParser;
 import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.IconView;
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 import org.apache.http.Header;
 
 import java.io.IOException;
@@ -39,7 +43,7 @@ import java.util.Calendar;
 /**
  * The Board Fragment, which contains a list of Topics.
  */
-public class BoardFragment extends PaginateFragment implements LoaderManager.LoaderCallbacks<Board> {
+public class BoardFragment extends PaginateFragment implements LoaderManager.LoaderCallbacks<Board>, ObservableScrollViewCallbacks {
 
     // the tags of the fragment arguments
     public static final String ARG_ID = "board_id";
@@ -48,11 +52,13 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     // the board object
     private Board mBoard;
 
-    private RecyclerView mListView;
+    private ObservableRecyclerView mListView;
 
     TopicListAdapter mListAdapter;
 
     private LinearLayoutManager mLayoutManager;
+
+    public FloatingActionButton mFab;
 
     /**
      * Returns an instance of the BoardFragment and sets required parameters as Arguments
@@ -81,23 +87,25 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
         mListAdapter = new TopicListAdapter(new ArrayList<Topic>());
 
-        mListView = (RecyclerView) v.findViewById(R.id.forum_list_content);
+        mListView = (ObservableRecyclerView) v.findViewById(R.id.forum_list_content);
+        mListView.setScrollViewCallbacks(this);
+
         mListView.setAdapter(mListAdapter);
         mListView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getBaseActivity());
         mListView.setLayoutManager(mLayoutManager);
 
-        FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
-        fab.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
+        mFab = (FloatingActionButton) v.findViewById(R.id.fab);
+        mFab.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
 
         if (Utils.isLoggedIn() && mSettings.isShowFAB() && !mSettings.isBottomToolbar()) {
-            fab.setOnClickListener(new View.OnClickListener() {
+            mFab.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     newThread();
                 }
             });
         } else {
-            fab.setVisibility(View.GONE);
+            mFab.setVisibility(View.GONE);
         }
 
         return v;
@@ -187,8 +195,8 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     }
 
     @Override
-    public void onRefresh() {
-        super.onRefresh();
+    public void onRefresh(SwipyRefreshLayoutDirection direction) {
+        super.onRefresh(direction);
         restartLoader(this);
     }
 
@@ -274,6 +282,25 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
     public void refreshPage() {
         restartLoader(this);
+    }
+
+    @Override
+    public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
+
+    }
+
+    @Override
+    public void onDownMotionEvent() {
+
+    }
+
+    @Override
+    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+        if (scrollState == ScrollState.UP) {
+            mFab.show();
+        } else if (scrollState == ScrollState.DOWN) {
+            mFab.hide();
+        }
     }
 
     /**

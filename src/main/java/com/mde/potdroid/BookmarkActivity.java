@@ -35,7 +35,7 @@ public class BookmarkActivity extends BaseActivity {
         super.onNewIntent(intent);
 
         // close left sidebar
-        mBookmarkFragment.onRefresh();
+        mBookmarkFragment.onRefresh(null);
         closeLeftDrawer();
         closeRightDrawer();
     }

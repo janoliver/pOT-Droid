@@ -21,6 +21,7 @@ import com.mde.potdroid.helpers.DatabaseWrapper;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Forum;
 import com.mde.potdroid.views.IconButton;
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -100,8 +101,8 @@ public class SidebarBoardsFragment extends BaseFragment implements LoaderManager
     }
 
     @Override
-    public void onRefresh() {
-        super.onRefresh();
+    public void onRefresh(SwipyRefreshLayoutDirection direction) {
+        super.onRefresh(direction);
         restartLoader(this);
     }
 

@@ -7,7 +7,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
 import android.widget.RelativeLayout;
@@ -27,8 +26,6 @@ import com.mde.potdroid.views.IconDrawable;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 import org.apache.http.Header;
-
-import java.text.SimpleDateFormat;
 
 /**
  * The Forum list fragment. It shows an ExpandableList with Categories as groups and
@@ -174,8 +171,8 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
             mTextDescription.setText(board.getDescription());
 
             if(board.getLastPost() != null) {
-                String time = new SimpleDateFormat(getContext()
-                        .getString(R.string.default_time_format)).format(board.getLastPost().getDate());
+                String time = Utils.getFormattedTime(getContext()
+                        .getString(R.string.default_time_format), board.getLastPost().getDate());
                 Spanned lastpost_text = Utils.fromHtml(String.format(
                         getContext().getString(R.string.last_post), board.getLastPost().getAuthor().getNick(), time));
                 mTextLastPost.setText(lastpost_text);

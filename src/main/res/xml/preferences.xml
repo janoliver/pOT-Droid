@@ -319,6 +319,11 @@
                 android:title="Connection Timeout" />
 
         <android.support.v7.preference.CheckBoxPreference
+                android:key="pref_german_timezone"
+                android:title="Deutsche Zeitzone verwenden"
+                android:defaultValue="true"/>
+
+        <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_debug_mode"
                 android:title="Debug Modus"
                 android:defaultValue="false"/>

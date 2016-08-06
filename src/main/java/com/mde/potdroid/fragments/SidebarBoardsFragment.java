@@ -23,7 +23,6 @@ import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Forum;
 import com.mde.potdroid.views.IconButton;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -205,8 +204,8 @@ public class SidebarBoardsFragment extends BaseFragment implements LoaderManager
                     getContext().getString(R.string.strong), b.getLastPost().getTopic().getTitle()));
             holder.mTextDescription.setText(lastpost_text);
 
-            String time = new SimpleDateFormat(getContext().getString(R.string.default_time_format)).format(b
-                    .getLastPost().getDate());
+            String time = Utils.getFormattedTime(getString(R.string.default_time_format), b.getLastPost().getDate());
+
             Spanned lastpost_text_line2 = Utils.fromHtml(String.format(
                     getContext().getString(R.string.last_post_sidebar), b.getLastPost().getAuthor().getNick(), time));
             holder.mTextLastPost.setText(lastpost_text_line2);

@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Class that provides some static helper methods.
@@ -290,5 +293,13 @@ public class Utils {
             result = Html.fromHtml(html_str);
         }
         return result;
+    }
+
+    public static String getFormattedTime(String format, Date date) {
+        SimpleDateFormat f = new SimpleDateFormat(format);
+        SettingsWrapper s = new SettingsWrapper(getApplicationContext());
+        if(s.isUseGermanTimezone())
+            f.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
+        return f.format(date);
     }
 }

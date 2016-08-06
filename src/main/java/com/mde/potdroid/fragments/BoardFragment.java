@@ -35,7 +35,6 @@ import com.mde.potdroid.views.IconView;
 import org.apache.http.Header;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -413,7 +412,8 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                 fmt = "dd.MM., HH:mm";
             }
 
-            String time = new SimpleDateFormat(fmt).format(displayPost.getDate());
+            String time = Utils.getFormattedTime(fmt, displayPost.getDate());
+
             holder.mTextAuthor.setText(Utils.fromHtml(String.format(
                     getContext().getString(R.string.thread_lastpost), displayPost.getAuthor().getNick(), time)));
 

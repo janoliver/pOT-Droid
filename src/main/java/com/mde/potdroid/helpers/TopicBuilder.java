@@ -10,7 +10,6 @@ import com.samskivert.mustache.Mustache;
 
 import java.io.*;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -242,8 +241,7 @@ public class TopicBuilder {
         public String getDate() {
             if(!mShowPostInfo)
                 return "";
-            return new SimpleDateFormat(mContext.getString(R.string.default_time_format))
-                    .format(mPost.getDate()) + " Uhr";
+            return Utils.getFormattedTime(mContext.getString(R.string.default_time_format), mPost.getDate()) + " Uhr";
         }
 
         public String getTitle() {
@@ -283,8 +281,7 @@ public class TopicBuilder {
         }
 
         public String getLastEditDate() {
-            return new SimpleDateFormat(mContext.getString(R.string.default_time_format))
-                    .format(mPost.getLastEditDate()) + " Uhr";
+            return Utils.getFormattedTime(mContext.getString(R.string.default_time_format), mPost.getLastEditDate()) + " Uhr";
         }
 
         public Integer numEdited() {

@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import com.mde.potdroid.R;
-import org.apache.http.impl.cookie.BasicClientCookie;
 
 import java.io.File;
 import java.math.BigInteger;
@@ -74,6 +73,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_FAB = "pref_fab";
     public static final String PREF_KEY_TINTED_STATUSBAR = "pref_tinted_statusbar";
     public static final String PREF_KEY_POSTNUMBERS = "pref_show_postnumbers";
+    public static final String PREF_KEY_GERMAN_TIMEZONE = "pref_german_timezone";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;
@@ -315,6 +315,10 @@ public class SettingsWrapper {
         return mSharedPreferences.getBoolean(PREF_KEY_DEBUG, false);
     }
 
+    public Boolean isUseGermanTimezone() {
+        return mSharedPreferences.getBoolean(PREF_KEY_GERMAN_TIMEZONE, true);
+    }
+
     public Boolean isNotificationVibrate() {
         return mSharedPreferences.getBoolean(PREF_KEY_NOTIFICATION_VIBRATE, false);
     }
@@ -348,20 +352,6 @@ public class SettingsWrapper {
 
     public int getUserId() {
         return mSharedPreferences.getInt(PREF_KEY_USERID, 0);
-    }
-
-    public Boolean hasLoginCookie() {
-        return mSharedPreferences.contains(PREF_KEY_COOKIE_NAME);
-    }
-
-    public BasicClientCookie getLoginCookie() {
-        BasicClientCookie cookie = new BasicClientCookie(
-                mSharedPreferences.getString(PREF_KEY_COOKIE_NAME, null),
-                mSharedPreferences.getString(PREF_KEY_COOKIE_VALUE, null)
-        );
-        cookie.setPath(mSharedPreferences.getString(PREF_KEY_COOKIE_PATH, null));
-        cookie.setDomain(mSharedPreferences.getString(PREF_KEY_COOKIE_URL, null));
-        return cookie;
     }
 
     public void clearCookie() {

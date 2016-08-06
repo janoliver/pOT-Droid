@@ -6,7 +6,6 @@ import com.mde.potdroid.models.Message;
 import com.samskivert.mustache.Mustache;
 
 import java.io.*;
-import java.text.SimpleDateFormat;
 
 /**
  * This class, given a Message object, turns it into displayable HTML code
@@ -93,8 +92,7 @@ public class MessageBuilder {
         }
 
         public String getDate() {
-            return new SimpleDateFormat(mContext.getString(R.string.default_time_format))
-                    .format(mMessage.getDate());
+            return Utils.getFormattedTime(mContext.getString(R.string.default_time_format), mMessage.getDate());
         }
 
         public String getTitle() {

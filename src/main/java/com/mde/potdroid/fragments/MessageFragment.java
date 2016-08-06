@@ -23,7 +23,6 @@ import org.apache.http.Header;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 
 /**
@@ -141,7 +140,7 @@ public class MessageFragment extends BaseFragment
                 String line;
                 StringBuilder content = new StringBuilder();
 
-                String ds = new SimpleDateFormat(getString(R.string.default_time_format)).format(mMessage.getDate());
+                String ds = Utils.getFormattedTime(getString(R.string.default_time_format), mMessage.getDate());
                 String quote_line = "> %s \n";
                 content.append(String.format(getString(R.string.message_header),
                         mMessage.getFrom().getNick(), ds));

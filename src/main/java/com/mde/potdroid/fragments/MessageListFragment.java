@@ -10,7 +10,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
 import android.widget.ImageView;
@@ -28,7 +27,6 @@ import com.mde.potdroid.views.IconDrawable;
 import org.apache.http.Header;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -235,11 +233,12 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
                     getContext().getString(R.string.pm_author_system) :
                     m.getFrom().getNick();
 
+            String time = Utils.getFormattedTime(getString(R.string.default_time_format), m.getDate());
+
             Spanned content = Utils.fromHtml(getContext().getString(R.string.message_description,
                     mMode.equals(MessageList.TAG_INBOX) ? "von" : "an",
                     author, mMode.equals(MessageList.TAG_INBOX) ? "erhalten" : "gesendet",
-                    new SimpleDateFormat(getContext().getString(R.string.default_time_format)).format(m
-                            .getDate())));
+                    time));
             holder.mTextDescription.setText(content);
 
             int padding_top = holder.mContainer.getPaddingTop();

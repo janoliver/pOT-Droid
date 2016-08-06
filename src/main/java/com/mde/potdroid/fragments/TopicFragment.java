@@ -411,7 +411,7 @@ public class TopicFragment extends PaginateFragment implements
             return;
 
         // set title and subtitle of the ActionBar and reload the OptionsMenu
-        Spanned subtitleText = Html.fromHtml(getString(R.string.subtitle_paginate,
+        Spanned subtitleText = Utils.fromHtml(getString(R.string.subtitle_paginate,
                 mTopic.getPage(), mTopic.getNumberOfPages()));
 
         //getBaseActivity().supportInvalidateOptionsMenu();

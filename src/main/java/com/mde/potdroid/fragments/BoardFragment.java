@@ -11,7 +11,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
 import android.widget.RelativeLayout;
@@ -215,7 +214,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             refreshPaginateLayout();
 
             // generate subtitle and set title and subtitle of the actionbar
-            Spanned subtitle = Html.fromHtml(String.format(getString(
+            Spanned subtitle = Utils.fromHtml(String.format(getString(
                             R.string.subtitle_paginate), mBoard.getPage(),
                     mBoard.getNumberOfPages()));
 
@@ -415,7 +414,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             }
 
             String time = new SimpleDateFormat(fmt).format(displayPost.getDate());
-            holder.mTextAuthor.setText(Html.fromHtml(String.format(
+            holder.mTextAuthor.setText(Utils.fromHtml(String.format(
                     getContext().getString(R.string.thread_lastpost), displayPost.getAuthor().getNick(), time)));
 
 
@@ -429,7 +428,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                 }
             }
 
-            Spanned pages_content = Html.fromHtml(String.format(getContext().getString(
+            Spanned pages_content = Utils.fromHtml(String.format(getContext().getString(
                     R.string.topic_additional_information),
                     t.getNumberOfPosts(), t.getNumberOfPages()));
             holder.mTextPages.setText(pages_content);

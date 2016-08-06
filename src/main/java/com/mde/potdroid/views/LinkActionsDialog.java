@@ -4,9 +4,11 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.view.View;
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mde.potdroid.R;
 
 /**
  * This DialogFragment shows a Menu for a Post with some actions
@@ -30,22 +32,20 @@ public class LinkActionsDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        final CharSequence[] items = {getArguments().getString(ARG_IMAGE_URI)};
-
         return new MaterialDialog.Builder(getActivity())
-                .items(items)
-                .itemsCallback(new MaterialDialog.ListCallback() {
+                .title(R.string.link_dialog_title)
+                .content(getArguments().getString(ARG_IMAGE_URI))
+                .positiveText(R.string.link_dialog_goto)
+                .negativeText(R.string.link_dialog_close)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
-                        switch (i) {
-                            case 0:
-                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                intent.setData(Uri.parse(getArguments().getString(ARG_IMAGE_URI)));
-                                startActivity(intent);
-                                break;
-                        }
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(getArguments().getString(ARG_IMAGE_URI)));
+                        startActivity(intent);
                     }
-                }).build();
+                })
+                .build();
     }
 
 }

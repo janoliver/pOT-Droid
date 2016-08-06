@@ -74,6 +74,7 @@
         <item name="md_positive_color">@color/bbstyle_darkerblue</item>
         <item name="md_neutral_color">@color/bbstyle_darkerblue</item>
         <item name="md_negative_color">@color/bbstyle_darkerblue</item>
+        <item name="md_link_color">@color/bbstyle_darkerblue</item>
         <!--By default, the list item text color is black for the light theme and white for the dark theme.-->
         <item name="md_item_color">@color/white</item>
         <!--This overrides the default dark or light dialog background color.

@@ -185,7 +185,7 @@ public class BookmarkFragment extends BaseFragment
 
             mBookmarkList.refresh(success.getBookmarks(), success.getNumberOfNewPosts());
             mListAdapter.notifyDataSetChanged();
-            Spanned subtitle = Html.fromHtml(String.format(getString(R.string.subtitle_bookmarks),
+            Spanned subtitle = Utils.fromHtml(String.format(getString(R.string.subtitle_bookmarks),
                     success.getNumberOfNewPosts()));
             getActionbar().setSubtitle(subtitle);
 
@@ -242,7 +242,7 @@ public class BookmarkFragment extends BaseFragment
             board.setText(b.getThread().getBoard().getName());
 
             // display the number of new posts
-            Spanned description_content = Html.fromHtml(String.format(getString(
+            Spanned description_content = Utils.fromHtml(String.format(getString(
                     R.string.new_posts_description),
                     b.getNumberOfNewPosts(), b.getThread().getNumberOfPages()));
 

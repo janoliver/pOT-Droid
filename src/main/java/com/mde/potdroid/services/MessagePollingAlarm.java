@@ -108,7 +108,7 @@ public class MessagePollingAlarm extends BroadcastReceiver {
 
             int counter = 0;
             for (Message m : unreadMessages) {
-                style.addLine(Html.fromHtml("<b>" + m.getFrom().getNick() + "</b>: " + m.getTitle
+                style.addLine(Utils.fromHtml("<b>" + m.getFrom().getNick() + "</b>: " + m.getTitle
                         ()));
                 if (++counter >= 3)
                     break;
@@ -126,7 +126,7 @@ public class MessagePollingAlarm extends BroadcastReceiver {
 
             // only a single message, so display it the normal way.
             Message m = unreadMessages.get(0);
-            builder.setContentText(Html.fromHtml("<b>" + m.getFrom().getNick() + "</b>: " + m
+            builder.setContentText(Utils.fromHtml("<b>" + m.getFrom().getNick() + "</b>: " + m
                     .getTitle()));
 
             messageIntent = new Intent(context, MessageActivity.class);

@@ -85,7 +85,7 @@ public class PromptDialog extends DialogFragment {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity())
                 .title(mTitle)
                 .customView(input_layout, false)
-                .positiveText("Ok")
+                .positiveText(R.string.editor_dialog_ok)
                 //.negativeText("Abbrechen")
                 .autoDismiss(false)
                 .callback(new MaterialDialog.ButtonCallback() {

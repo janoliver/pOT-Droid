@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.text.Html;
 import android.text.Spanned;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mde.potdroid.AboutActivity;
 import com.mde.potdroid.R;
+import com.mde.potdroid.helpers.Utils;
 
 /**
  * Shows a dialog with update information. The user can decide to be redirected to the About page
@@ -20,7 +20,7 @@ public class UpdateInfoDialog extends DialogFragment {
         // Use the Builder class for convenient dialog construction
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
 
-        Spanned msg = Html.fromHtml(getString(R.string.update_info));
+        Spanned msg = Utils.fromHtml(getString(R.string.update_info));
         String version;
         try {
             version = getActivity().getPackageManager().getPackageInfo(

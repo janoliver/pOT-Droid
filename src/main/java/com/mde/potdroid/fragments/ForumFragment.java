@@ -176,7 +176,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
             if(board.getLastPost() != null) {
                 String time = new SimpleDateFormat(getContext()
                         .getString(R.string.default_time_format)).format(board.getLastPost().getDate());
-                Spanned lastpost_text = Html.fromHtml(String.format(
+                Spanned lastpost_text = Utils.fromHtml(String.format(
                         getContext().getString(R.string.last_post), board.getLastPost().getAuthor().getNick(), time));
                 mTextLastPost.setText(lastpost_text);
             }

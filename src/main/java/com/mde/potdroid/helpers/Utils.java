@@ -10,6 +10,8 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.TypedValue;
 
 import java.io.IOException;
@@ -278,5 +280,15 @@ public class Utils {
             e.printStackTrace();
         }
         return "";
+    }
+
+    public static Spanned fromHtml(String html_str) {
+        Spanned result;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = Html.fromHtml(html_str,Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            result = Html.fromHtml(html_str);
+        }
+        return result;
     }
 }

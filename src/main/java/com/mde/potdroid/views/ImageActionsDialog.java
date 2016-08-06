@@ -38,6 +38,7 @@ public class ImageActionsDialog extends DialogFragment {
 
         return new MaterialDialog.Builder(getActivity())
                 .items(R.array.image_dialog)
+                .title(R.string.image_dialog_title)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {

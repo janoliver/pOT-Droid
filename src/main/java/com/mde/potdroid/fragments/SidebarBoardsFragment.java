@@ -6,7 +6,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +17,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.mde.potdroid.BoardActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.DatabaseWrapper;
+import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.helpers.ptr.SwipyRefreshLayoutDirection;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Forum;
@@ -201,13 +201,13 @@ public class SidebarBoardsFragment extends BaseFragment implements LoaderManager
             final Board b = mDataset.get(position);
 
             holder.mTextTitle.setText(b.getName());
-            Spanned lastpost_text = Html.fromHtml(String.format(
+            Spanned lastpost_text = Utils.fromHtml(String.format(
                     getContext().getString(R.string.strong), b.getLastPost().getTopic().getTitle()));
             holder.mTextDescription.setText(lastpost_text);
 
             String time = new SimpleDateFormat(getContext().getString(R.string.default_time_format)).format(b
                     .getLastPost().getDate());
-            Spanned lastpost_text_line2 = Html.fromHtml(String.format(
+            Spanned lastpost_text_line2 = Utils.fromHtml(String.format(
                     getContext().getString(R.string.last_post_sidebar), b.getLastPost().getAuthor().getNick(), time));
             holder.mTextLastPost.setText(lastpost_text_line2);
 

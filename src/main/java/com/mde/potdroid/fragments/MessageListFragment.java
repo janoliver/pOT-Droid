@@ -228,14 +228,14 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
             // - replace the contents of the view with that element
             final Message m = mDataset.get(position);
 
-            holder.mTextTitle.setText(Html.fromHtml(m.getTitle()));
+            holder.mTextTitle.setText(Utils.fromHtml(m.getTitle()));
 
             // last post information
             String author = m.isSystem() ?
                     getContext().getString(R.string.pm_author_system) :
                     m.getFrom().getNick();
 
-            Spanned content = Html.fromHtml(getContext().getString(R.string.message_description,
+            Spanned content = Utils.fromHtml(getContext().getString(R.string.message_description,
                     mMode.equals(MessageList.TAG_INBOX) ? "von" : "an",
                     author, mMode.equals(MessageList.TAG_INBOX) ? "erhalten" : "gesendet",
                     new SimpleDateFormat(getContext().getString(R.string.default_time_format)).format(m

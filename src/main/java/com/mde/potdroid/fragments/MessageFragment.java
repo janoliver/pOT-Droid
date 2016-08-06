@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
 import android.webkit.WebChromeClient;
@@ -130,7 +129,7 @@ public class MessageFragment extends BaseFragment
                 intent.putExtra(EditorFragment.ARG_MODE, EditorFragment.MODE_MESSAGE);
                 intent.putExtra(EditorFragment.ARG_RCPT, mMessage.getFrom().getNick());
 
-                String toQuote = Html.fromHtml(mMessage.getText()
+                String toQuote = Utils.fromHtml(mMessage.getText()
                     .replaceAll("<img src='message-icons/[^']+' alt='([^']+)' class='smiley'>", "$1")).toString();
 
                 // read in the message string as HTML, so <br> is converted into line
@@ -198,13 +197,13 @@ public class MessageFragment extends BaseFragment
             // generate and set title and subtitle
             Spanned subtitle;
             if(mMessage.isSystem()) {
-                subtitle = Html.fromHtml("<b>Systemnachricht</b>");
+                subtitle = Utils.fromHtml("<b>Systemnachricht</b>");
             } else {
 
-                subtitle = Html.fromHtml(String.format(getString(R.string.subtitle_message),
+                subtitle = Utils.fromHtml(String.format(getString(R.string.subtitle_message),
                         mMessage.isOutgoing() ? "an" : "von", mMessage.getFrom().getNick()));
             }
-            getActionbar().setTitle(Html.fromHtml(mMessage.getTitle()));
+            getActionbar().setTitle(Utils.fromHtml(mMessage.getTitle()));
             getActionbar().setSubtitle(subtitle);
 
             getActivity().supportInvalidateOptionsMenu();

@@ -134,6 +134,12 @@ Es gibt einen pOT-Droid Thread. Den Link und die Änderungen findest du unter \'
     <string name="image_dialog_download">Herunterladen</string>
     <string name="choose_browser">Browser wählen…</string>
     <string name="no_browser_installed">Kein Browser installiert?</string>
+    <string name="post_dialog_title">Aktionen</string>
+    <string name="image_dialog_title">Bild Aktionen</string>
+    <string name="link_dialog_title">Link</string>
+    <string name="link_dialog_goto">Gehe zu</string>
+    <string name="link_dialog_close">Abbrechen</string>
+    <string name="editor_dialog_ok">Abbrechen</string>
 
 
 </resources>

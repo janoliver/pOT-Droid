@@ -214,10 +214,47 @@ public class SwipyRefreshLayout extends ViewGroup {
      */
 
     public void setProgressViewOffset(boolean scale, int start, int end) {
+        final DisplayMetrics metrics = getResources().getDisplayMetrics();
+
         mScale = scale;
         mCircleView.setVisibility(View.GONE);
-        mOriginalOffsetTop = mCurrentTargetOffsetTop = start;
-        mSpinnerFinalOffset = end;
+
+        /*switch (mDirection) {
+            case BOTTOM:
+                mCurrentTargetOffsetTop = mOriginalOffsetTop = getMeasuredHeight() - end;
+                break;
+            case TOP:
+            default:
+                mCurrentTargetOffsetTop = mOriginalOffsetTop = -mCircleView.getMeasuredHeight() + start;
+                break;
+        }*/
+        mCurrentTargetOffsetTop = mOriginalOffsetTop = -mCircleView.getMeasuredHeight() + start;
+
+        mSpinnerFinalOffset = DEFAULT_CIRCLE_TARGET * metrics.density + end;
+
+        mUsingCustomStart = true;
+        mCircleView.invalidate();
+
+    }
+
+    public void addProgressViewOffset(int start, int end) {
+        final DisplayMetrics metrics = getResources().getDisplayMetrics();
+
+        mCircleView.setVisibility(View.GONE);
+
+        /*switch (mDirection) {
+            case BOTTOM:
+                mCurrentTargetOffsetTop = mOriginalOffsetTop = getMeasuredHeight() - end;
+                break;
+            case TOP:
+            default:
+                mCurrentTargetOffsetTop = mOriginalOffsetTop = -mCircleView.getMeasuredHeight() + start;
+                break;
+        }*/
+        mCurrentTargetOffsetTop = mOriginalOffsetTop = -mCircleView.getMeasuredHeight() + start;
+
+        mSpinnerFinalOffset = DEFAULT_CIRCLE_TARGET * metrics.density + end;
+
         mUsingCustomStart = true;
         mCircleView.invalidate();
     }
@@ -365,7 +402,7 @@ public class SwipyRefreshLayout extends ViewGroup {
             mRefreshing = refreshing;
             int endTarget = 0;
             if (!mUsingCustomStart) {
-                switch (mDirection) {
+                /*switch (mDirection) {
                     case BOTTOM:
                         endTarget = getMeasuredHeight() - (int) (mSpinnerFinalOffset);
                         break;
@@ -373,7 +410,8 @@ public class SwipyRefreshLayout extends ViewGroup {
                     default:
                         endTarget = (int) (mSpinnerFinalOffset - Math.abs(mOriginalOffsetTop));
                         break;
-                }
+                }*/
+                endTarget = (int) (mSpinnerFinalOffset - Math.abs(mOriginalOffsetTop));
             } else {
                 endTarget = (int) mSpinnerFinalOffset;
             }
@@ -868,13 +906,13 @@ public class SwipyRefreshLayout extends ViewGroup {
                                 (tensionSlingshotPercent / 4), 2)) * 2f;
                         float extraMove = (slingshotDist) * tensionPercent * 2;
 
-                        // int targetY = mOriginalOffsetTop + (int) ((slingshotDist * dragPercent) + extraMove);
-                        int targetY;
+                        int targetY = mOriginalOffsetTop + (int) ((slingshotDist * dragPercent) + extraMove);
+                        /*int targetY;
                         if (mDirection == SwipyRefreshLayoutDirection.TOP) {
                             targetY = mOriginalOffsetTop + (int) ((slingshotDist * dragPercent) + extraMove);
                         } else {
                             targetY = mOriginalOffsetTop - (int) ((slingshotDist * dragPercent) + extraMove);
-                        }
+                        }*/
                         // where 1.0f is a full circle
                         if (mCircleView.getVisibility() != View.VISIBLE) {
                             mCircleView.setVisibility(View.VISIBLE);
@@ -1016,7 +1054,7 @@ public class SwipyRefreshLayout extends ViewGroup {
             int targetTop = 0;
             int endTarget = 0;
             if (!mUsingCustomStart) {
-                switch (mDirection) {
+                /*switch (mDirection) {
                     case BOTTOM:
                         endTarget = getMeasuredHeight() - (int) (mSpinnerFinalOffset);
                         break;
@@ -1024,7 +1062,8 @@ public class SwipyRefreshLayout extends ViewGroup {
                     default:
                         endTarget = (int) (mSpinnerFinalOffset - Math.abs(mOriginalOffsetTop));
                         break;
-                }
+                }*/
+                endTarget = (int) (mSpinnerFinalOffset - Math.abs(mOriginalOffsetTop));
             } else {
                 endTarget = (int) mSpinnerFinalOffset;
             }
@@ -1122,7 +1161,7 @@ public class SwipyRefreshLayout extends ViewGroup {
             mDirection = direction;
         }
 
-        switch (mDirection) {
+        /*switch (mDirection) {
             case BOTTOM:
                 mCurrentTargetOffsetTop = mOriginalOffsetTop = getMeasuredHeight();
                 break;
@@ -1130,7 +1169,8 @@ public class SwipyRefreshLayout extends ViewGroup {
             default:
                 mCurrentTargetOffsetTop = mOriginalOffsetTop = -mCircleView.getMeasuredHeight();
                 break;
-        }
+        }*/
+        mCurrentTargetOffsetTop = mOriginalOffsetTop = -mCircleView.getMeasuredHeight();
     }
 
     // only TOP or Bottom
@@ -1140,6 +1180,7 @@ public class SwipyRefreshLayout extends ViewGroup {
         }
 
         mDirection = direction;
+        /*
         switch (mDirection) {
             case BOTTOM:
                 mCurrentTargetOffsetTop = mOriginalOffsetTop = getMeasuredHeight();
@@ -1148,7 +1189,8 @@ public class SwipyRefreshLayout extends ViewGroup {
             default:
                 mCurrentTargetOffsetTop = mOriginalOffsetTop = -mCircleView.getMeasuredHeight();
                 break;
-        }
+        }*/
+        mCurrentTargetOffsetTop = mOriginalOffsetTop = -mCircleView.getMeasuredHeight();
     }
 
     public CircleImageView getCircleView() {

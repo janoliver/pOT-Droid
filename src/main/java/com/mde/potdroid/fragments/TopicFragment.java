@@ -70,9 +70,6 @@ public class TopicFragment extends PaginateFragment implements
     private TopicJSInterface mJsInterface;
     private WebViewScrollCallbacks mWebViewScrollCallbacks = new WebViewScrollCallbacks();
 
-    // images that appear
-    public ArrayList<String> mImagesInThread = new ArrayList<String>();
-
 
     /**
      * Create a new instance of TopicFragment and set the arguments
@@ -113,7 +110,7 @@ public class TopicFragment extends PaginateFragment implements
                 @Override
                 public void onGlobalLayout() {
                     getBaseActivity().getToolbar().getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    //mPullToRefreshLayout.setTopMargin(getBaseActivity().getToolbar().getHeight());
+                    mPullToRefreshLayout.addProgressViewOffset(getBaseActivity().getToolbar().getHeight(), 0);
                 }
             });
         }

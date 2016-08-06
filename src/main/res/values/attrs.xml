@@ -29,8 +29,11 @@
     <attr name="bbListItemFontSecondary" format="dimension" />
     <attr name="bbListItemFontTertiary" format="dimension" />
 
-    <declare-styleable name="BBSwipeRefreshLayout">
-        <attr name="adapter_view" format="reference"/>
-        <attr name="enabled" format="boolean"/>
+    <declare-styleable name="SwipyRefreshLayout">
+        <attr name="srl_direction">
+            <enum name="top" value="0" />
+            <enum name="bottom" value="1" />
+            <enum name="both" value="2" />
+        </attr>
     </declare-styleable>
 </resources>

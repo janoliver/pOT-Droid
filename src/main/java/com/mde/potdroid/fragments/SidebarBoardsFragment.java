@@ -18,10 +18,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.mde.potdroid.BoardActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.DatabaseWrapper;
+import com.mde.potdroid.helpers.ptr.SwipyRefreshLayoutDirection;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Forum;
 import com.mde.potdroid.views.IconButton;
-import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -27,7 +27,6 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.github.afollestad.material-dialogs:core:0.8.6.2@aar'
     compile 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.4'
-    compile 'com.github.orangegangsters:swipy:1.2.3@aar'
 }
 
 

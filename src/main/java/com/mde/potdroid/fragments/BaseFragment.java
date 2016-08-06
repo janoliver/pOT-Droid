@@ -17,9 +17,9 @@ import com.mde.potdroid.SettingsActivity;
 import com.mde.potdroid.helpers.DatabaseWrapper;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
+import com.mde.potdroid.helpers.ptr.SwipyRefreshLayout;
+import com.mde.potdroid.helpers.ptr.SwipyRefreshLayoutDirection;
 import com.mde.potdroid.views.IconDrawable;
-import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
-import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 
 /**
  * The Base Fragment class that all Fragments should inherit. Provides some methods

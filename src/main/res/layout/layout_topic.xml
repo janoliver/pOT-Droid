@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
+    <com.mde.potdroid.helpers.ptr.SwipyRefreshLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/ptr_holder"
             android:layout_width="match_parent"
@@ -16,7 +16,7 @@
                 android:id="@+id/topic_webview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-    </com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout>
+    </com.mde.potdroid.helpers.ptr.SwipyRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"

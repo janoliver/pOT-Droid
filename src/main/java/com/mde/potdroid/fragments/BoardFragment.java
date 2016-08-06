@@ -25,6 +25,7 @@ import com.mde.potdroid.TopicActivity;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
 import com.mde.potdroid.helpers.DatabaseWrapper;
 import com.mde.potdroid.helpers.Utils;
+import com.mde.potdroid.helpers.ptr.SwipyRefreshLayoutDirection;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.Post;
@@ -32,7 +33,6 @@ import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.BoardParser;
 import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.IconView;
-import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 import org.apache.http.Header;
 
 import java.io.IOException;

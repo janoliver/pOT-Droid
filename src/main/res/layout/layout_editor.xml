@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
+<com.mde.potdroid.helpers.ptr.SwipyRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/ptr_holder"
         android:layout_width="match_parent"
@@ -154,4 +154,4 @@
                 android:textCursorDrawable="@null"/>
 
     </LinearLayout>
-</com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout>
+</com.mde.potdroid.helpers.ptr.SwipyRefreshLayout>

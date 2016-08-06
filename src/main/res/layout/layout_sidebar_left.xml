@@ -55,11 +55,10 @@
 
     </LinearLayout>
 
-    <com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
+    <com.mde.potdroid.helpers.ptr.SwipyRefreshLayout
             android:id="@+id/ptr_holder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:adapter_view="@+id/listview_bookmarks">
+            android:layout_height="match_parent">
 
         <RelativeLayout
                 android:id="@+id/bookmark_list_holder"
@@ -105,6 +104,6 @@
 
         </RelativeLayout>
 
-    </com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout>
+    </com.mde.potdroid.helpers.ptr.SwipyRefreshLayout>
 
 </LinearLayout>

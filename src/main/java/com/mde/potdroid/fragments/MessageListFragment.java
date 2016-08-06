@@ -20,11 +20,11 @@ import com.mde.potdroid.EditorActivity;
 import com.mde.potdroid.MessageActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.*;
+import com.mde.potdroid.helpers.ptr.SwipyRefreshLayoutDirection;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.MessageList;
 import com.mde.potdroid.parsers.MessageListParser;
 import com.mde.potdroid.views.IconDrawable;
-import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 import org.apache.http.Header;
 
 import java.io.IOException;

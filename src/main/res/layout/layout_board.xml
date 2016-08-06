@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
+    <com.mde.potdroid.helpers.ptr.SwipyRefreshLayout
             android:id="@+id/ptr_holder"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -18,7 +18,7 @@
                 android:layout_height="fill_parent"
                 android:background="?attr/bbListSeparatorColor"/>
 
-    </com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout>
+    </com.mde.potdroid.helpers.ptr.SwipyRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"

@@ -151,6 +151,7 @@ public class SettingsWrapper {
         return -1;
     }
 
+
     public String getThemeVariant() {
         return mSharedPreferences.getString(PREF_KEY_THEME_DARK_VARIANT, "darkbright");
     }

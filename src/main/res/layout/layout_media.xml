@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.mde.potdroid.helpers.ptr.SwipyRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:EMVideoView="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ptr_holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:enabled="false">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <com.devbrackets.android.exomedia.ui.widget.EMVideoView
+                android:id="@+id/video"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                EMVideoView:useDefaultControls="true"/>
+
+        <com.felipecsl.gifimageview.library.GifImageView
+                android:id="@+id/gif"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"/>
+
+        <uk.co.senab.photoview.PhotoView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:contentDescription=""/>
+
+        <FrameLayout
+                android:id="@+id/youtube_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+    </RelativeLayout>
+</com.mde.potdroid.helpers.ptr.SwipyRefreshLayout>

@@ -98,6 +98,18 @@ public class TopicJSInterface extends BenderJSInterface {
     }
 
     /**
+     * Opens an image or video in the Media Activity
+     */
+    @JavascriptInterface
+    public void zoom(final String url, final String type) {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                mTopicFragment.zoomImage(url, type);
+            }
+        });
+    }
+
+    /**
      * Return the menu status
      *
      * @return 1 -> show always, 2 -> show icon, 3 -> orientation dependent

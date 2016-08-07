@@ -51,7 +51,8 @@ Es gibt einen pOT-Droid Thread. Den Link und die Änderungen findest du unter \'
     <string name="action_last_own_post">Zum letzten eigenen Post</string>
     <string name="action_load_all_images">Alle Medien laden</string>
     <string name="action_preload_next">Nächste Seite vorladen</string>
-    <string name="action_gallery">Galerie</string>
+    <string name="action_share">Teilen</string>
+    <string name="action_save">Speichern</string>
 
     <!-- messages -->
     <string name="msg_login_success">Erfolgreich eingeloggt! Die App sollte neu gestartet werden.</string>
@@ -75,6 +76,13 @@ Es gibt einen pOT-Droid Thread. Den Link und die Änderungen findest du unter \'
     <string name="msg_answer_created">Antwort erstellt!</string>
     <string name="msg_post_edited">Post bearbeitet!</string>
     <string name="msg_img_loading_error">Fehler beim Laden eines Bildes.</string>
+    <string name="msg_img_download_error">Fehler beim Dwnloaden des Bildes.</string>
+    <string name="msg_img_download_success">Bild erfolgreich gespeichert.</string>
+    <string name="msg_video_download_error">Fehler beim Download des Videos.</string>
+    <string name="msg_video_download_success">Video erfolgreich gespeichert.</string>
+    <string name="msg_youtube_download_error">Youtube videos können nicht heruntergeladen werden.</string>
+    <string name="msg_permission_denied_error">Die App muss entsprechende Berechtigungen für diese Aktion haben!</string>
+    <string name="msg_share_error">Beim Teilen ist etwas schief gelaufen.</string>
 
     <!-- menu items -->
     <string name="menu_settings">Settings</string>
@@ -129,7 +137,7 @@ Es gibt einen pOT-Droid Thread. Den Link und die Änderungen findest du unter \'
     <string name="post_dialog_browser">Im Browser öffnen</string>
     <string name="post_dialog_clipboard">Link kopieren</string>
     <string name="post_dialog_pm">PM schicken</string>
-    <string name="image_dialog_view">Mit Bild-App öffnen</string>
+    <string name="image_dialog_view">Im Media Viewer öffnen</string>
     <string name="image_dialog_share">Teilen</string>
     <string name="image_dialog_download">Herunterladen</string>
     <string name="choose_browser">Browser wählen…</string>

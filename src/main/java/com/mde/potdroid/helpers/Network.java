@@ -2,9 +2,14 @@ package com.mde.potdroid.helpers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import okhttp3.*;
 import okhttp3.internal.JavaNetCookieJar;
+import okio.BufferedSink;
+import okio.Okio;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -59,7 +64,7 @@ public class Network {
                 .build();
     }
 
-    OkHttpClient getHttpClient() {
+    public OkHttpClient getHttpClient() {
         return mHttpClient;
     }
 
@@ -165,6 +170,47 @@ public class Network {
 
     }
 
+    public static void downloadFile(final Context cx, final Uri uri, final File dir, final DownloadCallback callback) {
+        final File file = new File(dir, uri.getLastPathSegment());
+
+        Network network = new Network(cx.getApplicationContext());
+        Request request = new Request.Builder().url(uri.toString()).build();
+        network.getHttpClient().newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onFailure(uri, e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                BufferedSink sink = null;
+                FileOutputStream fo = null;
+                try {
+                    fo = new FileOutputStream(file);
+                    sink = Okio.buffer(Okio.sink(fo));
+                    sink.writeAll(response.body().source());
+                    sink.close();
+
+                    callback.onSuccess(uri, file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (sink != null)
+                            sink.close();
+                        if (fo != null)
+                            fo.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    response.body().close();
+                }
+
+            }
+        });
+    }
+
 
     /**
      * A callback Class for the login function.
@@ -174,12 +220,30 @@ public class Network {
         /**
          * Called on login success
          */
-        abstract public void onSuccess();
+        void onSuccess();
 
         /**
          * Called on login failure
          */
-        abstract public void onFailure();
+        void onFailure();
+
+    }
+
+
+    /**
+     * A callback Class for the login function.
+     */
+    public interface DownloadCallback {
+
+        /**
+         * Called on login success
+         */
+        void onSuccess(final Uri uri, final File download);
+
+        /**
+         * Called on login failure
+         */
+        void onFailure(final Uri uri, Exception e);
 
     }
 

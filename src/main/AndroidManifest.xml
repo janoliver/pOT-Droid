@@ -105,6 +105,8 @@
                 android:name=".MessageActivity"/>
 
         <activity android:name=".SettingsActivity"/>
+        <activity android:name=".MediaActivity" />
+
 
         <activity android:name=".AboutActivity">
             <intent-filter>

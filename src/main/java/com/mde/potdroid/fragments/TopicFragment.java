@@ -14,7 +14,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
 import android.webkit.WebChromeClient;
@@ -25,6 +24,7 @@ import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCal
 import com.github.ksoichiro.android.observablescrollview.ObservableWebView;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.mde.potdroid.EditorActivity;
+import com.mde.potdroid.MediaActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.*;
 import com.mde.potdroid.helpers.ptr.SwipyRefreshLayoutDirection;
@@ -201,15 +201,6 @@ public class TopicFragment extends PaginateFragment implements
         restartLoader(this);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-
-        //ImageHandler ih = new ImageHandler(getActivity());
-        //ih.clearCache();
-    }
-
     /**
      * Set up the webview programmatically, to workaround the kitkat memory leak.
      */
@@ -250,7 +241,7 @@ public class TopicFragment extends PaginateFragment implements
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (0 != (getActivity().getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE)) {
-                WebView.setWebContentsDebuggingEnabled(true);
+                //WebView.setWebContentsDebuggingEnabled(true);
             }
         }
 
@@ -335,9 +326,6 @@ public class TopicFragment extends PaginateFragment implements
             case R.id.preload_next:
                 startPreloadingNextPage();
                 return true;
-            case R.id.gallery:
-                mJsInterface.showLightBox(getTopic().getMedia());
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -359,8 +347,8 @@ public class TopicFragment extends PaginateFragment implements
         int tid = getArguments().getInt(ARG_TOPIC_ID, 0);
         int pid = getArguments().getInt(ARG_POST_ID, 0);
 
-        showLoadingAnimation();
         setSwipeEnabled(false);
+        showLoadingAnimation();
 
         return new AsyncContentLoader(getBaseActivity(), args, page, tid, pid);
     }
@@ -785,6 +773,13 @@ public class TopicFragment extends PaginateFragment implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void zoomImage(final String url, final String type) {
+        Intent intent = new Intent(getActivity(), MediaActivity.class);
+        intent.putExtra(MediaFragment.ARG_TYPE, type);
+        intent.putExtra(MediaFragment.ARG_URI, url);
+        startActivityForResult(intent, 0);
     }
 
     static class AsyncContentLoader extends AsyncHttpLoader<Topic> {

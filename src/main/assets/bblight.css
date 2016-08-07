@@ -179,30 +179,38 @@ pre.inline {
 
 
 div.img i,
+div.gif i,
 div.video i,
 div.spoiler i,
-div.img-link i {
+div.img-link i,
+div.gif-link i  {
     font-size:2em;
     color:#ffffff;
     padding:0 5px;
 }
 
 div.img i.err,
-div.img-link i.err {
+div.img-link i.err,
+div.gif i.err,
+div.gif-link i.err {
     color:#cc0000;
 }
 
 div.img i:active,
+div.gif i:active,
 div.video i:active,
 div.spoiler i:active,
-div.img-link i:active {
+div.img-link i:active,
+div.gif-link i:active {
     color:#394E63;
 }
 
 div.img,
+div.gif,
 div.video,
 div.spoiler,
-div.img-link {
+div.img-link,
+div.gif-link {
     background: rgba(150,150,150,0.6);
     padding:5px;
     text-align:center;

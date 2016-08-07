@@ -124,37 +124,5 @@ public class CacheContentProvider extends ContentProvider {
         return result;
     }
 
-    /*@Override
-    public void writeDataToPipe(ParcelFileDescriptor output, Uri uri, String mimeType, Bundle opts, Object args) {
-        FileOutputStream fout = new FileOutputStream(output.getFileDescriptor());
-
-        ImageHandler h;
-
-        // only two possibilities.
-        if(uri.toString().startsWith(CONTENT_URI + ImageHandler.BENDER_SUBDIR))
-            h = ImageHandler.getBenderHandler(getContext().getApplicationContext());
-        else
-            h = ImageHandler.getPictureHandler(getContext().getApplicationContext());
-
-        Bitmap bm = h.getEntry(Utils.md5(uri.toString()));
-        InputStream in = bm.
-
-        byte[] buffer = new byte[1024];
-        int len;
-        try {
-            while ((len = in.read(buffer)) != -1) {
-                fout.write(buffer, 0, len);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                in.close();
-                fout.close();
-            } catch (IOException ignored) {
-                // ignored
-            }
-        }
-    }*/
 
 }

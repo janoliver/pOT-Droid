@@ -440,14 +440,17 @@ public class TopicBuilder {
 
                 if (m.find() && args.size() > 0) {
                     String extension = m.group(1).substring(m.group(1).length() - 3).toLowerCase();
-                    String icon = "fa-picture-o nogif";
-                    if (extension.equals("gif"))
-                        icon = "fa-film gif";
-                    return String.format("<div class=\"img-link\" data-src=\"%1$s\" " +
-                            "data-href=\"%2$s\">"
+                    String type_class = "img";
+                    String icon = "fa-picture-o";
+                    if (extension.equals("gif")) {
+                        type_class = "gif";
+                        icon = "fa-film";
+                    }
+                    return String.format("<div class=\"%1$s-link\" data-src=\"%2$s\" " +
+                            "data-href=\"%3$s\">"
                             + "<i class=\"link fa fa-external-link-square\"></i>"
-                            + "<i class=\"img-loader fa %3$s\"></i>"
-                            + "</div>", m.group(1), args.get(0), icon);
+                            + "<i class=\"img-loader fa %4$s\"></i><i class=\"fa zoom fa-search-plus\"></i>"
+                            + "</div>", type_class, m.group(1), args.get(0), icon);
                 }
 
                 if (args.size() > 0)
@@ -486,11 +489,15 @@ public class TopicBuilder {
                 } else {
                     mParser.getCallback().onTag("img", content, args);
                     String extension = content.substring(content.length() - 3).toLowerCase();
-                    String icon = "fa-picture-o nogif";
-                    if (extension.equals("gif"))
-                        icon = "fa-film gif";
-                    return String.format("<div class=\"img\" data-src=\"%1$s\"><i class=\"fa " +
-                            "%2$s img-loader\"></i></div>", content, icon);
+                    String type_class = "img";
+                    String icon = "fa-picture-o";
+                    if (extension.equals("gif")) {
+                        type_class = "gif";
+                        icon = "fa-film";
+                    }
+                    return String.format("<div class=\"%1$s\" data-src=\"%2$s\"><i class=\"fa " +
+                            "%3$s img-loader\"></i><i class=\"fa zoom fa-search-plus\"></i></div>",
+                            type_class, content, icon);
                 }
             }
         });
@@ -502,11 +509,11 @@ public class TopicBuilder {
                 if(content.contains("youtube") || content.contains("youtu.be")) {
                     return String.format("<div class=\"video yt\" data-src=\"%1$s\">" +
                             "<i class=\"link fa fa-external-link-square\"></i><i class=\"fa vid " +
-                            "fa-youtube\"></i></div>", content);
+                            "fa-youtube\"></i><i class=\"fa zoom fa-search-plus\"></i></div>", content);
                 } else {
                     return String.format("<div class=\"video\" data-src=\"%1$s\">" +
                             "<i class=\"link fa fa-external-link-square\"></i><i class=\"fa vid " +
-                            "fa-video-camera\"></i></div>", content);
+                            "fa-video-camera\"></i><i class=\"fa zoom fa-search-plus\"></i></div>", content);
                 }
             }
         });

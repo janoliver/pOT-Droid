@@ -12,9 +12,7 @@ import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * Handles the downloading and caching of images.
@@ -77,7 +75,7 @@ public class ImageHandler {
         }
     }
 
-    protected void clearCacheInternal() {
+    public void clearCache() {
         synchronized (mHttpDiskCacheLock) {
             if (mDiskCache != null && !mDiskCache.isClosed()) {
                 try {
@@ -228,7 +226,7 @@ public class ImageHandler {
      *
      * @param url the url of the image to be retrieved.
      */
-    public void retrieveImage(final String url, final ImageHandlerCallback callback) throws IOException {
+    public void retrieveImage(final String url, final ImageHandlerCallback callback) {
         final Uri localUri = CacheContentProvider.getContentUriFromUrlOrUri(url, mDir);
         final String cacheKey = Utils.md5(localUri.toString());
 
@@ -255,6 +253,42 @@ public class ImageHandler {
 
     }
 
+    public static void downloadImage(final Context cx, File dir, final Uri uri, final ImageDownloadCallback callback) {
+        ImageHandler ih = ImageHandler.getPictureHandler(cx.getApplicationContext());
+
+        final File file = new File(dir, uri.getLastPathSegment());
+
+        try {
+            ih.retrieveImage(uri.toString(), new ImageHandler.ImageHandlerCallback() {
+                @Override
+                public void onSuccess(String url, final String path, boolean from_cache) {
+                    InputStream is = null;
+                    try {
+                        FileOutputStream fo = new FileOutputStream(file);
+                        is = cx.getContentResolver().openInputStream(Uri.parse(path));
+
+                        byte[] buffer = new byte[1024];
+                        int len1;
+                        while ((len1 = is.read(buffer)) > 0) {
+                            fo.write(buffer, 0, len1);
+                        }
+                        fo.close();
+                        callback.onSuccess(uri, file);
+                    } catch (IOException e) {
+                        callback.onFailure(uri, e);
+                    }
+                }
+
+                @Override
+                public void onFailure(String url) {
+                    callback.onFailure(uri, null);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public String getImagePathIfExists(final String url) {
         final Uri localUri = CacheContentProvider.getContentUriFromUrlOrUri(url, mDir);
         final String cacheKey = Utils.md5(localUri.toString());
@@ -274,5 +308,11 @@ public class ImageHandler {
         void onSuccess(final String url, final String path, boolean from_cache);
 
         void onFailure(final String url);
+    }
+
+    public interface ImageDownloadCallback {
+        void onSuccess(final Uri uri, final File f);
+
+        void onFailure(final Uri uri, Exception e);
     }
 }

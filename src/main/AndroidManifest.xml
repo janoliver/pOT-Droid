@@ -37,6 +37,7 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
@@ -52,6 +53,7 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
@@ -74,6 +76,7 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
@@ -90,6 +93,7 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
@@ -105,7 +109,10 @@
                 android:name=".MessageActivity"/>
 
         <activity android:name=".SettingsActivity"/>
-        <activity android:name=".MediaActivity" />
+
+        <activity
+                android:name=".MediaActivity"
+                android:configChanges="orientation|screenSize"/>
 
 
         <activity android:name=".AboutActivity">

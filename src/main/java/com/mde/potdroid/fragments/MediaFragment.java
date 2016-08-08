@@ -1,7 +1,9 @@
 package com.mde.potdroid.fragments;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.FrameLayout;
 import com.devbrackets.android.exomedia.listener.OnPreparedListener;
+import com.devbrackets.android.exomedia.listener.VideoControlsVisibilityListener;
 import com.devbrackets.android.exomedia.ui.widget.EMVideoView;
 import com.felipecsl.gifimageview.library.GifImageView;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -23,7 +26,10 @@ import com.mde.potdroid.views.IconDrawable;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,11 +38,13 @@ import java.util.regex.Pattern;
  */
 public class MediaFragment extends BaseFragment implements OnPreparedListener {
 
+    private FullScreenListener mFullScreenListener;
     private EMVideoView mVideoView;
     private PhotoView mImageView;
     private GifImageView mGifImageView;
     private PhotoViewAttacher mAttacher;
     private FrameLayout mYTView;
+    private boolean mVideoViewPausedInOnStop;
     public final static String ARG_URI = "uri";
     public final static String ARG_TYPE = "type";
     //private ShareActionProvider mShareActionProvider;
@@ -60,6 +68,12 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
+        setRetainInstance(true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            mFullScreenListener = new FullScreenListener();
+        }
+
     }
 
 
@@ -172,6 +186,7 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
+        Log.e("bla", "onCreateView");
         View v = inflater.inflate(R.layout.layout_media, container, false);
         mVideoView = (EMVideoView) v.findViewById(R.id.video);
         mGifImageView = (GifImageView) v.findViewById(R.id.gif);
@@ -181,7 +196,6 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
         mVideoView.setOnPreparedListener(this);
         mAttacher = new PhotoViewAttacher(mImageView);
 
-
         return v;
     }
 
@@ -189,6 +203,7 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         showLoadingAnimation();
+        Log.e("bla", "onActivityCreated");
 
         final Uri uri = Uri.parse(getArguments().getString(ARG_URI));
 
@@ -275,6 +290,12 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
             mVideoView.setVisibility(View.VISIBLE);
             mVideoView.setVideoURI(uri);
 
+
+            /*goFullscreen();
+            if (mVideoView.getVideoControls() != null) {
+                mVideoView.getVideoControls().setVisibilityListener(new ControlsVisibilityListener());
+            }*/
+
             Intent shareIntent = new Intent();
             shareIntent.setAction(Intent.ACTION_SEND);
             shareIntent.putExtra(Intent.EXTRA_TEXT, uri.toString());
@@ -312,11 +333,44 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
 
     }
 
+
     @Override
     public void onStop() {
         super.onStop();
+
         mGifImageView.stopAnimation();
         mVideoView.stopPlayback();
+
+        if (mVideoView.isPlaying()) {
+            mVideoViewPausedInOnStop = true;
+            mVideoView.pause();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (mVideoViewPausedInOnStop) {
+            mVideoView.start();
+            mVideoViewPausedInOnStop = false;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        exitFullscreen();
     }
 
     @Override
@@ -351,5 +405,78 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
         if (matcher.find())
             return matcher.group(1);
         return null;
+    }
+
+
+    private void goFullscreen() {
+        setUiFlags(true);
+    }
+
+    private void exitFullscreen() {
+        setUiFlags(false);
+    }
+
+    /**
+     * Applies the correct flags to the windows decor view to enter
+     * or exit fullscreen mode
+     *
+     * @param fullscreen True if entering fullscreen mode
+     */
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    private void setUiFlags(boolean fullscreen) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            View decorView = getActivity().getWindow().getDecorView();
+            if (decorView != null) {
+                decorView.setSystemUiVisibility(fullscreen ? getFullscreenUiFlags() : View.SYSTEM_UI_FLAG_VISIBLE);
+                decorView.setOnSystemUiVisibilityChangeListener(mFullScreenListener);
+            }
+        }
+    }
+
+    /**
+     * Determines the appropriate fullscreen flags based on the
+     * systems API version.
+     *
+     * @return The appropriate decor view flags to enter fullscreen mode when supported
+     */
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    private int getFullscreenUiFlags() {
+        int flags = View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            flags |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        }
+
+        return flags;
+    }
+
+    /**
+     * Listens to the system to determine when to show the default controls
+     * for the {@link EMVideoView}
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private class FullScreenListener implements View.OnSystemUiVisibilityChangeListener {
+        @Override
+        public void onSystemUiVisibilityChange(int visibility) {
+            if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                mVideoView.showControls();
+            }
+        }
+    }
+
+    private class ControlsVisibilityListener implements VideoControlsVisibilityListener {
+        @Override
+        public void onControlsShown() {
+            // No additional functionality performed
+        }
+
+        @Override
+        public void onControlsHidden() {
+            goFullscreen();
+        }
     }
 }

@@ -17,7 +17,6 @@ import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.*;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.parsers.MessageParser;
-import com.mde.potdroid.views.IconDrawable;
 import org.apache.http.Header;
 
 import java.io.BufferedReader;
@@ -101,9 +100,6 @@ public class MessageFragment extends BaseFragment
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_message, menu);
-
-        MenuItem replyMessage = menu.findItem(R.id.reply);
-        replyMessage.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_reply));
     }
 
     @Override

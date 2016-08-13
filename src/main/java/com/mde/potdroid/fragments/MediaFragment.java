@@ -22,7 +22,6 @@ import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.ImageHandler;
 import com.mde.potdroid.helpers.Network;
-import com.mde.potdroid.views.IconDrawable;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -82,15 +81,6 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_media, menu);
-
-        menu.findItem(R.id.share).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_share_alt));
-        menu.findItem(R.id.save).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_download));
-        /*menu.findItem(R.id.share2).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_share_alt));
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menu.findItem(R.id.share2));
-
-        if(mShareIntent != null) {
-            mShareActionProvider.setShareIntent(mShareIntent);
-        }*/
     }
 
     @Override

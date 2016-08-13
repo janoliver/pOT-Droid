@@ -1,33 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
+<com.mde.potdroid.helpers.ptr.SwipyRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/coordinator"
+        android:id="@+id/ptr_holder"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <com.mde.potdroid.helpers.ptr.SwipyRefreshLayout
-            android:id="@+id/ptr_holder"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView
+            android:id="@+id/forum_list_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="?attr/bbListSeparatorColor"/>
 
-        <com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView
-                android:id="@+id/forum_list_content"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="?attr/bbListSeparatorColor"/>
-
-    </com.mde.potdroid.helpers.ptr.SwipyRefreshLayout>
-
-    <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            app:elevation="6dp"
-            android:layout_margin="16dp"
-            app:pressedTranslationZ="12dp"
-            app:backgroundTint="?attr/bbColorSecondary"
-            app:rippleColor="?attr/bbColorPrimary"/>
-</FrameLayout>
+</com.mde.potdroid.helpers.ptr.SwipyRefreshLayout>

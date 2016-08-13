@@ -13,44 +13,40 @@
                   android:orientation="horizontal"
                   android:background="?attr/bbToolbarBackground">
 
-        <com.mde.potdroid.views.IconButton
+        <ImageButton
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="@string/icon_home"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="center_vertical"
+                style="@style/Widget.AppCompat.ActionButton"
                 android:id="@+id/button_home"
-                android:background="?attr/bbBackgroundTransparentClickable"
-                android:textSize="28sp"
-                android:textColor="?attr/bbToolbarColor"
+                android:src="@drawable/ic_home"
                 android:layout_weight="1"/>
 
-        <com.mde.potdroid.views.IconButton
+        <ImageButton
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="@string/icon_envelope_alt"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="center_vertical"
+                style="@style/Widget.AppCompat.ActionButton"
                 android:id="@+id/button_pm"
-                android:background="?attr/bbBackgroundTransparentClickable"
-                android:textSize="24sp"
-                android:textColor="?attr/bbToolbarColor"
+                android:src="@drawable/ic_mail"
                 android:layout_weight="1"/>
 
-        <com.mde.potdroid.views.IconButton
+        <ImageButton
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="@string/icon_bookmark"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="center_vertical"
+                style="@style/Widget.AppCompat.ActionButton"
                 android:id="@+id/button_bookmarks"
-                android:background="?attr/bbBackgroundTransparentClickable"
-                android:textSize="24sp"
-                android:textColor="?attr/bbToolbarColor"
+                android:src="@drawable/ic_bookmark"
                 android:layout_weight="1"/>
 
-        <com.mde.potdroid.views.IconButton
+        <ImageButton
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="@string/icon_cogs"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="center_vertical"
+                style="@style/Widget.AppCompat.ActionButton"
                 android:id="@+id/button_preferences"
-                android:background="?attr/bbBackgroundTransparentClickable"
-                android:textSize="24sp"
-                android:textColor="?attr/bbToolbarColor"
+                android:src="@drawable/ic_settings"
                 android:layout_weight="1"/>
 
     </LinearLayout>
@@ -89,14 +85,13 @@
                     android:text="@string/no_unread_bookmarks"
                     android:clickable="false"/>
 
-            <com.mde.potdroid.views.IconButton
+            <ImageButton
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:text="@string/icon_refresh"
+                    android:layout_gravity="center_vertical"
+                    style="@style/Widget.AppCompat.ActionButton"
                     android:id="@+id/button_refresh"
-                    android:background="?attr/bbCircularTransparentClickable"
-                    android:textSize="22sp"
-                    android:textColor="?attr/bbTextColorSecondary"
+                    android:src="@drawable/ic_refresh"
                     android:layout_centerHorizontal="true"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="10dp"

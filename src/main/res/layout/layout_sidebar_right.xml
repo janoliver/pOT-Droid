@@ -52,18 +52,19 @@
                     android:visibility="gone"
                     android:clickable="false"/>
 
-            <com.mde.potdroid.views.IconButton
+
+            <ImageButton
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:text="@string/icon_refresh"
+                    android:layout_gravity="center_vertical"
+                    style="@style/Widget.AppCompat.ActionButton"
                     android:id="@+id/button_refresh"
-                    android:background="?attr/bbCircularTransparentClickable"
-                    android:textSize="22sp"
-                    android:textColor="?attr/bbTextColorSecondary"
+                    android:src="@drawable/ic_refresh"
                     android:layout_centerHorizontal="true"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="10dp"
                     android:visibility="invisible"/>
+
         </RelativeLayout>
 
     </com.mde.potdroid.helpers.ptr.SwipyRefreshLayout>

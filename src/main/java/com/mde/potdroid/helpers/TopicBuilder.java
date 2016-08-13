@@ -379,7 +379,7 @@ public class TopicBuilder {
             @Override
             public String html(String content, List<String> args) {
                 mParser.getCallback().onTag("spoiler", content, args);
-                return String.format("<div class=\"spoiler\"><i class=\"fa fa-warning\"></i>" +
+                return String.format("<div class=\"spoiler\"><i class=\"material-icons\">visibility_off</i>" +
                         "<div>%1$s</div></div>", content);
             }
         });
@@ -435,21 +435,22 @@ public class TopicBuilder {
                 String url = content;
 
                 Pattern image_link = Pattern.compile("^<div class=\"img\" data-src=\"(.*?)\"><i " +
-                        "class=\".*?\"></i></div>$");
+                        "class=\".*?\">.*?</i></div>$");
                 Matcher m = image_link.matcher(content);
 
                 if (m.find() && args.size() > 0) {
                     String extension = m.group(1).substring(m.group(1).length() - 3).toLowerCase();
                     String type_class = "img";
-                    String icon = "fa-picture-o";
+                    String icon = "photo";
                     if (extension.equals("gif")) {
                         type_class = "gif";
-                        icon = "fa-film";
+                        icon = "local_movies";
                     }
                     return String.format("<div class=\"%1$s-link\" data-src=\"%2$s\" " +
                             "data-href=\"%3$s\">"
-                            + "<i class=\"link fa fa-external-link-square\"></i>"
-                            + "<i class=\"img-loader fa %4$s\"></i><i class=\"fa zoom fa-search-plus\"></i>"
+                            + "<i class=\"link material-icons\"></i>"
+                            + "<i class=\"img-loader material-icons\">%4$s</i>"
+                            + "<i class=\"zoom material-icons\">zoom_in</i>"
                             + "</div>", type_class, m.group(1), args.get(0), icon);
                 }
 
@@ -490,13 +491,14 @@ public class TopicBuilder {
                     mParser.getCallback().onTag("img", content, args);
                     String extension = content.substring(content.length() - 3).toLowerCase();
                     String type_class = "img";
-                    String icon = "fa-picture-o";
+                    String icon = "photo";
                     if (extension.equals("gif")) {
                         type_class = "gif";
-                        icon = "fa-film";
+                        icon = "local_movies";
                     }
-                    return String.format("<div class=\"%1$s\" data-src=\"%2$s\"><i class=\"fa " +
-                            "%3$s img-loader\"></i><i class=\"fa zoom fa-search-plus\"></i></div>",
+                    return String.format("<div class=\"%1$s\" data-src=\"%2$s\">"
+                            + "<i class=\"material-icons img-loader\">%3$s</i>"
+                            + "<i class=\"material-icons zoom\">zoom_in</i></div>",
                             type_class, content, icon);
                 }
             }
@@ -507,13 +509,15 @@ public class TopicBuilder {
             public String html(String content, List<String> args) {
                 mParser.getCallback().onTag("video", content, args);
                 if(content.contains("youtube") || content.contains("youtu.be")) {
-                    return String.format("<div class=\"video yt\" data-src=\"%1$s\">" +
-                            "<i class=\"link fa fa-external-link-square\"></i><i class=\"fa vid " +
-                            "fa-youtube\"></i><i class=\"fa zoom fa-search-plus\"></i></div>", content);
+                    return String.format("<div class=\"video yt\" data-src=\"%1$s\">"
+                            + "<i class=\"link material-icons\">link</i>"
+                            + "<i class=\"vid material-icons\">movie</i>"
+                            + "<i class=\"zoom material-icons\">zoom_in</i></div>", content);
                 } else {
-                    return String.format("<div class=\"video\" data-src=\"%1$s\">" +
-                            "<i class=\"link fa fa-external-link-square\"></i><i class=\"fa vid " +
-                            "fa-video-camera\"></i><i class=\"fa zoom fa-search-plus\"></i></div>", content);
+                    return String.format("<div class=\"video\" data-src=\"%1$s\">"
+                            + "<i class=\"link material-icons\">link</i>"
+                            + "<i class=\"vid material-icons\">local_movies</i>"
+                            + "<i class=\"zoom material-icons\">zoom_in</i></div>", content);
                 }
             }
         });

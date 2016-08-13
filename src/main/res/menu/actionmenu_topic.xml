@@ -5,15 +5,18 @@
     <item
             android:id="@+id/new_reply"
             android:title="@string/action_reply"
-            potdroid:showAsAction="ifRoom"/>
+            potdroid:showAsAction="ifRoom"
+            android:icon="@drawable/ic_create"/>
     <item
             android:id="@+id/unveil"
             android:title="@string/action_unveil"
-            potdroid:showAsAction="ifRoom"/>
+            potdroid:showAsAction="ifRoom"
+            android:icon="@drawable/ic_up"/>
     <item
             android:id="@+id/tobottom"
             android:title="@string/action_tobottom"
-            potdroid:showAsAction="ifRoom"/>
+            potdroid:showAsAction="ifRoom"
+            android:icon="@drawable/ic_down"/>
     <item
             android:id="@+id/topage"
             android:title="@string/action_topage"

@@ -66,7 +66,7 @@ $(document).ready(function() {
     });
 
     // manual image with link loader
-    $("div.img-link i.link, div.gif-link i.link").on("click", function() {
+    $("div.img-link, div.gif-link").on("click", "i.link", function() {
         api.openUrl($(this).parent().attr('data-href'));
     });
 
@@ -79,37 +79,44 @@ $(document).ready(function() {
         $(this).hide().parent().find('div').show();
     });
 
-    $('i.menu-icon').click(function(e) {
+    $('i.menu-open').click(function(e) {
+        e.preventDefault();
         var post_id = parseInt($(this).closest('section').attr('data-id'));
         api.openTopicMenu(post_id);
     });
 
     $('i.menu-edit').click(function(e) {
+        e.preventDefault();
         var post_id = parseInt($(this).closest('section').attr('data-id'));
         api.editPost(post_id);
     });
 
     $('i.menu-quote').click(function(e) {
+        e.preventDefault();
         var post_id = parseInt($(this).closest('section').attr('data-id'));
         api.quotePost(post_id);
     });
 
     $('i.menu-bookmark').click(function(e) {
+        e.preventDefault();
         var post_id = parseInt($(this).closest('section').attr('data-id'));
         api.bookmarkPost(post_id);
     });
 
     $('i.menu-link').click(function(e) {
+        e.preventDefault();
         var post_id = parseInt($(this).closest('section').attr('data-id'));
         api.linkPost(post_id);
     });
 
     $('i.menu-copy').click(function(e) {
+        e.preventDefault();
         var post_id = parseInt($(this).closest('section').attr('data-id'));
         api.copyPostLink(post_id);
     });
 
     $('i.menu-pm').click(function(e) {
+        e.preventDefault();
         var post_id = parseInt($(this).closest('section').attr('data-id'));
         api.pmAuthor(post_id);
     });
@@ -156,8 +163,10 @@ $(document).ready(function() {
 });
 
 function replaceImage(icon) {
-    var classes = "fa fa-spinner spin img-spinner";
+    var classes = "material-icons spin img-spinner";
+    var content = "loop";
     icon.attr('class', classes);
+    icon.text(content);
 
     var el = icon.parent();
     var src = el.attr('data-src');
@@ -169,12 +178,12 @@ function replaceImage(icon) {
 function displayImageLoader(id) {
     var el = $("#" + id);
     var icon = el.find("i.img-spinner");
-    var classes = "fa img-loader err";
+    var classes = "material-icons img-loader err";
+    var content = "photo";
     if(icon.parent().hasClass("gif"))
-        classes = classes + " fa-film";
-    else
-        classes = classes + " fa-picture-o";
+        content = "local_movies";
     icon.attr("class", classes);
+    icon.text(content);
     el.removeAttr('id');
 }
 
@@ -316,15 +325,15 @@ function setupStyle() {
 
     if(api.getShowMenu() == 1) {
         $(".menu").show();
-        $(".menu-icon").hide();
+        $(".menu-open").hide();
     } else if(api.getShowMenu() == 2) {
-        $(".menu-icon").show();
+        $(".menu-open").show();
         $(".menu").hide();
     } else if($(window).width() > 400) {
         $(".menu").show();
-        $(".menu-icon").hide();
+        $(".menu-open").hide();
     } else {
-        $(".menu-icon").show();
+        $(".menu-open").show();
         $(".menu").hide();
     }
 

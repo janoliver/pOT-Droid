@@ -21,7 +21,6 @@ import com.mde.potdroid.helpers.FormEncodingBuilder;
 import com.mde.potdroid.helpers.Network;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.parsers.MessageParser;
-import com.mde.potdroid.views.IconDrawable;
 import com.mde.potdroid.views.IconSelectionDialog;
 import com.mde.potdroid.views.PromptDialog;
 import org.apache.http.Header;
@@ -116,9 +115,6 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         mIconButton = (ImageButton) v.findViewById(R.id.button_icon);
         mBBButton = (ImageButton) v.findViewById(R.id.button_bb);
 
-        mIconButton.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_smile, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        mBBButton.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_bold, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-
         mIconButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,19 +143,6 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
         Menu menu = bbcodeToolbar.getMenu();
         getActivity().getMenuInflater().inflate(R.menu.bbcode_menu, menu);
-
-        menu.findItem(R.id.bold).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_bold, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.italic).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_italic, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.striked).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_strikethrough, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.underline).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_underline, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.quote).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_quote_left, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.code).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_code, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.spoiler).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_eye_close, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.image).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_picture, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.video).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_facetime_video, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.url).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_link, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.list).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_list_ol, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
-        menu.findItem(R.id.smiley).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_smile, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
 
         bbcodeToolbar.setOnMenuItemClickListener(new BBCodeHandler(getBaseActivity(), mEditText));
 
@@ -214,10 +197,6 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_editor, menu);
-
-        MenuItem send = menu.findItem(R.id.send);
-        send.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_ok));
-
     }
 
     @Override
@@ -294,7 +273,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     public void setIconById(Integer iconId) {
         if (iconId < 0) {
             mIconId = 0;
-            mIconButton.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_smile, 24, Utils.getColorByAttr(getActivity(), R.attr.bbTextColorSecondary)));
+            mIconButton.setImageResource(R.drawable.ic_smiley);
         } else {
             Bitmap icon;
             try {

@@ -59,27 +59,29 @@
                     android:contentDescription="@string/none"
                     android:id="@+id/button_icon"
                     android:padding="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
                     android:scaleType="fitCenter"
                     android:layout_marginLeft="10dp"
                     android:layout_gravity="center"
                     android:layout_toLeftOf="@+id/button_bb"
+                    android:src="@drawable/ic_smiley"
                     android:layout_centerVertical="true"
-                    android:background="?attr/bbBackgroundTransparentClickable"/>
+                    style="@style/Widget.AppCompat.ActionButton"/>
 
             <ImageButton
                     android:contentDescription="@string/none"
                     android:padding="5dp"
                     android:id="@+id/button_bb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_bbcode"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
                     android:scaleType="fitCenter"
                     android:layout_marginLeft="10dp"
                     android:layout_gravity="center"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="?attr/bbBackgroundTransparentClickable"/>
+                    style="@style/Widget.AppCompat.ActionButton"/>
 
         </RelativeLayout>
 

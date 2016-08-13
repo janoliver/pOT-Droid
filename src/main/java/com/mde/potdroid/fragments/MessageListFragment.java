@@ -23,7 +23,6 @@ import com.mde.potdroid.helpers.ptr.SwipyRefreshLayoutDirection;
 import com.mde.potdroid.models.Message;
 import com.mde.potdroid.models.MessageList;
 import com.mde.potdroid.parsers.MessageListParser;
-import com.mde.potdroid.views.IconDrawable;
 import org.apache.http.Header;
 
 import java.io.IOException;
@@ -106,8 +105,6 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_messagelist, menu);
-        menu.findItem(R.id.refresh).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
-        menu.findItem(R.id.new_message).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
     }
 
     @Override

@@ -1,11 +1,11 @@
 package com.mde.potdroid.fragments;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.view.*;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import com.mde.potdroid.BoardActivity;
 import com.mde.potdroid.BookmarkActivity;
@@ -13,8 +13,6 @@ import com.mde.potdroid.ForumActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
-import com.mde.potdroid.views.IconButton;
-import com.mde.potdroid.views.IconDrawable;
 
 /**
  * This Fragment extends BaseFragment and provides some more methods and an interface
@@ -40,13 +38,13 @@ abstract public class PaginateFragment extends BaseFragment {
         }
     };
     private boolean mSwipeEnabled = true;
-    private IconButton mRefreshButton;
-    private IconButton mHomeButton;
-    private IconButton mFwdButton;
-    private IconButton mFfwdButton;
-    private IconButton mRwdButton;
-    private IconButton mFrwdButton;
-    private IconButton mWriteButton;
+    private ImageButton mRefreshButton;
+    private ImageButton mHomeButton;
+    private ImageButton mFwdButton;
+    private ImageButton mFfwdButton;
+    private ImageButton mRwdButton;
+    private ImageButton mFrwdButton;
+    private ImageButton mWriteButton;
     private boolean mHighlightNextButton;
 
     public abstract void goToFirstPage();
@@ -81,16 +79,16 @@ abstract public class PaginateFragment extends BaseFragment {
         if (getSwipeView() != null && mSettings.isSwipeToPaginate())
             getSwipeView().setOnTouchListener(new PaginateDragListener());
 
-        if(mSettings.isBottomToolbar()) {
+        if (mSettings.isBottomToolbar()) {
             getBaseActivity().enableBottomToolbar();
 
-            mRefreshButton = (IconButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_refresh);
-            mFwdButton = (IconButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_fwd);
-            mFfwdButton = (IconButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_ffwd);
-            mRwdButton = (IconButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_rwd);
-            mFrwdButton = (IconButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_frwd);
-            mWriteButton = (IconButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_write);
-            mHomeButton = (IconButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_home);
+            mRefreshButton = (ImageButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_refresh);
+            mFwdButton = (ImageButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_fwd);
+            mFfwdButton = (ImageButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_ffwd);
+            mRwdButton = (ImageButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_rwd);
+            mFrwdButton = (ImageButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_frwd);
+            mWriteButton = (ImageButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_write);
+            mHomeButton = (ImageButton) getBaseActivity().getBottomToolbar().findViewById(R.id.button_home);
 
             mRefreshButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -146,11 +144,11 @@ abstract public class PaginateFragment extends BaseFragment {
 
     public void goToHomePage() {
         Intent intent;
-        if(mSettings.getStartActivity() == SettingsWrapper.START_FORUM) {
+        if (mSettings.getStartActivity() == SettingsWrapper.START_FORUM) {
             intent = new Intent(getBaseActivity(), BoardActivity.class);
             intent.putExtra(BoardFragment.ARG_ID, mSettings.getStartForum());
             intent.putExtra(BoardFragment.ARG_PAGE, 1);
-        } else if(mSettings.getStartActivity() == SettingsWrapper.START_BOOKMARKS && Utils.isLoggedIn()) {
+        } else if (mSettings.getStartActivity() == SettingsWrapper.START_BOOKMARKS && Utils.isLoggedIn()) {
             intent = new Intent(getBaseActivity(), BookmarkActivity.class);
         } else {
             intent = new Intent(getBaseActivity(), ForumActivity.class);
@@ -163,37 +161,27 @@ abstract public class PaginateFragment extends BaseFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        if(mSettings.isBottomToolbar())
+        if (mSettings.isBottomToolbar())
             return;
 
         inflater.inflate(R.menu.actionmenu_paginate, menu);
-        menu.findItem(R.id.refresh).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
 
-        int next_color = IconDrawable.getDefaultColor(getActivity());
-        if(mHighlightNextButton) {
+        //int next_color = IconDrawable.getDefaultColor(getActivity());
+        if (mHighlightNextButton) {
             mHighlightNextButton = false;
-            next_color = IconDrawable.getHighlightColor(getActivity());
+            //next_color = IconDrawable.getHighlightColor(getActivity());
         }
 
-        Drawable prev_icon = IconDrawable.getIconDrawable(getActivity(), R.string.icon_backward);
         MenuItem prev_item = menu.findItem(R.id.prev);
-        Drawable next_icon = IconDrawable.getIconDrawable(
-                getActivity(),
-                R.string.icon_forward,
-                IconDrawable.getDefaultTextSize(),
-                next_color);
         MenuItem next_item = menu.findItem(R.id.next);
 
-        if(isFirstPage()) {
+        if (isFirstPage()) {
             prev_item.setVisible(false);
         }
 
-        if(isLastPage()) {
+        if (isLastPage()) {
             next_item.setVisible(false);
         }
-
-        prev_item.setIcon(prev_icon);
-        next_item.setIcon(next_icon);
 
     }
 
@@ -224,44 +212,41 @@ abstract public class PaginateFragment extends BaseFragment {
     }
 
     public void setSwipeTarget(View v) {
-        if(mSettings.isSwipeToPaginate())
+        if (mSettings.isSwipeToPaginate())
             v.setOnTouchListener(new PaginateDragListener());
     }
 
     public void refreshPaginateLayout() {
         getBaseActivity().invalidateOptionsMenu();
 
-        if(mSettings.isBottomToolbar()) {
-            if(isFirstPage()) {
-                mRwdButton.disable();
-                mFrwdButton.disable();
+        if (mSettings.isBottomToolbar()) {
+            if (isFirstPage()) {
+                mRwdButton.setEnabled(false);
+                mFrwdButton.setEnabled(false);
             } else {
-                mRwdButton.enable();
-                mFrwdButton.enable();
+                mRwdButton.setEnabled(true);
+                mFrwdButton.setEnabled(true);
             }
 
-            if(isLastPage()) {
-                mFwdButton.disable();
-                mFfwdButton.disable();
+            if (isLastPage()) {
+                mFwdButton.setEnabled(false);
+                mFfwdButton.setEnabled(false);
             } else {
-                mFwdButton.enable();
-                mFfwdButton.enable();
+                mFwdButton.setEnabled(true);
+                mFfwdButton.setEnabled(true);
             }
 
-            if(mHighlightNextButton) {
+            if (mHighlightNextButton) {
                 mHighlightNextButton = false;
-                mFwdButton.setColor(IconDrawable.getHighlightColor(getBaseActivity()));
+                //mFwdButton.setColor(IconDrawable.getHighlightColor(getBaseActivity()));
             } else {
-                mFwdButton.setColor(IconDrawable.getDefaultColor(getBaseActivity()));
+                //mFwdButton.setColor(IconDrawable.getDefaultColor(getBaseActivity()));
             }
         }
 
         mFastscrollLayout = getBaseActivity().getFastscrollLayout();
         mUpButton = (FloatingActionButton) mFastscrollLayout.findViewById(R.id.button_up);
         mDownButton = (FloatingActionButton) mFastscrollLayout.findViewById(R.id.button_down);
-
-        mUpButton.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_chevron_up));
-        mDownButton.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_chevron_down));
     }
 
     public void enableFastScroll(final FastScrollListener listener) {
@@ -282,7 +267,7 @@ abstract public class PaginateFragment extends BaseFragment {
     }
 
     public void hideDownButton() {
-        if(mDownButton.getVisibility() == View.VISIBLE)
+        if (mDownButton.getVisibility() == View.VISIBLE)
             mDownButton.setVisibility(View.GONE);
     }
 
@@ -291,13 +276,13 @@ abstract public class PaginateFragment extends BaseFragment {
         mDownHandler.removeCallbacks(mDownRunnable);
         mDownHandler.postDelayed(mDownRunnable, 1500);
 
-        if(mDownButton.getVisibility() == View.GONE) {
+        if (mDownButton.getVisibility() == View.GONE) {
             mDownButton.setVisibility(View.VISIBLE);
         }
     }
 
     public void hideUpButton() {
-        if(mUpButton.getVisibility() == View.VISIBLE)
+        if (mUpButton.getVisibility() == View.VISIBLE)
             mUpButton.setVisibility(View.GONE);
     }
 
@@ -306,11 +291,11 @@ abstract public class PaginateFragment extends BaseFragment {
         mUpHandler.removeCallbacks(mUpRunnable);
         mUpHandler.postDelayed(mUpRunnable, 1500);
 
-        if(mUpButton.getVisibility() == View.GONE)
+        if (mUpButton.getVisibility() == View.GONE)
             mUpButton.setVisibility(View.VISIBLE);
     }
 
-    public IconButton getWriteButton() {
+    public ImageButton getWriteButton() {
         return mWriteButton;
     }
 
@@ -342,7 +327,7 @@ abstract public class PaginateFragment extends BaseFragment {
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if(!mSwipeEnabled)
+            if (!mSwipeEnabled)
                 return false;
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 start_x = event.getX();

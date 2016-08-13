@@ -19,7 +19,6 @@ import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.helpers.ptr.SwipyRefreshLayout;
 import com.mde.potdroid.helpers.ptr.SwipyRefreshLayoutDirection;
-import com.mde.potdroid.views.IconDrawable;
 
 /**
  * The Base Fragment class that all Fragments should inherit. Provides some methods
@@ -149,12 +148,6 @@ public abstract class BaseFragment extends Fragment implements SwipyRefreshLayou
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_base, menu);
-
-        MenuItem settings = menu.findItem(R.id.preferences);
-        settings.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_cogs));
-
-        MenuItem home = menu.findItem(R.id.forumact);
-        home.setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_home));
 
         if (!Utils.isLoggedIn()) {
             menu.setGroupVisible(R.id.loggedout, true);

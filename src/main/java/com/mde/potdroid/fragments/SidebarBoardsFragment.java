@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -21,7 +22,6 @@ import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.helpers.ptr.SwipyRefreshLayoutDirection;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Forum;
-import com.mde.potdroid.views.IconButton;
 
 import java.util.ArrayList;
 
@@ -76,7 +76,7 @@ public class SidebarBoardsFragment extends BaseFragment implements LoaderManager
             }
         });
 
-        IconButton refresh = (IconButton) v.findViewById(R.id.button_refresh);
+        ImageButton refresh = (ImageButton) v.findViewById(R.id.button_refresh);
         if(!mSettings.isSwipeToRefresh()) {
             refresh.setOnClickListener(new View.OnClickListener() {
                 @Override

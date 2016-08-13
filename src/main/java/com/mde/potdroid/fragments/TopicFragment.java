@@ -136,7 +136,6 @@ public class TopicFragment extends PaginateFragment implements
         View v = inflater.inflate(R.layout.layout_topic, container, false);
 
         mFab = (FloatingActionButton) v.findViewById(R.id.fab);
-        mFab.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
         mFab.hide();
 
         mWebView = (ObservableWebView) v.findViewById(R.id.topic_webview);
@@ -215,11 +214,11 @@ public class TopicFragment extends PaginateFragment implements
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setDefaultFontSize(mSettings.getDefaultFontSize());
         mWebView.setBackgroundColor(0x00000000);
-        mWebView.getSettings().setAllowFileAccess(true);
         mWebView.getSettings().setUseWideViewPort(true);
         mWebView.getSettings().setAppCacheEnabled(false);
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         mWebView.getSettings().setLoadWithOverviewMode(true);
+        mWebView.getSettings().setAllowFileAccess(true);
 
         // broken on 2.3.3
         mWebView.addJavascriptInterface(mJsInterface, "api");
@@ -277,18 +276,12 @@ public class TopicFragment extends PaginateFragment implements
 
         inflater.inflate(R.menu.actionmenu_topic, menu);
 
-        menu.findItem(R.id.load_images).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_picture));
-        menu.findItem(R.id.unveil).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_chevron_up));
-        menu.findItem(R.id.tobottom).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_chevron_down));
-        menu.findItem(R.id.topage).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_arrow_right));
-        menu.findItem(R.id.last_own_post).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_search));
-
         if (!Utils.isLoggedIn() || mSettings.isBottomToolbar()) {
             menu.setGroupVisible(R.id.loggedout_topic, false);
             menu.findItem(R.id.new_reply).setVisible(false);
         } else {
             menu.setGroupVisible(R.id.loggedout_topic, true);
-            menu.findItem(R.id.new_reply).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
+            menu.findItem(R.id.new_reply).setVisible(true);
         }
 
         if (isLastPage())

@@ -5,49 +5,61 @@
     <item
             android:id="@+id/bold"
             android:title="Fett"
-            app:showAsAction="always"/>
+            app:showAsAction="always"
+            android:icon="@drawable/ic_editor_bold"/>
     <item
             android:id="@+id/italic"
             android:title="Kursiv"
-            app:showAsAction="always"/>
+            app:showAsAction="always"
+            android:icon="@drawable/ic_editor_italic"/>
     <item
             android:id="@+id/underline"
             android:title="Unterstrichen"
-            app:showAsAction="always"/>
+            app:showAsAction="always"
+            android:icon="@drawable/ic_editor_underline"/>
     <item
             android:id="@+id/striked"
             android:title="Durchgestrichen"
-            app:showAsAction="always"/>
+            app:showAsAction="always"
+            android:icon="@drawable/ic_editor_strike"/>
     <item
             android:id="@+id/code"
             android:title="Code"
-            app:showAsAction="always"/>
+            app:showAsAction="always"
+            android:icon="@drawable/ic_editor_code"/>
     <item
             android:id="@+id/quote"
             android:title="Quote"
-            app:showAsAction="always"/>
+            app:showAsAction="always"
+            android:icon="@drawable/ic_editor_quote"/>
     <item
             android:id="@+id/spoiler"
             android:title="Spoiler"
-            app:showAsAction="always"/>
+            app:showAsAction="always"
+            android:icon="@drawable/ic_editor_spoiler"/>
     <item
             android:id="@+id/image"
             android:title="Bild"
-            app:showAsAction="always"/>
+            app:showAsAction="always"
+            android:icon="@drawable/ic_editor_image"/>
     <item
             android:id="@+id/video"
             android:title="Video"
-            app:showAsAction="always"/>
+            app:showAsAction="always"
+            android:icon="@drawable/ic_editor_movie"/>
     <item
             android:id="@+id/url"
             android:title="Link"
-            app:showAsAction="always"/>
+            app:showAsAction="always"
+            android:icon="@drawable/ic_editor_link"/>
     <item
             android:id="@+id/list"
             android:title="Liste"
-            app:showAsAction="always"/>
+            app:showAsAction="always"
+            android:icon="@drawable/ic_editor_list"/>
     <item
             android:id="@+id/smiley"
             android:title="Smiley"
-            app:showAsAction="always"/>
+            app:showAsAction="always"
+            android:icon="@drawable/ic_editor_smiley"/>
 </menu>

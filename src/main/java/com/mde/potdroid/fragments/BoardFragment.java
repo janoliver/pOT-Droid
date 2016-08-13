@@ -6,13 +6,13 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spanned;
 import android.view.*;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
@@ -30,8 +30,6 @@ import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.BoardParser;
-import com.mde.potdroid.views.IconDrawable;
-import com.mde.potdroid.views.IconView;
 import org.apache.http.Header;
 
 import java.io.IOException;
@@ -55,8 +53,6 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
     TopicListAdapter mListAdapter;
 
     private LinearLayoutManager mLayoutManager;
-
-    public FloatingActionButton mFab;
 
     /**
      * Returns an instance of the BoardFragment and sets required parameters as Arguments
@@ -92,19 +88,6 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         mListView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getBaseActivity());
         mListView.setLayoutManager(mLayoutManager);
-
-        mFab = (FloatingActionButton) v.findViewById(R.id.fab);
-        mFab.setImageDrawable(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
-
-        if (Utils.isLoggedIn() && mSettings.isShowFAB() && !mSettings.isBottomToolbar()) {
-            mFab.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    newThread();
-                }
-            });
-        } else {
-            mFab.setVisibility(View.GONE);
-        }
 
         return v;
     }
@@ -149,8 +132,6 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         inflater.inflate(R.menu.actionmenu_board, menu);
         if (!Utils.isLoggedIn() || mSettings.isBottomToolbar())
             menu.findItem(R.id.new_thread).setVisible(false);
-        else
-            menu.findItem(R.id.new_thread).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_pencil));
     }
 
     /**
@@ -294,11 +275,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
     @Override
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
-        if (scrollState == ScrollState.UP) {
-            mFab.show();
-        } else if (scrollState == ScrollState.DOWN) {
-            mFab.hide();
-        }
+
     }
 
     /**
@@ -342,9 +319,9 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             public TextView mTextSubTitle;
             public TextView mTextPages;
             public TextView mTextAuthor;
-            public IconView mIconPinned;
-            public IconView mIconLock;
-            public IconView mIconBookmark;
+            public ImageView mIconPinned;
+            public ImageView mIconLock;
+            public ImageView mIconBookmark;
 
             public ViewHolder(RelativeLayout container) {
                 super(container);
@@ -353,9 +330,9 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                 mTextSubTitle = (TextView)mContainer.findViewById(R.id.subtitle);
                 mTextPages = (TextView)mContainer.findViewById(R.id.pages);
                 mTextAuthor = (TextView)mContainer.findViewById(R.id.author);
-                mIconPinned = (IconView)mContainer.findViewById(R.id.icon_pinned);
-                mIconLock = (IconView)mContainer.findViewById(R.id.icon_locked);
-                mIconBookmark = (IconView)mContainer.findViewById(R.id.icon_bookmarked);
+                mIconPinned = (ImageView)mContainer.findViewById(R.id.icon_pinned);
+                mIconLock = (ImageView)mContainer.findViewById(R.id.icon_locked);
+                mIconBookmark = (ImageView)mContainer.findViewById(R.id.icon_bookmarked);
             }
         }
 

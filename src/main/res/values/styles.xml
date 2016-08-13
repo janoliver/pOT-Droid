@@ -33,7 +33,10 @@
         <item name="bbListItemFontTertiary">12sp</item>
     </style>
 
-    <style name="PotDroidDarkBase" parent="@style/Theme.AppCompat.NoActionBar">
+    <style name="PotDroidDarkBase" parent="@style/Theme.AppCompat">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
         <item name="windowActionModeOverlay">true</item>
         <item name="colorPrimary">@color/bbstyle_darkblue</item>
         <item name="colorPrimaryDark">@color/bbstyle_darkblue_semi</item>
@@ -88,7 +91,10 @@
         <item name="md_btn_selector">@drawable/selector</item>-->
     </style>
 
-    <style name="PotDroidLightBase" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="PotDroidLightBase" parent="@style/Theme.AppCompat.Light">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
         <item name="windowActionModeOverlay">true</item>
         <item name="colorPrimary">@color/bbstyle_lightblue</item>
         <item name="colorPrimaryDark">@color/bbstyle_darkblue</item>

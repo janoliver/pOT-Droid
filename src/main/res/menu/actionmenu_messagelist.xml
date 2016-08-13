@@ -4,9 +4,11 @@
     <item
             android:id="@+id/refresh"
             android:title="@string/action_refresh"
-            potdroid:showAsAction="ifRoom"/>
+            potdroid:showAsAction="ifRoom"
+            android:icon="@drawable/ic_refresh"/>
     <item
             android:id="@+id/new_message"
             android:title="@string/action_new_message"
-            potdroid:showAsAction="ifRoom"/>
+            potdroid:showAsAction="ifRoom"
+            android:icon="@drawable/ic_create"/>
 </menu>

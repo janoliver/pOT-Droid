@@ -5,14 +5,17 @@
         <item
                 android:id="@+id/prev"
                 android:title="@string/action_previous"
-                potdroid:showAsAction="ifRoom"/>
+                potdroid:showAsAction="ifRoom"
+                android:icon="@drawable/ic_left"/>
         <item
                 android:id="@+id/next"
                 android:title="@string/action_next"
-                potdroid:showAsAction="ifRoom"/>
+                potdroid:showAsAction="ifRoom"
+                android:icon="@drawable/ic_right"/>
     </group>
     <item
             android:id="@+id/refresh"
             android:title="@string/action_refresh"
-            potdroid:showAsAction="ifRoom"/>
+            potdroid:showAsAction="ifRoom"
+            android:icon="@drawable/ic_refresh"/>
 </menu>

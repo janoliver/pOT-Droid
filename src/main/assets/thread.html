@@ -4,7 +4,8 @@
         <title></title>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width,user-scalable=yes,initial-scale=1">
-        <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" type="text/css" />
+        <link rel="stylesheet" href="material-icons/material-icons.css" type="text/css" />
+        <link rel="stylesheet" href="bb.css" type="text/css" />
         <link rel="stylesheet" href="{{cssFile}}" type="text/css" />
     </head>
     <body class="{{themeVariant}}">
@@ -20,15 +21,15 @@
                 <a name="{{id}}"></a>
                 <header>
                     <div class="icons">
-                        <i class="menu-icon fa fa-ellipsis-v menu-icon"></i>
+                        <i class="menu-open material-icons">more_vert</i>
                         {{#isAuthor}}
-                        <i class="menu-edit fa fa-pencil menu login"></i>
+                        <i class="menu-edit material-icons menu login">create</i>
                         {{/isAuthor}}
-                        <i class="menu-quote fa fa-quote-left menu login"></i>
-                        <i class="menu-bookmark fa fa-heart menu login"></i>
-                        <i class="menu-link fa fa-external-link menu"></i>
-                        <i class="menu-copy fa fa-files-o menu"></i>
-                        <i class="menu-pm fa fa-envelope menu"></i>
+                        <i class="menu-quote material-icons menu login">quote</i>
+                        <i class="menu-bookmark material-icons menu login">bookmark</i>
+                        <i class="menu-link material-icons menu">link</i>
+                        <i class="menu-copy material-icons menu">content_copy</i>
+                        <i class="menu-pm material-icons menu">email</i>
                     </div>
 
                     <div class="bender" {{&avatarBackground}}></div>
@@ -58,9 +59,9 @@
             </section>
             {{/posts}}
             <div class="up-indicator">
-                <i class="fa fa-angle-double-up"></i>
+                <i class="material-icons">expand_less</i>
                 Pull up to refresh
-                <i class="fa fa-angle-double-up"></i>
+                <i class="material-icons">expand_less</i>
             </div>
         </div>
 

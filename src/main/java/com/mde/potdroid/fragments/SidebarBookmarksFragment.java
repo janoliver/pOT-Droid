@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.mde.potdroid.*;
@@ -18,7 +19,6 @@ import com.mde.potdroid.helpers.ptr.SwipyRefreshLayoutDirection;
 import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.BookmarkList;
 import com.mde.potdroid.parsers.BookmarkParser;
-import com.mde.potdroid.views.IconButton;
 
 import java.util.ArrayList;
 
@@ -32,8 +32,8 @@ public class SidebarBookmarksFragment extends BaseFragment
     private BookmarkList mBookmarkList;
     private BookmarkListAdapter mListAdapter;
     private TextView mEmptyListView;
-    private IconButton mPmButton;
-    private IconButton mBookmarksButton;
+    private ImageButton mPmButton;
+    private ImageButton mBookmarksButton;
 
     // this member indicates, whether the view is "dirty" and should be refreshed.
     private Boolean mDirty = true;
@@ -69,7 +69,7 @@ public class SidebarBookmarksFragment extends BaseFragment
         LinearLayoutManager layoutManager = new LinearLayoutManager(getBaseActivity());
         listView.setLayoutManager(layoutManager);
 
-        IconButton home = (IconButton) v.findViewById(R.id.button_home);
+        ImageButton home = (ImageButton) v.findViewById(R.id.button_home);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +78,7 @@ public class SidebarBookmarksFragment extends BaseFragment
             }
         });
 
-        IconButton preferences = (IconButton) v.findViewById(R.id.button_preferences);
+        ImageButton preferences = (ImageButton) v.findViewById(R.id.button_preferences);
         preferences.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +87,7 @@ public class SidebarBookmarksFragment extends BaseFragment
             }
         });
 
-        mBookmarksButton = (IconButton) v.findViewById(R.id.button_bookmarks);
+        mBookmarksButton = (ImageButton) v.findViewById(R.id.button_bookmarks);
         mBookmarksButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +96,7 @@ public class SidebarBookmarksFragment extends BaseFragment
             }
         });
 
-        mPmButton = (IconButton) v.findViewById(R.id.button_pm);
+        mPmButton = (ImageButton) v.findViewById(R.id.button_pm);
         mPmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,11 +106,11 @@ public class SidebarBookmarksFragment extends BaseFragment
         });
 
         if (!Utils.isLoggedIn()) {
-            mPmButton.disable();
-            mBookmarksButton.disable();
+            mPmButton.setEnabled(false);
+            mBookmarksButton.setEnabled(false);
         }
 
-        IconButton refresh = (IconButton) v.findViewById(R.id.button_refresh);
+        ImageButton refresh = (ImageButton) v.findViewById(R.id.button_refresh);
         if (!mSettings.isSwipeToRefresh()) {
             refresh.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -162,8 +162,8 @@ public class SidebarBookmarksFragment extends BaseFragment
                 TextView indicator = (TextView) getView().findViewById(R.id.empty_bookmarks_text);
                 indicator.setText(R.string.notloggedin);
 
-                mPmButton.disable();
-                mBookmarksButton.disable();
+                mPmButton.setEnabled(false);
+                mBookmarksButton.setEnabled(false);
             }
         } else if (success != null) {
 
@@ -222,8 +222,8 @@ public class SidebarBookmarksFragment extends BaseFragment
             public ViewHolder(RelativeLayout container) {
                 super(container);
                 mContainer = container;
-                mTextTitle = (TextView)mContainer.findViewById(R.id.name);
-                mTextNewposts = (TextView)mContainer.findViewById(R.id.newposts);
+                mTextTitle = (TextView) mContainer.findViewById(R.id.name);
+                mTextNewposts = (TextView) mContainer.findViewById(R.id.newposts);
             }
         }
 
@@ -240,7 +240,7 @@ public class SidebarBookmarksFragment extends BaseFragment
         @Override
         public BookmarkListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             // create a new view
-            RelativeLayout v = (RelativeLayout)LayoutInflater.from(parent.getContext())
+            RelativeLayout v = (RelativeLayout) LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.listitem_sidebar_bookmark, parent, false);
 
             return new ViewHolder(v);
@@ -284,7 +284,6 @@ public class SidebarBookmarksFragment extends BaseFragment
             return mDataset.size();
         }
     }
-
 
 
 }

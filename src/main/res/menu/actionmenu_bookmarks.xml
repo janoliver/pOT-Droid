@@ -4,5 +4,6 @@
     <item
             android:id="@+id/refresh"
             android:title="@string/action_refresh"
-            potdroid:showAsAction="ifRoom"/>
+            potdroid:showAsAction="ifRoom"
+            android:icon="@drawable/ic_refresh"/>
 </menu>

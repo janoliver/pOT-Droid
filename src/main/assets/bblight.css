@@ -1,20 +1,10 @@
 body {
-    padding:0;
-    padding-top:7px;
     background:#e5e5e5;
     color:#333333;
-    overflow-x: none;
-    margin:0;
 }
 
 section {
     background:#ffffff;
-    margin:7px;
-    margin-top:0;
-}
-
-section.oldpost {
-    opacity: 0.5;
 }
 
 section.newpost header {
@@ -23,46 +13,15 @@ section.newpost header {
 
 header {
     background-color:#ffffff;
-    font-weight:bold;
-    padding:10px;
-    overflow:auto;
     border-bottom:1px solid #cccccc;
-}
-
-article {
-    overflow:auto;
 }
 
 div.up-indicator {
     color: #ffffff;
-    font-size:1.2em;
-    text-align:center;
-    padding:5px 0 10px 0;
-}
-
-div.bender {
-    display:none;
-    background-image:url(images/placeholder_bender.png);
-    background-position:top left;
-    background-size:contain;
-    background-repeat:no-repeat;
-    float:left;
-}
-
-header div.bender {
-    height:50px;
-    width:50px;
-}
-
-article div.bender {
-    width:80px;
-    height:80px;
 }
 
 header div.author {
     color:#333333;
-    font-size:1.0em;
-    display:block;
 }
 
 header div.author .number {
@@ -71,65 +30,19 @@ header div.author .number {
 
 header div.title {
     color:#aaa;
-    font-size:0.8em;
-}
-
-header img.posticon {
-    float:left;
-    display:block;
-    padding-right:5px;
 }
 
 header div.date {
     color:#aaa;
-    font-size:0.8em;
-    padding-right:5px;
-    font-weight:normal;
 }
 
-header .icons i.fa {
-    font-size:1.5em;
+header .icons i {
     color:#999;
-    width:1em;
-    height:1em;
-    text-align:center;
-    padding-left:10px;
-    display:none;
-}
-
-header i:active {
-    color:#394E63;
-}
-
-.buttons {
-    margin-bottom:10px;
-    text-align:center;
-}
-
-header .icons {
-    float:right;
-    text-align:right;
-}
-
-article {
-    padding:10px;
 }
 
 article div.err {
     background:#cc0000;
     color:#fff;
-    padding: 3px;
-    text-align:center;
-}
-
-
-article > div {
-    overflow:auto;
-    font-size:0.9em;
-}
-
-article div img {
-    max-width:100%;
 }
 
 article div a {
@@ -139,44 +52,16 @@ article div a {
 article div blockquote {
     background:rgba(190, 190, 190, 0.35);
     border:0px solid rgba(190, 190, 190, 0.5);
-    display:block;
-    margin:0;
 }
 
 article div blockquote a.author {
     border-bottom:1px solid rgba(190, 190, 190, 0.5);
-    font-weight:bold;
-    padding:5px;
     color:#333;
-    text-decoration:none;
-    display:block;
 }
-
-article div blockquote div.content {
-    padding:5px;
-}
-
-.strike {
-    text-decoration: line-through;
-}
-
-.code {
-    margin:0.5em;
-    font-family: "Courier", monospace;
-    white-space: pre;
-}
-
-pre.inline {
-    display:inline;
-}
-
 
 .edited {
-    margin-top:1em;
     color:#aaa;
-    font-size:0.7em;
 }
-
 
 div.img i,
 div.gif i,
@@ -184,9 +69,7 @@ div.video i,
 div.spoiler i,
 div.img-link i,
 div.gif-link i  {
-    font-size:2em;
     color:#ffffff;
-    padding:0 5px;
 }
 
 div.img i.err,
@@ -212,49 +95,12 @@ div.spoiler,
 div.img-link,
 div.gif-link {
     background: rgba(150,150,150,0.6);
-    padding:5px;
-    text-align:center;
-    margin:5px 0px;
-}
-
-.videoWrapper {
-	position: relative;
-	padding-bottom: 56.25%; /* 16:9 */
-	padding-top: 25px;
-	height: 0;
-}
-.videoWrapper iframe {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
 }
 
 div.spoiler div {
     color:#333;
-    text-align:left;
-    display:none;
-}
-
-article div table {
-    border-collapse:collapse;
 }
 
 article div table tr td {
     border:1px solid #091827;
-    padding:3px;
-}
-
-@-webkit-keyframes spin {
-    from { -webkit-transform: rotate(0deg); }
-    to { -webkit-transform: rotate(360deg); }
-}
-
-.spin {
-    display:inline-block;
-    -webkit-animation-name: spin;
-    -webkit-animation-iteration-count: infinite;
-    -webkit-animation-timing-function: linear;
-    -webkit-animation-duration: 1s;
 }

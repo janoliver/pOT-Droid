@@ -4,5 +4,6 @@
     <item
             android:id="@+id/new_thread"
             android:title="@string/action_new_thread"
-            potdroid:showAsAction="ifRoom"/>
+            potdroid:showAsAction="ifRoom"
+            android:icon="@drawable/ic_create"/>
 </menu>

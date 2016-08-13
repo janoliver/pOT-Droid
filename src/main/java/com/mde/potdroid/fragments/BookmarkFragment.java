@@ -6,7 +6,6 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.text.Html;
 import android.text.Spanned;
 import android.view.*;
 import android.widget.AdapterView;
@@ -23,7 +22,6 @@ import com.mde.potdroid.helpers.ptr.SwipyRefreshLayoutDirection;
 import com.mde.potdroid.models.Bookmark;
 import com.mde.potdroid.models.BookmarkList;
 import com.mde.potdroid.parsers.BookmarkParser;
-import com.mde.potdroid.views.IconDrawable;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -141,8 +139,6 @@ public class BookmarkFragment extends BaseFragment
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.actionmenu_bookmarks, menu);
-
-        menu.findItem(R.id.refresh).setIcon(IconDrawable.getIconDrawable(getActivity(), R.string.icon_refresh));
     }
 
     @Override

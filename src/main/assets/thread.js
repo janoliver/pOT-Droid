@@ -3,7 +3,7 @@ $(document).ready(function() {
     // bender loading
     if(api.isBenderEnabled() && api.downloadBenders()) {
         $(".bender:not([style])").each(function() {
-            var bender = $(this).parents("section").first();
+            var bender = $(this).parents(".post").first();
             var user_id = bender.attr("data-user-id");
             var user_avatar_id = bender.attr("data-user-avatar-id");
             var user_avatar_file = bender.attr("data-user-avatar");
@@ -39,16 +39,16 @@ $(document).ready(function() {
     }
 
     // manual image loader
-    $("div.img, div.img-link").on("click", "i.zoom", function() {
+    $("div.img.media, div.img-link.media").on("click", "button.viewer", function() {
         api.zoom($(this).parent().attr('data-src'), "image");
     });
 
-    $("div.gif, div.gif-link").on("click", "i.zoom", function() {
+    $("div.gif.media, div.gif-link.media").on("click", "button.viewer", function() {
         api.zoom($(this).parent().attr('data-src'), "gif");
     });
 
     // manual image loader
-    $("div.video").on("click", "i.zoom", function() {
+    $("div.video.media").on("click", "button.viewer", function() {
         if($(this).parent().hasClass("yt"))
             api.zoom($(this).parent().attr('data-src'), "youtube");
         else
@@ -56,129 +56,96 @@ $(document).ready(function() {
     });
 
     // manual video loader
-    $("div.video i.vid").click(function() {
+    $("div.video.media").on("click", "button.inline", function() {
         replaceVideo($(this));
     });
 
     // manual video loader
-    $("div.video i.link").click(function() {
+    $("div.video.media").on("click", "button.link", function() {
         api.openUrl($(this).parent().attr('data-src'));
     });
 
     // manual image with link loader
-    $("div.img-link, div.gif-link").on("click", "i.link", function() {
+    $("div.img-link.media, div.gif-link.media").on("click", "button.link", function() {
         api.openUrl($(this).parent().attr('data-href'));
     });
 
     // manual image with link loader
-    $("div.img-link, div.gif-link, div.img, div.gif").on("click", "i.img-loader", function() {
-        replaceImage($(this), $(this).parent().attr('data-href'));
+    $("div.img-link.media, div.gif-link.media, div.img.media, div.gif.media").on(
+        "click", "button.inline", function() {
+        replaceImage($(this).parent(), $(this).parent().attr('data-href'));
     });
 
-    $("div.spoiler i").click(function() {
-        $(this).hide().parent().find('div').show();
+    $("div.spoiler button").click(function() {
+        var p = $(this).parent();
+        p.find("button,i").hide();
+        p.css("display", "block");
+        p.find('div.spoiler-content').show();
     });
 
-    $('i.menu-open').click(function(e) {
-        e.preventDefault();
-        var post_id = parseInt($(this).closest('section').attr('data-id'));
+    $('.post-menu-button').click(function(e) {
+        var post_id = parseInt($(this).closest('.post').attr('data-id'));
         api.openTopicMenu(post_id);
-    });
-
-    $('i.menu-edit').click(function(e) {
-        e.preventDefault();
-        var post_id = parseInt($(this).closest('section').attr('data-id'));
-        api.editPost(post_id);
-    });
-
-    $('i.menu-quote').click(function(e) {
-        e.preventDefault();
-        var post_id = parseInt($(this).closest('section').attr('data-id'));
-        api.quotePost(post_id);
-    });
-
-    $('i.menu-bookmark').click(function(e) {
-        e.preventDefault();
-        var post_id = parseInt($(this).closest('section').attr('data-id'));
-        api.bookmarkPost(post_id);
-    });
-
-    $('i.menu-link').click(function(e) {
-        e.preventDefault();
-        var post_id = parseInt($(this).closest('section').attr('data-id'));
-        api.linkPost(post_id);
-    });
-
-    $('i.menu-copy').click(function(e) {
-        e.preventDefault();
-        var post_id = parseInt($(this).closest('section').attr('data-id'));
-        api.copyPostLink(post_id);
-    });
-
-    $('i.menu-pm').click(function(e) {
-        e.preventDefault();
-        var post_id = parseInt($(this).closest('section').attr('data-id'));
-        api.pmAuthor(post_id);
     });
 
     $('a.author').click(function(e) {
         if($("a[name=" + getURLParameter(this, 'PID') + "]").length > 0) {
             e.preventDefault();
-            $("*").css({ opacity: 1.0 });
-            location.hash = "#";
             location.hash = "#" + getURLParameter(this, 'PID');
         }
     });
 
     // scroll to the last post, when there was one
     // to ensure correct scrolling, this should be the last JS call.
+    if(api.getScroll() > 0) {
+        var scrollto = $('a[name="' + api.getScroll() + '"]');
+        if(api.isDarkenOldPosts()) {
+            scrollto.parent().prevAll().addClass("oldpost");
+        }
+        if(api.isMarkNewPosts()) {
+            scrollto.parent().nextAll().addClass("newpost");
+        }
+    }
+
     setTimeout(function() {
-
-        setupStyle();
-        $(window).resize(function() {
-            setupStyle();
-        });
-
         if(api.getScroll() > 0) {
-            var scrollto = $('a[name="' + api.getScroll() + '"]');
             $('html, body').scrollTop(scrollto.offset().top - api.getToolBarHeightInDp());
-            if(api.isDarkenOldPosts()) {
-                scrollto.parent().prevAll().addClass("oldpost");
-            }
-            if(api.isMarkNewPosts()) {
-                scrollto.parent().nextAll().addClass("newpost");
-            }
         } else {
             window.scrollTo(0,0);
         }
 
         // register waypoints while scrolling over them
         // should be the last thing executed!
-        $("header").waypoint(function() {
-            api.registerScroll(parseInt($(this).parent().attr("data-id"),10));
-        },{
-            continuous: false,
-        });
+        var continuousElements = document.getElementsByClassName('header')
+        for (var i = 0; i < continuousElements.length; i++) {
+            new Waypoint({
+                element: continuousElements[i],
+                handler: function() {
+                    api.registerScroll(parseInt($(this.element).parent().attr("data-id"),10));
+                }
+            })
+        }
+
     }, 100);
 });
 
-function replaceImage(icon) {
-    var classes = "material-icons spin img-spinner";
+function replaceImage(container) {
+    var classes = "material-icons img-spinner spin";
     var content = "loop";
+    var icon = container.find("i");
     icon.attr('class', classes);
     icon.text(content);
 
-    var el = icon.parent();
-    var src = el.attr('data-src');
+    var src = container.attr('data-src');
     var id = Math.floor( Math.random()*99999 );
-    el.attr("id", "loadedimg-" + id);
-    api.loadImage(src, el.attr("id"));
+    container.attr("id", "loadedimg-" + id);
+    api.loadImage(src, container.attr("id"));
 }
 
 function displayImageLoader(id) {
     var el = $("#" + id);
-    var icon = el.find("i.img-spinner");
-    var classes = "material-icons img-loader err";
+    var icon = el.find("i");
+    var classes = "material-icons err";
     var content = "photo";
     if(icon.parent().hasClass("gif"))
         content = "local_movies";
@@ -190,15 +157,13 @@ function displayImageLoader(id) {
 function displayImage(url, path, id) {
     var el = $("#" + id);
     var href = el.attr("data-href");
-    var img = $('<img/>').attr('src',path).attr('alt', url);
-    img.load(function() {
-        if(typeof href === "undefined") {
-            el.replaceWith(img);
-        } else {
-            var a = $("<a/>").attr("href", href).append(img);
-            el.replaceWith(a);
-        }
-    });
+    var img = $('<img/>').attr('src', path).attr('alt', url);
+    if(typeof href === "undefined") {
+        el.replaceWith(img);
+    } else {
+        var a = $("<a/>").attr("href", href).append(img);
+        el.replaceWith(a);
+    }
 }
 
 function youtube_parser(url){
@@ -231,7 +196,7 @@ function replaceVideo(icon) {
 
 // load the bender of user_id
 function loadBender(user_id, path) {
-    var el = $("section[data-user-id='"+user_id+"']");
+    var el = $(".post[data-user-id='"+user_id+"']");
     el.find("div.bender").css("background-image","url("+path+")");
 }
 
@@ -304,43 +269,6 @@ function loadAllVideos() {
     all.each(function() {
         replaceVideo($(this), $(this).parent().attr("data-src"));
     });
-}
-
-
-function setupStyle() {
-
-    if(api.isBenderEnabled()) {
-        if(api.getBenderPosition() == 1) {
-            $("header .bender").show();
-        } else if(api.getBenderPosition() == 2) {
-            $("article .bender").show();
-        } else if($(window).width() > 400) {
-            $("header .bender").hide();
-            $("article .bender").show();
-        } else {
-            $("header .bender").show();
-            $("article .bender").hide();
-        }
-    }
-
-    if(api.getShowMenu() == 1) {
-        $(".menu").show();
-        $(".menu-open").hide();
-    } else if(api.getShowMenu() == 2) {
-        $(".menu-open").show();
-        $(".menu").hide();
-    } else if($(window).width() > 400) {
-        $(".menu").show();
-        $(".menu-open").hide();
-    } else {
-        $(".menu-open").show();
-        $(".menu").hide();
-    }
-
-    // login shit
-    if(!api.isLoggedIn()) {
-        $(".login").hide();
-    }
 }
 
 function getURLParameter(a, name) {

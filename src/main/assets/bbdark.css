@@ -3,122 +3,86 @@ body {
     color:#ddd;
 }
 
-body.wahoo {
-    background:#000000;
-}
-
-section {
-    background:#394E63;
-}
-
-.bright div section,
-.darkbright div section {
+.post {
     background:#51677e;
 }
 
-section.newpost header {
-    border-left:3px solid #E6EE9C;
-}
-
-header {
-    border-bottom:1px solid #394E63;
+.post .header {
     background:#394E63;
+    color:#eee;
 }
 
-.bright div section header,
-.brightdark div section header {
-    background:#51677e;
+.post .header .author {
+    color: #fff;
 }
 
-.wahoo div section header {
-    background:#091827;
-}
-
-div.up-indicator {
-    color: #51677e;
-}
-
-header div.author {
-    color:#fff;
-}
-
-header div.author .number {
-    color:#aaa;
-}
-
-header div.title {
+.post .header .info .title,
+.post .header .info .date {
     color:rgba(255,255,255,0.4);
 }
 
-header div.date {
-    color:#aaa;
-}
-
-header .icons i {
+.post .header .post-menu-button i {
     color:#222E3A;
 }
 
-article div.err {
+.post .body {
+    color:#ddd;
+}
+
+.post .body a {
+    color:#ccc;
+}
+
+.post .body .err {
     background:#cc0000;
     color:#fff;
 }
 
-article div a {
-    color:#ccc;
-}
-
-article div blockquote {
+.post .body .quote,
+.post .body .code {
     background:rgba(9, 24, 39, 0.4);
     border:0px solid rgba(9, 24, 39, 0.4);
 }
 
-article div blockquote a.author {
+.post .body .quote a.author {
     background:rgba(9, 24, 39, 0.35);
     color:#fff;
 }
 
-.edited {
-    color:#aaa;
-}
-
-div.img i,
-div.gif i,
-div.video i,
-div.spoiler i,
-div.img-link i,
-div.gif-link i {
-    color:#51677e;
-}
-
-div.img i.err,
-div.gif i.err,
-div.img-link i.err,
-div.gif-link i.err {
-    color:#cc0000;
-}
-
-div.img i:active,
-div.gif i:active,
-div.video i:active,
-div.spoiler i:active,
-div.img-link i:active,
-div.gif-link i:active {
-    color:#fff;
-}
-
-div.img,
-div.video,
-div.gif,
-div.spoiler,
-div.img-link,
-div.gif-link  {
+.post .body .media {
     background: rgba(9,24,39,0.6);
 }
 
-div.spoiler div {
+.post .body .media button {
+    color: rgba(255,255,255,0.4);
+}
+
+.post .body .media i,
+.post .body .quote a i {
+    color:#51677e;
+}
+
+.post .body .media i.err {
+    color:#cc0000;
+}
+
+.post .body .spoiler .spoiler-content {
     color:#eee;
 }
 
-article div table tr td {
+.post.oldpost {
+    opacity: 0.5;
+}
+
+.post.newpost {
+    -webkit-box-shadow: 0px 0px 5px 2px rgba(230,238,156,0.5);
+    box-shadow: 0px 0px 5px 2px rgba(230,238,156,0.5);
+}
+
+.up-indicator {
+    color: #51677e;
+}
+
+.post .body table tr td {
     border:1px solid #091827;
 }

@@ -31,7 +31,10 @@ import com.mde.potdroid.helpers.ptr.SwipyRefreshLayoutDirection;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
 import com.mde.potdroid.parsers.TopicParser;
-import com.mde.potdroid.views.*;
+import com.mde.potdroid.views.ChoosePageDialog;
+import com.mde.potdroid.views.ImageActionsDialog;
+import com.mde.potdroid.views.LinkActionsDialog;
+import com.mde.potdroid.views.PostActionsDialog;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -238,9 +241,9 @@ public class TopicFragment extends PaginateFragment implements
             }
         });
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && mSettings.isDebug()) {
             if (0 != (getActivity().getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE)) {
-                //WebView.setWebContentsDebuggingEnabled(true);
+                WebView.setWebContentsDebuggingEnabled(true);
             }
         }
 

@@ -1,6 +1,7 @@
 package com.mde.potdroid.helpers;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.webkit.URLUtil;
 import com.mde.potdroid.R;
 import com.mde.potdroid.models.Post;
@@ -26,6 +27,7 @@ public class TopicBuilder {
 
     // a HashMap with the smileys
     public static HashMap<String, String> mSmileys = new HashMap<String, String>();
+
     static {
         mSmileys.put(":bang:", "banghead.gif");
         mSmileys.put(":D", "biggrin.gif");
@@ -63,6 +65,7 @@ public class TopicBuilder {
     }
 
     public static HashMap<String, Integer> mIcons = new HashMap<String, Integer>();
+
     static {
         mIcons.put("icon2.gif", 32);
         mIcons.put("icon11.gif", 40);
@@ -110,6 +113,15 @@ public class TopicBuilder {
         StringWriter sw = new StringWriter();
         Mustache.compiler().compile(reader).execute(new TopicContext(topic, mContext), sw);
         mBenderHandler.updateLastSeenBenderInformation(new ArrayList(mAvatarCache.keySet()));
+
+        /*File myFile = new File(mContext.getExternalFilesDir(null), "bb.html");
+        myFile.createNewFile();
+        FileOutputStream fOut = new FileOutputStream(myFile);
+        OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
+        myOutWriter.append(sw.toString());
+        myOutWriter.close();
+        fOut.close();*/
+
         return sw.toString();
     }
 
@@ -123,7 +135,7 @@ public class TopicBuilder {
         String template = "<img src=\"smileys/%1$s\" alt=\"%2$s\" />";
         Iterator<Map.Entry<String, String>> i = mSmileys.entrySet().iterator();
 
-        while(i.hasNext()) {
+        while (i.hasNext()) {
             Map.Entry<String, String> me = i.next();
             code = code.replace(me.getKey(), String.format(template, me.getValue(), me.getKey()));
         }
@@ -145,6 +157,20 @@ public class TopicBuilder {
 
         public String getCssFile() {
             return Utils.getStringByAttr(mContext, R.attr.bbTopicCssFile);
+        }
+
+        public boolean getBenderHead() {
+            return mSettings.benderPosition() == 1 ||
+                    (mSettings.benderPosition() == 3 &&
+                            mContext.getResources().getConfiguration().orientation
+                                    == Configuration.ORIENTATION_PORTRAIT);
+        }
+
+        public boolean getBenderBody() {
+            return mSettings.benderPosition() == 2 ||
+                    (mSettings.benderPosition() == 3 &&
+                            mContext.getResources().getConfiguration().orientation
+                                    == Configuration.ORIENTATION_LANDSCAPE);
         }
 
         public String getThemeVariant() {
@@ -214,9 +240,9 @@ public class TopicBuilder {
         }
 
         public String getAvatarBackground() {
-            if(!mAvatarCache.containsKey(mPost.getAuthor())) {
+            if (!mAvatarCache.containsKey(mPost.getAuthor())) {
                 String path = mBenderHandler.getAvatarFilePathIfExists(mPost.getAuthor());
-                if(path == null)
+                if (path == null)
                     mAvatarCache.put(mPost.getAuthor(), "");
                 else
                     mAvatarCache.put(mPost.getAuthor(),
@@ -239,25 +265,25 @@ public class TopicBuilder {
         }
 
         public String getDate() {
-            if(!mShowPostInfo)
+            if (!mShowPostInfo)
                 return "";
             return Utils.getFormattedTime(mContext.getString(R.string.default_time_format), mPost.getDate()) + " Uhr";
         }
 
         public String getTitle() {
-            if(!mShowPostInfo)
+            if (!mShowPostInfo)
                 return "";
             return mPost.getTitle();
         }
 
         public String getText() {
-            if(!mParseBBcode)
+            if (!mParseBBcode)
                 return mPost.getText();
             String text = mPost.getText();
             try {
                 text = getBBCodeParserInstance(mCallback).parse(text);
 
-                if(mParseSmileys)
+                if (mParseSmileys)
                     text = parseSmileys(text);
             } catch (Exception e) {
                 Utils.printException(e);
@@ -379,8 +405,10 @@ public class TopicBuilder {
             @Override
             public String html(String content, List<String> args) {
                 mParser.getCallback().onTag("spoiler", content, args);
-                return String.format("<div class=\"spoiler\"><i class=\"material-icons\">visibility_off</i>" +
-                        "<div>%1$s</div></div>", content);
+                return String.format("<div class=\"media spoiler\">" +
+                        "<i class=\"material-icons\">visibility_off</i>" +
+                        "<button class=\"viewer mdl-button mdl-js-button\">Spoiler zeigen</button>" +
+                        "<div class=\"spoiler-content\">%1$s</div></div>", content);
             }
         });
 
@@ -440,25 +468,26 @@ public class TopicBuilder {
 
                 if (m.find() && args.size() > 0) {
                     String extension = m.group(1).substring(m.group(1).length() - 3).toLowerCase();
-                    String type_class = "img";
+                    String type_class = "img-link";
                     String icon = "photo";
                     if (extension.equals("gif")) {
-                        type_class = "gif";
+                        type_class = "gif-link";
                         icon = "local_movies";
                     }
-                    return String.format("<div class=\"%1$s-link\" data-src=\"%2$s\" " +
-                            "data-href=\"%3$s\">"
-                            + "<i class=\"link material-icons\"></i>"
-                            + "<i class=\"img-loader material-icons\">%4$s</i>"
-                            + "<i class=\"zoom material-icons\">zoom_in</i>"
-                            + "</div>", type_class, m.group(1), args.get(0), icon);
+                    return String.format("<div class=\"media %1$s\" data-src=\"%2$s\"" +
+                            "data-href=\"%3$s\">" +
+                            "<i class=\"material-icons\">%4$s</i>" +
+                            "<button class=\"link mdl-button mdl-js-button\">Link</button>" +
+                            "<button class=\"inline mdl-button mdl-js-button\">Inline</button>" +
+                            "<button class=\"viewer mdl-button mdl-js-button\">Viewer</button>" +
+                            "</div>", type_class, m.group(1), args.get(0), icon);
                 }
 
                 if (args.size() > 0)
                     url = args.get(0);
 
                 // add protocol if the url is malformed.
-                if(!url.contains("://"))
+                if (!url.contains("://"))
                     url = "http://" + url;
 
                 return String.format("<a href=\"%1$s\">%2$s</a>", url, content);
@@ -470,11 +499,14 @@ public class TopicBuilder {
             public String html(String content, List<String> args) {
                 mParser.getCallback().onTag("quote", content, args);
                 if (args.size() == 3)
-                    return String.format("<blockquote><a href=\"http://forum.mods.de/bb/thread.php?TID=%3$s&PID=%4$s\" class=\"author\">%1$s</a>" +
-                            "<div class=\"content\">%2$s</div></blockquote>", args.get(2), content, args.get(0), args.get(1));
+                    return String.format("<div class=\"quote\">" +
+                                    "<a href=\"http://forum.mods.de/bb/thread.php?TID=%3$s&PID=%4$s\" " +
+                                    "class=\"author\"><i class=\"material-icons\">format_quote</i>%1$s</a>" +
+                                    "<div class=\"content\">%2$s</div></div>",
+                            args.get(2), content, args.get(0), args.get(1));
                 else
-                    return String.format("<blockquote><div " +
-                            "class=\"content\">%1$s</div></blockquote>", content);
+                    return String.format("<div class=\"quote\"><div " +
+                            "class=\"content\">%1$s</div></div>", content);
             }
         });
 
@@ -483,8 +515,8 @@ public class TopicBuilder {
             public String html(String content, List<String> args) {
                 if (!URLUtil.isValidUrl(content)) {
                     return content;
-                } else if(content.contains("forum.mods.de/bb/img/icons")) {
-                    String icon = content.substring( content.lastIndexOf('/')+1, content.length() );
+                } else if (content.contains("forum.mods.de/bb/img/icons")) {
+                    String icon = content.substring(content.lastIndexOf('/') + 1, content.length());
                     return String.format("<img src=\"thread-icons/icon%1$d.png\" alt=\"icon%1$d.png\" />",
                             mIcons.get(icon));
                 } else {
@@ -496,10 +528,11 @@ public class TopicBuilder {
                         type_class = "gif";
                         icon = "local_movies";
                     }
-                    return String.format("<div class=\"%1$s\" data-src=\"%2$s\">"
-                            + "<i class=\"material-icons img-loader\">%3$s</i>"
-                            + "<i class=\"material-icons zoom\">zoom_in</i></div>",
-                            type_class, content, icon);
+                    return String.format("<div class=\"media %1$s\" data-src=\"%2$s\">" +
+                            "<i class=\"material-icons\">%3$s</i>" +
+                            "<button class=\"inline mdl-button mdl-js-button\">Inline</button>" +
+                            "<button class=\"viewer mdl-button mdl-js-button\">Viewer</button>" +
+                            "</div>", type_class, content, icon);
                 }
             }
         });
@@ -508,16 +541,20 @@ public class TopicBuilder {
             @Override
             public String html(String content, List<String> args) {
                 mParser.getCallback().onTag("video", content, args);
-                if(content.contains("youtube") || content.contains("youtu.be")) {
-                    return String.format("<div class=\"video yt\" data-src=\"%1$s\">"
-                            + "<i class=\"link material-icons\">link</i>"
-                            + "<i class=\"vid material-icons\">movie</i>"
-                            + "<i class=\"zoom material-icons\">zoom_in</i></div>", content);
+                if (content.contains("youtube") || content.contains("youtu.be")) {
+
+                    return String.format("<div class=\"media video yt\" data-src=\"%1$s\">" +
+                            "<i class=\"material-icons\">movie</i>" +
+                            "<button class=\"link mdl-button mdl-js-button\">Youtube</button>" +
+                            "<button class=\"inline mdl-button mdl-js-button\">Inline</button>" +
+                            "<button class=\"viewer mdl-button mdl-js-button\">Viewer</button>" +
+                            "</div>", content);
                 } else {
-                    return String.format("<div class=\"video\" data-src=\"%1$s\">"
-                            + "<i class=\"link material-icons\">link</i>"
-                            + "<i class=\"vid material-icons\">local_movies</i>"
-                            + "<i class=\"zoom material-icons\">zoom_in</i></div>", content);
+                    return String.format("<div class=\"media video\" data-src=\"%1$s\">" +
+                            "<i class=\"material-icons\">local_movies</i>" +
+                            "<button class=\"inline mdl-button mdl-js-button\">Inline</button>" +
+                            "<button class=\"viewer mdl-button mdl-js-button\">Viewer</button>" +
+                            "</div>", content);
                 }
             }
         });

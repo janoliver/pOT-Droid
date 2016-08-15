@@ -258,7 +258,12 @@ public abstract class BaseFragment extends Fragment implements SwipyRefreshLayou
      */
     public void showLoadingAnimation() {
         if (mPullToRefreshLayout != null) {
-            mPullToRefreshLayout.setRefreshing(true);
+            mPullToRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mPullToRefreshLayout.setRefreshing(true);
+                }
+            });
         }
     }
 

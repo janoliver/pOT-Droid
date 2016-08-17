@@ -74,6 +74,8 @@ public class SettingsWrapper {
     public static final String PREF_KEY_TINTED_STATUSBAR = "pref_tinted_statusbar";
     public static final String PREF_KEY_POSTNUMBERS = "pref_show_postnumbers";
     public static final String PREF_KEY_GERMAN_TIMEZONE = "pref_german_timezone";
+    public static final String PREF_EXPORT_SETTINGS = "pref_export_settings";
+    public static final String PREF_IMPORT_SETTINGS = "pref_import_settings";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;

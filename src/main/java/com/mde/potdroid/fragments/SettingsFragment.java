@@ -8,10 +8,12 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceManager;
+import android.view.View;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.LoginPreference;
 import com.mde.potdroid.helpers.LogoutPreference;
@@ -21,6 +23,9 @@ import com.mde.potdroid.services.MessagePollingService;
 import com.mde.potdroid.views.LoginDialog;
 import com.mde.potdroid.views.LogoutDialog;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompatDividers;
+
+import java.io.*;
+import java.util.Map;
 
 
 public class SettingsFragment extends PreferenceFragmentCompatDividers implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -127,7 +132,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
             LogoutPreference logoutPreference = (LogoutPreference) findPreference(SettingsWrapper
                     .PREF_KEY_LOGOUT);
 
-            if(loginPreference != null && logoutPreference != null) {
+            if (loginPreference != null && logoutPreference != null) {
                 if (Utils.isLoggedIn()) {
                     loginPreference.setSummary(String.format("%s %s", getString(R.string
                             .pref_state_loggedin), mSettings.getUsername()));
@@ -178,6 +183,72 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
 
             startActivityForResult(intent, NOTIFICATION_SOUND_REQUEST_CODE);
             return true;
+
+        } else if (preference.getKey().equals(SettingsWrapper.PREF_EXPORT_SETTINGS)) {
+            File f = new File(getContext().getExternalFilesDir(null), "settings");
+            if(saveSharedPreferencesToFile(f)) {
+                getActivity().runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Snackbar snackbar = Snackbar
+                                .make(getActivity().findViewById(android.R.id.content), R.string.msg_export_success, Snackbar.LENGTH_LONG);
+                        View snackBarView = snackbar.getView();
+                        snackBarView.setBackgroundColor(BaseFragment.COLOR_SUCCESS);
+                        snackbar.show();
+                    }
+                });
+            } else {
+                getActivity().runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Snackbar snackbar = Snackbar
+                                .make(getActivity().findViewById(android.R.id.content), R.string.msg_export_error, Snackbar.LENGTH_LONG);
+                        View snackBarView = snackbar.getView();
+                        snackBarView.setBackgroundColor(BaseFragment.COLOR_ERROR);
+                        snackbar.show();
+                    }
+                });
+            }
+            return true;
+        } else if (preference.getKey().equals(SettingsWrapper.PREF_IMPORT_SETTINGS)) {
+            File f = new File(getContext().getExternalFilesDir(null), "settings");
+            if(f.exists() && loadSharedPreferencesFromFile(f)) {
+                getActivity().runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Snackbar snackbar = Snackbar
+                                .make(getActivity().findViewById(android.R.id.content), R.string.msg_import_success, Snackbar.LENGTH_LONG)
+                                .setAction("Neu starten", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent i = getActivity().getPackageManager()
+                                                .getLaunchIntentForPackage(getActivity().getPackageName());
+                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        getContext().startActivity(i);
+                                    }
+                                });
+                        View snackBarView = snackbar.getView();
+                        snackBarView.setBackgroundColor(BaseFragment.COLOR_SUCCESS);
+                        snackbar.show();
+                    }
+                });
+            } else {
+                getActivity().runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Snackbar snackbar = Snackbar
+                                .make(getActivity().findViewById(android.R.id.content), R.string.msg_import_error, Snackbar.LENGTH_LONG);
+                        View snackBarView = snackbar.getView();
+                        snackBarView.setBackgroundColor(BaseFragment.COLOR_ERROR);
+                        snackbar.show();
+                    }
+                });
+            }
+            return true;
         } else {
             return super.onPreferenceTreeClick(preference);
         }
@@ -215,4 +286,74 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
         return false;
     }
 
+    private boolean saveSharedPreferencesToFile(File dst) {
+        boolean res = false;
+        ObjectOutputStream output = null;
+        try {
+            output = new ObjectOutputStream(new FileOutputStream(dst));
+            SharedPreferences pref =
+                    PreferenceManager.getDefaultSharedPreferences(getContext());
+            output.writeObject(pref.getAll());
+
+            res = true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (output != null) {
+                    output.flush();
+                    output.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return res;
+    }
+
+    @SuppressWarnings({"unchecked"})
+    private boolean loadSharedPreferencesFromFile(File src) {
+        boolean res = false;
+        ObjectInputStream input = null;
+        try {
+            input = new ObjectInputStream(new FileInputStream(src));
+            SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
+            prefEdit.clear();
+            Map<String, ?> entries = (Map<String, ?>) input.readObject();
+            for (Map.Entry<String, ?> entry : entries.entrySet()) {
+                Object v = entry.getValue();
+                String key = entry.getKey();
+
+                if (v instanceof Boolean)
+                    prefEdit.putBoolean(key, ((Boolean) v).booleanValue());
+                else if (v instanceof Float)
+                    prefEdit.putFloat(key, ((Float) v).floatValue());
+                else if (v instanceof Integer)
+                    prefEdit.putInt(key, ((Integer) v).intValue());
+                else if (v instanceof Long)
+                    prefEdit.putLong(key, ((Long) v).longValue());
+                else if (v instanceof String)
+                    prefEdit.putString(key, ((String) v));
+            }
+            prefEdit.commit();
+            res = true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (input != null) {
+                    input.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return res;
+    }
 }

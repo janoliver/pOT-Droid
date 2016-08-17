@@ -32,7 +32,7 @@
          data-user-avatar-id="{{avatarId}}">
         <a name="{{id}}"></a>
         <div class="header">
-            <div class="bender"></div>
+            <div class="bender" {{&avatarBackground}}></div>
             <div class="info">
                 <h4 class="author">
                     {{#getAuthorLocked}}
@@ -59,7 +59,7 @@
             </button>
         </div>
         <div class="body">
-            <div class="bender"></div>
+            <div class="bender" {{&avatarBackground}}></div>
             <div class="content">
                 {{&text}}
                 {{#isEdited}}

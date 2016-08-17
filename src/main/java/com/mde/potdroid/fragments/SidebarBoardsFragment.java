@@ -10,10 +10,7 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mde.potdroid.BoardActivity;
 import com.mde.potdroid.R;
@@ -164,9 +161,9 @@ public class SidebarBoardsFragment extends BaseFragment implements LoaderManager
             public TextView mTextLastPost;
             public TextView mTextDescription;
 
-            public ViewHolder(LinearLayout container) {
+            public ViewHolder(FrameLayout container) {
                 super(container);
-                mContainer = container;
+                mContainer = (LinearLayout) container.findViewById(R.id.container);
                 mTextTitle = (TextView)mContainer.findViewById(R.id.name);
                 mTextLastPost = (TextView)mContainer.findViewById(R.id.last_post);
                 mTextDescription = (TextView)mContainer.findViewById(R.id.text_description);
@@ -186,7 +183,7 @@ public class SidebarBoardsFragment extends BaseFragment implements LoaderManager
         @Override
         public BoardListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             // create a new view
-            LinearLayout v = (LinearLayout)LayoutInflater.from(parent.getContext())
+            FrameLayout v = (FrameLayout) LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.listitem_sidebar_board, parent, false);
 
             return new ViewHolder(v);

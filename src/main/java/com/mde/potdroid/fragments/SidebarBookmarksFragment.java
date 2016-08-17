@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -219,9 +220,9 @@ public class SidebarBookmarksFragment extends BaseFragment
             public TextView mTextTitle;
             public TextView mTextNewposts;
 
-            public ViewHolder(RelativeLayout container) {
+            public ViewHolder(FrameLayout container) {
                 super(container);
-                mContainer = container;
+                mContainer = (RelativeLayout) container.findViewById(R.id.container);
                 mTextTitle = (TextView) mContainer.findViewById(R.id.name);
                 mTextNewposts = (TextView) mContainer.findViewById(R.id.newposts);
             }
@@ -240,7 +241,7 @@ public class SidebarBookmarksFragment extends BaseFragment
         @Override
         public BookmarkListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             // create a new view
-            RelativeLayout v = (RelativeLayout) LayoutInflater.from(parent.getContext())
+            FrameLayout v = (FrameLayout) LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.listitem_sidebar_bookmark, parent, false);
 
             return new ViewHolder(v);

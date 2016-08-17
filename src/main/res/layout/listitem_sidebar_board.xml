@@ -1,33 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/container"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="?attr/bbBackgroundList"
-              android:padding="?attr/bbListItemPaddingLR"
-              android:orientation="vertical"
-              android:layout_marginBottom="1dp">
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="?attr/colorAccent"
+        android:layout_marginBottom="1dp">
 
-    <TextView
-            android:id="@+id/name"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:scrollHorizontally="false"
-            android:textSize="?attr/bbListItemFontPrimary"
-            android:textColor="?attr/bbTextColorPrimary"/>
-
-    <TextView
-            android:id="@+id/text_description"
+    <LinearLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="?attr/bbListItemFontTertiary"
-            android:textColor="?attr/bbTextColorSecondary"/>
+            android:background="?attr/selectableItemBackground"
+            android:padding="?attr/bbListItemPaddingLR"
+            android:orientation="vertical">
 
-    <TextView
-            android:id="@+id/last_post"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="?attr/bbListItemFontTertiary"
-            android:textColor="?attr/bbTextColorSecondary"/>
-</LinearLayout>
+        <TextView
+                android:id="@+id/name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:scrollHorizontally="false"
+                android:textSize="?attr/bbListItemFontPrimary"
+                android:textColor="?attr/bbTextColorPrimary"/>
+
+        <TextView
+                android:id="@+id/text_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="?attr/bbListItemFontTertiary"
+                android:textColor="?attr/bbTextColorSecondary"/>
+
+        <TextView
+                android:id="@+id/last_post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="?attr/bbListItemFontTertiary"
+                android:textColor="?attr/bbTextColorSecondary"/>
+    </LinearLayout>
+</FrameLayout>

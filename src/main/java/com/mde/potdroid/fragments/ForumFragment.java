@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spanned;
 import android.view.*;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -128,6 +129,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
 
+        FrameLayout mRoot;
         RelativeLayout mContainer;
         TextView mTextDescription;
         TextView mTextName;
@@ -135,6 +137,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
         public CategoryViewHolder(View view) {
             super(view);
 
+            mRoot = (FrameLayout) view;
             mContainer = (RelativeLayout) view.findViewById(R.id.container);
             mTextDescription = (TextView) view.findViewById(R.id.text_description);
             mTextName = (TextView) view.findViewById(R.id.text_name);
@@ -254,7 +257,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
             headerHolder.mTextName.setText(mCategory.getName());
             headerHolder.mTextDescription.setText(mCategory.getDescription());
 
-            headerHolder.mContainer.setOnClickListener(new View.OnClickListener() {
+            headerHolder.mRoot.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     expanded = !expanded;

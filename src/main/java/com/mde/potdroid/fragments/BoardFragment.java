@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spanned;
 import android.view.*;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -314,6 +315,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
         public class ViewHolder extends RecyclerView.ViewHolder {
 
+            public FrameLayout mRoot;
             public RelativeLayout mContainer;
             public TextView mTextTitle;
             public TextView mTextSubTitle;
@@ -323,9 +325,10 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             public ImageView mIconLock;
             public ImageView mIconBookmark;
 
-            public ViewHolder(RelativeLayout container) {
+            public ViewHolder(FrameLayout container) {
                 super(container);
-                mContainer = container;
+                mRoot = container;
+                mContainer = (RelativeLayout) container.findViewById(R.id.container);
                 mTextTitle = (TextView)mContainer.findViewById(R.id.title);
                 mTextSubTitle = (TextView)mContainer.findViewById(R.id.subtitle);
                 mTextPages = (TextView)mContainer.findViewById(R.id.pages);
@@ -349,7 +352,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         @Override
         public TopicListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             // create a new view
-            RelativeLayout v = (RelativeLayout)LayoutInflater.from(parent.getContext())
+            FrameLayout v = (FrameLayout)LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.listitem_thread, parent, false);
 
             return new ViewHolder(v);
@@ -414,23 +417,9 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             // the padding stuff is apparently an android bug...
             // see http://stackoverflow.com/questions/5890379
             if (t.isSticky() || t.isImportant() || t.isAnnouncement() || t.isGlobal()) {
-                View v = holder.mContainer.findViewById(R.id.container);
-                int padding_top = v.getPaddingTop();
-                int padding_bottom = v.getPaddingBottom();
-                int padding_right = v.getPaddingRight();
-                int padding_left = v.getPaddingLeft();
-
-                v.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getContext(), R.attr.bbBackgroundListActive));
-                v.setPadding(padding_left, padding_top, padding_right, padding_bottom);
+                holder.mRoot.setBackgroundColor(Utils.getColorByAttr(getContext(), R.attr.bbColorTertiary));
             } else {
-                View v = holder.mContainer.findViewById(R.id.container);
-                int padding_top = v.getPaddingTop();
-                int padding_bottom = v.getPaddingBottom();
-                int padding_right = v.getPaddingRight();
-                int padding_left = v.getPaddingLeft();
-
-                v.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getContext(), R.attr.bbBackgroundList));
-                v.setPadding(padding_left, padding_top, padding_right, padding_bottom);
+                holder.mRoot.setBackgroundColor(Utils.getColorByAttr(getContext(), R.attr.colorAccent));
             }
 
             if (!t.isSticky()) {

@@ -1,32 +1,40 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:background="?attr/colorAccent"
+        android:layout_marginBottom="1dp">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:id="@+id/container"
+            android:layout_height="wrap_content"
+            android:padding="?attr/bbListItemPaddingTB"
+            android:background="?attr/selectableItemBackground">
+
+        <TextView
+                android:id="@+id/text_name"
                 android:layout_width="match_parent"
-                android:id="@+id/container"
                 android:layout_height="wrap_content"
-                android:padding="?attr/bbListItemPaddingTB"
-                android:background="?attr/bbBackgroundListActive"
-                android:layout_marginBottom="1dp">
+                android:textSize="?attr/bbListItemFontSecondary"
+                android:textColor="?attr/bbTextColorPrimary"/>
 
-    <TextView
-            android:id="@+id/text_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="?attr/bbListItemFontSecondary"
-            android:textColor="?attr/bbTextColorPrimary"/>
+        <TextView
+                android:id="@+id/text_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_name"
+                android:textSize="?attr/bbListItemFontTertiary"
+                android:textColor="?attr/bbTextColorSecondary"/>
 
-    <TextView
-            android:id="@+id/text_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/text_name"
-            android:textSize="?attr/bbListItemFontTertiary"
-            android:textColor="?attr/bbTextColorSecondary"/>
+        <TextView
+                android:id="@+id/last_post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_description"
+                android:textSize="?attr/bbListItemFontTertiary"
+                android:textColor="?attr/bbTextColorSecondary"/>
 
-    <TextView
-            android:id="@+id/last_post"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/text_description"
-            android:textSize="?attr/bbListItemFontTertiary"
-            android:textColor="?attr/bbTextColorSecondary"/>
-
-</RelativeLayout>
+    </RelativeLayout>
+</FrameLayout>

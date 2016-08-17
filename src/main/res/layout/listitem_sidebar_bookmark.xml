@@ -1,36 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/bbBackgroundList"
-                android:padding="?attr/bbListItemPaddingLR"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="1dp">
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="?attr/colorAccent"
+        android:layout_marginBottom="1dp">
 
-    <TextView
-            android:id="@+id/name"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:scrollHorizontally="false"
-            android:textSize="?attr/bbListItemFontPrimary"
-            android:ellipsize="end"
-            android:textColor="?attr/bbTextColorPrimary"
-            android:paddingRight="?attr/bbListItemPaddingTB"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/newposts"/>
-
-    <TextView
-            android:id="@+id/newposts"
+    <RelativeLayout
+            android:id="@+id/container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:layout_alignParentRight="true"
-            android:textSize="?attr/bbListItemFontTertiary"
-            android:background="?attr/bbColorSecondary"
-            android:textColor="?attr/bbTextColorSecondary"/>
-</RelativeLayout>
+            android:background="?attr/selectableItemBackground"
+            android:padding="?attr/bbListItemPaddingLR"
+            android:layout_gravity="center_vertical">
+
+        <TextView
+                android:id="@+id/name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:scrollHorizontally="false"
+                android:textSize="?attr/bbListItemFontPrimary"
+                android:ellipsize="end"
+                android:textColor="?attr/bbTextColorPrimary"
+                android:paddingRight="?attr/bbListItemPaddingTB"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/newposts"/>
+
+        <TextView
+                android:id="@+id/newposts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:layout_alignParentRight="true"
+                android:textSize="?attr/bbListItemFontTertiary"
+                android:background="?attr/bbColorSecondary"
+                android:textColor="?attr/bbTextColorSecondary"/>
+    </RelativeLayout>
+</FrameLayout>

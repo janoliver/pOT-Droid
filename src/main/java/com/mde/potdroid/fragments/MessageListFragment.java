@@ -189,10 +189,10 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
             public ViewHolder(FrameLayout container) {
                 super(container);
                 mRoot = container;
-                mContainer = (RelativeLayout) mContainer.findViewById(R.id.container);
-                mTextTitle = (TextView)mContainer.findViewById(R.id.title);
-                mBender = (ImageView)mContainer.findViewById(R.id.bender);
-                mTextDescription = (TextView)mContainer.findViewById(R.id.pages);
+                mContainer = (RelativeLayout) container.findViewById(R.id.container);
+                mTextTitle = (TextView)container.findViewById(R.id.title);
+                mBender = (ImageView)container.findViewById(R.id.bender);
+                mTextDescription = (TextView)container.findViewById(R.id.pages);
             }
         }
 

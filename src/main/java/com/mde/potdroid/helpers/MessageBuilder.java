@@ -1,6 +1,7 @@
 package com.mde.potdroid.helpers;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import com.mde.potdroid.R;
 import com.mde.potdroid.models.Message;
 import com.samskivert.mustache.Mustache;
@@ -16,10 +17,13 @@ public class MessageBuilder {
     // a reference to the context
     private Context mContext;
     private SettingsWrapper mSettings;
+    private BenderHandler mBenderHandler;
 
     public MessageBuilder(Context cx) {
         mContext = cx;
         mSettings = new SettingsWrapper(cx);
+
+        mBenderHandler = new BenderHandler(cx);
     }
 
     /**
@@ -59,6 +63,20 @@ public class MessageBuilder {
         }
 
 
+        public boolean getBenderHead() {
+            return mSettings.benderPosition() == 1 ||
+                    (mSettings.benderPosition() == 3 &&
+                            mContext.getResources().getConfiguration().orientation
+                                    == Configuration.ORIENTATION_PORTRAIT);
+        }
+
+        public boolean getBenderBody() {
+            return mSettings.benderPosition() == 2 ||
+                    (mSettings.benderPosition() == 3 &&
+                            mContext.getResources().getConfiguration().orientation
+                                    == Configuration.ORIENTATION_LANDSCAPE);
+        }
+
         public Integer getId() {
             return mMessage.getId();
         }
@@ -73,6 +91,16 @@ public class MessageBuilder {
             if(mMessage.isSystem())
                 return 0;
             return mMessage.getFrom().getId();
+        }
+
+        public String getAvatarBackground() {
+            if(mMessage.isSystem())
+                return "";
+            String path = mBenderHandler.getAvatarFilePathIfExists(mMessage.getFrom());
+            if (path == null)
+                return "";
+            else
+                return String.format("style=\"background-image:url(%s)\"", path);
         }
 
         public String getAvatar() {

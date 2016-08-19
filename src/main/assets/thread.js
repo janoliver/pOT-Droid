@@ -230,8 +230,8 @@ function scrollToLastPostByUID(uid) {
 function loadAllImages() {
     var all = [];
     if(api.getScroll() > 0) {
-        var self = $('a[name="' + api.getScroll() + '"]').parent().find('div.img i.img-loader, div.img-link i.img-loader');
-        var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.img i.img-loader, div.img-link i.img-loader');
+        var self = $('a[name="' + api.getScroll() + '"]').parent().find('div.img.media button.inline, div.img-link.media button.inline');
+        var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.img.media button.inline, div.img-link.media button.inline');
         all = $.merge(self, after);
     } else {
         all = $('div.img i.img-loader, div.img-link i.img-loader');
@@ -245,8 +245,8 @@ function loadAllImages() {
 function loadAllGifs() {
     var all = [];
     if(api.getScroll() > 0) {
-        var self = $('a[name="' + api.getScroll() + '"]').parent().find('div.gif i.img-loader, div.gif-link i.img-loader');
-        var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.gif i.img-loader, div.gif-link i.img-loader');
+        var self = $('a[name="' + api.getScroll() + '"]').parent().find('div.gif.media button.inline, div.gif-link.media button.inline');
+        var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.gif.media button.inline, div.gif-link.media button.inline');
         all = $.merge(self, after);
     } else {
         all = $('div.gif i.img-loader, div.gif-link i.img-loader');
@@ -260,8 +260,8 @@ function loadAllGifs() {
 function loadAllVideos() {
     var all = [];
     if(api.getScroll() > 0) {
-        var self = $('a[name="' + api.getScroll() + '"]').parent().find('div.video i.vid');
-        var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.video i.vid');
+        var self = $('a[name="' + api.getScroll() + '"]').parent().find('div.video.media button.inline');
+        var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.video.media button.inline');
         all = $.merge(self, after);
     } else {
         all = $('div.video i.vid');

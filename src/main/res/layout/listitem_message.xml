@@ -1,39 +1,47 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/container"
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:background="?attr/colorAccent"
+        android:layout_marginBottom="1dp">
+
+    <RelativeLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="?attr/bbListItemPaddingTB"
+            android:background="?attr/selectableItemBackground">
+
+        <ImageView
+                android:id="@+id/bender"
+                android:contentDescription="@string/none"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:maxWidth="40dp"
+                android:layout_marginRight="10dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:adjustViewBounds="true"/>
+
+        <TextView
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="?attr/bbListItemPaddingTB"
-                android:background="?attr/bbBackgroundList"
-                android:layout_marginBottom="1dp">
+                android:textSize="?attr/bbListItemFontPrimary"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:layout_toRightOf="@+id/bender"
+                android:textColor="?attr/bbTextColorPrimary"/>
 
-    <ImageView
-            android:id="@+id/bender"
-            android:contentDescription="@string/none"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:maxWidth="40dp"
-            android:layout_marginRight="10dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:adjustViewBounds="true"/>
+        <TextView
+                android:id="@+id/pages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:layout_toRightOf="@+id/bender"
+                android:textSize="?attr/bbListItemFontTertiary"
+                android:textColor="?attr/bbTextColorSecondary"/>
 
-    <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="?attr/bbListItemFontPrimary"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:layout_toRightOf="@+id/bender"
-            android:textColor="?attr/bbTextColorPrimary"/>
-
-    <TextView
-            android:id="@+id/pages"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/title"
-            android:layout_toRightOf="@+id/bender"
-            android:textSize="?attr/bbListItemFontTertiary"
-            android:textColor="?attr/bbTextColorSecondary"/>
-
-</RelativeLayout>
+    </RelativeLayout>
+</FrameLayout>

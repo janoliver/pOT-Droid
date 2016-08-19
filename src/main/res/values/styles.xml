@@ -61,10 +61,6 @@
         <item name="bbProgressPrimary">@color/white</item>
         <item name="bbProgressSecondary">@color/bbstyle_lighterblue</item>
         <item name="bbTopicCssFile">bbdark.css</item>
-        <item name="bbBackgroundList">@drawable/dark_background_list</item>
-        <item name="bbBackgroundListActive">@drawable/dark_background_list_active</item>
-        <item name="bbBackgroundTransparentClickable">@drawable/dark_background_transparent_clickable</item>
-        <item name="bbCircularTransparentClickable">@drawable/dark_circular_translucent_button_background</item>
 
         <!-- All dialogs will default to Theme.DARK with this set to true.-->
         <item name="md_dark_theme">false</item>
@@ -119,10 +115,6 @@
         <item name="bbProgressPrimary">@color/bbstyle_darkblue</item>
         <item name="bbProgressSecondary">@color/bbstyle_lighterblue</item>
         <item name="bbTopicCssFile">bblight.css</item>
-        <item name="bbBackgroundList">@drawable/light_background_list</item>
-        <item name="bbBackgroundListActive">@drawable/light_background_list_active</item>
-        <item name="bbBackgroundTransparentClickable">@drawable/light_background_transparent_clickable</item>
-        <item name="bbCircularTransparentClickable">@drawable/light_circular_translucent_button_background</item>
 
         <!-- All dialogs will default to Theme.DARK with this set to true.-->
         <item name="md_dark_theme">false</item>

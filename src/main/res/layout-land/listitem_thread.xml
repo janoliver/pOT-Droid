@@ -1,85 +1,94 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="?attr/bbListItemPaddingTB"
-                android:background="?attr/bbBackgroundList">
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:background="?attr/colorAccent"
+        android:layout_marginBottom="1dp">
 
-    <TextView
-            android:id="@+id/title"
+    <RelativeLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/icons"
-            android:layout_alignParentLeft="true"
-            android:textSize="?attr/bbListItemFontPrimary"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textColor="?attr/bbTextColorPrimary"
-            android:drawablePadding="5dp"/>
+            android:padding="?attr/bbListItemPaddingTB"
+            android:background="?attr/selectableItemBackground">
 
-    <LinearLayout
-            android:id="@+id/icons"
-            android:layout_width="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/icons"
+                android:layout_alignParentLeft="true"
+                android:textSize="?attr/bbListItemFontPrimary"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="?attr/bbTextColorPrimary"
+                android:drawablePadding="5dp"/>
 
-        <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginTop="4dp"
-                android:id="@+id/icon_locked"
-                android:src="@drawable/ic_lock"
-                android:tint="?attr/bbTextColorSecondary"/>
+        <LinearLayout
+                android:id="@+id/icons"
+                android:layout_width="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginTop="4dp"
-                android:id="@+id/icon_pinned"
-                android:src="@drawable/ic_pin"
-                android:tint="?attr/bbTextColorSecondary"/>
+            <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginTop="4dp"
+                    android:id="@+id/icon_locked"
+                    android:src="@drawable/ic_lock"
+                    android:tint="?attr/bbTextColorSecondary"/>
+
+            <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginTop="4dp"
+                    android:id="@+id/icon_pinned"
+                    android:src="@drawable/ic_pin"
+                    android:tint="?attr/bbTextColorSecondary"/>
 
 
-        <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginTop="4dp"
-                android:id="@+id/icon_bookmarked"
-                android:src="@drawable/ic_bookmark"
-                android:tint="?attr/bbTextColorSecondary"/>
+            <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginTop="4dp"
+                    android:id="@+id/icon_bookmarked"
+                    android:src="@drawable/ic_bookmark"
+                    android:tint="?attr/bbTextColorSecondary"/>
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <TextView
-            android:id="@+id/subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/pages"
-            android:layout_below="@+id/title"
-            android:layout_marginRight="15dp"
-            android:textSize="?attr/bbListItemFontSecondary"
-            android:textColor="?attr/bbTextColorSecondary"/>
+        <TextView
+                android:id="@+id/subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/pages"
+                android:layout_below="@+id/title"
+                android:layout_marginRight="15dp"
+                android:textSize="?attr/bbListItemFontSecondary"
+                android:textColor="?attr/bbTextColorSecondary"/>
 
-    <TextView
-            android:id="@+id/pages"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/author"
-            android:layout_below="@+id/title"
-            android:textSize="?attr/bbListItemFontTertiary"
-            android:textColor="?attr/bbTextColorSecondary"/>
+        <TextView
+                android:id="@+id/pages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/author"
+                android:layout_below="@+id/title"
+                android:textSize="?attr/bbListItemFontTertiary"
+                android:textColor="?attr/bbTextColorSecondary"/>
 
-    <TextView
-            android:id="@+id/author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/title"
-            android:textSize="?attr/bbListItemFontTertiary"
-            android:textColor="?attr/bbTextColorSecondary"/>
+        <TextView
+                android:id="@+id/author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/title"
+                android:textSize="?attr/bbListItemFontTertiary"
+                android:textColor="?attr/bbTextColorSecondary"/>
 
-</RelativeLayout>
+    </RelativeLayout>
+</FrameLayout>

@@ -413,9 +413,6 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                     t.getNumberOfPosts(), t.getNumberOfPages()));
             holder.mTextPages.setText(pages_content);
 
-            // all important topics get a different background.
-            // the padding stuff is apparently an android bug...
-            // see http://stackoverflow.com/questions/5890379
             if (t.isSticky() || t.isImportant() || t.isAnnouncement() || t.isGlobal()) {
                 holder.mRoot.setBackgroundColor(Utils.getColorByAttr(getContext(), R.attr.bbColorTertiary));
             } else {

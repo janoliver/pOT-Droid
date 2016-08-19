@@ -18,10 +18,6 @@
     <attr name="bbProgressPrimary" format="color|reference"/>
     <attr name="bbProgressSecondary" format="color|reference"/>
     <attr name="bbTopicCssFile" format="string"/>
-    <attr name="bbBackgroundList" format="reference"/>
-    <attr name="bbBackgroundListActive" format="reference"/>
-    <attr name="bbBackgroundTransparentClickable" format="reference"/>
-    <attr name="bbCircularTransparentClickable" format="reference"/>
 
     <attr name="bbListItemPaddingLR" format="dimension" />
     <attr name="bbListItemPaddingTB" format="dimension" />

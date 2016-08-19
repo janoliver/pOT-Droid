@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spanned;
 import android.view.*;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -179,14 +180,16 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
 
         public class ViewHolder extends RecyclerView.ViewHolder {
 
+            public FrameLayout mRoot;
             public RelativeLayout mContainer;
             public TextView mTextTitle;
             public TextView mTextDescription;
             public ImageView mBender;
 
-            public ViewHolder(RelativeLayout container) {
+            public ViewHolder(FrameLayout container) {
                 super(container);
-                mContainer = container;
+                mRoot = container;
+                mContainer = (RelativeLayout) mContainer.findViewById(R.id.container);
                 mTextTitle = (TextView)mContainer.findViewById(R.id.title);
                 mBender = (ImageView)mContainer.findViewById(R.id.bender);
                 mTextDescription = (TextView)mContainer.findViewById(R.id.pages);
@@ -210,7 +213,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
         @Override
         public MessageListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             // create a new view
-            RelativeLayout v = (RelativeLayout)LayoutInflater.from(parent.getContext())
+            FrameLayout v = (FrameLayout)LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.listitem_message, parent, false);
 
             return new ViewHolder(v);
@@ -238,17 +241,10 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
                     time));
             holder.mTextDescription.setText(content);
 
-            int padding_top = holder.mContainer.getPaddingTop();
-            int padding_bottom = holder.mContainer.getPaddingBottom();
-            int padding_right = holder.mContainer.getPaddingRight();
-            int padding_left = holder.mContainer.getPaddingLeft();
-
             if (m.isUnread())
-                holder.mContainer.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getContext(), R.attr.bbBackgroundListActive));
+                holder.mRoot.setBackgroundColor(Utils.getColorByAttr(getContext(), R.attr.bbColorTertiary));
             else
-                holder.mContainer.setBackgroundResource(Utils.getDrawableResourceIdByAttr(getContext(), R.attr.bbBackgroundList));
-
-            holder.mContainer.setPadding(padding_left, padding_top, padding_right, padding_bottom);
+                holder.mRoot.setBackgroundColor(Utils.getColorByAttr(getContext(), R.attr.colorAccent));
 
             // bender. Show an alias as long as the real bender is not present. If the sender
             // is "System", hide the view.

@@ -35,7 +35,6 @@ import com.mde.potdroid.views.ChoosePageDialog;
 import com.mde.potdroid.views.ImageActionsDialog;
 import com.mde.potdroid.views.LinkActionsDialog;
 import com.mde.potdroid.views.PostActionsDialog;
-import com.nineoldandroids.view.ViewPropertyAnimator;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -889,7 +888,7 @@ public class TopicFragment extends PaginateFragment implements
             mToolbarHidden = !show;
             Toolbar t = getBaseActivity().getToolbar();
             int translation = show ? 0 : -t.getHeight();
-            ViewPropertyAnimator.animate(t).translationY(translation).setDuration(200).start();
+            t.animate().translationY(translation).setDuration(200).start();
             //mPullToRefreshLayout.setTopMargin(translation + t.getHeight());
         }
 
@@ -897,7 +896,7 @@ public class TopicFragment extends PaginateFragment implements
             mToolbarHidden = !show;
             Toolbar t = getBaseActivity().getBottomToolbar();
             int translation = show ? 0 : t.getHeight();
-            ViewPropertyAnimator.animate(t).translationY(translation).setDuration(200).start();
+            t.animate().translationY(translation).setDuration(200).start();
         }
 
         @Override

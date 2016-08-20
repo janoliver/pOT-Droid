@@ -149,14 +149,16 @@ public class TopicBuilder {
 
         private Topic mTopic;
         private Context mContext;
+        private CssStyleWrapper mStyle;
 
         public TopicContext(Topic t, Context cx) {
             mTopic = t;
             mContext = cx;
+            mStyle = new CssStyleWrapper(cx);
         }
 
-        public String getCssFile() {
-            return Utils.getStringByAttr(mContext, R.attr.bbTopicCssFile);
+        public CssStyleWrapper getStyle() {
+            return mStyle;
         }
 
         public boolean getBenderHead() {

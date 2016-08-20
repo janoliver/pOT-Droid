@@ -234,7 +234,7 @@ function loadAllImages() {
         var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.img.media button.inline, div.img-link.media button.inline');
         all = $.merge(self, after);
     } else {
-        all = $('div.img i.img-loader, div.img-link i.img-loader');
+        all = $('div.img.media button.inline, div.img-link.media button.inline');
     }
     all.each(function() {
         replaceImage($(this));
@@ -249,7 +249,7 @@ function loadAllGifs() {
         var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.gif.media button.inline, div.gif-link.media button.inline');
         all = $.merge(self, after);
     } else {
-        all = $('div.gif i.img-loader, div.gif-link i.img-loader');
+        all = $('div.gif.media button.inline, div.gif-link.media button.inline');
     }
     all.each(function() {
         replaceImage($(this));
@@ -264,7 +264,7 @@ function loadAllVideos() {
         var after = $('a[name="' + api.getScroll() + '"]').parent().nextAll().find('div.video.media button.inline');
         all = $.merge(self, after);
     } else {
-        all = $('div.video i.vid');
+        all = $('div.video.media button.inline');
     }
     all.each(function() {
         replaceVideo($(this), $(this).parent().attr("data-src"));

@@ -131,7 +131,7 @@ $(document).ready(function() {
 
 function replaceImage(container) {
     var classes = "material-icons img-spinner spin";
-    var content = "loop";
+    var content = "&#xE028;";
     var icon = container.find("i");
     icon.attr('class', classes);
     icon.text(content);
@@ -146,9 +146,9 @@ function displayImageLoader(id) {
     var el = $("#" + id);
     var icon = el.find("i");
     var classes = "material-icons err";
-    var content = "photo";
+    var content = "&#xE410;";
     if(icon.parent().hasClass("gif"))
-        content = "local_movies";
+        content = "&#xE54D;";
     icon.attr("class", classes);
     icon.text(content);
     el.removeAttr('id');

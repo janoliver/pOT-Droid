@@ -408,7 +408,7 @@ public class TopicBuilder {
             public String html(String content, List<String> args) {
                 mParser.getCallback().onTag("spoiler", content, args);
                 return String.format("<div class=\"media spoiler\">" +
-                        "<i class=\"material-icons\">visibility_off</i>" +
+                        "<i class=\"material-icons\">&#xE8F5;</i>" +
                         "<button class=\"viewer mdl-button mdl-js-button\">Spoiler zeigen</button>" +
                         "<div class=\"spoiler-content\">%1$s</div></div>", content);
             }
@@ -470,10 +470,10 @@ public class TopicBuilder {
                 if (m.find() && args.size() > 0) {
                     String extension = m.group(1);
                     String type_class = "img-link";
-                    String icon = "photo";
+                    String icon = "&#xE410;";
                     if (extension.equals("gif")) {
                         type_class = "gif-link";
-                        icon = "local_movies";
+                        icon = "&#xE54D;";
                     }
                     return String.format("<div class=\"media %1$s\" data-src=\"%2$s\"" +
                             "data-href=\"%3$s\">" +
@@ -502,7 +502,7 @@ public class TopicBuilder {
                 if (args.size() == 3)
                     return String.format("<div class=\"quote\">" +
                                     "<a href=\"http://forum.mods.de/bb/thread.php?TID=%3$s&PID=%4$s\" " +
-                                    "class=\"author\"><i class=\"material-icons\">format_quote</i>%1$s</a>" +
+                                    "class=\"author\"><i class=\"material-icons\">&#xE244;</i>%1$s</a>" +
                                     "<div class=\"content\">%2$s</div></div>",
                             args.get(2), content, args.get(0), args.get(1));
                 else
@@ -524,10 +524,10 @@ public class TopicBuilder {
                     mParser.getCallback().onTag("img", content, args);
                     String extension = content.substring(content.length() - 3).toLowerCase();
                     String type_class = "img";
-                    String icon = "photo";
+                    String icon = "&#xE410;";
                     if (extension.equals("gif")) {
                         type_class = "gif";
-                        icon = "local_movies";
+                        icon = "&#xE54D;";
                     }
                     return String.format("<div class=\"media %1$s\" data-src=\"%2$s\">" +
                             "<i class=\"material-icons\">%3$s</i>" +
@@ -545,14 +545,14 @@ public class TopicBuilder {
                 if (content.contains("youtube") || content.contains("youtu.be")) {
 
                     return String.format("<div class=\"media video yt\" data-src=\"%1$s\">" +
-                            "<i class=\"material-icons\">movie</i>" +
+                            "<i class=\"material-icons\">&#xE02C;</i>" +
                             "<button class=\"link mdl-button mdl-js-button\">Youtube</button>" +
                             "<button class=\"inline mdl-button mdl-js-button\">Inline</button>" +
                             "<button class=\"viewer mdl-button mdl-js-button\">Viewer</button>" +
                             "</div>", content);
                 } else {
                     return String.format("<div class=\"media video\" data-src=\"%1$s\">" +
-                            "<i class=\"material-icons\">local_movies</i>" +
+                            "<i class=\"material-icons\">&#xE54D;</i>" +
                             "<button class=\"inline mdl-button mdl-js-button\">Inline</button>" +
                             "<button class=\"viewer mdl-button mdl-js-button\">Viewer</button>" +
                             "</div>", content);

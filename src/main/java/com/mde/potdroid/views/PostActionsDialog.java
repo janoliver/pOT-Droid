@@ -41,7 +41,7 @@ public class PostActionsDialog extends DialogFragment {
         final String[] post_menu = getResources().getStringArray(R.array.post_dialog);
 
         ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, post_menu) {
+                R.layout.listitem_icon, post_menu) {
 
             @Override
             public boolean isEnabled(int position) {

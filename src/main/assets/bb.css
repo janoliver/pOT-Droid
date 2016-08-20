@@ -8,10 +8,6 @@ body {
 .post .header,
 .post .body {
     padding:10px;
-    display:flex;
-    display: -webkit-flex;
-    align-items: flex-start;
-    -webkit-align-items: flex-start;
 }
 
 .post {
@@ -23,7 +19,7 @@ body {
 }
 
 .post .header .post-menu-button {
-    margin-left:auto;
+    float:right;
 }
 
 .post .header {
@@ -34,6 +30,7 @@ body {
     background: url("images/placeholder_bender.png") left top / contain no-repeat;
     width:50px;
     height:50px;
+    float:left;
 }
 
 .post .body {
@@ -41,15 +38,11 @@ body {
     width:auto;
 }
 
-.post .body .content {
-    display:block;
-    width: 100%;
-}
-
 .post .body .bender {
     background: url("images/placeholder_bender.png") left top / contain no-repeat;
     width:80px;
     height:80px;
+    float:left;
 }
 
 .post .header .author  {
@@ -70,22 +63,20 @@ body {
 
 .post .body .media {
     width:100%;
+    display:block;
     margin:5px 0;
     color: inherit;
-    display:inline-flex;
-    display:-webkit-inline-flex;
-    justify-content: center;
-    -webkit-justify-content: center;
+    text-align:right;
 }
 
 .post .body .media i {
-    margin-right:auto;
     font-size:34px;
+    float:left;
 }
 
 .post .body .media button {
     font-size:12px;
-    padding:5px 15px;
+    padding:10px 15px;
     text-transform: uppercase;
 }
 
@@ -155,7 +146,7 @@ body {
 .post .body .edited {
     margin-top:1em;
     color:#aaa;
-    font-size:0.7em;
+    font-size:0.7em;<
 }
 
 .post .body .content img {

@@ -23,7 +23,7 @@
                 android:layout_gravity="center_vertical"
                 style="@style/Widget.AppCompat.ActionButton"
                 android:id="@+id/button_home"
-                android:src="@drawable/ic_home"/>
+                app:srcCompat="@drawable/ic_home"/>
 
         <ImageButton
                 android:layout_width="@dimen/actionBarNarrowSize"
@@ -32,7 +32,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_toLeftOf="@+id/button_rwd"
                 style="@style/Widget.AppCompat.ActionButton"
-                android:src="@drawable/ic_first"/>
+                app:srcCompat="@drawable/ic_first"/>
 
         <ImageButton
                 android:layout_width="@dimen/actionBarNarrowSize"
@@ -41,7 +41,7 @@
                 android:layout_toLeftOf="@+id/button_refresh"
                 android:id="@+id/button_rwd"
                 style="@style/Widget.AppCompat.ActionButton"
-                android:src="@drawable/ic_left"/>
+                app:srcCompat="@drawable/ic_left"/>
 
         <ImageButton
                 android:layout_width="@dimen/actionBarNarrowSize"
@@ -50,7 +50,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_centerInParent="true"
                 style="@style/Widget.AppCompat.ActionButton"
-                android:src="@drawable/ic_refresh"/>
+                app:srcCompat="@drawable/ic_refresh"/>
 
         <ImageButton
                 android:layout_width="@dimen/actionBarNarrowSize"
@@ -59,7 +59,7 @@
                 android:layout_toRightOf="@+id/button_refresh"
                 style="@style/Widget.AppCompat.ActionButton"
                 android:id="@+id/button_fwd"
-                android:src="@drawable/ic_right"/>
+                app:srcCompat="@drawable/ic_right"/>
 
         <ImageButton
                 android:layout_width="@dimen/actionBarNarrowSize"
@@ -68,7 +68,7 @@
                 android:layout_toRightOf="@+id/button_fwd"
                 style="@style/Widget.AppCompat.ActionButton"
                 android:id="@+id/button_ffwd"
-                android:src="@drawable/ic_last"/>
+                app:srcCompat="@drawable/ic_last"/>
 
         <ImageButton
                 android:layout_width="@dimen/actionBarNarrowSize"
@@ -78,6 +78,6 @@
                 android:layout_gravity="center_vertical"
                 style="@style/Widget.AppCompat.ActionButton"
                 android:id="@+id/button_write"
-                android:src="@drawable/ic_create"/>
+                app:srcCompat="@drawable/ic_create"/>
     </RelativeLayout>
 </android.support.v7.widget.Toolbar>

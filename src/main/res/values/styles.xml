@@ -81,6 +81,7 @@
         <item name="colorPrimary">?attr/bbToolbarBackground</item>
         <item name="colorPrimaryDark">?attr/bbStatusbarBackground</item>
         <item name="colorAccent">?attr/bbToolbarBackground</item>
+        <item name="android:textColor">?attr/bbToolbarColor</item>
         <item name="android:textColorPrimary">?attr/bbToolbarColor</item>
 
         <item name="windowActionBar">false</item>
@@ -89,56 +90,69 @@
     </style>
 
     <style name="PotDroidLightBase" parent="@style/Theme.AppCompat.Light">
+
+        <item name="android:windowBackground">@color/white</item>
+
+        <item name="bbDarkerItemBackground">@color/lightergrey</item>
+        <item name="bbItemBackground">@color/white</item>
+        <item name="bbTextColorPrimary">@color/bbstyle_darkblue</item>
+        <item name="bbTextColorSecondary">@color/darkgrey</item>
+        <item name="bbTextColorTertiary">@color/bbstyle_lighterblue</item>
+        <item name="bbListSeparatorColor">@color/lightgrey</item>
+
+        <item name="bbTopicBackgroundColor">@color/grey</item>
+        <item name="bbPostBackgroundColor">@color/white</item>
+        <item name="bbPostHeaderBackgroundColor">@color/lightergrey</item>
+        <item name="bbQuoteBackgroundColor">@color/lightgrey_transparent</item>
+        <item name="bbQuoteHeaderColor">@color/darkgrey</item>
+        <item name="bbNewPostGlowColor">@color/white_semi</item>
+        <item name="bbMediaBackgroundColor">?attr/bbPostHeaderBackgroundColor</item>
+        <item name="bbMediaForegroundColor">?attr/bbTextColorSecondary</item>
+
+        <item name="bbEditTextBackground">@color/lightergrey</item>
+        <item name="bbEditTextColor">@color/bbstyle_darkblue</item>
+        <item name="bbEditTextHintColor">@color/grey</item>
+
+        <item name="bbStatusbarBackground">@color/bbstyle_darkblue</item>
+        <item name="bbToolbarBackground">@color/bbstyle_lightblue</item>
+        <item name="bbToolbarColor">@color/white</item>
+
+        <item name="bbProgressBackground">@color/bbstyle_darkblue</item>
+        <item name="bbProgressForeground">@color/white</item>
+
+        <!-- styles controling the material dialog look. See
+        https://github.com/afollestad/material-dialogs-->
+        <item name="md_dark_theme">false</item>
+        <item name="md_title_color">?attr/bbTextColorPrimary</item>
+        <item name="md_content_color">?attr/bbTextColorPrimary</item>
+        <item name="md_positive_color">?attr/bbTextColorPrimary</item>
+        <item name="md_neutral_color">?attr/bbTextColorSecondary</item>
+        <item name="md_negative_color">?attr/bbTextColorSecondary</item>
+        <item name="md_link_color">?attr/bbTextColorPrimary</item>
+        <item name="md_item_color">?attr/bbTextColorPrimary</item>
+        <item name="md_background_color">@color/bbstyle_lighterblue</item>
+        <item name="md_divider_color">?attr/bbListSeparatorColor</item>
+
+        <!-- system styles, only reference other attrs -->
+        <item name="colorPrimary">?attr/bbToolbarBackground</item>
+        <item name="colorPrimaryDark">?attr/bbStatusbarBackground</item>
+        <item name="colorAccent">?attr/bbToolbarBackground</item>
+        <item name="android:textColor">?attr/bbToolbarColor</item>
+        <item name="android:textColorPrimary">?attr/bbToolbarColor</item>
+
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
 
-        <item name="colorPrimary">@color/bbstyle_lightblue</item>
-        <item name="colorPrimaryDark">@color/bbstyle_darkblue</item>
-        <item name="colorAccent">@color/bbstyle_lightblue</item>
-        <item name="colorControlActivated">@color/black</item>
-        <item name="android:windowBackground">@color/white</item>
-
-        <item name="bbTextColorPrimary">@color/darkergrey</item>
-        <item name="bbTextColorSecondary">@color/darkgrey</item>
-        <item name="bbEditTextBackground">@color/lightergrey</item>
-        <item name="bbEditTextColor">@color/bbstyle_darkblue</item>
-        <item name="bbEditTextHintColor">@color/grey</item>
-        <item name="bbToolbarBackground">@color/bbstyle_lightblue</item>
-        <item name="bbToolbarColor">@color/white</item>
-        <item name="bbListSeparatorColor">@color/lightergrey</item>
-        <item name="bbProgressBackground">@color/bbstyle_darkblue</item>
-        <item name="bbProgressForeground">@color/bbstyle_lighterblue</item>
-
-        <!-- All dialogs will default to Theme.DARK with this set to true.-->
-        <item name="md_dark_theme">false</item>
-        <!-- By default, the title text is black or white based on the theme.-->
-        <item name="md_title_color">@color/white</item>
-        <!--By default, the content text is derived from the ?android:textColorSecondary OS attribute.-->
-        <item name="md_content_color">@color/white</item>
-        <!--By default, the accent color is derived from the colorAccent attribute of
-            AppCompat or android:colorAccent attribute of the Material theme.-->
-        <item name="md_positive_color">@color/bbstyle_darkerblue</item>
-        <item name="md_neutral_color">@color/bbstyle_darkerblue</item>
-        <item name="md_negative_color">@color/bbstyle_darkerblue</item>
-        <!--By default, the list item text color is black for the light theme and white for the dark theme.-->
-        <item name="md_item_color">@color/white</item>
-        <!--This overrides the default dark or light dialog background color.
-            Note that if you use a dark color here, you should set md_dark_theme to-->
-        <item name="md_background_color">@color/bbstyle_lightblue</item>
-        <!--This overrides the color used for the top and bottom dividers used whencontent is scrollable-->
-        <item name="md_divider_color">@color/bbstyle_darkerblue</item>
-        <!--This overrides the selector used on list items and stacked action buttons
-        <item name="md_selector">@drawable/selector</item>-->
-        <!--This overrides the selector used on action buttons
-        <item name="md_btn_selector">@drawable/selector</item>-->
     </style>
 
     <!-- Settings theme -->
     <style name="Theme.pOTSettings" parent="@style/PreferenceFixTheme.Light.NoActionBar">
+        <item name="colorAccent">@color/bbstyle_lightblue</item>
         <item name="colorPrimary">@color/bbstyle_lightblue</item>
         <item name="colorPrimaryDark">@color/bbstyle_darkblue</item>
         <item name="drawerArrowStyle">@style/Theme.pOTSettings.DrawerArrowStyle</item>
+        <item name="android:textColor">@color/bbstyle_lightblue</item>
         <item name="toolbarStyle">@style/Theme.pOTSettings.Toolbar</item>
         <!-- If you find the preference categories' bottom margin too big, uncomment this -->
         <!--<item name="preferenceCategory_marginBottom">0dp</item>-->
@@ -150,7 +164,7 @@
     </style>
 
     <style name="Theme.pOTSettings.Toolbar" parent="@style/Widget.AppCompat.Toolbar">
-        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorPrimary">@color/bbstyle_lightblue</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="color">@android:color/white</item>
         <item name="titleTextAppearance">@style/Theme.MyTheme.Toolbar.TextAppearance</item>
@@ -166,4 +180,7 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="PagerTitleStrip">
+        <item name="android:textColor">@color/bbstyle_lightblue</item>
+    </style>
 </resources>

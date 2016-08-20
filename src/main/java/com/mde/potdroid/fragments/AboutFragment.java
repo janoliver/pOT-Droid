@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import com.mde.potdroid.R;
+import com.mde.potdroid.helpers.CssStyleWrapper;
 import com.mde.potdroid.helpers.Network;
-import com.mde.potdroid.helpers.Utils;
 import com.samskivert.mustache.Mustache;
 
 import java.io.*;
@@ -64,9 +64,15 @@ public class AboutFragment extends BaseFragment {
 
     public static class AboutContext {
         protected Activity mActivity;
+        private CssStyleWrapper mStyle;
 
         public AboutContext(Activity act) {
             mActivity = act;
+            mStyle = new CssStyleWrapper(act);
+        }
+
+        public CssStyleWrapper getStyle() {
+            return mStyle;
         }
 
         public String getVersionString() {
@@ -96,11 +102,6 @@ public class AboutFragment extends BaseFragment {
         public Integer getDensity() {
             DisplayMetrics metrics = mActivity.getResources().getDisplayMetrics();
             return (int) (metrics.density * 160f);
-        }
-
-
-        public String getCssFile() {
-            return Utils.getStringByAttr(mActivity, R.attr.bbTopicCssFile);
         }
 
     }

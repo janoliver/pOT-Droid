@@ -3,11 +3,14 @@
     <color name="white">#ffffff</color>
     <color name="white_semi">#aaffffff</color>
     <color name="white_low">#66ffffff</color>
-    <color name="white_low2">#66000000</color>
 
     <color name="black">#000000</color>
     <color name="black_semi">#aa000000</color>
     <color name="black_low">#66000000</color>
+
+    <color name="error">#ffcc0000</color>
+    <color name="success">#ff669900</color>
+    <color name="info">#ff0099cc</color>
 
     <color name="grey">#aaaaaa</color>
     <color name="lightgrey">#cccccc</color>
@@ -20,15 +23,17 @@
     <color name="green">#ff02aa0f</color>
     <color name="blue">#ff050faa</color>
     <color name="yellow">#fffefb04</color>
+
     <color name="transparent">#00000001</color>
+
     <color name="bbstyle_darkblue">#ff222E3A</color>
     <color name="bbstyle_darkblue_semi">#aa222E3A</color>
+    <color name="bbstyle_darkblue_low">#66222E3A</color>
     <color name="bbstyle_darkerblue">#ff111723</color>
+    <color name="bbstyle_darkerblue_semi">#88111723</color>
     <color name="bbstyle_lightblue">#FF394E63</color>
+    <color name="bbstyle_lightblue_semi">#aa394E63</color>
     <color name="bbstyle_lighterblue">#ff51677e</color>
-    <color name="bbstyle_middleblue">#ff414f5c</color>
-    <color name="bbstyle_middleblue_semi">#bb414f5c</color>
-    <color name="pressed_bbdarkstyle">#CCFFFFFF</color>
 
     <color name="preference_accent">@color/bbstyle_lightblue</color>
 </resources>

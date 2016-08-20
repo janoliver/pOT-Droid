@@ -3,7 +3,7 @@
               android:id="@+id/sidebar"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="?attr/bbColorPrimary"
+              android:background="?attr/bbItemBackground"
               android:orientation="vertical">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,7 +19,7 @@
                 android:layout_gravity="center_vertical"
                 style="@style/Widget.AppCompat.ActionButton"
                 android:id="@+id/button_home"
-                android:src="@drawable/ic_home"
+                app:srcCompat="@drawable/ic_home"
                 android:layout_weight="1"/>
 
         <ImageButton
@@ -28,7 +28,7 @@
                 android:layout_gravity="center_vertical"
                 style="@style/Widget.AppCompat.ActionButton"
                 android:id="@+id/button_pm"
-                android:src="@drawable/ic_mail"
+                app:srcCompat="@drawable/ic_mail"
                 android:layout_weight="1"/>
 
         <ImageButton
@@ -37,7 +37,7 @@
                 android:layout_gravity="center_vertical"
                 style="@style/Widget.AppCompat.ActionButton"
                 android:id="@+id/button_bookmarks"
-                android:src="@drawable/ic_bookmark"
+                app:srcCompat="@drawable/ic_bookmark"
                 android:layout_weight="1"/>
 
         <ImageButton
@@ -46,7 +46,7 @@
                 android:layout_gravity="center_vertical"
                 style="@style/Widget.AppCompat.ActionButton"
                 android:id="@+id/button_preferences"
-                android:src="@drawable/ic_settings"
+                app:srcCompat="@drawable/ic_settings"
                 android:layout_weight="1"/>
 
     </LinearLayout>
@@ -91,7 +91,7 @@
                     android:layout_gravity="center_vertical"
                     style="@style/Widget.AppCompat.ActionButton"
                     android:id="@+id/button_refresh"
-                    android:src="@drawable/ic_refresh"
+                    app:srcCompat="@drawable/ic_refresh"
                     android:layout_centerHorizontal="true"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="10dp"

@@ -3,7 +3,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/root"
         android:layout_width="match_parent"
-        android:background="?attr/colorAccent"
+        android:background="?attr/bbItemBackground"
         android:layout_marginBottom="1dp">
 
     <RelativeLayout
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="?attr/bbListItemFontPrimary"
                 android:ellipsize="end"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:layout_toRightOf="@+id/bender"
                 android:textColor="?attr/bbTextColorPrimary"/>
 

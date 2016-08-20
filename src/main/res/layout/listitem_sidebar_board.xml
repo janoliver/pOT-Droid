@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:background="?attr/colorAccent"
+        android:background="?attr/bbItemBackground"
         android:layout_marginBottom="1dp">
 
     <LinearLayout
@@ -18,7 +18,7 @@
                 android:id="@+id/name"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:scrollHorizontally="false"
                 android:textSize="?attr/bbListItemFontPrimary"
                 android:textColor="?attr/bbTextColorPrimary"/>

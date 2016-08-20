@@ -1,220 +1,347 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title></title>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-        <meta name="viewport" content="width=device-width">
-        <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" type="text/css" />
-        <link rel="stylesheet" href="{{cssFile}}" type="text/css" />
-    </head>
-    <body>
-        <section>
-            <header>
-                <div class="author">Disclaimer Version 4</div>
-            </header>
-            <article>
-                <div>
-                    Hallo zusammen. Wenn ihr dies lest, dann verwendet ihr Version 4 von
-                    pOT-Droid. Mit dieser Version hat sich wieder Vieles geändert, was sicher
-                    nicht jedem/jeder schmeckt. Einige Features brauchen ein bisschen Eingewöhnungszeit,
-                    andere können in den Settings an- oder ausgestellt werden. Bevor ihr also meckert,
-                    bitte probiert einmal die App Einstellungen durch
-                    und versucht, die neue Version eine Weile zu verwenden. Ich bin natürlich
-                    weiterhin für Verbesserungsvorschläge und Kritik offen. Eine Übersicht über die
-                    Settings und was sie tun findet ihr
-                    <a href="http://projects.oelerich.org/projects/pot-droid/wiki/Settings">hier auf der Projektseite</a>.
-                    <br />
-                    <br />
-                    Ihr nehmt mir viel Arbeit ab, wenn ihr Bugs und Wünsche direkt als
-                    <a href="http://projects.oelerich.org/projects/pot-droid/issues/new">Neues Ticket</a>
-                    eintragt und dabei vorher checkt, ob ein entsprechendes Ticket
-                    <a href="https://projects.oelerich.org/projects/pot-droid/issues?query_id=4">vielleicht schon existiert</a>.
-                    Alternativ könnt ihr in den <a href="http://forum.mods.de/bb/thread.php?TID=213351">pOT-Droid Thread</a> posten.
-                    <br />
-                    <br />
-                    Ich nutze die neue Version schon einige Monate und finde sie deutlich besser
-                    als vorher. Hoffentlich denkt ihr ähnlich. :)
-                    <br />
-                    <br />
-                    Viele Grüße und, falls noch aktuell, guten Rutsch!
-                </div>
-            </article>
-        </section>
+<head>
+    <title></title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width,user-scalable=yes,initial-scale=1">
+    <link rel="stylesheet" href="material/material-icons.css" type="text/css"/>
+    <link rel="stylesheet" href="bb.css" type="text/css"/>
 
-        <section>
-            <header>
-                <div class="author">Über die App</div>
-            </header>
-            <article>
-                <div>
-                    Liebe Nutzerin, lieber Nutzer,<br /><br />
-                    Schön, dass du pOT-Droid installiert hast.
-                    Bevor es losgeht, ein paar Geheimtipps:
-                    <ul>
-                        <li>
-                            Als erstes solltest du in die Einstellungen schauen! Nicht, dass du
-                            irgendwas verpasst.
-                            <a href="http://projects.oelerich.org/projects/pot-droid/wiki/Settings">Infos zu den Settings</a>
-                        </li>
-                        <li>
-                            Das Verhalten beim App-Start und beim Druck auf den Mata Button ist
-                            konfigurierbar!
-                        </li>
-                        <li>
-                            Nach dem Einloggen, kannst du durch Klick auf das App Logo oder
-                            durch Ziehen des <strong>linken</strong> Bildschirmrandes nach rechts
-                            eine Sidebar öffnen, in der sich die Navigation und deine
-                            ungelesenen Bookmarks verstecken.
-                        </li>
-                        <li>
-                            Boards können als Favoriten markiert werden. Dazu in der Forenübersicht
-                            lange auf ein Board klicken und es als Favorit markieren. Wenn du jetzt
-                            den <strong>rechten</strong> Bildschirmrand nach links ziehst, siehst
-                            du eine Übersicht dieser Boards.
-                        </li>
-                        <li>
-                            Die App kann inzwischen größtenteils durch swipe Gesten gesteuert werden
-                            (zumindest Blätten und Aktualisieren). Das kann in den Settings ausgestellt werden.
-                        </li>
-                        <li>
-                            Ein langer Klick auf einen Thread in der Board-Ansicht bringt dich
-                            zur ersten Seite des Threads; Ein kurzer Klick zur letzten.
-                        </li>
-                        <li>
-                            Bilder werden auf Bildschirmgröße skaliert. Mit einem langen Touch auf
-                            ein Bild, kannst du es in deinem Bildbetrachter der Wahl öffnen oder teilen.
-                            Wenn du dich traust!
-                        </li>
-                        <li>
-                            In der Landscape Ansicht und auf bestimmten Tablets sind die
-                            Views optimiert - zum Beispiel in der Threadansicht. Ausprobieren!
-                            Die linke Seitenleiste kann auch dauerhaft sichtbar gemacht werden.
-                            Siehe Einstellungen!
-                        </li>
-                        <li>
-                            Bender werden im Verzeichnis
-                            <em>/sdcard/Android/data/com.mde.potdroid/files/avatars</em> gesichert.
-                            Es lohnt sich, von diesem Ordner ein Backup zu machen um das
-                            Archiv bei einer Neuinstallation o.ä. zu behalten.
-                        </li>
-                        <li>
-                            Der in den Settings aktivierbare Debug Modus speichert Logs zu
-                            Abstürzen auf der SD Karte, die für mich wichtig sein könnten. Solltest
-                            du einen Force Close oder so bekommen, bitte den Debug Modus aktivieren,
-                            die Situation reproduzieren und mir die Datei in
-                            <em>/sdcard/Android/data/com.mde.potdroid/files/log</em> senden.
-                        </li>
-                    </ul>
-                    Vielen Dank an alle, die irgendwie mitgewirkt haben. Es sind zu viele geworden,
-                    um die Namen hier einzeln zu nennen. <br /><br />
+    <style>
+        body {
+            background:{{style.windowBackgroundColor}};
+            color:{{style.textColorSecondary}};
+        }
 
-                    Oli
-                </div>
-            </article>
-        </section>
+        .post {
+            background:{{style.postBackgroundColor}};
+        }
 
-        <section>
-            <header>
-                <div class="author">Wichtige links</div>
-            </header>
-            <article>
-                <div>
-                    <ul>
-                        <li><a href="http://forum.mods.de/bb/thread.php?TID=213351">pOT-Droid Thread</a></li>
-                        <li><a href="http://projects.oelerich.org/projects/pot-droid/issues/new">
-                            Neuen Bug report/Feature Wunsch/Verbesserung
-                        </a></li>
-                        <li><a href="http://projects.oelerich.org/projects/pot-droid">
-                            Projektseite
-                        </a></li>
-                        <li><a href="https://github.com/janoliver/pOT-Droid">Github Repo</a></li>
-                    </ul>
-                </div>
-            </article>
-        </section>
+        .post .header {
+            background:{{style.headerBackgroundColor}};
+        }
 
-        <section>
-            <header>
-                <div class="author">Daten</div>
-            </header>
-            <article>
-                <div>
-                    <ul>
-                        <li>App Version: {{versionString}}</li>
-                        <li>App Version Code: {{versionCode}}</li>
-                        <li>Android Version: {{androidVersion}}</li>
-                        <li>Density: {{density}}dip</li>
-                    </ul>
-                </div>
-            </article>
-        </section>
+        .post .header .author {
+            color: {{style.textColorPrimary}};
+        }
 
-        <section>
-            <header>
-                <div class="author">Changelog</div>
-            </header>
-            <article>
-                <div>
-                    <strong>Version 4.2.X</strong>
-                    <ul>
-                        <li>Alle ListViews sind jetzt Recyclerviews</li>
-                        <li>Galerie Funktion hinzugefügt</li>
-                        <li>In der Seitenleiste können auch gelesene Bookmarks angezeigt werden</li>
-                        <li>App ist auf SD Karte bewegbar</li>
-                        <li>Home Button in der Blättern Toolbar</li>
-                        <li>:matolf:</li>
-                        <li>Gesperrte User werden angezeigt</li>
-                        <li>Neue Bild Download engine (Facebook fresco)</li>
-                        <li>Diverse kleinere Änderungen, siehe git commits.</li>
-                    </ul>
-                    <strong>Version 4.1.X</strong>
-                    <ul>
-                        <li>Die nächste Threadseite kann vorgeladen werden</li>
-                        <li>Posts können nummeriert werden</li>
-                        <li>BBCode Bugs behoben</li>
-                        <li>Mehr Smileys (Post Icons)</li>
-                        <li>Letzter Edit info wird angezeigt</li>
-                        <li>Kleinere Bugfixes und Verbesserungen</li>
-                    </ul>
-                    <strong>Version 4.0.X</strong>
-                    <ul>
-                        <li>Angepasst an's Material Design und weitreichende Design Änderungen</li>
-                        <li>Neue HTTP engine mit einigen neuen Features</li>
-                        <li>Bildercache, Bilder Sharing Funktion</li>
-                        <li>Usability wurde verbessert</li>
-                        <li>Swipe to refresh und Blättern per Swipe eingebaut</li>
-                        <li>Neuer BBCode Editor</li>
-                        <li>Diverse neue Einstellungsmöglichkeiten</li>
-                        <li>Light theme und kompakte Versionen der Themes</li>
-                    </ul>
-                    <strong>Version 3.1.X</strong>
-                    <ul>
-                        <li>Experimenteller BBCode Editor (s.Settings)</li>
-                        <li>Thread erstellen Funktion</li>
-                        <li>Klick auf Quote führt zu Post</li>
-                        <li>Springe zu Threadseite Funktion</li>
-                        <li>Support für [video] tags und neue Smileys</li>
-                        <li>Einige Bug Fixes</li>
-                    </ul>
-                    <strong>Version 3.0.X</strong>
-                    <ul>
-                        <li>Diverse Feature-Wünsche und Bugfixes</li>
-                    </ul>
-                    <strong>Version 3.0.0</strong>
-                    <ul>
-                        <li>Kompletter Code Rewrite, Fragment basiert</li>
-                        <li>UI überarbeitet</li>
-                        <li>komplettes PM System</li>
-                        <li>Neue HTTP request engine</li>
-                        <li>Neue parser</li>
-                        <li>Tablet/Landscape Views</li>
-                        <li>Favorite Boards Funktion</li>
-                        <li>Neue Notifications</li>
-                        <li>...</li>
-                    </ul>
-                </div>
-            </article>
-        </section>
+        .post .header .info .title,
+        .post .header .info .date {
+            color: {{style.textColorSecondary}};
+        }
 
-    </body>
+        .post .header .post-menu-button i {
+            color:{{style.textColorSecondary}};
+        }
+
+        .post .body {
+            color: {{style.textColorPrimary}};
+        }
+
+        .post .body a {
+            color: {{style.textColorPrimary}};
+            text-decoration:underline;
+        }
+
+        .post .body .err {
+            background: {{style.errorColor}};
+            color: {{style.textColorPrimary}};
+        }
+
+        .post .body .quote,
+        .post .body .code {
+            background: {{style.quoteBackgroundColor}};
+        }
+
+        .post .body .quote a.author {
+            background: {{style.quoteHeaderColor}};
+            color: {{style.textColorPrimary}};
+        }
+
+        .post .body .media {
+            background: {{style.mediaBackgroundColor}};
+            color: {{style.mediaForegroundColor}};
+        }
+
+        .post .body .media button,
+        .post .body .media i {
+            color: {{style.mediaForegroundColor}};
+        }
+
+        .post .body .quote a,
+        .post .media a,
+        .post a .media i,
+        .post a .media button {
+            text-decoration:none;
+        }
+
+        .post .body .quote a i {
+            color: {{style.textColorSecondary}};
+            text-decoration:none;
+        }
+
+        .post .body .media i.err {
+            color: {{style.errorColor}};
+        }
+
+        .post .body .spoiler .spoiler-content {
+            color: {{style.textColorSecondary}};
+        }
+
+        .post.newpost {
+            -webkit-box-shadow: 0px 0px 5px 2px {{style.newPostGlowColor}};
+            box-shadow: 0px 0px 5px 2px {{style.newPostGlowColor}};
+        }
+
+        .up-indicator {
+            color: {{style.textColorSecondary}};
+        }
+
+        .post .body table tr td {
+            border:1px solid {{style.headerBackgroundColor}};
+        }
+
+        {{^getBenderHead}}
+        .post .header .bender {
+            display:none;
+        }
+        {{/getBenderHead}}
+        {{^getBenderBody}}
+        .post .body .bender {
+            display:none;
+        }
+        {{/getBenderBody}}
+    </style>
+</head>
+<body>
+
+<div class="post">
+    <div class="header">
+        <div class="info">
+            <h4 class="author">
+                Disclaimer Version 4
+            </h4>
+        </div>
+    </div>
+    <div class="body">
+        <div class="content">
+            Hallo zusammen. Wenn ihr dies lest, dann verwendet ihr Version 4 von
+            pOT-Droid. Mit dieser Version hat sich wieder Vieles geändert, was sicher
+            nicht jedem/jeder schmeckt. Einige Features brauchen ein bisschen Eingewöhnungszeit,
+            andere können in den Settings an- oder ausgestellt werden. Bevor ihr also meckert,
+            bitte probiert einmal die App Einstellungen durch
+            und versucht, die neue Version eine Weile zu verwenden. Ich bin natürlich
+            weiterhin für Verbesserungsvorschläge und Kritik offen. Eine Übersicht über die
+            Settings und was sie tun findet ihr
+            <a href="http://projects.oelerich.org/projects/pot-droid/wiki/Settings">hier auf der Projektseite</a>.
+            <br />
+            <br />
+            Ihr nehmt mir viel Arbeit ab, wenn ihr Bugs und Wünsche direkt als
+            <a href="http://projects.oelerich.org/projects/pot-droid/issues/new">Neues Ticket</a>
+            eintragt und dabei vorher checkt, ob ein entsprechendes Ticket
+            <a href="https://projects.oelerich.org/projects/pot-droid/issues?query_id=4">vielleicht schon existiert</a>.
+            Alternativ könnt ihr in den <a href="http://forum.mods.de/bb/thread.php?TID=213351">pOT-Droid Thread</a> posten.
+            <br />
+            <br />
+            Ich nutze die neue Version schon einige Monate und finde sie deutlich besser
+            als vorher. Hoffentlich denkt ihr ähnlich. :)
+            <br />
+            <br />
+            Viele Grüße und, falls noch aktuell, guten Rutsch!
+        </div>
+    </div>
+</div>
+
+<div class="post">
+    <div class="header">
+        <div class="info">
+            <h4 class="author">
+                Über die App
+            </h4>
+        </div>
+    </div>
+    <div class="body">
+        <div class="content">
+            Liebe Nutzerin, lieber Nutzer,<br /><br />
+            Schön, dass du pOT-Droid installiert hast.
+            Bevor es losgeht, ein paar Geheimtipps:
+            <ul>
+                <li>
+                    Als erstes solltest du in die Einstellungen schauen! Nicht, dass du
+                    irgendwas verpasst.
+                    <a href="http://projects.oelerich.org/projects/pot-droid/wiki/Settings">Infos zu den Settings</a>
+                </li>
+                <li>
+                    Das Verhalten beim App-Start und beim Druck auf den Mata Button ist
+                    konfigurierbar!
+                </li>
+                <li>
+                    Nach dem Einloggen, kannst du durch Klick auf das App Logo oder
+                    durch Ziehen des <strong>linken</strong> Bildschirmrandes nach rechts
+                    eine Sidebar öffnen, in der sich die Navigation und deine
+                    ungelesenen Bookmarks verstecken.
+                </li>
+                <li>
+                    Boards können als Favoriten markiert werden. Dazu in der Forenübersicht
+                    lange auf ein Board klicken und es als Favorit markieren. Wenn du jetzt
+                    den <strong>rechten</strong> Bildschirmrand nach links ziehst, siehst
+                    du eine Übersicht dieser Boards.
+                </li>
+                <li>
+                    Die App kann inzwischen größtenteils durch swipe Gesten gesteuert werden
+                    (zumindest Blätten und Aktualisieren). Das kann in den Settings ausgestellt werden.
+                </li>
+                <li>
+                    Ein langer Klick auf einen Thread in der Board-Ansicht bringt dich
+                    zur ersten Seite des Threads; Ein kurzer Klick zur letzten.
+                </li>
+                <li>
+                    Bilder werden auf Bildschirmgröße skaliert. Mit einem langen Touch auf
+                    ein Bild, kannst du es in deinem Bildbetrachter der Wahl öffnen oder teilen.
+                    Wenn du dich traust!
+                </li>
+                <li>
+                    In der Landscape Ansicht und auf bestimmten Tablets sind die
+                    Views optimiert - zum Beispiel in der Threadansicht. Ausprobieren!
+                    Die linke Seitenleiste kann auch dauerhaft sichtbar gemacht werden.
+                    Siehe Einstellungen!
+                </li>
+                <li>
+                    Bender werden im Verzeichnis
+                    <em>/sdcard/Android/data/com.mde.potdroid/files/avatars</em> gesichert.
+                    Es lohnt sich, von diesem Ordner ein Backup zu machen um das
+                    Archiv bei einer Neuinstallation o.ä. zu behalten.
+                </li>
+                <li>
+                    Der in den Settings aktivierbare Debug Modus speichert Logs zu
+                    Abstürzen auf der SD Karte, die für mich wichtig sein könnten. Solltest
+                    du einen Force Close oder so bekommen, bitte den Debug Modus aktivieren,
+                    die Situation reproduzieren und mir die Datei in
+                    <em>/sdcard/Android/data/com.mde.potdroid/files/log</em> senden.
+                </li>
+            </ul>
+            Vielen Dank an alle, die irgendwie mitgewirkt haben. Es sind zu viele geworden,
+            um die Namen hier einzeln zu nennen. <br /><br />
+
+            Oli
+        </div>
+    </div>
+</div>
+
+<div class="post">
+    <div class="header">
+        <div class="info">
+            <h4 class="author">
+                Wichtige links
+            </h4>
+        </div>
+    </div>
+    <div class="body">
+        <div class="content">
+            <ul>
+                <li><a href="http://forum.mods.de/bb/thread.php?TID=213351">pOT-Droid Thread</a></li>
+                <li><a href="http://projects.oelerich.org/projects/pot-droid/issues/new">
+                    Neuen Bug report/Feature Wunsch/Verbesserung
+                </a></li>
+                <li><a href="http://projects.oelerich.org/projects/pot-droid">
+                    Projektseite
+                </a></li>
+                <li><a href="https://github.com/janoliver/pOT-Droid">Github Repo</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="post">
+    <div class="header">
+        <div class="info">
+            <h4 class="author">
+                Daten
+            </h4>
+        </div>
+    </div>
+    <div class="body">
+        <div class="content">
+            <ul>
+                <li>App Version: {{versionString}}</li>
+                <li>App Version Code: {{versionCode}}</li>
+                <li>Android Version: {{androidVersion}}</li>
+                <li>Density: {{density}}dip</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="post">
+    <div class="header">
+        <div class="info">
+            <h4 class="author">
+                Changelog
+            </h4>
+        </div>
+    </div>
+    <div class="body">
+        <div class="content">
+            <strong>Version 4.2.X</strong>
+            <ul>
+                <li>Alle ListViews sind jetzt Recyclerviews</li>
+                <li>Galerie Funktion hinzugefügt</li>
+                <li>In der Seitenleiste können auch gelesene Bookmarks angezeigt werden</li>
+                <li>App ist auf SD Karte bewegbar</li>
+                <li>Home Button in der Blättern Toolbar</li>
+                <li>:matolf:</li>
+                <li>Gesperrte User werden angezeigt</li>
+                <li>Neue Bild Download engine (Facebook fresco)</li>
+                <li>Diverse kleinere Änderungen, siehe git commits.</li>
+            </ul>
+            <strong>Version 4.1.X</strong>
+            <ul>
+                <li>Die nächste Threadseite kann vorgeladen werden</li>
+                <li>Posts können nummeriert werden</li>
+                <li>BBCode Bugs behoben</li>
+                <li>Mehr Smileys (Post Icons)</li>
+                <li>Letzter Edit info wird angezeigt</li>
+                <li>Kleinere Bugfixes und Verbesserungen</li>
+            </ul>
+            <strong>Version 4.0.X</strong>
+            <ul>
+                <li>Angepasst an's Material Design und weitreichende Design Änderungen</li>
+                <li>Neue HTTP engine mit einigen neuen Features</li>
+                <li>Bildercache, Bilder Sharing Funktion</li>
+                <li>Usability wurde verbessert</li>
+                <li>Swipe to refresh und Blättern per Swipe eingebaut</li>
+                <li>Neuer BBCode Editor</li>
+                <li>Diverse neue Einstellungsmöglichkeiten</li>
+                <li>Light theme und kompakte Versionen der Themes</li>
+            </ul>
+            <strong>Version 3.1.X</strong>
+            <ul>
+                <li>Experimenteller BBCode Editor (s.Settings)</li>
+                <li>Thread erstellen Funktion</li>
+                <li>Klick auf Quote führt zu Post</li>
+                <li>Springe zu Threadseite Funktion</li>
+                <li>Support für [video] tags und neue Smileys</li>
+                <li>Einige Bug Fixes</li>
+            </ul>
+            <strong>Version 3.0.X</strong>
+            <ul>
+                <li>Diverse Feature-Wünsche und Bugfixes</li>
+            </ul>
+            <strong>Version 3.0.0</strong>
+            <ul>
+                <li>Kompletter Code Rewrite, Fragment basiert</li>
+                <li>UI überarbeitet</li>
+                <li>komplettes PM System</li>
+                <li>Neue HTTP request engine</li>
+                <li>Neue parser</li>
+                <li>Tablet/Landscape Views</li>
+                <li>Favorite Boards Funktion</li>
+                <li>Neue Notifications</li>
+                <li>...</li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
 </html>

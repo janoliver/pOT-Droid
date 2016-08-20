@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
 import com.mde.potdroid.EditorActivity;
 import com.mde.potdroid.MessageActivity;
 import com.mde.potdroid.R;
@@ -82,7 +83,7 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
 
         mListAdapter = new MessageListAdapter(new ArrayList<Message>(), mMode);
 
-        RecyclerView listView = (RecyclerView) v.findViewById(R.id.forum_list_content);
+        ObservableRecyclerView listView = (ObservableRecyclerView) v.findViewById(R.id.forum_list_content);
         listView.setAdapter(mListAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getBaseActivity());
         listView.setLayoutManager(layoutManager);
@@ -242,9 +243,9 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
             holder.mTextDescription.setText(content);
 
             if (m.isUnread())
-                holder.mRoot.setBackgroundColor(Utils.getColorByAttr(getContext(), R.attr.bbColorTertiary));
+                holder.mRoot.setBackgroundColor(Utils.getColorByAttr(getContext(), R.attr.bbDarkerItemBackground));
             else
-                holder.mRoot.setBackgroundColor(Utils.getColorByAttr(getContext(), R.attr.colorAccent));
+                holder.mRoot.setBackgroundColor(Utils.getColorByAttr(getContext(), R.attr.bbItemBackground));
 
             // bender. Show an alias as long as the real bender is not present. If the sender
             // is "System", hide the view.

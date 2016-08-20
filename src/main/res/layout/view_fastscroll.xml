@@ -19,10 +19,8 @@
             app:layout_behavior="com.mde.potdroid.helpers.ScrollAwareFABBehavior"
             app:elevation="6dp"
             app:pressedTranslationZ="12dp"
-            app:backgroundTint="?attr/bbColorSecondary"
-            app:rippleColor="?attr/bbColorPrimary"
             app:fabSize="mini"
-            android:src="@drawable/ic_up"
+            app:srcCompat="@drawable/ic_up"
             android:visibility="gone"/>
 
     <android.support.design.widget.FloatingActionButton
@@ -33,10 +31,8 @@
             android:layout_margin="16dp"
             app:layout_behavior="com.mde.potdroid.helpers.ScrollAwareFABBehavior"
             app:elevation="6dp"
-            android:src="@drawable/ic_down"
+            app:srcCompat="@drawable/ic_down"
             app:pressedTranslationZ="12dp"
-            app:backgroundTint="?attr/bbColorSecondary"
-            app:rippleColor="?attr/bbColorPrimary"
             app:fabSize="mini"
             android:visibility="gone"/>
 

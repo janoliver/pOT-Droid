@@ -114,13 +114,13 @@ public class TopicBuilder {
         Mustache.compiler().compile(reader).execute(new TopicContext(topic, mContext), sw);
         mBenderHandler.updateLastSeenBenderInformation(new ArrayList(mAvatarCache.keySet()));
 
-        /*File myFile = new File(mContext.getExternalFilesDir(null), "bb.html");
+        File myFile = new File(mContext.getExternalFilesDir(null), "bb.html");
         myFile.createNewFile();
         FileOutputStream fOut = new FileOutputStream(myFile);
         OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
         myOutWriter.append(sw.toString());
         myOutWriter.close();
-        fOut.close();*/
+        fOut.close();
 
         return sw.toString();
     }
@@ -464,12 +464,11 @@ public class TopicBuilder {
 
                 String url = content;
 
-                Pattern image_link = Pattern.compile("^<div class=\"img\" data-src=\"(.*?)\"><i " +
-                        "class=\".*?\">.*?</i></div>$");
+                Pattern image_link = Pattern.compile("^<div class=\"media (img|gif)\" data-src=\"(.*?)\">.*?</div>$");
                 Matcher m = image_link.matcher(content);
 
                 if (m.find() && args.size() > 0) {
-                    String extension = m.group(1).substring(m.group(1).length() - 3).toLowerCase();
+                    String extension = m.group(1);
                     String type_class = "img-link";
                     String icon = "photo";
                     if (extension.equals("gif")) {
@@ -482,7 +481,7 @@ public class TopicBuilder {
                             "<button class=\"link mdl-button mdl-js-button\">Link</button>" +
                             "<button class=\"inline mdl-button mdl-js-button\">Inline</button>" +
                             "<button class=\"viewer mdl-button mdl-js-button\">Viewer</button>" +
-                            "</div>", type_class, m.group(1), args.get(0), icon);
+                            "</div>", type_class, m.group(2), args.get(0), icon);
                 }
 
                 if (args.size() > 0)

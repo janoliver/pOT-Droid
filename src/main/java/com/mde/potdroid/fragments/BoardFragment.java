@@ -414,9 +414,9 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             holder.mTextPages.setText(pages_content);
 
             if (t.isSticky() || t.isImportant() || t.isAnnouncement() || t.isGlobal()) {
-                holder.mRoot.setBackgroundColor(Utils.getColorByAttr(getContext(), R.attr.bbColorTertiary));
+                holder.mRoot.setBackgroundColor(Utils.getColorByAttr(getContext(), R.attr.bbDarkerItemBackground));
             } else {
-                holder.mRoot.setBackgroundColor(Utils.getColorByAttr(getContext(), R.attr.colorAccent));
+                holder.mRoot.setBackgroundColor(Utils.getColorByAttr(getContext(), R.attr.bbItemBackground));
             }
 
             if (!t.isSticky()) {

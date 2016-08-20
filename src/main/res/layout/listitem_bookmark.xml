@@ -2,7 +2,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:background="?attr/colorAccent"
+        android:background="?attr/bbItemBackground"
         android:id="@+id/root"
         android:layout_marginBottom="1dp">
 
@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="?attr/bbListItemFontPrimary"
                 android:ellipsize="end"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:textColor="?attr/bbTextColorPrimary"/>
 
         <TextView
@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:layout_below="@+id/title"
                 android:textSize="?attr/bbListItemFontTertiary"
                 android:textColor="?attr/bbTextColorSecondary"/>

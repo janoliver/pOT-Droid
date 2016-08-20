@@ -195,9 +195,9 @@ public class BookmarkFragment extends BaseFragment
 
             // change the background color, if the bookmark has unread posts
             if (b.getNumberOfNewPosts() > 0) {
-                holder.mRoot.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbColorTertiary));
+                holder.mRoot.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbDarkerItemBackground));
             } else {
-                holder.mRoot.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.colorAccent));
+                holder.mRoot.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbItemBackground));
             }
 
             // set the name, striked if closed

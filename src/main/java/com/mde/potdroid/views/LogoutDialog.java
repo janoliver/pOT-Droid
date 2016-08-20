@@ -9,8 +9,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.preference.PreferenceDialogFragmentCompat;
 import android.view.View;
 import com.mde.potdroid.R;
-import com.mde.potdroid.fragments.BaseFragment;
 import com.mde.potdroid.helpers.SettingsWrapper;
+import com.mde.potdroid.helpers.Utils;
 
 public class LogoutDialog extends PreferenceDialogFragmentCompat {
 
@@ -53,7 +53,7 @@ public class LogoutDialog extends PreferenceDialogFragmentCompat {
                         }
                     });
             View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundColor(BaseFragment.COLOR_SUCCESS);
+            snackBarView.setBackgroundColor(Utils.getColorByAttr(mContext, R.attr.bbErrorColor));
             snackbar.show();
         } else {
             dialog.dismiss();

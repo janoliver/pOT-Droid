@@ -2,7 +2,6 @@ package com.mde.potdroid.fragments;
 
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -34,10 +33,6 @@ public abstract class BaseFragment extends Fragment implements SwipyRefreshLayou
     protected SettingsWrapper mSettings;
     protected DatabaseWrapper mDatabase;
 
-    public static int COLOR_SUCCESS = Color.parseColor("#669900");
-    public static int COLOR_ERROR = Color.parseColor("#cc0000");
-    public static int COLOR_INFO = Color.parseColor("#0099cc");
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,9 +53,10 @@ public abstract class BaseFragment extends Fragment implements SwipyRefreshLayou
 
         if (mPullToRefreshLayout != null) {
             mPullToRefreshLayout.setOnRefreshListener(this);
-            mPullToRefreshLayout.setColorSchemeColors(
-                    Utils.getColorByAttr(getActivity(), R.attr.bbProgressSecondary),
-                    Utils.getColorByAttr(getActivity(), R.attr.bbProgressPrimary));
+            mPullToRefreshLayout.setColorSchemeColors(Utils.getColorByAttr(
+                    getActivity(), R.attr.bbProgressForeground));
+            mPullToRefreshLayout.setProgressBackgroundColor(Utils.getDrawableResourceIdByAttr(
+                    getActivity(), R.attr.bbProgressBackground));
         }
 
         if (!mSettings.isSwipeToRefresh())
@@ -192,7 +188,7 @@ public abstract class BaseFragment extends Fragment implements SwipyRefreshLayou
     }
 
     protected void showGenericNotification(String message, int c) {
-        if(getBaseActivity() != null) {
+        if (getBaseActivity() != null) {
             Snackbar snackbar = Snackbar
                     .make(getBaseActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
@@ -202,7 +198,7 @@ public abstract class BaseFragment extends Fragment implements SwipyRefreshLayou
     }
 
     protected void showGenericNotification(int message, int c) {
-        if(getBaseActivity() != null) {
+        if (getBaseActivity() != null) {
             Snackbar snackbar = Snackbar
                     .make(getBaseActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
@@ -215,42 +211,42 @@ public abstract class BaseFragment extends Fragment implements SwipyRefreshLayou
      * Display an error
      */
     public void showError(String error) {
-        showGenericNotification(error, COLOR_ERROR);
+        showGenericNotification(error, Utils.getColorByAttr(getBaseActivity(), R.attr.bbErrorColor));
     }
 
     /**
      * Display a success message
      */
     public void showSuccess(String message) {
-        showGenericNotification(message, COLOR_SUCCESS);
+        showGenericNotification(message, Utils.getColorByAttr(getBaseActivity(), R.attr.bbSuccessColor));
     }
 
     /**
      * Display a success message
      */
     public void showInfo(String message) {
-        showGenericNotification(message, COLOR_INFO);
+        showGenericNotification(message, Utils.getColorByAttr(getBaseActivity(), R.attr.bbInfoColor));
     }
 
     /**
      * Display an error
      */
     public void showError(int error) {
-        showGenericNotification(error, COLOR_ERROR);
+        showGenericNotification(error, Utils.getColorByAttr(getBaseActivity(), R.attr.bbErrorColor));
     }
 
     /**
      * Display a success message
      */
     public void showSuccess(int message) {
-        showGenericNotification(message, COLOR_SUCCESS);
+        showGenericNotification(message, Utils.getColorByAttr(getBaseActivity(), R.attr.bbSuccessColor));
     }
 
     /**
      * Display a success message
      */
     public void showInfo(int message) {
-        showGenericNotification(message, COLOR_INFO);
+        showGenericNotification(message, Utils.getColorByAttr(getBaseActivity(), R.attr.bbInfoColor));
     }
 
     /**

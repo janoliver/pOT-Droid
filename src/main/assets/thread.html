@@ -9,88 +9,96 @@
 
     <style>
         body {
-            background:{{style.backgroundColor}};
-            color:#ddd;
+            background:{{style.windowBackgroundColor}};
+            color:{{style.textColorSecondary}};
         }
 
         .post {
-            background:#51677e;
+            background:{{style.postBackgroundColor}};
         }
 
         .post .header {
-            background:#394E63;
-            color:#eee;
+            background:{{style.headerBackgroundColor}};
         }
 
         .post .header .author {
-            color: #fff;
+            color: {{style.textColorPrimary}};
         }
 
         .post .header .info .title,
         .post .header .info .date {
-            color:rgba(255,255,255,0.4);
+            color: {{style.textColorSecondary}};
         }
 
         .post .header .post-menu-button i {
-            color:#222E3A;
+            color:{{style.textColorSecondary}};
         }
 
         .post .body {
-            color:#ddd;
+            color: {{style.textColorPrimary}};
         }
 
         .post .body a {
-            color:#ccc;
+            color: {{style.textColorPrimary}};
+            text-decoration:underline;
         }
 
         .post .body .err {
-            background:#cc0000;
-            color:#fff;
+            background: {{style.errorColor}};
+            color: {{style.textColorPrimary}};
         }
 
         .post .body .quote,
         .post .body .code {
-            background:rgba(9, 24, 39, 0.4);
-            border:0px solid rgba(9, 24, 39, 0.4);
+            background: {{style.quoteBackgroundColor}};
         }
 
         .post .body .quote a.author {
-        background:rgba(9, 24, 39, 0.35);
-            color:#fff;
+            background: {{style.quoteHeaderColor}};
+            color: {{style.textColorPrimary}};
         }
 
         .post .body .media {
-            background: rgba(9,24,39,0.6);
+            background: {{style.mediaBackgroundColor}};
+            color: {{style.mediaForegroundColor}};
         }
 
-        .post .body .media button {
-            color: rgba(255,255,255,0.4);
+        .post .body .media button,
+        .post .body .media i {
+            color: {{style.mediaForegroundColor}};
         }
 
-        .post .body .media i,
+        .post .body .quote a,
+        .post .media a,
+        .post a .media i,
+        .post a .media button {
+            text-decoration:none;
+        }
+
         .post .body .quote a i {
-            color:#51677e;
+            color: {{style.textColorSecondary}};
+            text-decoration:none;
         }
 
         .post .body .media i.err {
-            color:#cc0000;
+            color: {{style.errorColor}};
         }
 
         .post .body .spoiler .spoiler-content {
-            color:#eee;
+            color: {{style.textColorSecondary}};
         }
 
         .post.newpost {
-            -webkit-box-shadow: 0px 0px 5px 2px rgba(230,238,156,0.5);
-            box-shadow: 0px 0px 5px 2px rgba(230,238,156,0.5);
+            -webkit-box-shadow: 0px 0px 5px 2px {{style.newPostGlowColor}};
+            box-shadow: 0px 0px 5px 2px {{style.newPostGlowColor}};
         }
 
         .up-indicator {
-            color: #51677e;
+            color: {{style.textColorSecondary}};
         }
 
         .post .body table tr td {
-            border:1px solid #091827;
+            border:1px solid {{style.headerBackgroundColor}};
         }
 
         {{^getBenderHead}}
@@ -105,7 +113,7 @@
         {{/getBenderBody}}
     </style>
 </head>
-<body class="{{themeVariant}}">
+<body>
 <div id="paddings">
     {{#posts}}
     <div class="post"
@@ -126,7 +134,7 @@
                     {{author}}
                     {{/getAuthorLocked}}
                 </h4>
-                <div class="mdl-card__subtitle-text title">
+                <div class="title">
                     {{&icon}}
                     {{title}}
                     {{#isNumber}}

@@ -24,10 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             app:elevation="6dp"
-            android:src="@drawable/ic_create"
+            app:srcCompat="@drawable/ic_create"
             android:layout_margin="16dp"
-            app:pressedTranslationZ="12dp"
-            app:backgroundTint="?attr/bbColorSecondary"
-            app:rippleColor="?attr/bbColorPrimary"/>
+            app:pressedTranslationZ="12dp"/>
 
 </FrameLayout>

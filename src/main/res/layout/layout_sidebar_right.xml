@@ -1,8 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/sidebar"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="?attr/bbColorPrimary"
+              android:background="?attr/bbItemBackground"
               android:orientation="vertical">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -17,7 +18,7 @@
                 android:layout_height="match_parent"
                 android:text="@string/sidebar_cap_boards"
                 android:textSize="18sp"
-                android:paddingLeft="10dp"
+                android:paddingLeft="15dp"
                 android:background="?attr/selectableItemBackground"
                 android:textColor="?attr/bbToolbarColor"
                 android:id="@+id/refresh_boards"
@@ -59,7 +60,7 @@
                     android:layout_gravity="center_vertical"
                     style="@style/Widget.AppCompat.ActionButton"
                     android:id="@+id/button_refresh"
-                    android:src="@drawable/ic_refresh"
+                    app:srcCompat="@drawable/ic_refresh"
                     android:layout_centerHorizontal="true"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="10dp"

@@ -194,7 +194,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
                         Snackbar snackbar = Snackbar
                                 .make(getActivity().findViewById(android.R.id.content), R.string.msg_export_success, Snackbar.LENGTH_LONG);
                         View snackBarView = snackbar.getView();
-                        snackBarView.setBackgroundColor(BaseFragment.COLOR_SUCCESS);
+                        snackBarView.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbSuccessColor));
                         snackbar.show();
                     }
                 });
@@ -206,7 +206,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
                         Snackbar snackbar = Snackbar
                                 .make(getActivity().findViewById(android.R.id.content), R.string.msg_export_error, Snackbar.LENGTH_LONG);
                         View snackBarView = snackbar.getView();
-                        snackBarView.setBackgroundColor(BaseFragment.COLOR_ERROR);
+                        snackBarView.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbErrorColor));
                         snackbar.show();
                     }
                 });
@@ -231,7 +231,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
                                     }
                                 });
                         View snackBarView = snackbar.getView();
-                        snackBarView.setBackgroundColor(BaseFragment.COLOR_SUCCESS);
+                        snackBarView.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbSuccessColor));
                         snackbar.show();
                     }
                 });
@@ -243,7 +243,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
                         Snackbar snackbar = Snackbar
                                 .make(getActivity().findViewById(android.R.id.content), R.string.msg_import_error, Snackbar.LENGTH_LONG);
                         View snackBarView = snackbar.getView();
-                        snackBarView.setBackgroundColor(BaseFragment.COLOR_ERROR);
+                        snackBarView.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbErrorColor));
                         snackbar.show();
                     }
                 });

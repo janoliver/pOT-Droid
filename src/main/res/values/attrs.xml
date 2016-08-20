@@ -1,29 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="bbColorPrimary" format="color|reference"/>
-    <attr name="bbColorSecondary" format="color|reference"/>
-    <attr name="bbColorSecondaryTransparent" format="color|reference"/>
-    <attr name="bbColorTertiary" format="color|reference"/>
-    <attr name="bbColorHighlight" format="color|reference"/>
-    <attr name="bbColorTranslucentBackground" format="color|reference"/>
+    <attr name="bbDarkerItemBackground" format="color|reference"/>
+    <attr name="bbItemBackground" format="color|reference"/>
     <attr name="bbTextColorPrimary" format="color|reference"/>
     <attr name="bbTextColorSecondary" format="color|reference"/>
+    <attr name="bbTextColorTertiary" format="color|reference"/>
+
     <attr name="bbEditTextBackground" format="color|reference"/>
     <attr name="bbEditTextColor" format="color|reference"/>
     <attr name="bbEditTextHintColor" format="color|reference"/>
+
     <attr name="bbToolbarBackground" format="color|reference"/>
+    <attr name="bbStatusbarBackground" format="color|reference"/>
     <attr name="bbToolbarColor" format="color|reference"/>
-    <attr name="bbToolbarHighlightColor" format="color|reference"/>
+
     <attr name="bbListSeparatorColor" format="color|reference"/>
-    <attr name="bbProgressPrimary" format="color|reference"/>
-    <attr name="bbProgressSecondary" format="color|reference"/>
-    <attr name="bbTopicCssFile" format="string"/>
+    <attr name="bbProgressBackground" format="color|reference"/>
+    <attr name="bbProgressForeground" format="color|reference"/>
 
     <attr name="bbListItemPaddingLR" format="dimension" />
     <attr name="bbListItemPaddingTB" format="dimension" />
     <attr name="bbListItemFontPrimary" format="dimension" />
     <attr name="bbListItemFontSecondary" format="dimension" />
     <attr name="bbListItemFontTertiary" format="dimension" />
+
+    <attr name="bbPostBackgroundColor" format="color|reference"/>
+    <attr name="bbPostHeaderBackgroundColor" format="color|reference"/>
+    <attr name="bbTopicBackgroundColor" format="color|reference"/>
+    <attr name="bbQuoteBackgroundColor" format="color|reference"/>
+    <attr name="bbQuoteHeaderColor" format="color|reference"/>
+    <attr name="bbMediaBackgroundColor" format="color|reference"/>
+    <attr name="bbMediaForegroundColor" format="color|reference"/>
+    <attr name="bbNewPostGlowColor" format="color|reference"/>
+
+    <attr name="bbErrorColor" format="color|reference" />
+    <attr name="bbSuccessColor" format="color|reference" />
+    <attr name="bbInfoColor" format="color|reference" />
 
     <declare-styleable name="SwipyRefreshLayout">
         <attr name="srl_direction">

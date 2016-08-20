@@ -13,9 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import com.mde.potdroid.R;
-import com.mde.potdroid.fragments.BaseFragment;
 import com.mde.potdroid.helpers.Network;
 import com.mde.potdroid.helpers.SettingsWrapper;
+import com.mde.potdroid.helpers.Utils;
 
 /**
  * This class is a DialogPreference for the Login Action. It takes care of showing the login form
@@ -81,7 +81,7 @@ public class LoginDialog extends PreferenceDialogFragmentCompat {
                                                 }
                                             });
                                     View snackBarView = snackbar.getView();
-                                    snackBarView.setBackgroundColor(BaseFragment.COLOR_SUCCESS);
+                                    snackBarView.setBackgroundColor(Utils.getColorByAttr(mContext, R.attr.bbSuccessColor));
                                     snackbar.show();
                                 }
                             });
@@ -100,7 +100,7 @@ public class LoginDialog extends PreferenceDialogFragmentCompat {
                                     Snackbar snackbar = Snackbar
                                             .make(mContext.findViewById(android.R.id.content), R.string.msg_login_failure, Snackbar.LENGTH_LONG);
                                     View snackBarView = snackbar.getView();
-                                    snackBarView.setBackgroundColor(BaseFragment.COLOR_ERROR);
+                                    snackBarView.setBackgroundColor(Utils.getColorByAttr(mContext, R.attr.bbErrorColor));
                                     snackbar.show();
                                 }
                             });

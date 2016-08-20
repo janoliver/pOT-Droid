@@ -3,7 +3,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/root"
         android:layout_width="match_parent"
-        android:background="?attr/bbColorTertiary"
+        android:background="?attr/bbDarkerItemBackground"
         android:clickable="true"
         android:layout_marginBottom="1dp">
 

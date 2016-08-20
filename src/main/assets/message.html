@@ -5,9 +5,93 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width,user-scalable=yes,initial-scale=1">
     <link rel="stylesheet" href="bb.css" type="text/css"/>
-    <link rel="stylesheet" href="{{cssFile}}" type="text/css"/>
 
     <style>
+        body {
+        background:{{style.backgroundColor}};
+        color:#ddd;
+        }
+
+        .post {
+        background:#51677e;
+        }
+
+        .post .header {
+        background:#394E63;
+        color:#eee;
+        }
+
+        .post .header .author {
+        color: #fff;
+        }
+
+        .post .header .info .title,
+        .post .header .info .date {
+        color:rgba(255,255,255,0.4);
+        }
+
+        .post .header .post-menu-button i {
+        color:#222E3A;
+        }
+
+        .post .body {
+        color:#ddd;
+        }
+
+        .post .body a {
+        color:#ccc;
+        }
+
+        .post .body .err {
+        background:#cc0000;
+        color:#fff;
+        }
+
+        .post .body .quote,
+        .post .body .code {
+        background:rgba(9, 24, 39, 0.4);
+        border:0px solid rgba(9, 24, 39, 0.4);
+        }
+
+        .post .body .quote a.author {
+        background:rgba(9, 24, 39, 0.35);
+        color:#fff;
+        }
+
+        .post .body .media {
+        background: rgba(9,24,39,0.6);
+        }
+
+        .post .body .media button {
+        color: rgba(255,255,255,0.4);
+        }
+
+        .post .body .media i,
+        .post .body .quote a i {
+        color:#51677e;
+        }
+
+        .post .body .media i.err {
+        color:#cc0000;
+        }
+
+        .post .body .spoiler .spoiler-content {
+        color:#eee;
+        }
+
+        .post.newpost {
+        -webkit-box-shadow: 0px 0px 5px 2px rgba(230,238,156,0.5);
+        box-shadow: 0px 0px 5px 2px rgba(230,238,156,0.5);
+        }
+
+        .up-indicator {
+        color: #51677e;
+        }
+
+        .post .body table tr td {
+        border:1px solid #091827;
+        }
+
         {{^getBenderHead}}
         .post .header .bender {
         display:none;

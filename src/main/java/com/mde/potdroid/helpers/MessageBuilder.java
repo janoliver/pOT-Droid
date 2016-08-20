@@ -48,14 +48,16 @@ public class MessageBuilder {
 
         private Message mMessage;
         private Context mContext;
+        private CssStyleWrapper mStyle;
 
         public MessageContext(Message m, Context cx) {
             mMessage = m;
             mContext = cx;
+            mStyle = new CssStyleWrapper(cx);
         }
 
-        public String getCssFile() {
-            return Utils.getStringByAttr(mContext, R.attr.bbTopicCssFile);
+        public CssStyleWrapper getStyle() {
+            return mStyle;
         }
 
         public String getThemeVariant() {

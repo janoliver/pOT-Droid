@@ -64,6 +64,10 @@
         <item name="bbProgressBackground">@color/white</item>
         <item name="bbProgressForeground">@color/bbstyle_lighterblue</item>
 
+        <item name="bbErrorColor">@color/error</item>
+        <item name="bbSuccessColor">@color/success</item>
+        <item name="bbInfoColor">@color/info</item>
+
         <!-- styles controling the material dialog look. See
         https://github.com/afollestad/material-dialogs-->
         <item name="md_dark_theme">false</item>
@@ -119,6 +123,10 @@
 
         <item name="bbProgressBackground">@color/bbstyle_darkblue</item>
         <item name="bbProgressForeground">@color/white</item>
+
+        <item name="bbErrorColor">@color/error</item>
+        <item name="bbSuccessColor">@color/success</item>
+        <item name="bbInfoColor">@color/info</item>
 
         <!-- styles controling the material dialog look. See
         https://github.com/afollestad/material-dialogs-->

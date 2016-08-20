@@ -107,10 +107,11 @@
         }
         {{/getBenderHead}}
 
-        {{getBenderBody}}
+        {{#getBenderBody}}
         .post .body > .content {
             margin-left:80px;
         }
+        {{/getBenderBody}}
         {{^getBenderBody}}
         .post .body .bender {
             display:none;

@@ -34,7 +34,6 @@
     </style>
 
     <style name="PotDroidDarkBase" parent="@style/Theme.AppCompat">
-
         <item name="android:windowBackground">@color/bbstyle_darkerblue</item>
 
         <item name="bbDarkerItemBackground">@color/bbstyle_lightblue</item>
@@ -85,7 +84,9 @@
         <item name="colorPrimary">?attr/bbToolbarBackground</item>
         <item name="colorPrimaryDark">?attr/bbStatusbarBackground</item>
         <item name="colorAccent">?attr/bbToolbarBackground</item>
-        <item name="android:textColor">?attr/bbToolbarColor</item>
+
+        <!-- this is the text color for the popup menu of the toolbar -->
+        <item name="android:textColor">?attr/bbToolbarBackground</item>
         <item name="android:textColorPrimary">?attr/bbToolbarColor</item>
 
         <item name="windowActionBar">false</item>
@@ -145,7 +146,7 @@
         <item name="colorPrimary">?attr/bbToolbarBackground</item>
         <item name="colorPrimaryDark">?attr/bbStatusbarBackground</item>
         <item name="colorAccent">?attr/bbToolbarBackground</item>
-        <item name="android:textColor">?attr/bbToolbarColor</item>
+        <item name="android:textColor">?attr/bbToolbarBackground</item>
         <item name="android:textColorPrimary">?attr/bbToolbarColor</item>
 
         <item name="windowActionBar">false</item>

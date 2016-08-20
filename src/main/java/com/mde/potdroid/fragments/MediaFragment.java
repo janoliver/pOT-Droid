@@ -176,7 +176,6 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
-        Log.e("bla", "onCreateView");
         View v = inflater.inflate(R.layout.layout_media, container, false);
         mVideoView = (EMVideoView) v.findViewById(R.id.video);
         mGifImageView = (GifImageView) v.findViewById(R.id.gif);
@@ -192,8 +191,6 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        showLoadingAnimation();
-        Log.e("bla", "onActivityCreated");
 
         final Uri uri = Uri.parse(getArguments().getString(ARG_URI));
 
@@ -202,12 +199,13 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
         ImageHandler ih = ImageHandler.getPictureHandler(getActivity());
 
         if (type.compareTo("gif") == 0) {
+            showLoadingAnimation();
             ih.retrieveImage(uri.toString(), new ImageHandler.ImageHandlerCallback() {
                 @Override
                 public void onSuccess(String url, final String path, boolean from_cache) {
+                    hideLoadingAnimation();
                     getBaseActivity().runOnUiThread(new Runnable() {
                         public void run() {
-                            hideLoadingAnimation();
                             InputStream is;
                             try {
                                 is = getActivity().getContentResolver().openInputStream(Uri.parse(path));
@@ -233,9 +231,9 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
 
                 @Override
                 public void onFailure(String url) {
-                    hideLoadingAnimation();
                     getBaseActivity().runOnUiThread(new Runnable() {
                         public void run() {
+                            hideLoadingAnimation();
                             showError(R.string.msg_img_loading_error);
                         }
                     });
@@ -243,6 +241,7 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
             });
 
         } else if (type.compareTo("image") == 0) {
+            showLoadingAnimation();
             try {
                 ih.retrieveImage(uri.toString(), new ImageHandler.ImageHandlerCallback() {
                     @Override
@@ -253,6 +252,7 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
                                 mImageView.setVisibility(View.VISIBLE);
                                 mImageView.setImageURI(Uri.parse(path));
                                 mAttacher.update();
+                                hideLoadingAnimation();
                             }
                         });
                         Intent shareIntent = new Intent();
@@ -270,13 +270,14 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
                                 showError(R.string.msg_img_loading_error);
                             }
                         });
+                        hideLoadingAnimation();
                     }
                 });
             } catch (Exception e) {
                 e.printStackTrace();
+                hideLoadingAnimation();
             }
         } else if (type.compareTo("video") == 0) {
-            hideLoadingAnimation();
             mVideoView.setVisibility(View.VISIBLE);
             mVideoView.setVideoURI(uri);
 
@@ -292,7 +293,7 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
             shareIntent.setType("text/plain");
             mShareIntent = shareIntent;
         } else if (type.compareTo("youtube") == 0) {
-            hideLoadingAnimation();
+            showLoadingAnimation();
             mYTView.setVisibility(View.VISIBLE);
 
             YouTubePlayerSupportFragment youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
@@ -308,6 +309,7 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
                         player.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
                         player.loadVideo(extractYTId(uri.toString()));
                         player.play();
+                        hideLoadingAnimation();
                     }
                 }
 
@@ -316,6 +318,7 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
                     // YouTube error
                     showError(R.string.msg_img_loading_error);
                     Log.e("errorMessage:", error.toString());
+                    hideLoadingAnimation();
                 }
             });
 

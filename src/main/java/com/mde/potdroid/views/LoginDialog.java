@@ -54,7 +54,7 @@ public class LoginDialog extends PreferenceDialogFragmentCompat {
 
         final AlertDialog d = (AlertDialog)getDialog();
         if(d != null) {
-            Button positiveButton = (Button) d.getButton(Dialog.BUTTON_POSITIVE);
+            Button positiveButton = d.getButton(Dialog.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -63,7 +63,7 @@ public class LoginDialog extends PreferenceDialogFragmentCompat {
                     final String user_name = mUsername.getText().toString().trim();
                     final String user_password = mPassword.getText().toString();
 
-                    Network n = new Network(getContext());
+                    Network n = new Network(mContext);
                     n.login(user_name, user_password, new Network.LoginCallback() {
                         @Override
                         public void onSuccess() {
@@ -79,7 +79,7 @@ public class LoginDialog extends PreferenceDialogFragmentCompat {
                                                     Intent i = mContext.getPackageManager()
                                                             .getLaunchIntentForPackage(mContext.getPackageName());
                                                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                    getContext().startActivity(i);
+                                                    mContext.startActivity(i);
                                                 }
                                             });
                                     View snackBarView = snackbar.getView();
@@ -87,11 +87,11 @@ public class LoginDialog extends PreferenceDialogFragmentCompat {
                                     TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
                                     tv.setTextColor(Color.WHITE);
                                     snackbar.show();
+                                    setIsLoading(false);
                                 }
                             });
 
                             mSettingsWrapper.setUsername(user_name);
-                            setIsLoading(false);
                             d.dismiss();
                         }
 
@@ -108,9 +108,9 @@ public class LoginDialog extends PreferenceDialogFragmentCompat {
                                     TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
                                     tv.setTextColor(Color.WHITE);
                                     snackbar.show();
+                                    setIsLoading(false);
                                 }
                             });
-                            setIsLoading(false);
                             d.dismiss();
                         }
                     });

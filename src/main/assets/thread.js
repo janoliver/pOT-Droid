@@ -134,7 +134,7 @@ function replaceImage(container) {
     var content = "&#xE028;";
     var icon = container.find("i");
     icon.attr('class', classes);
-    icon.text(content);
+    icon.html(content);
 
     var src = container.attr('data-src');
     var id = Math.floor( Math.random()*99999 );
@@ -150,7 +150,7 @@ function displayImageLoader(id) {
     if(icon.parent().hasClass("gif"))
         content = "&#xE54D;";
     icon.attr("class", classes);
-    icon.text(content);
+    icon.html(content);
     el.removeAttr('id');
 }
 

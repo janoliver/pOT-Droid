@@ -5,6 +5,8 @@ import android.content.res.AssetManager;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -13,6 +15,7 @@ import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.TypedValue;
+import android.widget.ImageButton;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -302,4 +305,17 @@ public class Utils {
             f.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
         return f.format(date);
     }
+
+    /**
+     * Sets the specified image buttonto the given state, while modifying or
+     * "graying-out" the icon as well
+     *
+     * @param enabled The state of the menu item
+     * @param item The menu item to modify
+     */
+    public static void setImageButtonEnabled(boolean enabled, ImageButton item) {
+        item.setEnabled(enabled);
+        item.getDrawable().setColorFilter(Color.argb(150, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
+    }
+
 }

@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceManager;
 import android.view.View;
+import android.widget.TextView;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.LoginPreference;
 import com.mde.potdroid.helpers.LogoutPreference;
@@ -195,6 +197,8 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
                                 .make(getActivity().findViewById(android.R.id.content), R.string.msg_export_success, Snackbar.LENGTH_LONG);
                         View snackBarView = snackbar.getView();
                         snackBarView.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbSuccessColor));
+                        TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                        tv.setTextColor(Color.WHITE);
                         snackbar.show();
                     }
                 });
@@ -207,6 +211,8 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
                                 .make(getActivity().findViewById(android.R.id.content), R.string.msg_export_error, Snackbar.LENGTH_LONG);
                         View snackBarView = snackbar.getView();
                         snackBarView.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbErrorColor));
+                        TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                        tv.setTextColor(Color.WHITE);
                         snackbar.show();
                     }
                 });
@@ -232,6 +238,8 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
                                 });
                         View snackBarView = snackbar.getView();
                         snackBarView.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbSuccessColor));
+                        TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                        tv.setTextColor(Color.WHITE);
                         snackbar.show();
                     }
                 });
@@ -243,6 +251,8 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
                         Snackbar snackbar = Snackbar
                                 .make(getActivity().findViewById(android.R.id.content), R.string.msg_import_error, Snackbar.LENGTH_LONG);
                         View snackBarView = snackbar.getView();
+                        TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                        tv.setTextColor(Color.WHITE);
                         snackBarView.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbErrorColor));
                         snackbar.show();
                     }

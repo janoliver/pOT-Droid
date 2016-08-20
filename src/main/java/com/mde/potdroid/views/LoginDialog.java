@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.Network;
 import com.mde.potdroid.helpers.SettingsWrapper;
@@ -82,6 +84,8 @@ public class LoginDialog extends PreferenceDialogFragmentCompat {
                                             });
                                     View snackBarView = snackbar.getView();
                                     snackBarView.setBackgroundColor(Utils.getColorByAttr(mContext, R.attr.bbSuccessColor));
+                                    TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                    tv.setTextColor(Color.WHITE);
                                     snackbar.show();
                                 }
                             });
@@ -101,6 +105,8 @@ public class LoginDialog extends PreferenceDialogFragmentCompat {
                                             .make(mContext.findViewById(android.R.id.content), R.string.msg_login_failure, Snackbar.LENGTH_LONG);
                                     View snackBarView = snackbar.getView();
                                     snackBarView.setBackgroundColor(Utils.getColorByAttr(mContext, R.attr.bbErrorColor));
+                                    TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                    tv.setTextColor(Color.WHITE);
                                     snackbar.show();
                                 }
                             });

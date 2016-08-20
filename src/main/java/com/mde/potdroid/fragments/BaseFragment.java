@@ -2,6 +2,7 @@ package com.mde.potdroid.fragments;
 
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v7.app.ActionBar;
 import android.util.TypedValue;
 import android.view.*;
+import android.widget.TextView;
 import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.ForumActivity;
 import com.mde.potdroid.R;
@@ -193,6 +195,8 @@ public abstract class BaseFragment extends Fragment implements SwipyRefreshLayou
                     .make(getBaseActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundColor(c);
+            TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+            tv.setTextColor(Color.WHITE);
             snackbar.show();
         }
     }
@@ -203,6 +207,8 @@ public abstract class BaseFragment extends Fragment implements SwipyRefreshLayou
                     .make(getBaseActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundColor(c);
+            TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+            tv.setTextColor(Color.WHITE);
             snackbar.show();
         }
     }

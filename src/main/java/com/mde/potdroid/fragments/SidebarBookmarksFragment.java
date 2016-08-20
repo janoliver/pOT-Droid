@@ -106,12 +106,22 @@ public class SidebarBookmarksFragment extends BaseFragment
             }
         });
 
+        return v;
+
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
         if (!Utils.isLoggedIn()) {
-            mPmButton.setEnabled(false);
-            mBookmarksButton.setEnabled(false);
+            Utils.setImageButtonEnabled(false, mPmButton);
+            Utils.setImageButtonEnabled(false, mBookmarksButton);
+            mPullToRefreshLayout.setEnabled(false);
         }
 
-        ImageButton refresh = (ImageButton) v.findViewById(R.id.button_refresh);
+        ImageButton refresh = (ImageButton) getView().findViewById(R.id.button_refresh);
         if (!mSettings.isSwipeToRefresh()) {
             refresh.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -121,8 +131,6 @@ public class SidebarBookmarksFragment extends BaseFragment
             });
             refresh.setVisibility(View.VISIBLE);
         }
-
-        return v;
 
     }
 
@@ -163,8 +171,9 @@ public class SidebarBookmarksFragment extends BaseFragment
                 TextView indicator = (TextView) getView().findViewById(R.id.empty_bookmarks_text);
                 indicator.setText(R.string.notloggedin);
 
-                mPmButton.setEnabled(false);
-                mBookmarksButton.setEnabled(false);
+                Utils.setImageButtonEnabled(false, mPmButton);
+                Utils.setImageButtonEnabled(false, mBookmarksButton);
+                mPullToRefreshLayout.setEnabled(false);
             }
         } else if (success != null) {
 

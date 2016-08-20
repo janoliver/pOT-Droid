@@ -99,6 +99,7 @@ public class SwipyRefreshLayout extends ViewGroup {
     private static final int DEFAULT_CIRCLE_TARGET = 64;
 
     private View mTarget; // the target of the gesture
+    private View mChildContainer; // the target of the gesture
     private SwipyRefreshLayoutDirection mDirection;
     private boolean mBothDirection;
     private OnRefreshListener mListener;
@@ -153,6 +154,8 @@ public class SwipyRefreshLayout extends ViewGroup {
     private int mCircleWidth;
 
     private int mCircleHeight;
+
+    int mAdapterViewId;
 
     // Whether the client has set a custom starting position;
     private boolean mUsingCustomStart;
@@ -330,6 +333,7 @@ public class SwipyRefreshLayout extends ViewGroup {
         a.recycle();
 
         final TypedArray a2 = context.obtainStyledAttributes(attrs, R.styleable.SwipyRefreshLayout);
+        mAdapterViewId = a2.getResourceId(R.styleable.SwipyRefreshLayout_adapter_view, -1);
         SwipyRefreshLayoutDirection direction
                 = SwipyRefreshLayoutDirection.getFromInt(a2.getInt(R.styleable.SwipyRefreshLayout_srl_direction, 0));
         if (direction != SwipyRefreshLayoutDirection.BOTH) {
@@ -349,6 +353,7 @@ public class SwipyRefreshLayout extends ViewGroup {
         ViewCompat.setChildrenDrawingOrderEnabled(this, true);
         // the absolute offset has to take into account that the circle starts at an offset
         mSpinnerFinalOffset = DEFAULT_CIRCLE_TARGET * metrics.density;
+
     }
 
     protected int getChildDrawingOrder(int childCount, int i) {
@@ -464,6 +469,7 @@ public class SwipyRefreshLayout extends ViewGroup {
         if (mRefreshing != refreshing) {
             mNotify = notify;
             ensureTarget();
+            ensureChildContainer();
             mRefreshing = refreshing;
             if (mRefreshing) {
                 animateOffsetToCorrectPosition(mCurrentTargetOffsetTop, mRefreshListener);
@@ -559,6 +565,7 @@ public class SwipyRefreshLayout extends ViewGroup {
      */
     public void setColorSchemeColors(int... colors) {
         ensureTarget();
+        ensureChildContainer();
         mProgress.setColorSchemeColors(colors);
     }
 
@@ -574,11 +581,14 @@ public class SwipyRefreshLayout extends ViewGroup {
         // Don't bother getting the parent height if the parent hasn't been laid
         // out yet.
         if (mTarget == null) {
-            for (int i = 0; i < getChildCount(); i++) {
-                View child = getChildAt(i);
-                if (!child.equals(mCircleView)) {
-                    mTarget = child;
-                    break;
+            mTarget = findViewById(mAdapterViewId);
+            if(mTarget == null) {
+                for (int i = 0; i < getChildCount(); i++) {
+                    View child = getChildAt(i);
+                    if (!child.equals(mCircleView)) {
+                        mTarget = child;
+                        break;
+                    }
                 }
             }
         }
@@ -588,6 +598,20 @@ public class SwipyRefreshLayout extends ViewGroup {
                 mTotalDragDistance = (int) Math.min(
                         ((View) getParent()).getHeight() * MAX_SWIPE_DISTANCE_FACTOR,
                         REFRESH_TRIGGER_DISTANCE * metrics.density);
+            }
+        }
+    }
+
+    private void ensureChildContainer() {
+        // Don't bother getting the parent height if the parent hasn't been laid
+        // out yet.
+        if (mChildContainer == null) {
+            for (int i = 0; i < getChildCount(); i++) {
+                View child = getChildAt(i);
+                if (!child.equals(mCircleView)) {
+                    mChildContainer = child;
+                    break;
+                }
             }
         }
     }
@@ -611,10 +635,13 @@ public class SwipyRefreshLayout extends ViewGroup {
         if (mTarget == null) {
             ensureTarget();
         }
-        if (mTarget == null) {
+        if(mChildContainer == null) {
+            ensureChildContainer();
+        }
+        if (mTarget == null || mChildContainer == null) {
             return;
         }
-        final View child = mTarget;
+        final View child = mChildContainer;
         final int childLeft = getPaddingLeft();
         final int childTop = getPaddingTop();
         final int childWidth = width - getPaddingLeft() - getPaddingRight();
@@ -629,13 +656,13 @@ public class SwipyRefreshLayout extends ViewGroup {
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (mTarget == null) {
+        if (mChildContainer == null) {
             ensureTarget();
         }
-        if (mTarget == null) {
+        if (mChildContainer == null) {
             return;
         }
-        mTarget.measure(MeasureSpec.makeMeasureSpec(
+        mChildContainer.measure(MeasureSpec.makeMeasureSpec(
                 getMeasuredWidth() - getPaddingLeft() - getPaddingRight(),
                 MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(
                 getMeasuredHeight() - getPaddingTop() - getPaddingBottom(), MeasureSpec.EXACTLY));
@@ -729,6 +756,7 @@ public class SwipyRefreshLayout extends ViewGroup {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         ensureTarget();
+        ensureChildContainer();
 
         final int action = MotionEventCompat.getActionMasked(ev);
 

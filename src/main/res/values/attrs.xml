@@ -43,5 +43,6 @@
             <enum name="bottom" value="1" />
             <enum name="both" value="2" />
         </attr>
+        <attr name="adapter_view" format="reference"/>
     </declare-styleable>
 </resources>

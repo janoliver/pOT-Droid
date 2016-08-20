@@ -28,7 +28,8 @@
     <com.mde.potdroid.helpers.ptr.SwipyRefreshLayout
             android:id="@+id/ptr_holder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:adapter_view="@+id/listview_boards">
 
         <RelativeLayout
                 android:id="@+id/forums_holder"

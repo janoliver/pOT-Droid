@@ -1,5 +1,4 @@
 build/
-libs/
 *.apk
 gradlew
 gradlew.bat

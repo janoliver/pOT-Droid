@@ -50,12 +50,14 @@ android {
             //minifyEnabled true
             //shrinkResources true
             //proguardFile 'proguard-potdroid.txt'
+            it.buildConfigField 'String', 'YOUTUBE_API_KEY', ReleaseYTApiKey
         }
 
         debug {
             minifyEnabled false
             shrinkResources false
             debuggable true
+            it.buildConfigField 'String', 'YOUTUBE_API_KEY', OpenYTApiKey
         }
     }
 

@@ -19,6 +19,7 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.mde.potdroid.BaseActivity;
+import com.mde.potdroid.BuildConfig;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.ImageHandler;
 import com.mde.potdroid.helpers.Network;
@@ -48,7 +49,6 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
     public final static String ARG_TYPE = "type";
     //private ShareActionProvider mShareActionProvider;
     private Intent mShareIntent;
-    public static final String API_KEY = "AIzaSyDY-dTGpAIzcWrOg5A6g39SYaDogJkJxNc";//"AIzaSyCtBO5c6kn_oVRij9Lzo12I6qO9J7eeTDs";
 
     /**
      * Create a new instance of AboutFragment and set the arguments
@@ -301,7 +301,7 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
             transaction.add(R.id.youtube_layout, youTubePlayerFragment).commit();
 
-            youTubePlayerFragment.initialize(API_KEY, new YouTubePlayer.OnInitializedListener() {
+            youTubePlayerFragment.initialize(BuildConfig.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
 
                 @Override
                 public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {

@@ -247,7 +247,13 @@ public class BookmarkFragment extends BaseFragment
                                     network.get(url, new Callback() {
                                         @Override
                                         public void onFailure(Call call, IOException e) {
-                                            hideLoadingAnimation();
+                                            getBaseActivity().runOnUiThread(new Runnable() {
+
+                                                @Override
+                                                public void run() {
+                                                    hideLoadingAnimation();
+                                                }
+                                            });
                                         }
 
                                         @Override

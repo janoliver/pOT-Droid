@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.*;
 import android.widget.FrameLayout;
 import com.devbrackets.android.exomedia.listener.OnPreparedListener;
@@ -203,9 +202,9 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
             ih.retrieveImage(uri.toString(), new ImageHandler.ImageHandlerCallback() {
                 @Override
                 public void onSuccess(String url, final String path, boolean from_cache) {
-                    hideLoadingAnimation();
                     getBaseActivity().runOnUiThread(new Runnable() {
                         public void run() {
+                            hideLoadingAnimation();
                             InputStream is;
                             try {
                                 is = getActivity().getContentResolver().openInputStream(Uri.parse(path));
@@ -248,7 +247,6 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
                     public void onSuccess(String url, final String path, boolean from_cache) {
                         getBaseActivity().runOnUiThread(new Runnable() {
                             public void run() {
-                                hideLoadingAnimation();
                                 mImageView.setVisibility(View.VISIBLE);
                                 mImageView.setImageURI(Uri.parse(path));
                                 mAttacher.update();
@@ -270,7 +268,6 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
                                 showError(R.string.msg_img_loading_error);
                             }
                         });
-                        hideLoadingAnimation();
                     }
                 });
             } catch (Exception e) {
@@ -309,16 +306,24 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
                         player.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
                         player.loadVideo(extractYTId(uri.toString()));
                         player.play();
-                        hideLoadingAnimation();
+
+                        getBaseActivity().runOnUiThread(new Runnable() {
+                            public void run() {
+                                hideLoadingAnimation();
+                            }
+                        });
                     }
                 }
 
                 @Override
                 public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult error) {
                     // YouTube error
-                    showError(R.string.msg_img_loading_error);
-                    Log.e("errorMessage:", error.toString());
-                    hideLoadingAnimation();
+                    getBaseActivity().runOnUiThread(new Runnable() {
+                        public void run() {
+                            showError(R.string.msg_img_loading_error);
+                            hideLoadingAnimation();
+                        }
+                    });
                 }
             });
 

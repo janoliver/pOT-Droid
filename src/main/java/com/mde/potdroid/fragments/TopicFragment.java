@@ -682,10 +682,10 @@ public class TopicFragment extends PaginateFragment implements
                     public void run() {
                         showSuccess(R.string.msg_bookmark_added);
                         mWebViewScrollCallbacks.toggleTopToolbar(true);
+                        hideLoadingAnimation();
                     }
                 });
 
-                hideLoadingAnimation();
                 if (d != null)
                     d.cancel();
             }

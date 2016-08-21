@@ -1,17 +1,15 @@
 package com.mde.potdroid.views;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mde.potdroid.R;
@@ -70,25 +68,8 @@ public class IconSelectionDialog extends DialogFragment {
 
         final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                 .title(R.string.dialog_icon_selection)
-                .adapter(new IconListAdapter(getActivity()), null)
+                .adapter(new IconListAdapter(), null)
                 .build();
-
-        ListView listView = dialog.getListView();
-        if (listView != null) {
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int which, long id) {
-                    dialog.dismiss();
-                    if(mCallback != null) {
-                        if(mIsSmileys)
-                            mCallback.selected(mIcons.get(which), getKeyByValue(TopicBuilder.mSmileys, mIcons.get(which)));
-                        else
-                            mCallback.selected(mIcons.get(which), null);
-                    }
-
-                }
-            });
-        }
 
         return dialog;
     }
@@ -96,18 +77,19 @@ public class IconSelectionDialog extends DialogFragment {
     /**
      * Custom view adapter for the ListView items
      */
-    public class IconListAdapter extends ArrayAdapter<String> {
-        Activity context;
+    public class IconListAdapter extends RecyclerView.Adapter<IconSelectionDialog.IconListAdapter.ViewHolder> {
+        private ArrayList<String> mDataset;
 
-        IconListAdapter(Activity context) {
-            super(context, R.layout.listitem_icon, R.id.name, mIcons);
-            this.context = context;
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            FrameLayout v = (FrameLayout) LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.listitem_icon, parent, false);
+
+            return new IconSelectionDialog.IconListAdapter.ViewHolder(v);
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = context.getLayoutInflater();
-            View row = inflater.inflate(R.layout.listitem_icon, null);
+        public void onBindViewHolder(ViewHolder holder, final int position) {
             String icon;
 
             if(mIsSmileys)
@@ -115,8 +97,7 @@ public class IconSelectionDialog extends DialogFragment {
             else
                 icon = mIcons.get(position);
 
-            TextView name = (TextView) row.findViewById(R.id.name);
-            name.setText(icon);
+            holder.mText.setText(icon);
 
             try {
                 Drawable dr;
@@ -124,18 +105,51 @@ public class IconSelectionDialog extends DialogFragment {
                     dr = Utils.getIcon(getActivity(), mIcons.get(position));
                 else
                     dr = Utils.getSmiley(getActivity(), mIcons.get(position));
-                dr.setBounds(0, 0, (int)name.getTextSize(), (int)name.getTextSize());
-                name.setCompoundDrawables(dr, null, null, null);
+                dr.setBounds(0, 0, (int)holder.mText.getTextSize(), (int)holder.mText.getTextSize());
+                holder.mText.setCompoundDrawables(dr, null, null, null);
 
             } catch (IOException e) {}
 
+            holder.mRoot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mCallback != null) {
+                        if(mIsSmileys)
+                            mCallback.selected(mIcons.get(position), getKeyByValue(TopicBuilder.mSmileys, mIcons.get(position)));
+                        else
+                            mCallback.selected(mIcons.get(position), null);
+                    }
+                    getDialog().dismiss();
+                }
+            });
 
-            return (row);
         }
+
+        @Override
+        public int getItemCount() {
+            return mDataset.size();
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+
+            FrameLayout mRoot;
+            TextView mText;
+
+            ViewHolder(FrameLayout container) {
+                super(container);
+                mRoot = container;
+                mText = (TextView) mRoot.findViewById(R.id.name);
+            }
+        }
+
+        IconListAdapter() {
+            mDataset = mIcons;
+        }
+
     }
 
     public interface IconSelectedCallback {
-        public void selected(String filename, String smiley);
+        void selected(String filename, String smiley);
     }
 
     public static <T, E> T getKeyByValue(Map<T, E> map, E value) {

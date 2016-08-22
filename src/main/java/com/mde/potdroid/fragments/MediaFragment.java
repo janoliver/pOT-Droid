@@ -6,19 +6,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentTransaction;
 import android.view.*;
-import android.widget.FrameLayout;
 import com.devbrackets.android.exomedia.listener.OnPreparedListener;
-import com.devbrackets.android.exomedia.listener.VideoControlsVisibilityListener;
 import com.devbrackets.android.exomedia.ui.widget.EMVideoView;
 import com.felipecsl.gifimageview.library.GifImageView;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.mde.potdroid.BaseActivity;
-import com.mde.potdroid.BuildConfig;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.ImageHandler;
 import com.mde.potdroid.helpers.Network;
@@ -29,8 +21,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Fragment that shows some information of the app
@@ -42,7 +32,6 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
     private PhotoView mImageView;
     private GifImageView mGifImageView;
     private PhotoViewAttacher mAttacher;
-    private FrameLayout mYTView;
     private boolean mVideoViewPausedInOnStop;
     public final static String ARG_URI = "uri";
     public final static String ARG_TYPE = "type";
@@ -179,7 +168,6 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
         mVideoView = (EMVideoView) v.findViewById(R.id.video);
         mGifImageView = (GifImageView) v.findViewById(R.id.gif);
         mImageView = (PhotoView) v.findViewById(R.id.image);
-        mYTView = (FrameLayout) v.findViewById(R.id.youtube_layout);
 
         mVideoView.setOnPreparedListener(this);
         mAttacher = new PhotoViewAttacher(mImageView);
@@ -289,44 +277,6 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
             shareIntent.putExtra(Intent.EXTRA_TEXT, uri.toString());
             shareIntent.setType("text/plain");
             mShareIntent = shareIntent;
-        } else if (type.compareTo("youtube") == 0) {
-            showLoadingAnimation();
-            mYTView.setVisibility(View.VISIBLE);
-
-            YouTubePlayerSupportFragment youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
-
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            transaction.add(R.id.youtube_layout, youTubePlayerFragment).commit();
-
-            youTubePlayerFragment.initialize(BuildConfig.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
-
-                @Override
-                public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
-                    if (!wasRestored) {
-                        player.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
-                        player.loadVideo(extractYTId(uri.toString()));
-                        player.play();
-
-                        getBaseActivity().runOnUiThread(new Runnable() {
-                            public void run() {
-                                hideLoadingAnimation();
-                            }
-                        });
-                    }
-                }
-
-                @Override
-                public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult error) {
-                    // YouTube error
-                    getBaseActivity().runOnUiThread(new Runnable() {
-                        public void run() {
-                            showError(R.string.msg_img_loading_error);
-                            hideLoadingAnimation();
-                        }
-                    });
-                }
-            });
-
         }
 
     }
@@ -392,20 +342,6 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
         return buffer.toByteArray();
     }
 
-
-    public static String extractYTId(@NonNull String videoUrl) {
-
-        final String reg = "(?:youtube(?:-nocookie)?\\.com\\/(?:[^\\/\\n\\s]+\\/\\S+\\/|(?:v|e(?:mbed)?)\\/|\\S*?[?&]v=)|youtu\\.be\\/)([a-zA-Z0-9_-]{11})";
-
-        Pattern pattern = Pattern.compile(reg, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(videoUrl);
-
-        if (matcher.find())
-            return matcher.group(1);
-        return null;
-    }
-
-
     private void goFullscreen() {
         setUiFlags(true);
     }
@@ -466,15 +402,4 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
         }
     }
 
-    private class ControlsVisibilityListener implements VideoControlsVisibilityListener {
-        @Override
-        public void onControlsShown() {
-            // No additional functionality performed
-        }
-
-        @Override
-        public void onControlsHidden() {
-            goFullscreen();
-        }
-    }
 }

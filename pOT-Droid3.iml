@@ -140,7 +140,6 @@
     <orderEntry type="library" exported="" name="recyclerview-v7-24.2.0" level="project" />
     <orderEntry type="library" exported="" name="exoplayer-r1.5.9" level="project" />
     <orderEntry type="library" exported="" name="support-core-ui-24.2.0" level="project" />
-    <orderEntry type="library" exported="" name="YouTubeAndroidPlayerApi" level="project" />
     <orderEntry type="library" exported="" name="support-core-utils-24.2.0" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-24.2.0" level="project" />
     <orderEntry type="library" exported="" name="android-observablescrollview-1.6.0" level="project" />

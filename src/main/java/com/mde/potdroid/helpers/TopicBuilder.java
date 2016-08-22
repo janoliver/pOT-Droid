@@ -546,9 +546,8 @@ public class TopicBuilder {
 
                     return String.format("<div class=\"media video yt\" data-src=\"%1$s\">" +
                             "<i class=\"material-icons\">&#xE02C;</i>" +
-                            "<button class=\"link mdl-button mdl-js-button\">Youtube</button>" +
                             "<button class=\"inline mdl-button mdl-js-button\">Inline</button>" +
-                            "<button class=\"viewer mdl-button mdl-js-button\">Viewer</button>" +
+                            "<button class=\"link mdl-button mdl-js-button\">Youtube</button>" +
                             "</div>", content);
                 } else {
                     return String.format("<div class=\"media video\" data-src=\"%1$s\">" +

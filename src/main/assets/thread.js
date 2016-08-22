@@ -49,10 +49,7 @@ $(document).ready(function() {
 
     // manual image loader
     $("div.video.media").on("click", "button.viewer", function() {
-        if($(this).parent().hasClass("yt"))
-            api.zoom($(this).parent().attr('data-src'), "youtube");
-        else
-            api.zoom($(this).parent().attr('data-src'), "video");
+        api.zoom($(this).parent().attr('data-src'), "video");
     });
 
     // manual video loader

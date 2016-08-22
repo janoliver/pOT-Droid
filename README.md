@@ -1,6 +1,6 @@
 # pOT Droid
 
-pOT Droid ist eine Android (2.3+) Applikation, die das surfen im mods.de Forum
+pOT Droid ist eine Android (4.0+) Applikation, die das surfen im mods.de Forum
 auf Android Handys erleichtert und beschleunigt.
 
 ## APK Downloaden
@@ -22,8 +22,7 @@ Das geht entweder auf Github bei den [Releases](https://github.com/janoliver/pOT
 
 * [mods.de Forum](http://forum.mods.de/bb/)
 * [Play Store](https://play.google.com/store/apps/details?id=com.mde.potdroid)
-* [Projekt Homepage und Bug Tracker](http://projects.oelerich.org/projects/pot-droid)
-* [Github Repository](http://github.com/janoliver/pOT-Droid)
+* [Projekt Repository und Bug Tracker](https://github.com/janoliver/pOT-Droid/)
 
 ## Hacking
 

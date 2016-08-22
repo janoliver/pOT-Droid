@@ -1,18 +1,23 @@
 # Changelog
 
-## Version 4
+## Version 5
 
-###  Version 4.2.X
+###  Version 5.0.X
   * Alle ListViews sind jetzt Recyclerviews
-  * Galerie Funktion hinzugefügt
+  * Media Viewer
   * In der Seitenleiste können auch gelesene Bookmarks angezeigt werden
   * App ist auf SD Karte bewegbar
+  * Split screen möglich
   * Home Button in der Blättern Toolbar
   * :matolf:
   * Gesperrte User werden angezeigt
-  * Neue Bild Download engine (Facebook fresco)
-  * Diverse kleinere Änderungen, siehe git commits.
-    
+  * Network engine neu
+  * Style System neu
+  * Settings import/export
+  * Neue Icons und mehr Material Design
+
+## Version 4
+
 ### Version 4.1.X
   * Die nächste Threadseite kann vorgeladen werden
   * Posts können nummeriert werden

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:id="@+id/root"
+        android:descendantFocusability="blocksDescendants">
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/name"
+              android:layout_height="wrap_content"
+              android:layout_width="fill_parent"
+              android:textSize="@dimen/md_listitem_textsize"
+              android:drawablePadding="10dp"
+              android:textColor="?attr/md_content_color"
+              android:layout_marginBottom="@dimen/md_listitem_vertical_margin"
+              android:layout_marginTop="@dimen/md_listitem_vertical_margin"
+              android:layout_marginLeft="@dimen/md_listitem_margin_left"
+              android:layout_marginStart="@dimen/md_listitem_margin_left"
+              android:layout_marginEnd="@dimen/md_dialog_frame_margin"
+              android:layout_marginRight="@dimen/md_dialog_frame_margin"/>
+</FrameLayout>

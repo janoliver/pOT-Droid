@@ -33,14 +33,6 @@
                 android:entries="@array/pref_theme_entries"
                 android:entryValues="@array/pref_theme_values"/>
 
-        <android.support.v7.preference.ListPreference
-                android:key="pref_theme_dark_variant"
-                android:title="Dark Theme Variante"
-                android:summary="Theme Variante des Dark Themes für die Topic Ansicht"
-                android:defaultValue="darkbright"
-                android:entries="@array/pref_theme_variant_entries"
-                android:entryValues="@array/pref_theme_variant_values"/>
-
         <android.support.v7.preference.CheckBoxPreference
                 android:key="pref_tinted_statusbar"
                 android:title="Statusleiste (unter KitKat) färben"

@@ -62,11 +62,6 @@ public class MessageBuilder {
             return mStyle;
         }
 
-        public String getThemeVariant() {
-            return mSettings.getThemeVariant();
-        }
-
-
         public boolean getBenderHead() {
             return mSettings.benderPosition() == 1 ||
                     (mSettings.benderPosition() == 3 &&

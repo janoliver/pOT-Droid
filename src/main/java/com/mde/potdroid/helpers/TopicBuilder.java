@@ -177,10 +177,6 @@ public class TopicBuilder {
                                     == Configuration.ORIENTATION_LANDSCAPE);
         }
 
-        public String getThemeVariant() {
-            return mSettings.getThemeVariant();
-        }
-
         public List<PostContext> getPosts() {
             List<PostContext> pc = new ArrayList<PostContext>();
             int user_id = mSettings.getUserId();

@@ -60,7 +60,6 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
 
         // set some custom descriptions programmatically
         setPreferenceDescription(SettingsWrapper.PREF_KEY_THEME);
-        setPreferenceDescription(SettingsWrapper.PREF_KEY_THEME_DARK_VARIANT);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_USERNAME);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_BENDERS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_SHOW_BENDERS);

@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="PotDroidWahooka" parent="@style/PotDroidDark">
+        <item name="bbPostBackgroundColor">?attr/bbDarkerItemBackground</item>
+        <item name="bbTopicBackgroundColor">@color/black</item>
+    </style>
+
+    <style name="PotDroidWahookaCompact" parent="@style/PotDroidDarkCompact">
+        <item name="bbPostBackgroundColor">?attr/bbDarkerItemBackground</item>
+        <item name="bbTopicBackgroundColor">@color/black</item>
+    </style>
+
     <style name="PotDroidDark" parent="@style/PotDroidDarkBase">
         <item name="bbListItemPaddingLR">15dp</item>
         <item name="bbListItemPaddingTB">10dp</item>

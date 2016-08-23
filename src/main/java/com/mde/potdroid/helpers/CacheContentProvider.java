@@ -8,6 +8,7 @@ import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import com.mde.potdroid.BuildConfig;
 
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
@@ -23,7 +24,8 @@ public class CacheContentProvider extends ContentProvider {
             MediaStore.MediaColumns.MIME_TYPE,
             MediaStore.MediaColumns.SIZE,
             MediaStore.MediaColumns.TITLE };
-    public static final Uri CONTENT_URI = Uri.parse("content://com.mde.potdroid.files/");
+    public static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".files";
+    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/");
 
     @Override
     public boolean onCreate() {

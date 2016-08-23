@@ -15,6 +15,7 @@ package com.mde.potdroid.helpers;/*
  * limitations under the License.
  */
 
+import android.support.annotation.Keep;
 import android.util.Log;
 
 import java.io.*;
@@ -25,7 +26,7 @@ import java.net.HttpCookie;
  * Based on the code from this stackoverflow answer http://stackoverflow.com/a/25462286/980387 by janoliver
  * Modifications in the structure of the class and addition of serialization of httpOnly attribute
  */
-
+@Keep
 public class SerializableHttpCookie implements Serializable {
     private static final String TAG = SerializableHttpCookie.class
             .getSimpleName();

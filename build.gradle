@@ -46,12 +46,14 @@ android {
 
     buildTypes {
         release {
-            //minifyEnabled true
-            //shrinkResources true
-            //proguardFile 'proguard-potdroid.txt'
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-potdroid.txt'
         }
 
         debug {
+            //applicationIdSuffix '.dev'
             minifyEnabled false
             shrinkResources false
             debuggable true

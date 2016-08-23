@@ -2,6 +2,7 @@ package com.mde.potdroid.helpers;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.support.annotation.Keep;
 import com.mde.potdroid.R;
 import com.mde.potdroid.models.Message;
 import com.samskivert.mustache.Mustache;
@@ -44,6 +45,7 @@ public class MessageBuilder {
     /**
      * A wrapper class for Message objects, needed by JMoustache.
      */
+    @Keep
     class MessageContext {
 
         private Message mMessage;

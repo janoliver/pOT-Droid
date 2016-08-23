@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.support.annotation.Keep;
 import android.util.DisplayMetrics;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
  * The Javascript interface for the Topic Webviews, extended from the Bender js interface.
  * Provides some more API functions.
  */
+@Keep
 public class TopicJSInterface extends BenderJSInterface {
 
     // this is the post that is currently visible

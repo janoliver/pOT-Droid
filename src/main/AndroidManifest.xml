@@ -139,7 +139,7 @@
                 android:exported="false"/>
         <provider
                 android:name=".helpers.CacheContentProvider"
-                android:authorities="com.mde.potdroid.files"
+                android:authorities="${applicationId}.files"
                 android:exported="true"
                 android:grantUriPermissions="true"/>
     </application>

@@ -2,6 +2,7 @@ package com.mde.potdroid.helpers;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.support.annotation.Keep;
 import android.webkit.URLUtil;
 import com.mde.potdroid.R;
 import com.mde.potdroid.models.Post;
@@ -145,6 +146,7 @@ public class TopicBuilder {
     /**
      * A wrapper object for JMoustache, providing some getters for the Topic object
      */
+    @Keep
     class TopicContext {
 
         private Topic mTopic;
@@ -197,6 +199,7 @@ public class TopicBuilder {
     /**
      * A wrapper object for JMoustache, providing some getters for the Post object
      */
+    @Keep
     class PostContext {
 
         private int mUserId;

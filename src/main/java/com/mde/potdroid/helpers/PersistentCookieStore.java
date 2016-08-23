@@ -16,6 +16,7 @@ package com.mde.potdroid.helpers;/*
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.Keep;
 import android.util.Log;
 
 import java.net.CookieStore;
@@ -24,6 +25,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
+@Keep
 public class PersistentCookieStore implements CookieStore {
     private static final String TAG = PersistentCookieStore.class
             .getSimpleName();

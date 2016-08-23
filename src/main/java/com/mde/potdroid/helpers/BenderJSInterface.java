@@ -1,6 +1,7 @@
 package com.mde.potdroid.helpers;
 
 import android.app.Activity;
+import android.support.annotation.Keep;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -10,6 +11,7 @@ import com.mde.potdroid.models.User;
  * The Javascript interface for WebViews that display Benders. Provides methods to
  * retrieve and Download Benders (via BenderHandler)
  */
+@Keep
 public class BenderJSInterface {
 
     // A reference to the WebView this interface is attached to

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Keep;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,6 +63,7 @@ public class AboutFragment extends BaseFragment {
         return sw.toString();
     }
 
+    @Keep
     public static class AboutContext {
         protected Activity mActivity;
         private CssStyleWrapper mStyle;

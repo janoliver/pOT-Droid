@@ -138,17 +138,14 @@ public class TopicFragment extends PaginateFragment implements
         View v = inflater.inflate(R.layout.layout_topic, container, false);
 
         mFab = (FloatingActionButton) v.findViewById(R.id.fab);
-        mFab.hide();
 
         mWebView = (ObservableWebView) v.findViewById(R.id.topic_webview);
 
-        if (Utils.isLoggedIn() && mSettings.isShowFAB() && !mSettings.isBottomToolbar()) {
-            mFab.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    replyPost();
-                }
-            });
-        }
+        mFab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                replyPost();
+            }
+        });
 
         return v;
     }
@@ -327,7 +324,7 @@ public class TopicFragment extends PaginateFragment implements
     }
 
     public boolean backPressed() {
-        if(mJsInterface.isLightbox()) {
+        if (mJsInterface.isLightbox()) {
             mJsInterface.closeLightbox();
             return true;
         } else {
@@ -385,7 +382,9 @@ public class TopicFragment extends PaginateFragment implements
     }
 
     private void showFloatingActionButton() {
-        if (Utils.isLoggedIn() && mSettings.isShowFAB() && !mSettings.isBottomToolbar())
+        if (!Utils.isLoggedIn() || mSettings.isBottomToolbar() || mSettings.getShowFAB() == 0)
+            return;
+        if (mSettings.getShowFAB() == 1 || (mSettings.getShowFAB() == 2 && isLastPage()))
             mFab.show();
     }
 
@@ -801,9 +800,9 @@ public class TopicFragment extends PaginateFragment implements
                 TopicBuilder b = new TopicBuilder(mContext, new TopicBuilder.TagCallback() {
                     @Override
                     public void onTag(String tag, String content, List<String> args) {
-                        if(tag.equals("img"))
+                        if (tag.equals("img"))
                             media.add("I" + content);
-                        else if(tag.equals("video"))
+                        else if (tag.equals("video"))
                             media.add("V" + content);
                     }
                 });

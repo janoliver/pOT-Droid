@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceManager;
@@ -43,15 +44,11 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
     public void onCreatePreferencesFix(Bundle savedInstanceState, String rootKey) {
 
         mSettings = new SettingsWrapper(getActivity());
-        //boolean def = mSettings.isFixedSidebar();
 
         getActivity().setTitle(R.string.subtitle_settings);
 
         // Load the preferences from an XML resource
         setPreferencesFromResource(R.xml.preferences, rootKey);
-        /*CheckBoxPreference preference = (CheckBoxPreference) findPreference("pref_fixed_sidebar");
-        preference.setChecked(def);
-        preference.setDefaultValue(def);*/
     }
 
     @Override
@@ -64,13 +61,13 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_BENDERS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_SHOW_BENDERS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_IMAGES);
-        setPreferenceDescription(SettingsWrapper.PREF_KEY_SHOW_MENU);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_VIDEOS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_POLL_MESSAGES);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_MATA);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_MATA_FORUM);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_START_ACTIVITY);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_START_FORUM);
+        setPreferenceDescription(SettingsWrapper.PREF_KEY_FAB);
 
         PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .registerOnSharedPreferenceChangeListener(this);
@@ -121,8 +118,10 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
         if (preference instanceof ListPreference) {
             ListPreference listPref = (ListPreference) preference;
             preference.setSummary(listPref.getEntry());
+        } else if (preference instanceof EditTextPreference) {
+            EditTextPreference editTextPref = (EditTextPreference) preference;
+            preference.setSummary(editTextPref.getText());
         }
-
 
         if (key.equals(SettingsWrapper.PREF_KEY_USERNAME)) {
 

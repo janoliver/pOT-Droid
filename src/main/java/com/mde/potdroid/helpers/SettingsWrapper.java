@@ -3,7 +3,6 @@ package com.mde.potdroid.helpers;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
@@ -27,10 +26,6 @@ public class SettingsWrapper {
     public static final String PREF_KEY_USERNAME = "user_name";
     public static final String PREF_KEY_USERID = "user_id";
     public static final String PREF_KEY_UAGENT = "unique_uagent";
-    public static final String PREF_KEY_COOKIE_NAME = "cookie_name";
-    public static final String PREF_KEY_COOKIE_VALUE = "cookie_value";
-    public static final String PREF_KEY_COOKIE_PATH = "cookie_path";
-    public static final String PREF_KEY_COOKIE_URL = "cookie_url";
     public static final String PREF_KEY_SHOW_BENDERS = "pref_bender_position";
     public static final String PREF_KEY_DEBUG = "pref_debug_mode";
     public static final String PREF_KEY_LOAD_BENDERS = "pref_load_benders";
@@ -49,7 +44,6 @@ public class SettingsWrapper {
     public static final String PREF_KEY_START_FORUM = "pref_start_forum";
     public static final String PREF_KEY_MATA = "pref_mata";
     public static final String PREF_KEY_MATA_FORUM = "pref_mata_forum";
-    public static final String PREF_KEY_SHOW_MENU = "pref_show_menu";
     public static final String PREF_KEY_MARK_NEW_POSTS = "pref_mark_new_posts";
     public static final String PREF_KEY_BBCODE_EDITOR = "pref_bbcode_editor";
     public static final String PREF_KEY_CACHE_SIZE = "pref_cache_size";
@@ -70,7 +64,6 @@ public class SettingsWrapper {
     public static final String PREF_KEY_SWAPPED_SIDEBARS = "pref_swap_sidebars";
     public static final String PREF_KEY_PARSE_BBCODE = "pref_parse_bbcode";
     public static final String PREF_KEY_FAB = "pref_fab";
-    public static final String PREF_KEY_TINTED_STATUSBAR = "pref_tinted_statusbar";
     public static final String PREF_KEY_POSTNUMBERS = "pref_show_postnumbers";
     public static final String PREF_KEY_GERMAN_TIMEZONE = "pref_german_timezone";
     public static final String PREF_EXPORT_SETTINGS = "pref_export_settings";
@@ -94,15 +87,29 @@ public class SettingsWrapper {
             SharedPreferences.Editor editor = mSharedPreferences.edit();
             editor.clear();
             editor.putBoolean("is_v3", true);
-            editor.commit();
+            editor.apply();
 
             // and delete the old benders
-            File ext_root = Environment.getExternalStorageDirectory();
             File dir = new File(mContext.getExternalFilesDir(null), "avatare");
 
             if (dir.exists())
                 dir.delete();
         }
+
+        if (!mSharedPreferences.getBoolean("is_v5", false)) {
+            SharedPreferences.Editor editor = mSharedPreferences.edit();
+            editor.putBoolean("is_v5", true);
+
+            try {
+                mSharedPreferences.getString(PREF_KEY_FAB, "0");
+            } catch (ClassCastException e){
+                Boolean b = mSharedPreferences.getBoolean(PREF_KEY_FAB, true);
+                editor.putString(PREF_KEY_FAB, b ? "1" : "0");
+            }
+            editor.apply();
+        }
+
+
     }
 
     public Boolean showBenders() {
@@ -113,24 +120,8 @@ public class SettingsWrapper {
         return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_SHOW_BENDERS, "0"));
     }
 
-    public Integer showMenu() {
-        return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_SHOW_MENU, "3"));
-    }
-
     public Integer pollMessagesInterval() {
         return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_POLL_MESSAGES, "0"));
-    }
-
-    public String loadBenders() {
-        return mSharedPreferences.getString(PREF_KEY_LOAD_BENDERS, "0");
-    }
-
-    public String loadImages() {
-        return mSharedPreferences.getString(PREF_KEY_LOAD_IMAGES, "0");
-    }
-
-    public String loadVideos() {
-        return mSharedPreferences.getString(PREF_KEY_LOAD_VIDEOS, "0");
     }
 
     public Boolean downloadBenders() {
@@ -231,10 +222,6 @@ public class SettingsWrapper {
         return mSharedPreferences.getBoolean(PREF_KEY_RELOAD_BOOKMARKS, false);
     }
 
-    public Boolean isTintedStatusbar() {
-        return mSharedPreferences.getBoolean(PREF_KEY_TINTED_STATUSBAR, true);
-    }
-
     public Boolean isBoardBookmarks() {
         return mSharedPreferences.getBoolean(PREF_KEY_BOARDS_BOOKMARKS, true);
     }
@@ -267,8 +254,8 @@ public class SettingsWrapper {
         return mSharedPreferences.getBoolean(PREF_KEY_PARSE_BBCODE, true);
     }
 
-    public Boolean isShowFAB() {
-        return mSharedPreferences.getBoolean(PREF_KEY_FAB, true);
+    public Integer getShowFAB() {
+        return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_FAB, "0"));
     }
 
     public Boolean fastscroll() {

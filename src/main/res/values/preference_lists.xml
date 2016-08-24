@@ -38,16 +38,6 @@
         <item>2</item>
         <item>3</item>
     </string-array>
-    <string-array name="show_menu">
-        <item>Immer Menü anzeigen</item>
-        <item>Immer Button anzeigen</item>
-        <item>Nach Gerät-Orientierung</item>
-    </string-array>
-    <string-array name="show_menu_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
     <string-array name="pref_poll_messages_values">
         <item>0</item>
         <item>300</item>
@@ -93,6 +83,16 @@
         <item>1</item>
         <item>2</item>
         <item>3</item>
+    </string-array>
+    <string-array name="show_fab">
+        <item>Nie</item>
+        <item>Immer</item>
+        <item>Auf letzter Thread Seite</item>
+    </string-array>
+    <string-array name="show_fab_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
     <string-array name="pref_start_forum">
         <item><![CDATA[3DSupply.de]]></item>

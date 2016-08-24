@@ -34,6 +34,7 @@
     <color name="bbstyle_lightblue">#FF394E63</color>
     <color name="bbstyle_lightblue_semi">#aa394E63</color>
     <color name="bbstyle_lighterblue">#ff51677e</color>
+    <color name="bbstyle_lighterblue_semi">#9951677e</color>
 
     <color name="preference_accent">@color/bbstyle_lightblue</color>
 </resources>

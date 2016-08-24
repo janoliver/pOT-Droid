@@ -115,13 +115,13 @@ public class TopicBuilder {
         Mustache.compiler().compile(reader).execute(new TopicContext(topic, mContext), sw);
         mBenderHandler.updateLastSeenBenderInformation(new ArrayList(mAvatarCache.keySet()));
 
-        File myFile = new File(mContext.getExternalFilesDir(null), "bb.html");
+        /*File myFile = new File(mContext.getExternalFilesDir(null), "bb.html");
         myFile.createNewFile();
         FileOutputStream fOut = new FileOutputStream(myFile);
         OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
         myOutWriter.append(sw.toString());
         myOutWriter.close();
-        fOut.close();
+        fOut.close();*/
 
         return sw.toString();
     }
@@ -398,7 +398,7 @@ public class TopicBuilder {
             public String html(String content, List<String> args) {
                 content = content.replace("<br />", "");
                 mParser.getCallback().onTag("code", content, args);
-                return String.format("<span class=\"code\">%1$s</span>", content);
+                return String.format("<div class=\"code\">%1$s</div>", content);
             }
         });
 

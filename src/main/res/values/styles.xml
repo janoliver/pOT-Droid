@@ -4,11 +4,19 @@
     <style name="PotDroidWahooka" parent="@style/PotDroidDark">
         <item name="bbPostBackgroundColor">?attr/bbDarkerItemBackground</item>
         <item name="bbTopicBackgroundColor">@color/black</item>
+        <item name="bbQuoteBackgroundColor">@color/bbstyle_lighterblue_semi</item>
+        <item name="bbQuoteHeaderColor">@color/bbstyle_lighterblue</item>
+        <item name="bbMediaBackgroundColor">@color/bbstyle_lighterblue</item>
+        <item name="bbMediaForegroundColor">@color/white</item>
     </style>
 
     <style name="PotDroidWahookaCompact" parent="@style/PotDroidDarkCompact">
         <item name="bbPostBackgroundColor">?attr/bbDarkerItemBackground</item>
         <item name="bbTopicBackgroundColor">@color/black</item>
+        <item name="bbQuoteBackgroundColor">@color/bbstyle_lighterblue_semi</item>
+        <item name="bbQuoteHeaderColor">@color/bbstyle_lighterblue</item>
+        <item name="bbMediaBackgroundColor">@color/bbstyle_lighterblue</item>
+        <item name="bbMediaForegroundColor">@color/white</item>
     </style>
 
     <style name="PotDroidDark" parent="@style/PotDroidDarkBase">

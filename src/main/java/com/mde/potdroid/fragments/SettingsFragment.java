@@ -128,7 +128,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
             preference.setSummary(editTextPref.getText());
         }
 
-        if (key.equals(SettingsWrapper.PREF_DOWNLOAD_DIRECTORY)) {
+        if (preference != null && key.equals(SettingsWrapper.PREF_DOWNLOAD_DIRECTORY)) {
             preference.setSummary(mSettings.getMediaDownloadPath());
         }
 

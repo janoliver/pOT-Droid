@@ -1,7 +1,5 @@
 package com.mde.potdroid.helpers;
 
-import android.os.Environment;
-
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -44,7 +42,6 @@ public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
         // save string to file
         String filename = dateFormat.format(date) + ".stacktrace";
 
-        File ext_root = Environment.getExternalStorageDirectory();
         File path = new File(mContext.getExternalFilesDir(null), "log");
         path.mkdirs();
 

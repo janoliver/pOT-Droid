@@ -356,11 +356,6 @@ public class SettingsWrapper {
         return mSharedPreferences.getInt(PREF_KEY_USERID, 0);
     }
 
-    public void clearCookie() {
-        PersistentCookieStore s = new PersistentCookieStore(mContext);
-        s.removeAll();
-    }
-
     public String getUserAgent() {
         return String.format(Network.UAGENT_TPL, mSharedPreferences.getString(PREF_KEY_UAGENT, ""));
     }

@@ -25,7 +25,7 @@ import java.net.ConnectException;
 public abstract class AsyncHttpLoader<E> extends Loader<E> {
 
     // the calling activity
-    private Context mActivity;
+    protected Context mActivity;
     final Handler mUiThreadHandler = new Handler();
 
     // request type codes

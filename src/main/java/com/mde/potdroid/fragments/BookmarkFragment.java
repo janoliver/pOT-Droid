@@ -121,7 +121,7 @@ public class BookmarkFragment extends BaseFragment
 
         if (success != null && success.getException() != null) {
             if (success.getException() instanceof Utils.NotLoggedInException) {
-                Utils.setNotLoggedIn();
+
                 mBookmarkList.clearBookmarksCache();
                 showError(getString(R.string.notloggedin));
                 mListAdapter.setItems(new ArrayList<Bookmark>());
@@ -285,6 +285,7 @@ public class BookmarkFragment extends BaseFragment
     }
 
     static class AsyncContentLoader extends AsyncHttpLoader<BookmarkParser.BookmarksContainer> {
+        private Context mContext;
 
         AsyncContentLoader(Context cx) {
             super(cx, BookmarkParser.URL);
@@ -297,7 +298,8 @@ public class BookmarkFragment extends BaseFragment
                 return parser.parse(response);
             } catch (Exception e) {
                 BookmarkParser.BookmarksContainer c = new BookmarkParser.BookmarksContainer();
-                Utils.setNotLoggedIn();
+
+                Network.logout(mActivity);
                 c.setException(e);
                 return c;
             }

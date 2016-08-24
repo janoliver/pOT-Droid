@@ -50,6 +50,10 @@ public class Network {
         mContext = context;
         mSettings = new SettingsWrapper(mContext);
 
+        ensureHttpClient();
+    }
+
+    public void ensureHttpClient() {
         if (mHttpClient == null) {
             CookieHandler cookieHandler = new CookieManager(
                     new PersistentCookieStore(mContext), CookiePolicy.ACCEPT_ALL);
@@ -59,12 +63,14 @@ public class Network {
                     .cookieJar(new JavaNetCookieJar(cookieHandler))
                     .build();
         }
+
         mHeaders = new Headers.Builder()
                 .add("User-Agent", mSettings.getUserAgent())
                 .build();
     }
 
     public OkHttpClient getHttpClient() {
+        ensureHttpClient();
         return mHttpClient;
     }
 
@@ -72,6 +78,7 @@ public class Network {
      * Get a xml document from the mods.de api
      */
     public Call get(String url, Callback responseHandler) {
+        ensureHttpClient();
         Request request = new Request.Builder()
                 .url(Utils.getAbsoluteUrl(url))
                 .headers(mHeaders)
@@ -85,7 +92,7 @@ public class Network {
      * Get a xml document from the mods.de api
      */
     public Call post(String url, RequestBody params, Callback responseHandler) {
-
+        ensureHttpClient();
         Request request = new Request.Builder()
                 .url(Utils.getAbsoluteUrl(url))
                 .headers(mHeaders)
@@ -95,6 +102,18 @@ public class Network {
         Call c = mHttpClient.newCall(request);
         c.enqueue(responseHandler);
         return c;
+    }
+
+    public static void logout(Context cx) {
+        PersistentCookieStore p = new PersistentCookieStore(cx);
+        p.removeAll();
+
+        SettingsWrapper s = new SettingsWrapper(cx);
+        s.clearUsername();
+        s.clearUserId();
+
+        // delete httpclient singleton
+        mHttpClient = null;
     }
 
     /**
@@ -152,6 +171,9 @@ public class Network {
 
                         @Override
                         public void onResponse(Call call, final Response response) throws IOException {
+                            // delete httpclient singleton
+                            mHttpClient = null;
+
                             // do nothing, cookie was hopefully saved... :)
                             ((Activity) mContext).runOnUiThread(new Runnable() {
                                 public void run() {

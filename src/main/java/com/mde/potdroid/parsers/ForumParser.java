@@ -2,6 +2,7 @@ package com.mde.potdroid.parsers;
 
 import android.sax.*;
 import android.util.Xml;
+import com.mde.potdroid.helpers.Network;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.*;
 import org.xml.sax.Attributes;
@@ -40,7 +41,8 @@ public class ForumParser extends DefaultHandler {
             @Override
             public void start(Attributes attributes) {
                 if (Integer.parseInt(attributes.getValue(BoardParser.CURRENT_USER_ID)) == 0) {
-                    Utils.setNotLoggedIn();
+
+                    Network.logout(Utils.getApplicationContext());
                 }
             }
         });

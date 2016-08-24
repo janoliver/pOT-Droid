@@ -11,6 +11,7 @@ import android.support.v7.preference.PreferenceDialogFragmentCompat;
 import android.view.View;
 import android.widget.TextView;
 import com.mde.potdroid.R;
+import com.mde.potdroid.helpers.Network;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
 
@@ -38,11 +39,10 @@ public class LogoutDialog extends PreferenceDialogFragmentCompat {
     }
 
     @Override
+
     public void onClick(final DialogInterface dialog, int which) {
         if(which == Dialog.BUTTON_POSITIVE) {
-            mSettingsWrapper.clearCookie();
-            mSettingsWrapper.clearUsername();
-            mSettingsWrapper.clearUserId();
+            Network.logout(getActivity());
             Snackbar snackbar = Snackbar
                     .make(mContext.findViewById(android.R.id.content), R.string.msg_logout_success, Snackbar.LENGTH_LONG)
                     .setAction("Neu starten", new View.OnClickListener() {

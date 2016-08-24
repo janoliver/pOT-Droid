@@ -3,6 +3,7 @@ package com.mde.potdroid.parsers;
 import android.net.Uri;
 import android.sax.*;
 import android.util.Xml;
+import com.mde.potdroid.helpers.Network;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.models.Board;
 import com.mde.potdroid.models.Post;
@@ -105,7 +106,8 @@ public class TopicParser extends DefaultHandler {
                 mThread.setId(Integer.parseInt(attributes.getValue(ID_ATTRIBUTE)));
 
                 if (Integer.parseInt(attributes.getValue(BoardParser.CURRENT_USER_ID)) == 0) {
-                    Utils.setNotLoggedIn();
+
+                    Network.logout(Utils.getApplicationContext());
                 }
             }
         });

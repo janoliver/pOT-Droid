@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.mde.potdroid.*;
+import com.mde.potdroid.helpers.Network;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.helpers.ptr.SwipyRefreshLayoutDirection;
 import com.mde.potdroid.models.Bookmark;
@@ -119,6 +120,8 @@ public class SidebarBookmarksFragment extends BaseFragment
             Utils.setImageButtonEnabled(false, mPmButton);
             Utils.setImageButtonEnabled(false, mBookmarksButton);
             mPullToRefreshLayout.setEnabled(false);
+            mBookmarkList.clearBookmarksCache();
+            setNewBookmarks();
         }
 
         ImageButton refresh = (ImageButton) getView().findViewById(R.id.button_refresh);
@@ -164,7 +167,7 @@ public class SidebarBookmarksFragment extends BaseFragment
 
         if (success != null && success.getException() != null) {
             if (success.getException() instanceof Utils.NotLoggedInException) {
-                Utils.setNotLoggedIn();
+                Network.logout(getActivity());
                 mBookmarkList.clearBookmarksCache();
                 setNewBookmarks();
                 showError(getString(R.string.notloggedin));

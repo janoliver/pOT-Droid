@@ -151,19 +151,6 @@ public class Utils {
                 android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.GINGERBREAD_MR1;
     }
 
-    /**
-     * Set the login state of the user to be not logged in
-     */
-    public static void setNotLoggedIn() {
-        if (mContext == null)
-            return;
-
-        SettingsWrapper settings = new SettingsWrapper(mContext);
-        settings.clearUserId();
-        settings.clearCookie();
-        settings.clearUsername();
-    }
-
     public static boolean isLoggedIn() {
         if (mContext == null)
             return false;

@@ -3,6 +3,7 @@ package com.mde.potdroid.helpers;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
@@ -68,6 +69,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_GERMAN_TIMEZONE = "pref_german_timezone";
     public static final String PREF_EXPORT_SETTINGS = "pref_export_settings";
     public static final String PREF_IMPORT_SETTINGS = "pref_import_settings";
+    public static final String PREF_DOWNLOAD_DIRECTORY = "pref_download_directory";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;
@@ -294,6 +296,11 @@ public class SettingsWrapper {
 
     public int getMataForum() {
         return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_MATA_FORUM, "14"));
+    }
+
+    public String getMediaDownloadPath() {
+        return mSharedPreferences.getString(PREF_DOWNLOAD_DIRECTORY,
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath());
     }
 
     public Boolean hasUsername() {

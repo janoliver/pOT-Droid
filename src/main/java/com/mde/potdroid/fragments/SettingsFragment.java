@@ -1,5 +1,6 @@
 package com.mde.potdroid.fragments;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
@@ -25,6 +27,7 @@ import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.services.MessagePollingService;
 import com.mde.potdroid.views.LoginDialog;
 import com.mde.potdroid.views.LogoutDialog;
+import com.nononsenseapps.filepicker.FilePickerActivity;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompatDividers;
 
 import java.io.*;
@@ -35,6 +38,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
     private SettingsWrapper mSettings;
 
     private static final int NOTIFICATION_SOUND_REQUEST_CODE = 1;
+    private static final int DOWNLOAD_DIRECTORY_CODE = 2;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -68,6 +72,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
         setPreferenceDescription(SettingsWrapper.PREF_KEY_START_ACTIVITY);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_START_FORUM);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_FAB);
+        setPreferenceDescription(SettingsWrapper.PREF_DOWNLOAD_DIRECTORY);
 
         PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .registerOnSharedPreferenceChangeListener(this);
@@ -121,6 +126,10 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
         } else if (preference instanceof EditTextPreference) {
             EditTextPreference editTextPref = (EditTextPreference) preference;
             preference.setSummary(editTextPref.getText());
+        }
+
+        if (key.equals(SettingsWrapper.PREF_DOWNLOAD_DIRECTORY)) {
+            preference.setSummary(mSettings.getMediaDownloadPath());
         }
 
         if (key.equals(SettingsWrapper.PREF_KEY_USERNAME)) {
@@ -184,9 +193,11 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
             startActivityForResult(intent, NOTIFICATION_SOUND_REQUEST_CODE);
             return true;
 
-        } else if (preference.getKey().equals(SettingsWrapper.PREF_EXPORT_SETTINGS)) {
+        }
+
+        if (preference.getKey().equals(SettingsWrapper.PREF_EXPORT_SETTINGS)) {
             File f = new File(getContext().getExternalFilesDir(null), "settings");
-            if(saveSharedPreferencesToFile(f)) {
+            if (saveSharedPreferencesToFile(f)) {
                 getActivity().runOnUiThread(new Runnable() {
 
                     @Override
@@ -216,9 +227,11 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
                 });
             }
             return true;
-        } else if (preference.getKey().equals(SettingsWrapper.PREF_IMPORT_SETTINGS)) {
+        }
+
+        if (preference.getKey().equals(SettingsWrapper.PREF_IMPORT_SETTINGS)) {
             File f = new File(getContext().getExternalFilesDir(null), "settings");
-            if(f.exists() && loadSharedPreferencesFromFile(f)) {
+            if (f.exists() && loadSharedPreferencesFromFile(f)) {
                 getActivity().runOnUiThread(new Runnable() {
 
                     @Override
@@ -257,9 +270,24 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
                 });
             }
             return true;
-        } else {
-            return super.onPreferenceTreeClick(preference);
         }
+
+        if (preference.getKey().equals(SettingsWrapper.PREF_DOWNLOAD_DIRECTORY)) {
+
+            Intent i = new Intent(getActivity(), FilePickerActivity.class);
+
+            // Set these depending on your use case. These are the defaults.
+            i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
+            i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, true);
+            i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_DIR);
+            i.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory().getPath());
+
+            startActivityForResult(i, DOWNLOAD_DIRECTORY_CODE);
+
+            return true;
+        }
+
+        return super.onPreferenceTreeClick(preference);
     }
 
     @Override
@@ -276,13 +304,24 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
                 editor.putString(SettingsWrapper.PREF_KEY_NOTIFICATION_SOUND, "");
             }
 
-            editor.commit();
+            editor.apply();
+        } else if (requestCode == DOWNLOAD_DIRECTORY_CODE && resultCode == Activity.RESULT_OK) {
+            File f = new File(data.getData().getPath());
+            SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getContext());
+            SharedPreferences.Editor editor = p.edit();
+
+            if(f.exists() && f.isDirectory())
+                editor.putString(SettingsWrapper.PREF_DOWNLOAD_DIRECTORY, data.getData().getPath());
+
+            editor.apply();
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+
     }
 
     // check if the MessagePollingService is running.
+
     private boolean isPollingServiceRunning() {
         ActivityManager manager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer

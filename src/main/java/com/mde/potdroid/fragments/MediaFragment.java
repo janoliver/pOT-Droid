@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.*;
 import com.devbrackets.android.exomedia.listener.OnPreparedListener;
 import com.devbrackets.android.exomedia.ui.widget.EMVideoView;
@@ -110,7 +109,7 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
 
         String type = getArguments().getString(ARG_TYPE);
 
-        File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File dir = new File(mSettings.getMediaDownloadPath());
 
         if (type.compareTo("gif") == 0 || type.compareTo("image") == 0) {
 

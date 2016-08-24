@@ -29,6 +29,7 @@ dependencies {
     compile 'com.devbrackets.android:exomedia:3.0.1'
     compile 'com.felipecsl:gifimageview:2.1.0'
     compile 'com.github.chrisbanes:PhotoView:1.3.0'
+    compile 'com.nononsenseapps:filepicker:3.0.0'
 }
 
 

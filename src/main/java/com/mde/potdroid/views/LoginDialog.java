@@ -31,8 +31,6 @@ public class LoginDialog extends PreferenceDialogFragmentCompat {
     private EditText mUsername;
     private EditText mPassword;
     private ProgressBar mLoader;
-    private Button mPositiveButton;
-    private Button mNegativeButton;
 
     // true if a server request is made, false otherwise
     private Boolean mLoggingIn;

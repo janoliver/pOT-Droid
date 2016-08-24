@@ -65,6 +65,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_BENDERS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_SHOW_BENDERS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_IMAGES);
+        setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_GIFS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_VIDEOS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_POLL_MESSAGES);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_MATA);

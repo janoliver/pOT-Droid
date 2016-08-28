@@ -117,6 +117,8 @@
             display:none;
         }
         {{/getBenderBody}}
+
+        {{ style.customCss }}
     </style>
 </head>
 <body>
@@ -177,5 +179,8 @@
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="waypoints.js"></script>
 <script type="text/javascript" src="thread.js"></script>
+<script type="text/javascript">
+   {{style.customJs}}
+</script>
 </body>
 </html>

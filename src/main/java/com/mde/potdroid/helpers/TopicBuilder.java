@@ -247,7 +247,7 @@ public class TopicBuilder {
                     mAvatarCache.put(mPost.getAuthor(), "");
                 else
                     mAvatarCache.put(mPost.getAuthor(),
-                            String.format("style=\"background-image:url(%s)\"", path));
+                            String.format("background-image:url(%s)", path));
             }
 
             return mAvatarCache.get(mPost.getAuthor());

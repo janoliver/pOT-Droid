@@ -101,6 +101,10 @@
             border:1px solid {{style.headerBackgroundColor}};
         }
 
+        .bender {
+            {{&avatarBackground}}
+        }
+
         {{^getBenderHead}}
         .post .header .bender {
             display:none;
@@ -135,7 +139,7 @@
             <button class="post-menu-button">
                 <i class="material-icons">&#xE5D4;</i>
             </button>
-            <div class="bender" {{&avatarBackground}}></div>
+            <div class="bender"></div>
             <div class="info">
                 <h4 class="author">
                     {{#getAuthorLocked}}
@@ -158,7 +162,7 @@
             </div>
         </div>
         <div class="body">
-            <div class="bender" {{&avatarBackground}}></div>
+            <div class="bender"></div>
             <div class="content">
                 {{&text}}
                 {{#isEdited}}

@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.3'
+        classpath 'com.android.tools.build:gradle:2.2.0-beta2'
     }
 }
 
@@ -34,25 +34,31 @@ dependencies {
 
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'oli'
+            keyPassword 'webfisch'
+            storeFile file('/home/oli/Workspace/Android/oli.store')
+            storePassword 'webfisch'
+        }
+    }
     useLibrary 'org.apache.http.legacy'
-
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
-
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 24
         vectorDrawables.useSupportLibrary = true
     }
-
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-potdroid.txt'
+            signingConfig signingConfigs.release
+            debuggable true
         }
-
         debug {
             applicationIdSuffix '.dev'
             minifyEnabled false
@@ -60,5 +66,4 @@ android {
             debuggable true
         }
     }
-
 }

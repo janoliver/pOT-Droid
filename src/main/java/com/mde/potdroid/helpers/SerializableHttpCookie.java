@@ -1,5 +1,7 @@
 package com.mde.potdroid.helpers;
 
+import android.support.annotation.Keep;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -9,6 +11,7 @@ import java.net.HttpCookie;
 /**
  * Created by oli on 8/23/14.
  */
+@Keep
 public class SerializableHttpCookie implements Serializable {
     private static final long serialVersionUID = 6374381323722046732L;
 

@@ -112,6 +112,7 @@ class CircleImageView extends ImageView {
     /**
      * Update the background color of the circle image view.
      */
+    @SuppressWarnings("ResourceType")
     public void setBackgroundColor(int colorRes) {
         if (getBackground() instanceof ShapeDrawable) {
             final Resources res = getResources();

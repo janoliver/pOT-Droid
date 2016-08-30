@@ -246,7 +246,7 @@ function scrollToBottom() {
 
 // scroll to the last post of UID uid
 function scrollToLastPostByUID(uid) {
-    var a = $("section[data-user-id="+uid+"]").last().find("a").first();
+    var a = $(".post[data-user-id="+uid+"]").last().find("a").first();
     var href = a.attr("name");
     if(typeof href === "undefined")
         api.error("Kein Post auf dieser Seite");

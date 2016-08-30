@@ -221,19 +221,19 @@ abstract public class PaginateFragment extends BaseFragment {
 
         if (mSettings.isBottomToolbar()) {
             if (isFirstPage()) {
-                mRwdButton.setEnabled(false);
-                mFrwdButton.setEnabled(false);
+                Utils.setImageButtonEnabled(false, mRwdButton);
+                Utils.setImageButtonEnabled(false, mFrwdButton);
             } else {
-                mRwdButton.setEnabled(true);
-                mFrwdButton.setEnabled(true);
+                Utils.setImageButtonEnabled(true, mRwdButton);
+                Utils.setImageButtonEnabled(true, mFrwdButton);
             }
 
             if (isLastPage()) {
-                mFwdButton.setEnabled(false);
-                mFfwdButton.setEnabled(false);
+                Utils.setImageButtonEnabled(false, mFwdButton);
+                Utils.setImageButtonEnabled(false, mFfwdButton);
             } else {
-                mFwdButton.setEnabled(true);
-                mFfwdButton.setEnabled(true);
+                Utils.setImageButtonEnabled(true, mFwdButton);
+                Utils.setImageButtonEnabled(true, mFfwdButton);
             }
 
             if (mHighlightNextButton) {

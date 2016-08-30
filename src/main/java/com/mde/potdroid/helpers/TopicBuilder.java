@@ -190,6 +190,17 @@ public class TopicBuilder {
                         show_edited, show_number));
             return pc;
         }
+
+        public boolean isLoggedIn() {
+            return Utils.isLoggedIn();
+        }
+
+        public boolean showButtons() {
+            return (mSettings.showMenu() == 1 ||
+                    (mSettings.showMenu() == 3 &&
+                            mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
+                    ));
+        }
     }
 
     /**
@@ -247,7 +258,7 @@ public class TopicBuilder {
                     mAvatarCache.put(mPost.getAuthor(), "");
                 else
                     mAvatarCache.put(mPost.getAuthor(),
-                            String.format("background-image:url(%s)", path));
+                            String.format("style=\"background-image:url(%s)\"", path));
             }
 
             return mAvatarCache.get(mPost.getAuthor());

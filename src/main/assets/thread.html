@@ -30,7 +30,7 @@
             color: {{style.textColorSecondary}};
         }
 
-        .post .header .post-menu-button i {
+        .post .header .post-buttons i {
             color:{{style.textColorSecondary}};
         }
 
@@ -101,26 +101,17 @@
             border:1px solid {{style.headerBackgroundColor}};
         }
 
-        .bender {
-            {{&avatarBackground}}
-        }
-
-        {{^getBenderHead}}
-        .post .header .bender {
+        {{^showButtons}}
+        .post-buttons button.in-menu {
             display:none;
         }
-        {{/getBenderHead}}
+        {{/showButtons}}
 
-        {{#getBenderBody}}
-        .post .body > .content {
-            margin-left:80px;
-        }
-        {{/getBenderBody}}
-        {{^getBenderBody}}
-        .post .body .bender {
+        {{#showButtons}}
+        .post-menu-button {
             display:none;
         }
-        {{/getBenderBody}}
+        {{/showButtons}}
 
         {{ &style.customCss }}
     </style>
@@ -136,10 +127,22 @@
          data-user-avatar-id="{{avatarId}}">
         <a name="{{id}}"></a>
         <div class="header">
-            <button class="post-menu-button">
-                <i class="material-icons">&#xE5D4;</i>
-            </button>
-            <div class="bender"></div>
+            <div class="post-buttons">
+                {{#isAuthor}}
+                <button class="edit-button in-menu"><i class="material-icons">&#xE150;</i></button>
+                {{/isAuthor}}
+                {{#isLoggedIn}}
+                <button class="quote-button in-menu"><i class="material-icons">&#xE244;</i></button>
+                <button class="bookmark-button in-menu"><i class="material-icons">&#xE866;</i></button>
+                {{/isLoggedIn}}
+                <button class="link-button in-menu"><i class="material-icons">&#xE157;</i></button>
+                <button class="copy-button in-menu"><i class="material-icons">&#xE14D;</i></button>
+                {{#isLoggedIn}}
+                <button class="pm-button in-menu"><i class="material-icons">&#xE0BE;</i></button>
+                {{/isLoggedIn}}
+                <button class="post-menu-button"><i class="material-icons">&#xE5D4;</i></button>
+            </div>
+            <div class="bender {{^getBenderHead}}hidden{{/getBenderHead}}" {{&avatarBackground}}></div>
             <div class="info">
                 <h4 class="author">
                     {{#getAuthorLocked}}
@@ -162,7 +165,7 @@
             </div>
         </div>
         <div class="body">
-            <div class="bender"></div>
+            <div class="bender {{^getBenderBody}}hidden{{/getBenderBody}}" {{&avatarBackground}}></div>
             <div class="content">
                 {{&text}}
                 {{#isEdited}}

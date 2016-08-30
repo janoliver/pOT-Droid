@@ -18,7 +18,7 @@ body {
     overflow:visible;
 }
 
-.post .header .post-menu-button {
+.post .header .post-buttons {
     float:right;
 }
 
@@ -59,6 +59,18 @@ body {
 .post .header .info .title,
 .post .header .info .date {
     width: 100%;
+}
+
+.bender.hidden {
+    display:none;
+}
+
+.post .body > .content {
+    margin-left:80px;
+}
+
+.post .body .bender.hidden + .content {
+    margin-left:0;
 }
 
 .post .body .media {

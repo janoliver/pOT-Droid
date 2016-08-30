@@ -46,6 +46,14 @@
                     android:title="Post-Titel, Icon und Zeit anzeigen"
                     android:defaultValue="true"/>
 
+            <ListPreference
+                    android:key="pref_show_menu"
+                    android:title="Post-Menü anzeigen"
+                    android:summary="Wie soll das Post-Menü angezeigt werden?"
+                    android:defaultValue="3"
+                    android:entries="@array/show_menu"
+                    android:entryValues="@array/show_menu_values"/>
+
             <android.support.v7.preference.CheckBoxPreference
                     android:key="pref_show_edited"
                     android:title="Zeige, ob ein Post bearbeitet wurde."

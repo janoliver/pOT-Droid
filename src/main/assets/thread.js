@@ -85,6 +85,36 @@ $(document).ready(function() {
         api.openTopicMenu(post_id);
     });
 
+    $('.edit-button').click(function(e) {
+        var post_id = parseInt($(this).closest('.post').attr('data-id'));
+        api.editPost(post_id);
+    });
+
+    $('.quote-button').click(function(e) {
+        var post_id = parseInt($(this).closest('.post').attr('data-id'));
+        api.quotePost(post_id);
+    });
+
+    $('.bookmark-button').click(function(e) {
+        var post_id = parseInt($(this).closest('.post').attr('data-id'));
+        api.bookmarkPost(post_id);
+    });
+
+    $('.link-button').click(function(e) {
+        var post_id = parseInt($(this).closest('.post').attr('data-id'));
+        api.linkPost(post_id);
+    });
+
+    $('.copy-button').click(function(e) {
+        var post_id = parseInt($(this).closest('.post').attr('data-id'));
+        api.copyPostLink(post_id);
+    });
+
+    $('.pm-button').click(function(e) {
+        var post_id = parseInt($(this).closest('.post').attr('data-id'));
+        api.pmAuthor(post_id);
+    });
+
     $('a.author').click(function(e) {
         if($("a[name=" + getURLParameter(this, 'PID') + "]").length > 0) {
             e.preventDefault();
@@ -110,6 +140,8 @@ $(document).ready(function() {
         } else {
             window.scrollTo(0,0);
         }
+
+        changeConfiguration(api.isLandscape());
 
         // register waypoints while scrolling over them
         // should be the last thing executed!
@@ -273,3 +305,28 @@ function getURLParameter(a, name) {
     );
 }
 
+
+function changeConfiguration(landscape) {
+
+    if(api.isBenderEnabled() && api.getBenderPosition() == 3) {
+        if(landscape) {
+            $(".header .bender").addClass("hidden");
+            $(".body .bender").removeClass("hidden");
+        } else {
+            $(".header .bender").removeClass("hidden");
+            $(".body .bender").addClass("hidden");
+        }
+    }
+
+    if(api.getShowMenu() == 3) {
+        if(landscape) {
+            $(".header .post-menu-button").hide();
+            $(".header .post-buttons button.in-menu").show();
+            console.log(api.getShowMenu() + "lel");
+        } else {
+            $(".header .post-menu-button").show();
+            $(".header .post-buttons button.in-menu").hide();
+            console.log(api.getShowMenu());
+        }
+    }
+}

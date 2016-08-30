@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             app:elevation="6dp"
+            android:visibility="gone"
             app:srcCompat="@drawable/ic_create"
             android:layout_margin="16dp"
             app:pressedTranslationZ="12dp"/>

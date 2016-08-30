@@ -115,13 +115,13 @@ public class TopicBuilder {
         Mustache.compiler().compile(reader).execute(new TopicContext(topic, mContext), sw);
         mBenderHandler.updateLastSeenBenderInformation(new ArrayList(mAvatarCache.keySet()));
 
-        File myFile = new File(mContext.getExternalFilesDir(null), "bb.html");
+        /*File myFile = new File(mContext.getExternalFilesDir(null), "bb.html");
         myFile.createNewFile();
         FileOutputStream fOut = new FileOutputStream(myFile);
         OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
         myOutWriter.append(sw.toString());
         myOutWriter.close();
-        fOut.close();
+        fOut.close();*/
 
         return sw.toString();
     }

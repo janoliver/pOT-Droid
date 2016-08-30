@@ -2,6 +2,7 @@ package com.mde.potdroid.helpers;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.support.annotation.Keep;
@@ -9,9 +10,6 @@ import android.util.DisplayMetrics;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import com.mde.potdroid.fragments.TopicFragment;
-import org.json.JSONArray;
-
-import java.util.ArrayList;
 
 /**
  * The Javascript interface for the Topic Webviews, extended from the Bender js interface.
@@ -206,7 +204,7 @@ public class TopicJSInterface extends BenderJSInterface {
         Resources resources = mTopicFragment.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
         float pxHeight = mTopicFragment.getBaseActivity().getToolbar().getHeight();
-        return (int)(pxHeight / metrics.densityDpi * 160f);
+        return (int) (pxHeight / metrics.densityDpi * 160f);
     }
 
     @JavascriptInterface
@@ -429,32 +427,6 @@ public class TopicJSInterface extends BenderJSInterface {
         });
     }
 
-    public void showLightBox(ArrayList<String> media) {
-        final JSONArray jsArray = new JSONArray(media);
-        mActivity.runOnUiThread(new Runnable() {
-            public void run() {
-                mWebView.loadUrl("javascript:showLightbox(" + jsArray + ");");
-            }
-        });
-    }
-
-    @JavascriptInterface
-    public void lightboxOpen(boolean open) {
-        mLightboxOpen = open;
-    }
-
-    public boolean isLightbox() {
-        return mLightboxOpen;
-    }
-
-    public void closeLightbox() {
-        mActivity.runOnUiThread(new Runnable() {
-            public void run() {
-                mWebView.loadUrl("javascript:closeLightbox();");
-            }
-        });
-    }
-
     public void tobottom() {
         mActivity.runOnUiThread(new Runnable() {
             public void run() {
@@ -464,7 +436,7 @@ public class TopicJSInterface extends BenderJSInterface {
     }
 
     public void scrollToLastOwnPost() {
-        if(mSettings.hasUsername() && mSettings.getUserId() > 0)
+        if (mSettings.hasUsername() && mSettings.getUserId() > 0)
             mActivity.runOnUiThread(new Runnable() {
                 public void run() {
                     mWebView.loadUrl(String.format("javascript:scrollToLastPostByUID(%d);",
@@ -475,9 +447,9 @@ public class TopicJSInterface extends BenderJSInterface {
 
     public void loadAllImages() {
         mActivity.runOnUiThread(new Runnable() {
-                public void run() {
-                    mWebView.loadUrl("javascript:loadAllImages();loadAllGifs();loadAllVideos();");
-                }
+            public void run() {
+                mWebView.loadUrl("javascript:loadAllImages();loadAllGifs();loadAllVideos();");
+            }
         });
     }
 
@@ -499,6 +471,17 @@ public class TopicJSInterface extends BenderJSInterface {
         });
     }
 
+    @JavascriptInterface
+    public int getShowMenu() {
+        return mSettings.showMenu();
+    }
+
+    @JavascriptInterface
+    public boolean isLandscape() {
+        return mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+
     public void scrollToBottom() {
         mActivity.runOnUiThread(new Runnable() {
             public void run() {
@@ -511,6 +494,14 @@ public class TopicJSInterface extends BenderJSInterface {
         mActivity.runOnUiThread(new Runnable() {
             public void run() {
                 mWebView.loadUrl("javascript:scrollToTop();");
+            }
+        });
+    }
+
+    public void configurationChange(final boolean landscape) {
+        mActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                mWebView.loadUrl(String.format("javascript:changeConfiguration(%d);", landscape ? 1 : 0));
             }
         });
     }

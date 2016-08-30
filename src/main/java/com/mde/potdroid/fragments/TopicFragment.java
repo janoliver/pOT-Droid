@@ -131,6 +131,9 @@ public class TopicFragment extends PaginateFragment implements
                 }
             });
         }
+
+        //if (savedInstanceState != null && mJsInterface != null)
+        //    mJsInterface.configurationChange(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
     }
 
     @Override
@@ -324,12 +327,7 @@ public class TopicFragment extends PaginateFragment implements
     }
 
     public boolean backPressed() {
-        if (mJsInterface.isLightbox()) {
-            mJsInterface.closeLightbox();
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 
     @Override
@@ -807,7 +805,6 @@ public class TopicFragment extends PaginateFragment implements
                     }
                 });
                 t.setHtmlCache(b.parse(t));
-                t.setMedia(media);
 
                 t.setIsCacheOnly(mArgs.getBoolean("cache", false));
 

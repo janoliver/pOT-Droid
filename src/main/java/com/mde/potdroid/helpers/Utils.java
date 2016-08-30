@@ -1,5 +1,6 @@
 package com.mde.potdroid.helpers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.TypedArray;
@@ -14,6 +15,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.widget.ImageButton;
 
@@ -322,6 +324,12 @@ public class Utils {
         //Make sure you close all streams.
         fin.close();
         return ret;
+    }
+
+    public static int getWindowWidth(Activity cx) {
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        cx.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        return displaymetrics.widthPixels;
     }
 
 }

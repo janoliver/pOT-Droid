@@ -70,6 +70,7 @@ public class SettingsWrapper {
     public static final String PREF_EXPORT_SETTINGS = "pref_export_settings";
     public static final String PREF_IMPORT_SETTINGS = "pref_import_settings";
     public static final String PREF_DOWNLOAD_DIRECTORY = "pref_download_directory";
+    public static final String PREF_KEY_SHOW_MENU = "pref_show_menu";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;
@@ -313,6 +314,10 @@ public class SettingsWrapper {
 
     public Boolean isUseGermanTimezone() {
         return mSharedPreferences.getBoolean(PREF_KEY_GERMAN_TIMEZONE, true);
+    }
+
+    public Integer showMenu() {
+        return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_SHOW_MENU, "3"));
     }
 
     public Boolean isNotificationVibrate() {

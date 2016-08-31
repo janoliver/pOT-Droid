@@ -57,7 +57,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-potdroid.txt'
             signingConfig signingConfigs.release
-            debuggable true
+            debuggable false
         }
         debug {
             applicationIdSuffix '.dev'

@@ -78,6 +78,8 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
 
         if (mForum == null)
             startLoader(this);
+        else
+            populateList();
     }
 
     @Override
@@ -118,13 +120,17 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
         hideLoadingAnimation();
         if (data != null) {
             mForum = data;
-            for(Category c : mForum.getCategories())
-                mListAdapter.addSection(new CategorySection(c));
-
-            mListAdapter.notifyDataSetChanged();
+            populateList();
         } else {
             showError(getString(R.string.msg_loading_error));
         }
+    }
+
+    private void populateList() {
+        for(Category c : mForum.getCategories())
+            mListAdapter.addSection(new CategorySection(c));
+
+        mListAdapter.notifyDataSetChanged();
     }
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {

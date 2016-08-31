@@ -101,6 +101,8 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
         if (mBoard == null)
             startLoader(this);
+        else
+            mListAdapter.setItems(mBoard.getFilteredTopics(getActivity()));
 
         if (mSettings.isBottomToolbar()) {
             getWriteButton().setOnClickListener(new View.OnClickListener() {

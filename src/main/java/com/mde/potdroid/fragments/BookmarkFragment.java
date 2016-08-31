@@ -58,7 +58,8 @@ public class BookmarkFragment extends BaseFragment
 
         setHasOptionsMenu(true);
 
-        mBookmarkList = new BookmarkList(getBaseActivity());
+        if(mBookmarkList == null)
+            mBookmarkList = new BookmarkList(getBaseActivity());
     }
 
     @Override
@@ -80,7 +81,10 @@ public class BookmarkFragment extends BaseFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        startLoader(this);
+        if(mBookmarkList == null || mBookmarkList.getBookmarks().isEmpty())
+            startLoader(this);
+        else
+            mListAdapter.setItems(mBookmarkList.getBookmarks());
     }
 
     @Override

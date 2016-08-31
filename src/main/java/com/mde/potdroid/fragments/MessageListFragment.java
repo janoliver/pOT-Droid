@@ -100,6 +100,8 @@ public class MessageListFragment extends BaseFragment implements LoaderManager
 
         if (mMessageList == null)
             startLoader(this);
+        else
+            mListAdapter.setItems(mMessageList.getMessages());
     }
 
     @Override

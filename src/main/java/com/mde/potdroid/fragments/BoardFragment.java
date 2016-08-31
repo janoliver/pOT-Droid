@@ -404,8 +404,11 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                     d.setBounds(0, 0, (int) holder.mTextTitle.getTextSize(), (int) holder.mTextTitle.getTextSize());
                     holder.mTextTitle.setCompoundDrawables(d, null, null, null);
                 } catch (IOException e) {
+                    holder.mTextTitle.setCompoundDrawables(null,null,null, null);
                     Utils.printException(e);
                 }
+            } else {
+                holder.mTextTitle.setCompoundDrawables(null,null,null, null);
             }
 
             Spanned pages_content = Utils.fromHtml(String.format(getContext().getString(

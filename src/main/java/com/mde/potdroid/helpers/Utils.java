@@ -303,7 +303,8 @@ public class Utils {
      */
     public static void setImageButtonEnabled(boolean enabled, ImageButton item) {
         item.setEnabled(enabled);
-        item.getDrawable().setColorFilter(Color.argb(150, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
+        if(!enabled)
+            item.getDrawable().setColorFilter(Color.argb(150, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
     }
 
     public static String convertStreamToString(InputStream is) throws Exception {

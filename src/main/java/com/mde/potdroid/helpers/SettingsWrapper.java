@@ -43,8 +43,6 @@ public class SettingsWrapper {
     public static final String PREF_KEY_HIDE_GLOBAL = "pref_hide_global";
     public static final String PREF_KEY_START_ACTIVITY = "pref_start_activity";
     public static final String PREF_KEY_START_FORUM = "pref_start_forum";
-    public static final String PREF_KEY_MATA = "pref_mata";
-    public static final String PREF_KEY_MATA_FORUM = "pref_mata_forum";
     public static final String PREF_KEY_MARK_NEW_POSTS = "pref_mark_new_posts";
     public static final String PREF_KEY_BBCODE_EDITOR = "pref_bbcode_editor";
     public static final String PREF_KEY_CACHE_SIZE = "pref_cache_size";
@@ -288,15 +286,6 @@ public class SettingsWrapper {
 
     public int getStartForum() {
         return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_START_FORUM, "14"));
-    }
-
-    public int getMataAction() {
-        return Integer.parseInt(
-                mSharedPreferences.getString(PREF_KEY_MATA, Integer.toString(START_SIDEBAR)));
-    }
-
-    public int getMataForum() {
-        return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_MATA_FORUM, "14"));
     }
 
     public String getMediaDownloadPath() {

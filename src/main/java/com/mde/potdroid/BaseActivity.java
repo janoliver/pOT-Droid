@@ -2,7 +2,6 @@ package com.mde.potdroid;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import com.mde.potdroid.fragments.BoardFragment;
 import com.mde.potdroid.fragments.SidebarBoardsFragment;
 import com.mde.potdroid.fragments.SidebarBookmarksFragment;
 import com.mde.potdroid.helpers.CustomExceptionHandler;
@@ -200,30 +198,10 @@ public class BaseActivity extends AppCompatActivity {
 
         // if user is not logged in OR no sidebar is in the drawer layout OR the user setting is
         // NOT to open the sidebar on drawertoggle click, then disable it.
-        if (!Utils.isLoggedIn() ||
-                mSettings.isFixedSidebar() ||
-                mSettings.getMataAction() != SettingsWrapper.START_SIDEBAR) {
+        if (!Utils.isLoggedIn() || mSettings.isFixedSidebar()) {
 
             mDrawerToggle.setDrawerIndicatorEnabled(false);
             mDrawerToggle.setHomeAsUpIndicator(null);
-            mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mSettings.getMataAction() == SettingsWrapper.START_FORUM) {
-                        Intent intent = new Intent(BaseActivity.this, BoardActivity.class);
-                        intent.putExtra(BoardFragment.ARG_ID, mSettings.getMataForum());
-                        intent.putExtra(BoardFragment.ARG_PAGE, 1);
-                        startActivity(intent);
-                    } else if (mSettings.getMataAction() == SettingsWrapper.START_BOOKMARKS &&
-                            Utils.isLoggedIn()) {
-                        Intent intent = new Intent(BaseActivity.this, BookmarkActivity.class);
-                        startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(BaseActivity.this, ForumActivity.class);
-                        startActivity(intent);
-                    }
-                }
-            });
         }
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);

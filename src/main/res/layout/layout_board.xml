@@ -8,6 +8,7 @@
 
     <com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView
             android:id="@+id/forum_list_content"
+            android:scrollbars="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="?attr/bbListSeparatorColor"/>

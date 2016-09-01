@@ -79,3 +79,5 @@
 -dontwarn okio.**
 -dontwarn okio.**
 -dontwarn com.afollestad.materialdialogs.**
+
+-printmapping mapping.txt

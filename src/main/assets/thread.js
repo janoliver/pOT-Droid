@@ -322,11 +322,9 @@ function changeConfiguration(landscape) {
         if(landscape) {
             $(".header .post-menu-button").hide();
             $(".header .post-buttons button.in-menu").show();
-            console.log(api.getShowMenu() + "lel");
         } else {
             $(".header .post-menu-button").show();
             $(".header .post-buttons button.in-menu").hide();
-            console.log(api.getShowMenu());
         }
     }
 }

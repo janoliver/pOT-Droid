@@ -13,6 +13,8 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * A persistent cookie store which implements the Apache HttpClient CookieStore interface.
  * Cookies are stored and will persist on the user's device between application sessions since they
@@ -35,7 +37,7 @@ public class PersistentCookieStore implements CookieStore {
      * @param context Context to attach cookie store to
      */
     public PersistentCookieStore(Context context) {
-        cookiePrefs = context.getSharedPreferences(COOKIE_PREFS, 0);
+        cookiePrefs = context.getSharedPreferences(COOKIE_PREFS, MODE_PRIVATE);
         cookies = new HashMap<String, ConcurrentHashMap<String, HttpCookie>>();
 
         // Load any previously stored cookies into the store

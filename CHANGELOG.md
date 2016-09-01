@@ -2,7 +2,7 @@
 
 ## Version 5
 
-###  Version 5.0.X
+###  Version 5.0.0
   * Alle ListViews sind jetzt Recyclerviews
   * Media Viewer
   * In der Seitenleiste können auch gelesene Bookmarks angezeigt werden
@@ -13,8 +13,10 @@
   * Gesperrte User werden angezeigt
   * Network engine neu
   * Style System neu
+  * Custom CSS/JS
   * Settings import/export
   * Neue Icons und mehr Material Design
+  * diverses...
 
 ## Version 4
 

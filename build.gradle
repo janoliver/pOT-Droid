@@ -34,14 +34,6 @@ dependencies {
 
 
 android {
-    signingConfigs {
-        release {
-            keyAlias 'oli'
-            keyPassword '***REMOVED***'
-            storeFile file('/home/oli/Workspace/Android/oli.store')
-            storePassword '***REMOVED***'
-        }
-    }
     useLibrary 'org.apache.http.legacy'
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
@@ -52,11 +44,10 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-potdroid.txt'
-            signingConfig signingConfigs.release
             debuggable false
         }
         debug {

@@ -63,6 +63,8 @@ public abstract class BaseFragment extends Fragment implements SwipyRefreshLayou
 
         if (!mSettings.isSwipeToRefresh())
             mPullToRefreshLayout.setEnabled(false);
+
+        showInfo("Bla");
     }
 
     /**
@@ -197,7 +199,7 @@ public abstract class BaseFragment extends Fragment implements SwipyRefreshLayou
     protected void showGenericNotification(String message, int c) {
         if (getBaseActivity() != null) {
             Snackbar snackbar = Snackbar
-                    .make(getBaseActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
+                    .make(getBaseActivity().findViewById(R.id.app_root), message, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundColor(c);
             TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
@@ -209,7 +211,7 @@ public abstract class BaseFragment extends Fragment implements SwipyRefreshLayou
     protected void showGenericNotification(int message, int c) {
         if (getBaseActivity() != null) {
             Snackbar snackbar = Snackbar
-                    .make(getBaseActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
+                    .make(getBaseActivity().findViewById(R.id.app_root), message, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundColor(c);
             TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);

@@ -6,9 +6,6 @@ import com.mde.potdroid.helpers.DatabaseWrapper;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * Created by oli on 9/13/13.
- */
 public class BookmarkList implements Serializable {
 
     private static final long serialVersionUID = 8L;

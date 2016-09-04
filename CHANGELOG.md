@@ -2,7 +2,7 @@
 
 ## Version 5
 
-###  Version 5.0.0
+###  Version 5.0.X
   * Alle ListViews sind jetzt Recyclerviews
   * Media Viewer
   * In der Seitenleiste können auch gelesene Bookmarks angezeigt werden

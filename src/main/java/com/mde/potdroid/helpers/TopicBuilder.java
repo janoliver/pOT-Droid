@@ -477,6 +477,13 @@ public class TopicBuilder {
                 Pattern image_link = Pattern.compile("^<div class=\"media (img|gif)\" data-src=\"(.*?)\">.*?</div>$");
                 Matcher m = image_link.matcher(content);
 
+                if (args.size() > 0) {
+                    url = "";
+                    for(String s: args)
+                        url += s + ",";
+                    url = url.substring(0, url.length() - 1);
+                }
+
                 if (m.find() && args.size() > 0) {
                     String extension = m.group(1);
                     String type_class = "img-link";
@@ -491,11 +498,8 @@ public class TopicBuilder {
                             "<button class=\"link mdl-button mdl-js-button\">Link</button>" +
                             "<button class=\"inline mdl-button mdl-js-button\">Inline</button>" +
                             "<button class=\"viewer mdl-button mdl-js-button\">Viewer</button>" +
-                            "</div>", type_class, m.group(2), args.get(0), icon);
+                            "</div>", type_class, m.group(2), url, icon);
                 }
-
-                if (args.size() > 0)
-                    url = args.get(0);
 
                 // add protocol if the url is malformed.
                 if (!url.contains("://"))

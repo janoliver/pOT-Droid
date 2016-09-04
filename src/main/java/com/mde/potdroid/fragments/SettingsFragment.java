@@ -69,6 +69,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
         setPreferenceDescription(SettingsWrapper.PREF_KEY_LOAD_VIDEOS);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_SHOW_MENU);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_POLL_MESSAGES);
+        setPreferenceDescription(SettingsWrapper.PREF_KEY_MATA);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_START_ACTIVITY);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_START_FORUM);
         setPreferenceDescription(SettingsWrapper.PREF_KEY_FAB);

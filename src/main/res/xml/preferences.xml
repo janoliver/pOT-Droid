@@ -226,6 +226,22 @@
                     android:entries="@array/pref_start_forum"
                     android:entryValues="@array/pref_start_forum_values"/>
 
+            <android.support.v7.preference.ListPreference
+                    android:title="Ziel Home Button"
+                    android:summary="Was soll beim Druck auf den Mata Button passieren?"
+                    android:key="pref_mata"
+                    android:defaultValue="3"
+                    android:entries="@array/pref_mata"
+                    android:entryValues="@array/pref_mata_values"/>
+
+            <android.support.v7.preference.ListPreference
+                    android:title="Home Forum"
+                    android:summary="Nur wichtig, falls 'Ziel Home Button' auf 'Forum' steht"
+                    android:key="pref_mata_forum"
+                    android:defaultValue="14"
+                    android:entries="@array/pref_start_forum"
+                    android:entryValues="@array/pref_start_forum_values"/>
+
         </PreferenceCategory>
 
         <PreferenceCategory android:title="Sonstiges">

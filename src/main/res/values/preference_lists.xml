@@ -96,6 +96,18 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+    <string-array name="pref_mata">
+        <item>Forenübersicht</item>
+        <item>Bookmarks</item>
+        <item>Forum</item>
+        <item>Sidebar</item>
+    </string-array>
+    <string-array name="pref_mata_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
     <string-array name="pref_start_forum">
         <item><![CDATA[3DSupply.de]]></item>
         <item><![CDATA[MTA-Lan]]></item>

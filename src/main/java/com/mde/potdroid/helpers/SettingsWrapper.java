@@ -69,6 +69,8 @@ public class SettingsWrapper {
     public static final String PREF_IMPORT_SETTINGS = "pref_import_settings";
     public static final String PREF_DOWNLOAD_DIRECTORY = "pref_download_directory";
     public static final String PREF_KEY_SHOW_MENU = "pref_show_menu";
+    public static final String PREF_KEY_MATA = "pref_mata";
+    public static final String PREF_KEY_MATA_FORUM = "pref_mata_forum";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;
@@ -295,6 +297,15 @@ public class SettingsWrapper {
     public String getMediaDownloadPath() {
         return mSharedPreferences.getString(PREF_DOWNLOAD_DIRECTORY,
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath());
+    }
+
+    public int getMataAction() {
+        return Integer.parseInt(
+                mSharedPreferences.getString(PREF_KEY_MATA, Integer.toString(START_SIDEBAR)));
+    }
+
+    public int getMataForum() {
+        return Integer.parseInt(mSharedPreferences.getString(PREF_KEY_MATA_FORUM, "14"));
     }
 
     public Boolean hasUsername() {

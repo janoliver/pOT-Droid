@@ -16,7 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.mde.potdroid.*;
 import com.mde.potdroid.helpers.Network;
-import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.helpers.ptr.SwipyRefreshLayoutDirection;
 import com.mde.potdroid.models.Bookmark;
@@ -77,17 +76,7 @@ public class SidebarBookmarksFragment extends BaseFragment
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent;
-                if (mSettings.getStartActivity() == SettingsWrapper.START_FORUM) {
-                    intent = new Intent(getBaseActivity(), BoardActivity.class);
-                    intent.putExtra(BoardFragment.ARG_ID, mSettings.getStartForum());
-                    intent.putExtra(BoardFragment.ARG_PAGE, 1);
-                } else if (mSettings.getStartActivity() == SettingsWrapper.START_BOOKMARKS && Utils.isLoggedIn()) {
-                    intent = new Intent(getBaseActivity(), BookmarkActivity.class);
-                } else {
-                    intent = new Intent(getBaseActivity(), ForumActivity.class);
-                }
-
+                Intent intent = new Intent(getBaseActivity(), ForumActivity.class);
                 startActivity(intent);
             }
         });

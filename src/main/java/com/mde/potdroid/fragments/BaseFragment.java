@@ -63,8 +63,6 @@ public abstract class BaseFragment extends Fragment implements SwipyRefreshLayou
 
         if (!mSettings.isSwipeToRefresh())
             mPullToRefreshLayout.setEnabled(false);
-
-        showInfo("Bla");
     }
 
     /**

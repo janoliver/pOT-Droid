@@ -83,14 +83,13 @@ public class BookmarkFragment extends BaseFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if(mBookmarkList == null || mBookmarkList.getBookmarks().isEmpty())
-            startLoader(this);
-        else {
+        if(mBookmarkList != null && !mBookmarkList.getBookmarks().isEmpty()) {
             mListAdapter.setItems(mBookmarkList.getBookmarks());
             Spanned subtitle = Utils.fromHtml(String.format(getString(R.string.subtitle_bookmarks),
                     mBookmarkList.getNumberOfNewPosts()));
             getActionbar().setSubtitle(subtitle);
         }
+        startLoader(this);
     }
 
     @Override

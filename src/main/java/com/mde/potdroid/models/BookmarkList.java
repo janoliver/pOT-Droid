@@ -28,6 +28,13 @@ public class BookmarkList implements Serializable {
     }
 
     public Integer getNumberOfNewPosts() {
+        if(mNumberOfNewPosts == null) {
+            mNumberOfNewPosts = 0;
+            // try to count them
+            for(Bookmark b: getUnreadBookmarks(false)) {
+                mNumberOfNewPosts += b.getNumberOfNewPosts();
+            }
+        }
         return mNumberOfNewPosts;
     }
 

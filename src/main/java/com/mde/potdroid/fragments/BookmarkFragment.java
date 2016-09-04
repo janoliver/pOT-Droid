@@ -83,8 +83,12 @@ public class BookmarkFragment extends BaseFragment
 
         if(mBookmarkList == null || mBookmarkList.getBookmarks().isEmpty())
             startLoader(this);
-        else
+        else {
             mListAdapter.setItems(mBookmarkList.getBookmarks());
+            Spanned subtitle = Utils.fromHtml(String.format(getString(R.string.subtitle_bookmarks),
+                    mBookmarkList.getNumberOfNewPosts()));
+            getActionbar().setSubtitle(subtitle);
+        }
     }
 
     @Override

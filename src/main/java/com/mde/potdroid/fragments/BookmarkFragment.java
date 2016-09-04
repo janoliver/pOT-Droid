@@ -32,6 +32,8 @@ import org.apache.http.Header;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static com.mde.potdroid.R.id.board;
+
 /**
  * The fragment that displays the list of bookmarks
  */
@@ -169,7 +171,7 @@ public class BookmarkFragment extends BaseFragment
                 mRoot = container;
                 mContainer = (RelativeLayout) container.findViewById(R.id.container);
                 mTextTitle = (TextView) mContainer.findViewById(R.id.title);
-                mTextBoard = (TextView) mContainer.findViewById(R.id.board);
+                mTextBoard = (TextView) mContainer.findViewById(board);
                 mTextPages = (TextView) mContainer.findViewById(R.id.pages);
             }
         }
@@ -213,6 +215,8 @@ public class BookmarkFragment extends BaseFragment
             title.setText(b.getThread().getTitle());
             if (b.getThread().isClosed())
                 title.setPaintFlags(title.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            else
+                title.setPaintFlags(title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
 
             // set the name of the board
             TextView board = holder.mTextBoard;

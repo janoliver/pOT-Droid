@@ -7,6 +7,8 @@
         <item>Dark Kompakt</item>
         <item>Wahooka Dark</item>
         <item>Wahooka Dark Kompakt</item>
+        <item>Reverse Dark</item>
+        <item>Reverse Dark Kompakt</item>
     </string-array>
     <string-array name="pref_theme_values">
         <item>PotDroidLight</item>
@@ -15,6 +17,8 @@
         <item>PotDroidDarkCompact</item>
         <item>PotDroidWahooka</item>
         <item>PotDroidWahookaCompact</item>
+        <item>PotDroidReverseDark</item>
+        <item>PotDroidReverseDarkCompact</item>
     </string-array>
     <string-array name="load_images">
         <item>Nie</item>

@@ -135,16 +135,20 @@ public class SettingsWrapper {
         String theme = mSharedPreferences.getString(PREF_KEY_THEME, "PotDroidDark");
         if (theme.equals("PotDroidDark"))
             return R.style.PotDroidDark;
-        if (theme.equals("PotDroidLight"))
+        else if (theme.equals("PotDroidLight"))
             return R.style.PotDroidLight;
-        if (theme.equals("PotDroidDarkCompact"))
+        else if (theme.equals("PotDroidDarkCompact"))
             return R.style.PotDroidDarkCompact;
-        if (theme.equals("PotDroidLightCompact"))
+        else if (theme.equals("PotDroidLightCompact"))
             return R.style.PotDroidLightCompact;
-        if (theme.equals("PotDroidWahooka"))
+        else if (theme.equals("PotDroidWahooka"))
             return R.style.PotDroidWahooka;
-        if (theme.equals("PotDroidWahookaCompact"))
+        else if (theme.equals("PotDroidWahookaCompact"))
             return R.style.PotDroidWahookaCompact;
+        else if (theme.equals("PotDroidReverseDark"))
+            return R.style.PotDroidReverseDark;
+        else if (theme.equals("PotDroidReverseDarkCompact"))
+            return R.style.PotDroidReverseDarkCompact;
         return -1;
     }
 

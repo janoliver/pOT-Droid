@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="PotDroidReverseDark" parent="@style/PotDroidDark">
+        <item name="bbDarkerItemBackground">@color/bbstyle_lighterblue</item>
+        <item name="bbItemBackground">@color/bbstyle_lightblue</item>
+        <item name="bbPostBackgroundColor">@color/bbstyle_lighterblue</item>
+        <item name="bbPostHeaderBackgroundColor">@color/bbstyle_lightblue</item>
+    </style>
+
+    <style name="PotDroidReverseDarkCompact" parent="@style/PotDroidDarkCompact">
+        <item name="bbDarkerItemBackground">@color/bbstyle_lighterblue</item>
+        <item name="bbItemBackground">@color/bbstyle_lightblue</item>
+        <item name="bbPostBackgroundColor">@color/bbstyle_lighterblue</item>
+        <item name="bbPostHeaderBackgroundColor">@color/bbstyle_lightblue</item>
+    </style>
+
     <style name="PotDroidWahooka" parent="@style/PotDroidDark">
         <item name="bbPostBackgroundColor">?attr/bbDarkerItemBackground</item>
         <item name="bbTopicBackgroundColor">@color/black</item>

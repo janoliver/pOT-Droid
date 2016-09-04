@@ -151,7 +151,8 @@ Es gibt einen pOT-Droid Thread. Den Link und die Änderungen findest du unter \'
     <string name="link_dialog_title">Link</string>
     <string name="link_dialog_goto">Gehe zu</string>
     <string name="link_dialog_close">Abbrechen</string>
-    <string name="editor_dialog_ok">Abbrechen</string>
+    <string name="editor_dialog_ok">Einfügen</string>
+    <string name="editor_dialog_cancel">Abbrechen</string>
 
 
 </resources>

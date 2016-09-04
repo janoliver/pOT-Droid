@@ -2,12 +2,14 @@ package com.mde.potdroid.views;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.SettingsWrapper;
@@ -86,11 +88,11 @@ public class PromptDialog extends DialogFragment {
                 .title(mTitle)
                 .customView(input_layout, false)
                 .positiveText(R.string.editor_dialog_ok)
-                //.negativeText("Abbrechen")
+                .negativeText(R.string.editor_dialog_cancel)
                 .autoDismiss(false)
-                .callback(new MaterialDialog.ButtonCallback() {
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onPositive(MaterialDialog dialog) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         ArrayList<String> values = new ArrayList<String>();
                         for (int c = 0; c < mNumberInputs; c++) {
                             EditText e = (EditText) ((FrameLayout) input_layout.getChildAt(c)).getChildAt(0);
@@ -99,27 +101,28 @@ public class PromptDialog extends DialogFragment {
                         mCallback.success(values, mCode);
                         dismiss();
                     }
-
+                }).onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onNegative(MaterialDialog dialog) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dismiss();
-                    }
-
-                    @Override
-                    public void onNeutral(MaterialDialog dialog) {
-                        FrameLayout editTextHolder = (FrameLayout) inflater.inflate(R.layout.template_edittext, null);
-                        input_layout.addView(editTextHolder,mNumberInputs++);
                     }
                 });
 
         if(mExpandable) {
             builder.neutralText("+ Item");
+            builder.onNeutral(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    FrameLayout editTextHolder = (FrameLayout) inflater.inflate(R.layout.template_edittext, null);
+                    input_layout.addView(editTextHolder,mNumberInputs++);
+                }
+            });
         }
 
         return builder.build();
     }
 
     public interface SuccessCallback {
-        public void success(ArrayList<String> input, int code);
+        void success(ArrayList<String> input, int code);
     }
 }

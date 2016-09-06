@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.ActionMenuView;
 import android.util.SparseArray;
 import android.view.*;
@@ -84,6 +87,8 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     // the array of icons
     private int mIconId;
 
+    private ActionMenuView mBBToolbarView;
+
     /**
      * * Return new instance of FormFragment. Although this fragment has no parameters,
      * We provide this method for consistency.
@@ -139,12 +144,12 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             mEditRcpt.setText(getArguments().getString(ARG_RCPT));
 
         final HorizontalScrollView bbcodeToolbarHolder = (HorizontalScrollView) v.findViewById(R.id.bbcode_toolbar_holder);
-        ActionMenuView bbcodeToolbar = (ActionMenuView) v.findViewById(R.id.bbcode_toolbar);
+        mBBToolbarView = (ActionMenuView) v.findViewById(R.id.bbcode_toolbar);
 
-        Menu menu = bbcodeToolbar.getMenu();
+        Menu menu = mBBToolbarView.getMenu();
         getActivity().getMenuInflater().inflate(R.menu.bbcode_menu, menu);
 
-        bbcodeToolbar.setOnMenuItemClickListener(new BBCodeHandler(getBaseActivity(), mEditText));
+        mBBToolbarView.setOnMenuItemClickListener(new BBCodeHandler(getBaseActivity(), mEditText));
 
         if (!mSettings.isBBCodeEditor()) {
             bbcodeToolbarHolder.setVisibility(View.GONE);
@@ -169,7 +174,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             mIconButton.setVisibility(View.GONE);
             mBBButton.setVisibility(View.GONE);
             mEditRcpt.setVisibility(View.VISIBLE);
-            bbcodeToolbar.setVisibility(View.GONE);
+            mBBToolbarView.setVisibility(View.GONE);
             getActionbar().setTitle(R.string.subtitle_form_write_pm);
         } else if (getArguments().getInt(ARG_MODE, MODE_REPLY) == MODE_THREAD) {
             mEditSubtitle.setVisibility(View.VISIBLE);
@@ -178,6 +183,33 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         }
 
         return v;
+    }
+
+    private void colorizeToolBar() {
+
+        final PorterDuffColorFilter colorFilter
+                = new PorterDuffColorFilter(Utils.getColorByAttr(getActivity(), R.color.black), PorterDuff.Mode.MULTIPLY);
+
+        for(int j = 0; j < mBBToolbarView.getChildCount(); j++) {
+
+            //Step 2: Changing the color of any ActionMenuViews - icons that
+            //are not back button, nor text, nor overflow menu icon.
+            final View innerView = mBBToolbarView.getChildAt(j);
+
+            if(innerView instanceof ActionMenuItemView) {
+                if(((ActionMenuItemView)innerView).getCompoundDrawables()[0] != null) {
+                    //Important to set the color filter in seperate thread,
+                    //by adding it to the message queue
+                    //Won't work otherwise.
+                    innerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((ActionMenuItemView) innerView).getCompoundDrawables()[0].setColorFilter(colorFilter);
+                        }
+                    });
+                }
+            }
+        }
     }
 
     @Override

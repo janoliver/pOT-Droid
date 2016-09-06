@@ -126,6 +126,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="bbEditorButtonsTheme">@style/PotDroidDarkEditorButtonsTheme</item>
     </style>
 
     <style name="PotDroidLightBase" parent="@style/Theme.AppCompat.Light">
@@ -188,6 +189,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="bbEditorButtonsTheme">@style/PotDroidLightEditorButtonsTheme</item>
 
     </style>
 
@@ -215,6 +217,14 @@
         <item name="titleTextAppearance">@style/Theme.MyTheme.Toolbar.TextAppearance</item>
         <item name="subtitleTextAppearance">@style/Theme.MyTheme.Toolbar.TextAppearance.Subtitle
         </item>
+    </style>
+
+    <style name="PotDroidLightEditorButtonsTheme">
+        <item name="bbToolbarColor">@color/bbstyle_lightblue</item>
+    </style>
+
+    <style name="PotDroidDarkEditorButtonsTheme">
+        <item name="bbToolbarColor">@color/white</item>
     </style>
 
     <style name="Theme.MyTheme.Toolbar.TextAppearance" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">

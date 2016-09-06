@@ -3,6 +3,11 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+            android:id="@+id/smiley"
+            android:title="Smiley"
+            app:showAsAction="always"
+            android:icon="@drawable/ic_editor_smiley"/>
+    <item
             android:id="@+id/bold"
             android:title="Fett"
             app:showAsAction="always"
@@ -57,9 +62,4 @@
             android:title="Liste"
             app:showAsAction="always"
             android:icon="@drawable/ic_editor_list"/>
-    <item
-            android:id="@+id/smiley"
-            android:title="Smiley"
-            app:showAsAction="always"
-            android:icon="@drawable/ic_editor_smiley"/>
 </menu>

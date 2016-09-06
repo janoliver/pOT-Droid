@@ -45,7 +45,6 @@ abstract public class PaginateFragment extends BaseFragment {
     private ImageButton mRwdButton;
     private ImageButton mFrwdButton;
     private ImageButton mWriteButton;
-    private boolean mHighlightNextButton;
 
     public abstract void goToFirstPage();
 
@@ -166,12 +165,6 @@ abstract public class PaginateFragment extends BaseFragment {
 
         inflater.inflate(R.menu.actionmenu_paginate, menu);
 
-        //int next_color = IconDrawable.getDefaultColor(getActivity());
-        if (mHighlightNextButton) {
-            mHighlightNextButton = false;
-            //next_color = IconDrawable.getHighlightColor(getActivity());
-        }
-
         MenuItem prev_item = menu.findItem(R.id.prev);
         MenuItem next_item = menu.findItem(R.id.next);
 
@@ -235,13 +228,6 @@ abstract public class PaginateFragment extends BaseFragment {
                 Utils.setImageButtonEnabled(true, mFwdButton);
                 Utils.setImageButtonEnabled(true, mFfwdButton);
             }
-
-            if (mHighlightNextButton) {
-                mHighlightNextButton = false;
-                //mFwdButton.setColor(IconDrawable.getHighlightColor(getBaseActivity()));
-            } else {
-                //mFwdButton.setColor(IconDrawable.getDefaultColor(getBaseActivity()));
-            }
         }
 
         mFastscrollLayout = getBaseActivity().getFastscrollLayout();
@@ -297,11 +283,6 @@ abstract public class PaginateFragment extends BaseFragment {
 
     public ImageButton getWriteButton() {
         return mWriteButton;
-    }
-
-    public void highlightNextButton() {
-        mHighlightNextButton = true;
-        refreshPaginateLayout();
     }
 
     public interface FastScrollListener {

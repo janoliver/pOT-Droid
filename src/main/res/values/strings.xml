@@ -87,6 +87,7 @@ Es gibt einen pOT-Droid Thread. Den Link und die Änderungen findest du unter \'
     <string name="msg_export_error">Exportieren schief gegangen...</string>
     <string name="msg_import_success">Importieren erfolgreich! Du solltest die App neu starten.</string>
     <string name="msg_export_success">Exportieren erfolgreich. Du findest die settings in /sdcard/Android/data/com.mde.potdroid/files/settings.</string>
+    <string name="msg_preload_success">Nächste Seite erfolgreich vorgeladen.</string>
 
     <!-- menu items -->
     <string name="menu_settings">Settings</string>

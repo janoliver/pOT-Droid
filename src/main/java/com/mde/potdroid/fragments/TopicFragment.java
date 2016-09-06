@@ -132,8 +132,6 @@ public class TopicFragment extends PaginateFragment implements
             });
         }
 
-        //if (savedInstanceState != null && mJsInterface != null)
-        //    mJsInterface.configurationChange(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
     }
 
     @Override
@@ -354,7 +352,7 @@ public class TopicFragment extends PaginateFragment implements
                 data.setIsCacheOnly(false);
 
                 // display new 'next' button
-                highlightNextButton();
+                showSuccess(R.string.msg_preload_success);
             } else {
                 mNextCache = null;
 
@@ -402,14 +400,12 @@ public class TopicFragment extends PaginateFragment implements
         enableFastScroll(new FastScrollListener() {
             @Override
             public void onUpButtonClicked() {
-                //mWebView.scrollToTop();
                 mJsInterface.scrollToTop();
             }
 
             @Override
             public void onDownButtonClicked() {
                 mJsInterface.scrollToBottom();
-                //mJsInterface.tobottom();
             }
         });
 

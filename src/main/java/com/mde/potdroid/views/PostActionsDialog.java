@@ -100,7 +100,7 @@ public class PostActionsDialog extends DialogFragment {
 
 
             if(isEnabled) {
-                holder.mText.setTextColor(Utils.getColorByAttr(getContext(), R.attr.bbTextColorPrimary));
+                holder.mText.setTextColor(Utils.getColorByAttr(getContext(), R.attr.md_content_color));
                 holder.mRoot.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -128,7 +128,7 @@ public class PostActionsDialog extends DialogFragment {
                     }
                 });
             } else
-                holder.mText.setTextColor(Utils.getColorByAttr(getContext(), R.attr.bbTextColorSecondary));
+                holder.mText.setTextColor(Utils.getColorByAttr(getContext(), R.attr.md_content_color_disabled));
         }
 
         @Override

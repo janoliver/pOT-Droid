@@ -35,7 +35,7 @@
         }
 
         .post .body {
-            color: {{style.textColorPrimary}};
+            color:{{style.topicTextColor}};
         }
 
         .post .body a {
@@ -88,8 +88,8 @@
             color: {{style.textColorSecondary}};
         }
 
-        .post.newpost {
-            border:2px solid {{style.newPostGlowColor}};
+        .post.newpost:before {
+            border-color: {{style.newPostGlowColor}} {{style.windowBackgroundColor}};
         }
 
         .up-indicator {

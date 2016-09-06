@@ -40,6 +40,10 @@ public class CssStyleWrapper {
         return cf(Utils.getColorByAttr(mContext, R.attr.bbTextColorSecondary));
     }
 
+    public String getTopicTextColor() {
+        return cf(Utils.getColorByAttr(mContext, R.attr.bbTopicTextColor));
+    }
+
     public String getTextColorTertiary() {
         return cf(Utils.getColorByAttr(mContext, R.attr.bbTextColorTertiary));
     }

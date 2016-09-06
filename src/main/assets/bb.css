@@ -1,5 +1,5 @@
 body {
-    padding:10px 0 0 0;
+    padding:7px 0 0 0;
     overflow-x: none;
     margin:0;
 }
@@ -10,11 +10,12 @@ body {
 }
 
 .post {
-    margin:0 10px 10px 10px;
+    margin:0 7px 7px 7px;
     width:auto;
     min-height:0;
     z-index:initial;
     overflow:visible;
+    position:relative;
 }
 
 .post .header .post-buttons {
@@ -66,6 +67,15 @@ body {
 
 .post .body > .content {
     margin-left:80px;
+}
+
+.post.newpost:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-width: 0 16px 16px 0;
+    border-style: solid;
 }
 
 .post .body .bender.hidden + .content {

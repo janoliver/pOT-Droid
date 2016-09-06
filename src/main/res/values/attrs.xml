@@ -26,6 +26,7 @@
 
     <attr name="bbPostBackgroundColor" format="color|reference"/>
     <attr name="bbPostHeaderBackgroundColor" format="color|reference"/>
+    <attr name="bbTopicTextColor" format="color|reference"/>
     <attr name="bbTopicBackgroundColor" format="color|reference"/>
     <attr name="bbQuoteBackgroundColor" format="color|reference"/>
     <attr name="bbQuoteHeaderColor" format="color|reference"/>
@@ -36,6 +37,8 @@
     <attr name="bbErrorColor" format="color|reference" />
     <attr name="bbSuccessColor" format="color|reference" />
     <attr name="bbInfoColor" format="color|reference" />
+
+    <attr name="md_content_color_disabled" format="color|reference" />
 
     <declare-styleable name="SwipyRefreshLayout">
         <attr name="srl_direction">

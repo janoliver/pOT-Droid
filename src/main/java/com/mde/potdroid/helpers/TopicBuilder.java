@@ -582,8 +582,8 @@ public class TopicBuilder {
                     code = URLEncoder.encode(code, "utf-8");
                     code = code.replace("<br />", "\n");
                     return String.format("<img src=\"" +
-                            "http://chart.apis.google.com/chart?chco=000000&chf=bg,s," +
-                            "ffffffff&cht=tx&chl=%1$s\" class=\"tex\" />", code);
+                            "http://chart.apis.google.com/chart?chco=ffffff&chf=bg,s," +
+                            "394E63&cht=tx&chl=%1$s\" class=\"tex\" />", code);
                 } catch (UnsupportedEncodingException e) {
                     return "";
                 }

@@ -170,6 +170,14 @@ body {
     font-size:0.7em;
 }
 
+.post .body .trigger {
+    font-size:0.8em;
+}
+
+.post .body .mod {
+    font-size:1.2em;
+}
+
 .post .body .content img {
     max-width:100%;
 }

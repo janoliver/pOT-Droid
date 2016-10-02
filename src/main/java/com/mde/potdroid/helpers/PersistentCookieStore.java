@@ -65,6 +65,9 @@ public class PersistentCookieStore implements CookieStore {
     public void add(URI uri, HttpCookie cookie) {
         String name = getCookieToken(uri, cookie);
 
+        if(!cookie.getName().equals("MDESID"))
+            return;
+
         // Save cookie into local store, or remove if expired
         if (!cookie.hasExpired()) {
             if(!cookies.containsKey(uri.getHost()))
@@ -91,6 +94,7 @@ public class PersistentCookieStore implements CookieStore {
         ArrayList<HttpCookie> ret = new ArrayList<HttpCookie>();
         if(cookies.containsKey(uri.getHost()))
             ret.addAll(cookies.get(uri.getHost()).values());
+
         return ret;
     }
 

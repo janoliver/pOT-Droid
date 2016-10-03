@@ -285,6 +285,10 @@ abstract public class PaginateFragment extends BaseFragment {
         return mWriteButton;
     }
 
+    public void disableFfwd() {
+        Utils.setImageButtonEnabled(false, mFfwdButton);
+    }
+
     public interface FastScrollListener {
         public void onUpButtonClicked();
 

@@ -71,6 +71,7 @@ public class SettingsWrapper {
     public static final String PREF_KEY_SHOW_MENU = "pref_show_menu";
     public static final String PREF_KEY_MATA = "pref_mata";
     public static final String PREF_KEY_MATA_FORUM = "pref_mata_forum";
+    public static final String PREF_KEY_DISABLE_FFWD_BOARD = "pref_hide_board_ffwd";
 
     public static final int START_BOARDS = 0;
     public static final int START_BOOKMARKS = 1;
@@ -277,6 +278,10 @@ public class SettingsWrapper {
 
     public Boolean isReadSidebar() {
         return mSharedPreferences.getBoolean(PREF_KEY_READ_SIDEBAR, false);
+    }
+
+    public Boolean isDisableFfwdBoard() {
+        return mSharedPreferences.getBoolean(PREF_KEY_DISABLE_FFWD_BOARD, false);
     }
 
     public void setUsername(String username) {

@@ -112,6 +112,9 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
                 }
             });
         }
+
+        if(mSettings.isDisableFfwdBoard())
+            disableFfwd();
     }
 
     @Override
@@ -195,6 +198,9 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             // refresh the OptionsMenu, because of new pagination possibilities
             //getBaseActivity().supportInvalidateOptionsMenu();
             refreshPaginateLayout();
+
+            if(mSettings.isDisableFfwdBoard())
+                disableFfwd();
 
             // generate subtitle and set title and subtitle of the actionbar
             Spanned subtitle = Utils.fromHtml(String.format(getString(

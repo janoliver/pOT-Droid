@@ -301,6 +301,11 @@
                     android:title="Deutsche Zeitzone für Daten verwenden"
                     android:defaultValue="true"/>
 
+            <android.support.v7.preference.CheckBoxPreference
+                    android:key="pref_hide_board_ffwd"
+                    android:title="Letzte Seite button in der Blättern Leiste in der Board Ansicht deaktivieren."
+                    android:defaultValue="false"/>
+
         </PreferenceCategory>
     </android.support.v7.preference.PreferenceScreen>
 

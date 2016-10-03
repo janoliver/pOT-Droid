@@ -62,4 +62,9 @@
             android:title="Liste"
             app:showAsAction="always"
             android:icon="@drawable/ic_editor_list"/>
+    <item
+            android:id="@+id/tex"
+            android:title="LaTeX"
+            app:showAsAction="always"
+            android:icon="@drawable/ic_math"/>
 </menu>

@@ -74,6 +74,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         mSimpleTags.append(R.id.code, "code");
         mSimpleTags.append(R.id.quote, "quote");
         mSimpleTags.append(R.id.spoiler, "spoiler");
+        mSimpleTags.append(R.id.tex, "tex");
     }
 
     // the input title and text views

@@ -113,7 +113,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             });
         }
 
-        if(mSettings.isDisableFfwdBoard())
+        if(mSettings.isBottomToolbar() && mSettings.isDisableFfwdBoard())
             disableFfwd();
     }
 
@@ -199,7 +199,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
             //getBaseActivity().supportInvalidateOptionsMenu();
             refreshPaginateLayout();
 
-            if(mSettings.isDisableFfwdBoard())
+            if(mSettings.isBottomToolbar() && mSettings.isDisableFfwdBoard())
                 disableFfwd();
 
             // generate subtitle and set title and subtitle of the actionbar

@@ -106,7 +106,7 @@ public class SettingsWrapper {
 
             try {
                 mSharedPreferences.getString(PREF_KEY_FAB, "0");
-            } catch (ClassCastException e){
+            } catch (ClassCastException e) {
                 Boolean b = mSharedPreferences.getBoolean(PREF_KEY_FAB, true);
                 editor.putString(PREF_KEY_FAB, b ? "1" : "0");
             }
@@ -378,8 +378,24 @@ public class SettingsWrapper {
 
     public boolean isVersionUpdate(Context cx) {
         try {
-            int versionCode = cx.getPackageManager().getPackageInfo(cx.getPackageName(), 0).versionCode;
-            return mSharedPreferences.getInt("installed_version", 0) < versionCode;
+            String vName = cx.getPackageManager().getPackageInfo(cx.getPackageName(), 0).versionName;
+
+            int old_major_version = mSharedPreferences.getInt("installed_major_version", 0);
+            int old_minor_version = mSharedPreferences.getInt("installed_minor_version", 0);
+            int old_version = mSharedPreferences.getInt("installed_minorversion", 0);
+
+            int current_major_version = Utils.getMajorVersion(vName);
+            int current_minor_version = Utils.getMinorVersion(vName);
+
+            // handle switch to the new version checker
+            // here, we check if the old installed version is alread 5.X and, if so, update quietly.
+            if (old_version >= 68 && vName.startsWith("5.0")) {
+                registerVersion(cx);
+                return false;
+            }
+
+            return old_major_version < current_major_version || (old_major_version == current_major_version && old_minor_version < current_minor_version);
+
         } catch (PackageManager.NameNotFoundException e) {
             return true;
         }
@@ -387,9 +403,10 @@ public class SettingsWrapper {
 
     public void registerVersion(Context cx) {
         try {
-            int versionCode = cx.getPackageManager().getPackageInfo(cx.getPackageName(), 0).versionCode;
+            String vName = cx.getPackageManager().getPackageInfo(cx.getPackageName(), 0).versionName;
             SharedPreferences.Editor editor = mSharedPreferences.edit();
-            editor.putInt("installed_version", versionCode);
+            editor.putInt("installed_major_version", Utils.getMajorVersion(vName));
+            editor.putInt("installed_minor_version", Utils.getMinorVersion(vName));
             editor.commit();
         } catch (PackageManager.NameNotFoundException e) {
             // shouldn't happen

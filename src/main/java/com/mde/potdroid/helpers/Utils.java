@@ -25,6 +25,8 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Class that provides some static helper methods.
@@ -333,6 +335,19 @@ public class Utils {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         cx.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         return displaymetrics.widthPixels;
+    }
+
+    static int getMajorVersion(String ver) {
+        Matcher matcher = Pattern.compile("\\d+").matcher(ver);
+        matcher.find();
+        return Integer.valueOf(matcher.group());
+    }
+
+    static int getMinorVersion(String ver) {
+        Matcher matcher = Pattern.compile("\\d+").matcher(ver);
+        matcher.find();
+        matcher.find();
+        return Integer.valueOf(matcher.group());
     }
 
 }

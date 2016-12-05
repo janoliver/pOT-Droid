@@ -19,6 +19,7 @@ import com.mde.potdroid.helpers.Utils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Map;
 
 /**
@@ -60,7 +61,15 @@ public class IconSelectionDialog extends DialogFragment {
                 mIcons.add("Kein icon");
                 mIcons.addAll(Arrays.asList(aMan.list("thread-icons")));
             } else {
-                mIcons.addAll(Arrays.asList(aMan.list("smileys")));
+                String list;
+
+                if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER) {
+                    list = "smileys_xmas";
+                } else {
+                    list = "smileys";
+                }
+
+                mIcons.addAll(Arrays.asList(aMan.list(list)));
                 mIcons.remove("tourette.gif");
             }
 

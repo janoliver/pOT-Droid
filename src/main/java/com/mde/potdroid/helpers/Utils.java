@@ -23,6 +23,7 @@ import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
@@ -94,7 +95,16 @@ public class Utils {
      * @throws IOException
      */
     public static Drawable getSmiley(Context cx, String filename) throws IOException {
-        return getDrawableFromAsset(cx, "smileys/" + filename);
+        String dir = "smileys/";
+
+        if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER) {
+            SettingsWrapper s = new SettingsWrapper(cx);
+            if (s.isUseXmasSmileys()) {
+                dir = "smileys_xmas/";
+            }
+        }
+
+        return getDrawableFromAsset(cx, dir + filename);
     }
 
     /**

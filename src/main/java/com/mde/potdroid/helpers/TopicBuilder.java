@@ -133,7 +133,14 @@ public class TopicBuilder {
      * @return HTML code with smileys
      */
     private String parseSmileys(String code) {
-        String template = "<img src=\"smileys/%1$s\" alt=\"%2$s\" />";
+        String template;
+
+        if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER) {
+            template = "<img src=\"smileys_xmas/%1$s\" alt=\"%2$s\" />";
+        } else {
+            template = "<img src=\"smileys/%1$s\" alt=\"%2$s\" />";
+        }
+
         Iterator<Map.Entry<String, String>> i = mSmileys.entrySet().iterator();
 
         while (i.hasNext()) {

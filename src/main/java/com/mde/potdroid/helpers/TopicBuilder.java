@@ -135,7 +135,8 @@ public class TopicBuilder {
     private String parseSmileys(String code) {
         String template;
 
-        if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER) {
+        if ((Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER)
+                && mSettings.isUseXmasSmileys()) {
             template = "<img src=\"smileys_xmas/%1$s\" alt=\"%2$s\" />";
         } else {
             template = "<img src=\"smileys/%1$s\" alt=\"%2$s\" />";

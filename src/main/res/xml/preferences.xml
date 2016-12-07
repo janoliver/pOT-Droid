@@ -65,6 +65,11 @@
                     android:defaultValue="true"/>
 
             <android.support.v7.preference.CheckBoxPreference
+                android:key="pref_use_xmas_smileys"
+                android:title="Weihnachts-Smileys benutzen"
+                android:defaultValue="true"/>
+
+            <android.support.v7.preference.CheckBoxPreference
                     android:key="pref_parse_bbcode"
                     android:title="BBCode Parsen"
                     android:defaultValue="true"/>

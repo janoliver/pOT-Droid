@@ -13,12 +13,14 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mde.potdroid.R;
+import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.TopicBuilder;
 import com.mde.potdroid.helpers.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Map;
 
 /**
@@ -60,7 +62,16 @@ public class IconSelectionDialog extends DialogFragment {
                 mIcons.add("Kein icon");
                 mIcons.addAll(Arrays.asList(aMan.list("thread-icons")));
             } else {
-                mIcons.addAll(Arrays.asList(aMan.list("smileys")));
+                String list = "smileys";
+
+                if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER) {
+                    SettingsWrapper s = new SettingsWrapper(getContext());
+                    if (s.isUseXmasSmileys()) {
+                        list = "smileys_xmas";
+                    }
+                }
+
+                mIcons.addAll(Arrays.asList(aMan.list(list)));
                 mIcons.remove("tourette.gif");
             }
 

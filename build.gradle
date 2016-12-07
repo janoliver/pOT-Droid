@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:2.3.0-alpha2'
     }
 }
 
@@ -15,11 +15,11 @@ repositories {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:24.2.1'
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
-    compile 'com.takisoft.fix:preference-v7:24.1.1.1'
+    compile 'com.android.support:support-v4:25.0.1'
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:design:25.0.1'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
+    compile 'com.takisoft.fix:preference-v7:25.0.1.0'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.squareup.okhttp3:okhttp-urlconnection:3.0.0-RC1'
     compile 'com.samskivert:jmustache:1.12'
@@ -35,11 +35,11 @@ dependencies {
 
 android {
     useLibrary 'org.apache.http.legacy'
-    compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    compileSdkVersion 25
+    buildToolsVersion '25.0.0'
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 24
+        targetSdkVersion 25
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {

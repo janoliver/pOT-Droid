@@ -2,6 +2,10 @@
 
 ## Version 5
 
+### Version 5.1.X
+  * Chrome Custom Tabs für Links
+  * Bug fixes
+
 ###  Version 5.0.X
   * Alle ListViews sind jetzt Recyclerviews
   * Media Viewer

@@ -7,14 +7,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.*;
 import com.devbrackets.android.exomedia.listener.OnPreparedListener;
-import com.devbrackets.android.exomedia.ui.widget.EMVideoView;
+import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.felipecsl.gifimageview.library.GifImageView;
+import com.github.chrisbanes.photoview.PhotoView;
+import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import com.mde.potdroid.BaseActivity;
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.ImageHandler;
 import com.mde.potdroid.helpers.Network;
-import uk.co.senab.photoview.PhotoView;
-import uk.co.senab.photoview.PhotoViewAttacher;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -27,7 +27,7 @@ import java.io.InputStream;
 public class MediaFragment extends BaseFragment implements OnPreparedListener {
 
     private FullScreenListener mFullScreenListener;
-    private EMVideoView mVideoView;
+    private VideoView mVideoView;
     private PhotoView mImageView;
     private GifImageView mGifImageView;
     private PhotoViewAttacher mAttacher;
@@ -164,7 +164,7 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saved) {
         View v = inflater.inflate(R.layout.layout_media, container, false);
-        mVideoView = (EMVideoView) v.findViewById(R.id.video);
+        mVideoView = (VideoView) v.findViewById(R.id.video);
         mGifImageView = (GifImageView) v.findViewById(R.id.gif);
         mImageView = (PhotoView) v.findViewById(R.id.image);
 
@@ -389,7 +389,7 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
 
     /**
      * Listens to the system to determine when to show the default controls
-     * for the {@link EMVideoView}
+     * for the {@link VideoView}
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private class FullScreenListener implements View.OnSystemUiVisibilityChangeListener {

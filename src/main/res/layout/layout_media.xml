@@ -13,7 +13,7 @@
             android:layout_height="match_parent"
             android:gravity="center">
 
-        <com.devbrackets.android.exomedia.ui.widget.EMVideoView
+        <com.devbrackets.android.exomedia.ui.widget.VideoView
                 android:id="@+id/video"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

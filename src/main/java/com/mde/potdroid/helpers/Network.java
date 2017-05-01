@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import okhttp3.*;
-import okhttp3.internal.JavaNetCookieJar;
 import okio.BufferedSink;
 import okio.Okio;
 

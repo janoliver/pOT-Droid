@@ -127,6 +127,7 @@ public class ForumFragment extends BaseFragment implements LoaderManager.LoaderC
     }
 
     private void populateList() {
+        mListAdapter.removeAllSections();
         for(Category c : mForum.getCategories())
             mListAdapter.addSection(new CategorySection(c));
 

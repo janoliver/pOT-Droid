@@ -311,6 +311,12 @@
                     android:title="Letzte Seite button in der Blättern Leiste in der Board Ansicht deaktivieren."
                     android:defaultValue="false"/>
 
+            <android.support.v7.preference.CheckBoxPreference
+                    android:key="pref_custom_tabs"
+                    android:title="Links im Browser öffnen"
+                    android:defaultValue="true"/>
+
+
         </PreferenceCategory>
     </android.support.v7.preference.PreferenceScreen>
 

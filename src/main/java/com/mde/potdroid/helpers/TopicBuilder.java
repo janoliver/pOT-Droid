@@ -351,7 +351,7 @@ public class TopicBuilder {
         mParser.setCallback(callback);
 
         // the tags allowed in links
-        String inLinks = "string, b, u, s, i, mod, trigger, img, url, list, table, m";
+        String inLinks = "string, b, u, s, i, mod, trigger, img, url, list, table, m, quote";
 
         class SimpleTag extends BBCodeParser.BBCodeTag {
 

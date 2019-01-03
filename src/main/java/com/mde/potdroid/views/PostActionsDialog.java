@@ -115,12 +115,15 @@ public class PostActionsDialog extends DialogFragment {
                                 mTarget.bookmarkPost(getArguments().getInt(ARG_POST_ID), null);
                                 break;
                             case 3:
-                                mTarget.linkPost(getArguments().getInt(ARG_POST_ID));
+                                mTarget.savePost(getArguments().getInt(ARG_POST_ID), null);
                                 break;
                             case 4:
-                                mTarget.clipboardPostUrl(getArguments().getInt(ARG_POST_ID));
+                                mTarget.linkPost(getArguments().getInt(ARG_POST_ID));
                                 break;
                             case 5:
+                                mTarget.clipboardPostUrl(getArguments().getInt(ARG_POST_ID));
+                                break;
+                            case 6:
                                 mTarget.pmToAuthor(getArguments().getInt(ARG_POST_ID));
                                 break;
                         }

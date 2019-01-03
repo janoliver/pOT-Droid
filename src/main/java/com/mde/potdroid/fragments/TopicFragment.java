@@ -74,6 +74,7 @@ public class TopicFragment extends PaginateFragment implements
     private TopicJSInterface mJsInterface;
     private WebViewScrollCallbacks mWebViewScrollCallbacks = new WebViewScrollCallbacks();
 
+    private PostStorageHandler mStorageHandler = null;
 
     /**
      * Create a new instance of TopicFragment and set the arguments
@@ -117,6 +118,10 @@ public class TopicFragment extends PaginateFragment implements
                     mPullToRefreshLayout.addProgressViewOffset(getBaseActivity().getToolbar().getHeight(), 0);
                 }
             });
+        }
+
+        if (mStorageHandler == null) {
+            mStorageHandler = new PostStorageHandler(getContext());
         }
 
         if (mTopic == null)
@@ -394,6 +399,20 @@ public class TopicFragment extends PaginateFragment implements
             mFab.show();
     }
 
+    private String getQuote(final int id) {
+        Post p = mTopic.getPostById(id);
+
+        String text = String.format(getString(R.string.quote),
+                mTopic.getId(), p.getId(), p.getAuthor().getNick(), p.getText());
+
+        // convert img to url
+        text = text.replaceAll("\\[url=([^\\[\\]]+)\\]\\s*\\[img\\]\\s*([^\\[\\]]+)\\s*\\[/img\\]\\s*\\[/url\\]", "[url]$1[/url]");
+        text = text.replaceAll("\\[img\\]\\s*([^\\[\\]]+)\\s*\\[/img\\]", "[url]$1[/url]");
+
+        return text;
+    }
+
+
     public void refreshTitleAndPagination() {
         if (mTopic == null)
             return;
@@ -573,20 +592,11 @@ public class TopicFragment extends PaginateFragment implements
      * @param id The post id to quote
      */
     public void quotePost(final int id) {
-        Post p = mTopic.getPostById(id);
-
-        String text = String.format(getString(R.string.quote),
-                mTopic.getId(), p.getId(), p.getAuthor().getNick(), p.getText());
-
-        // convert img to url
-        text = text.replaceAll("\\[url=([^\\[\\]]+)\\]\\s*\\[img\\]\\s*([^\\[\\]]+)\\s*\\[/img\\]\\s*\\[/url\\]", "[url]$1[/url]");
-        text = text.replaceAll("\\[img\\]\\s*([^\\[\\]]+)\\s*\\[/img\\]", "[url]$1[/url]");
-
         Intent intent = new Intent(getBaseActivity(), EditorActivity.class);
         intent.putExtra(EditorFragment.ARG_TOKEN, mTopic.getNewreplytoken());
         intent.putExtra(EditorFragment.ARG_MODE, EditorFragment.MODE_REPLY);
         intent.putExtra(EditorFragment.ARG_TOPIC_ID, mTopic.getId());
-        intent.putExtra(EditorFragment.ARG_TEXT, text);
+        intent.putExtra(EditorFragment.ARG_TEXT, getQuote(id));
         intent.putExtra(EditorFragment.ARG_CLOSED, mTopic.isClosed());
 
         startActivityForResult(intent, EditorFragment.MODE_REPLY);
@@ -693,6 +703,17 @@ public class TopicFragment extends PaginateFragment implements
                     d.cancel();
             }
         });
+    }
+
+    public void savePost(final int id, final Dialog d) {
+        Post p = mTopic.getPostById(id);
+
+        String url = Utils.getAbsoluteUrl(
+                String.format("thread.php?PID=%d&TID=%d#reply_%d", p.getId(), mTopic.getId(), p.getId()));
+
+        if (mStorageHandler.storePost(mTopic.getTitle(), p.getAuthor().getNick(), url, p.getId(), getTopic().getId(), getQuote(id))) {
+            showSuccess("Post gespeichert.");
+        }
     }
 
     /**

@@ -61,7 +61,7 @@ public class PostStorageHandler {
         return writeStorage();
     }
 
-    public boolean export() {
+    public boolean export(String directory) {
         // TODO
         return false;
     }

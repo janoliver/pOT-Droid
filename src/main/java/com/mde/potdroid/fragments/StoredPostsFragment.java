@@ -7,14 +7,17 @@ import android.widget.TextView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.content.Intent;
+import android.graphics.Color;
 
 import com.mde.potdroid.R;
 import com.mde.potdroid.TopicActivity;
 import com.mde.potdroid.helpers.PostStorageHandler;
 import com.mde.potdroid.helpers.PostStorageHandler.StoredPostInfo;
+import com.mde.potdroid.helpers.Utils;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.design.widget.Snackbar;
 
 import java.util.List;
 
@@ -68,8 +71,34 @@ public class StoredPostsFragment extends BaseFragment {
                     showSuccess(R.string.msg_storage_cleared);
                 return true;
             case R.id.export:
-                if (mPostStorage.export())
-                    showSuccess(R.string.msg_storage_exported);
+                String path = getContext().getExternalFilesDir(null).getAbsolutePath();
+                if (mPostStorage.export(path)) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Snackbar snackbar = Snackbar
+                                    .make(getActivity().findViewById(android.R.id.content), R.string.msg_storage_exported, Snackbar.LENGTH_LONG);
+                            View snackBarView = snackbar.getView();
+                            snackBarView.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbSuccessColor));
+                            TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                            tv.setTextColor(Color.WHITE);
+                            snackbar.show();
+                        }
+                    });
+                } else {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Snackbar snackbar = Snackbar
+                                    .make(getActivity().findViewById(android.R.id.content), R.string.msg_export_error, Snackbar.LENGTH_LONG);
+                            View snackBarView = snackbar.getView();
+                            snackBarView.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbErrorColor));
+                            TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                            tv.setTextColor(Color.WHITE);
+                            snackbar.show();
+                        }
+                    });
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -711,7 +711,7 @@ public class TopicFragment extends PaginateFragment implements
         String url = Utils.getAbsoluteUrl(
                 String.format("thread.php?PID=%d&TID=%d#reply_%d", p.getId(), mTopic.getId(), p.getId()));
 
-        if (mStorageHandler.storePost(mTopic.getTitle(), p.getAuthor().getNick(), url, p.getId(), getTopic().getId(), getQuote(id))) {
+        if (mStorageHandler.storePost(mTopic.getTitle(), p.getAuthor().getNick(), url, p.getId(), getTopic().getId(), getQuote(id), p.getDate().toString())) {
             showSuccess("Post gespeichert.");
         }
     }

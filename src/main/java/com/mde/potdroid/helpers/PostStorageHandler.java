@@ -1,7 +1,7 @@
 package com.mde.potdroid.helpers;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.FileOutputStream;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Vector;
 import java.util.Iterator;
@@ -11,8 +11,13 @@ import android.util.JsonWriter;
 import android.util.JsonReader;
 import android.content.Context;
 
+import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.InputStreamReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import java.text.SimpleDateFormat;
 
 public class PostStorageHandler {
     // Public stuff starts here.
@@ -62,8 +67,27 @@ public class PostStorageHandler {
     }
 
     public boolean export(String directory) {
-        // TODO
-        return false;
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+        String filename = "potdroid-posts-export_" + timeStamp + ".txt";
+
+        try {
+            File outputfile = new File(directory, filename);
+            FileOutputStream out = new FileOutputStream(outputfile);
+
+            for (StoredPostInfo pi : mPosts) {
+                String head = pi.poster + " in '" + pi.topic + "'\n" + pi.url + "\n\n";
+                out.write(head.getBytes());
+                out.write(pi.fullQuote.getBytes());
+                out.write("\n____________________\n\n".getBytes());
+            }
+
+            out.close();
+        } catch (IOException e) {
+            Log.e(TAG, "Error exporting post: " + e.getMessage());
+            return false;
+        }
+
+        return true;
     }
 
     public class StoredPostInfo {

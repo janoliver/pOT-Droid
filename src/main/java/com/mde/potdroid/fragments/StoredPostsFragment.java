@@ -154,11 +154,11 @@ public class StoredPostsFragment extends BaseFragment {
 
             // set the topic
             TextView title = holder.mTextThread;
-            title.setText(b.topic);
+            title.setText(b.date);
 
             // set the name of the poster
             TextView poster = holder.mTextPoster;
-            poster.setText(b.poster + " (" + b.date + ")");
+            poster.setText(b.poster + " - " + b.topic);
 
             holder.mContainer.setOnClickListener(new View.OnClickListener() {
                 @Override

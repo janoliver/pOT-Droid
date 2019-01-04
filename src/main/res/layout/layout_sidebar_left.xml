@@ -41,6 +41,14 @@
                 android:layout_weight="1"/>
 
         <ImageButton
+            android:id="@+id/button_store"
+            style="@style/Widget.AppCompat.ActionButton"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_storedposts" />
+
+        <ImageButton
                 android:layout_width="0dp"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="center_vertical"

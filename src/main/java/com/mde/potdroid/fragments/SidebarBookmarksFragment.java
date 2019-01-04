@@ -72,11 +72,19 @@ public class SidebarBookmarksFragment extends BaseFragment
         listView.setLayoutManager(layoutManager);
 
         ImageButton home = (ImageButton) v.findViewById(R.id.button_home);
-
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseActivity(), ForumActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton store = (ImageButton) v.findViewById(R.id.button_store);
+        store.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseActivity(), StoredPostsActivity.class);
                 startActivity(intent);
             }
         });

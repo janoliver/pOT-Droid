@@ -4,6 +4,7 @@
         <item>@string/post_dialog_edit</item>
         <item>@string/post_dialog_quote</item>
         <item>@string/post_dialog_bookmark</item>
+        <item>@string/post_dialog_save</item>
         <item>@string/post_dialog_browser</item>
         <item>@string/post_dialog_clipboard</item>
         <item>@string/post_dialog_pm</item>

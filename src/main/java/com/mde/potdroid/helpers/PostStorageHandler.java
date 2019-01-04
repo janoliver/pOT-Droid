@@ -123,6 +123,10 @@ public class PostStorageHandler {
             return (this.id_topic == other.id_topic &&
                     this.id_post == other.id_post);
         }
+
+        public boolean equals(Object other) {
+            return equals((StoredPostInfo) other);
+        }
     }
 
     // Private stuff starts here.

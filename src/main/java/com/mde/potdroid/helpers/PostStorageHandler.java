@@ -114,7 +114,7 @@ public class PostStorageHandler {
             poster = p;
             url = u;
             fullQuote = quote;
-            date = date;
+            date = postdate;
             id_post = postid;
             id_topic = topicid;
         }

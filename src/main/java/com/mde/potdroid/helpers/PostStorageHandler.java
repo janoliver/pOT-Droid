@@ -36,8 +36,8 @@ public class PostStorageHandler {
         return writeStorage();
     }
 
-    public boolean storePost(String topic, String poster, String url, int postid, int topicid, String quote) {
-        StoredPostInfo pi = new StoredPostInfo(topic, poster, url, postid, topicid, quote);
+    public boolean storePost(String topic, String poster, String url, int postid, int topicid, String quote, String date) {
+        StoredPostInfo pi = new StoredPostInfo(topic, poster, url, postid, topicid, quote, date);
         return storePost(pi);
     }
 
@@ -50,7 +50,7 @@ public class PostStorageHandler {
     }
 
     public boolean deletePost(int postid, int topicid) {
-        StoredPostInfo pi = new StoredPostInfo("", "", "", postid, topicid, "");
+        StoredPostInfo pi = new StoredPostInfo("", "", "", postid, topicid, "", "");
         return deletePost(pi);
     }
 
@@ -75,7 +75,7 @@ public class PostStorageHandler {
             FileOutputStream out = new FileOutputStream(outputfile);
 
             for (StoredPostInfo pi : mPosts) {
-                String head = pi.poster + " in '" + pi.topic + "'\n" + pi.url + "\n\n";
+                String head = pi.poster + " in '" + pi.topic + "'\n" + pi.date + "\n" + pi.url + "\n\n";
                 out.write(head.getBytes());
                 out.write(pi.fullQuote.getBytes());
                 out.write("\n____________________\n\n".getBytes());
@@ -95,6 +95,7 @@ public class PostStorageHandler {
         public String poster;
         public String url;
         public String fullQuote;
+        public String date;
         public int id_topic;
         public int id_post;
 
@@ -103,15 +104,17 @@ public class PostStorageHandler {
             poster = "";
             url = "";
             fullQuote = "";
+            date = "";
             id_post = 0;
             id_topic = 0;
         }
 
-        public StoredPostInfo(String t, String p, String u, int postid, int topicid, String quote) {
+        public StoredPostInfo(String t, String p, String u, int postid, int topicid, String quote, String postdate) {
             topic = t;
             poster = p;
             url = u;
             fullQuote = quote;
+            date = date;
             id_post = postid;
             id_topic = topicid;
         }
@@ -160,6 +163,8 @@ public class PostStorageHandler {
                             pi.id_topic = reader.nextInt();
                         } else if (name.equals("fullQuote")) {
                             pi.fullQuote = reader.nextString();
+                        } else if (name.equals("date")) {
+                            pi.date = reader.nextString();
                         }
                     } catch (IllegalStateException e) {
                         Log.e("Exception", "Illegal state: " + e.toString());
@@ -203,6 +208,7 @@ public class PostStorageHandler {
                 writer.name("id_topic").value(pi.id_topic);
                 writer.name("id_post").value(pi.id_post);
                 writer.name("fullQuote").value(pi.fullQuote);
+                writer.name("date").value(pi.date);
                 writer.endObject();
             }
 

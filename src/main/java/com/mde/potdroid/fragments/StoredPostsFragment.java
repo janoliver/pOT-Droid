@@ -81,6 +81,10 @@ public class StoredPostsFragment extends BaseFragment {
                         }).show();
                 return true;
             case R.id.export:
+                if (mPostStorage.getPosts().size() == 0) {
+                    return true;
+                }
+
                 String path = getContext().getExternalFilesDir(null).getAbsolutePath();
                 if (mPostStorage.export(path)) {
                     getActivity().runOnUiThread(new Runnable() {

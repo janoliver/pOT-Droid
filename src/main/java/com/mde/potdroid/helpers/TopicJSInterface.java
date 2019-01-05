@@ -278,6 +278,20 @@ public class TopicJSInterface extends BenderJSInterface {
     }
 
     /**
+     * Store the post
+     *
+     * @param post_id the post id to edit
+     */
+    @JavascriptInterface
+    public void savePost(final int post_id) {
+        mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                mTopicFragment.savePost(post_id);
+            }
+        });
+    }
+
+    /**
      * Open the FormFragment to answer with a quote
      *
      * @param post_id the post id to quote

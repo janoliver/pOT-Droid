@@ -706,7 +706,7 @@ public class TopicFragment extends PaginateFragment implements
         });
     }
 
-    public void savePost(final int id, final Dialog d) {
+    public void savePost(final int id) {
         Post p = mTopic.getPostById(id);
 
         String url = Utils.getAbsoluteUrl(

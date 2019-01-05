@@ -36,6 +36,7 @@ Es gibt einen pOT-Droid Thread. Den Link und die Änderungen findest du unter \'
     <!-- actions -->
     <string name="action_remove_bookmark">Bookmark entfernen?</string>
     <string name="action_remove_storedpost">Post entfernen?</string>
+    <string name="action_clear_storedposts">Alle Posts löschen?</string>
     <string name="action_refresh">Aktualisieren</string>
     <string name="action_previous">Vorherige Seite</string>
     <string name="action_next">Nächste Seite</string>

@@ -67,8 +67,18 @@ public class StoredPostsFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.delete:
-                if (mPostStorage.clearStorage())
-                    showSuccess(R.string.msg_storage_cleared);
+                new MaterialDialog.Builder(getActivity())
+                        .content(R.string.action_clear_storedposts)
+                        .positiveText("Ok")
+                        .negativeText("Abbrechen")
+                        .callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                if (mPostStorage.clearStorage()) {
+                                    showSuccess(R.string.msg_storage_cleared);
+                                }
+                            };
+                        }).show();
                 return true;
             case R.id.export:
                 String path = getContext().getExternalFilesDir(null).getAbsolutePath();

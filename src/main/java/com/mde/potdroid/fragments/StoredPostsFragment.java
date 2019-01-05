@@ -181,6 +181,8 @@ public class StoredPostsFragment extends BaseFragment {
                                 @Override
                                 public void onPositive(MaterialDialog dialog) {
                                     if (mPostStorage.deletePost(b.id_post, b.id_topic)) {
+                                        mDataset = mPostStorage.getPosts();
+                                        notifyDataSetChanged();
                                         showSuccess(R.string.msg_storedpost_deleted);
                                     }
                                 };

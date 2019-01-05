@@ -75,6 +75,7 @@ public class StoredPostsFragment extends BaseFragment {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
                                 if (mPostStorage.clearStorage()) {
+                                    mPostStorageAdapter.setItems(mPostStorage.getPosts());
                                     showSuccess(R.string.msg_storage_cleared);
                                 }
                             };

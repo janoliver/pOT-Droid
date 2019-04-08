@@ -1,9 +1,10 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
+        classpath 'com.android.tools.build:gradle:3.3.2'
     }
 }
 
@@ -12,32 +13,32 @@ apply plugin: 'com.android.application'
 repositories {
     jcenter()
     maven { url "https://jitpack.io" }
+    google()
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'com.android.support:customtabs:25.3.1'
-    compile 'com.takisoft.fix:preference-v7:25.3.1.0'
-    compile 'com.squareup.okhttp3:okhttp:3.7.0'
-    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.7.0'
-    compile 'com.samskivert:jmustache:1.13'
-    compile 'com.github.ksoichiro:android-observablescrollview:1.6.0'
-    compile 'com.github.afollestad.material-dialogs:core:0.9.4.3@aar'
-    compile 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.5'
-    compile 'com.devbrackets.android:exomedia:4.0.0'
-    compile 'com.felipecsl:gifimageview:2.1.0'
-    compile 'com.github.chrisbanes:PhotoView:2.0.0'
-    compile 'com.nononsenseapps:filepicker:4.1.0'
+    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
+    implementation 'com.android.support:customtabs:26.1.0'
+    implementation 'com.takisoft.fix:preference-v7:26.1.0.3'
+    implementation 'com.squareup.okhttp3:okhttp:3.7.0'
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.7.0'
+    implementation 'com.samskivert:jmustache:1.13'
+    implementation 'com.github.ksoichiro:android-observablescrollview:1.6.0'
+    implementation 'com.github.afollestad.material-dialogs:core:0.9.4.3@aar'
+    implementation 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.5'
+    implementation 'com.devbrackets.android:exomedia:4.0.0'
+    implementation 'com.felipecsl:gifimageview:2.1.0'
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+    implementation 'com.nononsenseapps:filepicker:4.1.0'
 }
 
 
 android {
     useLibrary 'org.apache.http.legacy'
     compileSdkVersion 26
-    buildToolsVersion '26.0.0'
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 26

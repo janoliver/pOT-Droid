@@ -46,6 +46,7 @@ public class PostStorageHandler {
     }
 
     public boolean clearStorage() {
+        mPosts.clear();
         return mContext.deleteFile(FILENAME);
     }
 

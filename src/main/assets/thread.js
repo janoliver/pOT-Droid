@@ -90,6 +90,11 @@ $(document).ready(function() {
         api.editPost(post_id);
     });
 
+    $('.save-button').click(function(e) {
+        var post_id = parseInt($(this).closest('.post').attr('data-id'));
+        api.savePost(post_id);
+    });
+
     $('.quote-button').click(function(e) {
         var post_id = parseInt($(this).closest('.post').attr('data-id'));
         api.quotePost(post_id);

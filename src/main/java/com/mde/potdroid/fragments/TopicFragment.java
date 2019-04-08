@@ -46,6 +46,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.text.SimpleDateFormat;
 
 /**
  * This Fragment displays a Topic in a WebView. Since the WebView has a memory leak,
@@ -705,13 +706,15 @@ public class TopicFragment extends PaginateFragment implements
         });
     }
 
-    public void savePost(final int id, final Dialog d) {
+    public void savePost(final int id) {
         Post p = mTopic.getPostById(id);
 
         String url = Utils.getAbsoluteUrl(
                 String.format("thread.php?PID=%d&TID=%d#reply_%d", p.getId(), mTopic.getId(), p.getId()));
 
-        if (mStorageHandler.storePost(mTopic.getTitle(), p.getAuthor().getNick(), url, p.getId(), getTopic().getId(), getQuote(id), p.getDate().toString())) {
+        String datestr = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(p.getDate().getTime());
+        if (mStorageHandler.storePost(mTopic.getTitle(), p.getAuthor().getNick(), url, p.getId(), getTopic().getId(),
+                                        getQuote(id), datestr)) {
             showSuccess("Post gespeichert.");
         }
     }

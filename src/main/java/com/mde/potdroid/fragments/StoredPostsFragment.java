@@ -67,10 +67,25 @@ public class StoredPostsFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.delete:
-                if (mPostStorage.clearStorage())
-                    showSuccess(R.string.msg_storage_cleared);
+                new MaterialDialog.Builder(getActivity())
+                        .content(R.string.action_clear_storedposts)
+                        .positiveText("Ok")
+                        .negativeText("Abbrechen")
+                        .callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                if (mPostStorage.clearStorage()) {
+                                    mPostStorageAdapter.setItems(mPostStorage.getPosts());
+                                    showSuccess(R.string.msg_storage_cleared);
+                                }
+                            };
+                        }).show();
                 return true;
             case R.id.export:
+                if (mPostStorage.getPosts().size() == 0) {
+                    return true;
+                }
+
                 String path = getContext().getExternalFilesDir(null).getAbsolutePath();
                 if (mPostStorage.export(path)) {
                     getActivity().runOnUiThread(new Runnable() {
@@ -181,6 +196,8 @@ public class StoredPostsFragment extends BaseFragment {
                                 @Override
                                 public void onPositive(MaterialDialog dialog) {
                                     if (mPostStorage.deletePost(b.id_post, b.id_topic)) {
+                                        mDataset = mPostStorage.getPosts();
+                                        notifyDataSetChanged();
                                         showSuccess(R.string.msg_storedpost_deleted);
                                     }
                                 };

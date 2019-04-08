@@ -40,7 +40,7 @@ android {
     useLibrary 'org.apache.http.legacy'
     compileSdkVersion 26
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 26
         vectorDrawables.useSupportLibrary = true
     }

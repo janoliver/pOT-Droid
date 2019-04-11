@@ -4,6 +4,7 @@
 
 ### Version 5.2.X
   * Post Speichern Funktion, danke an statixx!
+  * Bugfixes
 
 ### Version 5.1.X
   * Chrome Custom Tabs für Links

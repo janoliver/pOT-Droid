@@ -22,7 +22,7 @@ public class MessageParser {
     private Message mMessage;
     private Pattern mMessagePattern = Pattern.compile("Betreff</td> <td class='hh'><b>([^<]+)" +
             "</td>.*<td class='h'>(Absender|Empf&auml;nger)</td> <td class='hh'>.*(<a " +
-            "href='http://my.mods.de/([0-9]+)' target='_blank'.*?>([^<]+?)</a>|System).*Gesendet</td> <td" +
+            "href='[^/]*//my.mods.de/([0-9]+)' target='_blank'.*?>([^<]+?)</a>|System).*Gesendet</td> <td" +
             " class='hh'><b>([0-9:\\. ]+)</td>.*<td colspan='[23]' class='b'>(.+)</td> </tr>  <tr> " +
             "<td colspan='[23]' class='h'></td> </tr>.*</table>", Pattern.DOTALL | Pattern.MULTILINE);
 

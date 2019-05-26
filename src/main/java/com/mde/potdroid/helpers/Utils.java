@@ -37,7 +37,7 @@ public class Utils {
     // the logcat tag
     public static final String LOG_TAG = "pOT Droid";
     // some URLs.
-    public static final String BASE_URL = "http://forum.mods.de/bb/";
+    public static final String BASE_URL = "https://forum.mods.de/bb/";
     public static final String ASYNC_URL = "async/";
     public static final int NETWORK_NONE = 0;
     public static final int NETWORK_WIFI = 1;
@@ -229,7 +229,7 @@ public class Utils {
      * @return the shaped url
      */
     public static String getAbsoluteUrl(String relativeUrl) {
-        if(relativeUrl.startsWith("http://"))
+        if(relativeUrl.startsWith("https://"))
             return relativeUrl;
         return BASE_URL + relativeUrl;
     }
@@ -241,7 +241,7 @@ public class Utils {
      * @return the shaped url
      */
     public static String getAsyncUrl(String relativeUrl) {
-        if(relativeUrl.startsWith("http://"))
+        if(relativeUrl.startsWith("https://"))
             return relativeUrl;
         return ASYNC_URL + relativeUrl;
     }

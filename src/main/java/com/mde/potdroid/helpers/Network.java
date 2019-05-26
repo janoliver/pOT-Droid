@@ -33,7 +33,7 @@ public class Network {
     // A reference to the Settings
     private SettingsWrapper mSettings;
 
-    public static final String LOGIN_URL = "http://login.mods.de/";
+    public static final String LOGIN_URL = "https://login.mods.de/";
 
     // the User agent template
     public static final String UAGENT_TPL = "okhttp3/potdroid-%1$s";
@@ -153,7 +153,7 @@ public class Network {
                 if (!response.isSuccessful())
                     throw new IOException("Unexpected code " + response);
 
-                Pattern pattern = Pattern.compile("http://forum.mods.de/SSO.php\\?UID=([0-9]+)[^']*");
+                Pattern pattern = Pattern.compile("forum.mods.de/SSO.php\\?UID=([0-9]+)[^']*");
 
                 // check if the login worked, e.g. one was redirected to SSO.php..
                 Matcher m = pattern.matcher(response.body().string());
@@ -162,7 +162,9 @@ public class Network {
                     // set user id
                     mSettings.setUserId(Integer.valueOf(m.group(1)));
 
-                    get(m.group(0), new Callback() {
+                    // we assemble https string here, because the page source only
+                    // gives //forum.mods.de links.
+                    get("https://" + m.group(0), new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             callback.onFailure();

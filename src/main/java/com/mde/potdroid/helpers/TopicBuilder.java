@@ -56,12 +56,12 @@ public class TopicBuilder {
         mSmileys.put(":xx:", "icon11.gif");
         mSmileys.put(":zzz:", "sleepy.gif");
         mSmileys.put(":tourette:", "tourette.gif");
-        mSmileys.put("[img]http://forum.mods.de/bb/img/icons/icon6.gif[/img]", "icon6.png");
-        mSmileys.put("[img]http://forum.mods.de/bb/img/icons/thumbsup.gif[/img]", "thumbsup.png");
-        mSmileys.put("[img]http://forum.mods.de/bb/img/icons/thumbsdown.gif[/img]", "thumbsdown.png");
-        mSmileys.put("[img]http://forum.mods.de/bb/img/icons/pfeil.gif[/img]", "pfeil.png");
-        mSmileys.put("[img]http://forum.mods.de/bb/img/icons/icon10.gif[/img]", "icon10.png");
-        mSmileys.put("[img]http://i.imgur.com/lNddx3D.gif[/img]", "matolf.gif");
+        mSmileys.put("[img]https://forum.mods.de/bb/img/icons/icon6.gif[/img]", "icon6.png");
+        mSmileys.put("[img]https://forum.mods.de/bb/img/icons/thumbsup.gif[/img]", "thumbsup.png");
+        mSmileys.put("[img]https://forum.mods.de/bb/img/icons/thumbsdown.gif[/img]", "thumbsdown.png");
+        mSmileys.put("[img]https://forum.mods.de/bb/img/icons/pfeil.gif[/img]", "pfeil.png");
+        mSmileys.put("[img]https://forum.mods.de/bb/img/icons/icon10.gif[/img]", "icon10.png");
+        mSmileys.put("[img]https://i.imgur.com/lNddx3D.gif[/img]", "matolf.gif");
 
     }
 
@@ -523,7 +523,7 @@ public class TopicBuilder {
                 mParser.getCallback().onTag("quote", content, args);
                 if (args.size() == 3)
                     return String.format("<div class=\"quote\">" +
-                                    "<a href=\"http://forum.mods.de/bb/thread.php?TID=%3$s&PID=%4$s\" " +
+                                    "<a href=\"https://forum.mods.de/bb/thread.php?TID=%3$s&PID=%4$s\" " +
                                     "class=\"author\"><i class=\"material-icons\">&#xE244;</i>%1$s</a>" +
                                     "<div class=\"content\">%2$s</div></div>",
                             args.get(2), content, args.get(0), args.get(1));

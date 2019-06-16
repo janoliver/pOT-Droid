@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.mde.potdroid"
-          android:versionCode="79"
-          android:versionName="5.2.2"
+          android:versionCode="80"
+          android:versionName="5.2.3"
           android:installLocation="auto">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -41,10 +41,10 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data
-                        android:scheme="http"
-                        android:host="forum.mods.de"
-                        android:pathPattern="/bb/index\\.php.*"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="forum.mods.de" />
+                <data android:pathPattern="/bb/index\\.php.*"/>
             </intent-filter>
 
         </activity>
@@ -57,10 +57,10 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data
-                        android:scheme="http"
-                        android:host="forum.mods.de"
-                        android:pathPattern="/bb/board\\.php.*"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="forum.mods.de" />
+                <data android:pathPattern="/bb/board\\.php.*"/>
             </intent-filter>
 
         </activity>
@@ -83,10 +83,10 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data
-                        android:scheme="http"
-                        android:host="forum.mods.de"
-                        android:pathPattern="/bb/thread\\.php.*"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="forum.mods.de" />
+                <data android:pathPattern="/bb/thread\\.php.*"/>
             </intent-filter>
 
         </activity>
@@ -100,10 +100,10 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data
-                        android:scheme="http"
-                        android:host="forum.mods.de"
-                        android:pathPattern="/bb/pm/.*"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="forum.mods.de" />
+                <data android:pathPattern="/bb/pm/.*"/>
             </intent-filter>
 
         </activity>

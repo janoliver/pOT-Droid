@@ -18,6 +18,7 @@ Das geht entweder auf Github bei den [Releases](https://github.com/janoliver/pOT
 * Kompletter PM Support
 * Medien teilen, Speichern, ansehen
 * Verschiedene Themes, teilweise selbst anpassbar
+* Quickmod Integration
 * Viele Gimmicks, die das Surfen im Forum erleichtern sollten.
 
 ## Links

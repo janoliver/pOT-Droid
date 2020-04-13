@@ -2,6 +2,9 @@
 
 ## Version 5
 
+### 5.3.X
+  * Mod Tools (Quickmod Integration)
+
 ### Version 5.2.X
   * Post Speichern Funktion, danke an statixx!
   * Bugfixes

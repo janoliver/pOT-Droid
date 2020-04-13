@@ -58,6 +58,13 @@ Es gibt einen pOT-Droid Thread. Den Link und die Änderungen findest du unter \'
     <string name="action_export">Exportieren</string>
     <string name="action_clear">Löschen</string>
 
+    <string name="action_mod_close_thread">Topic schließen</string>
+    <string name="action_mod_open_thread">Topic öffnen</string>
+    <string name="action_mod_hide_thread">Topic verstecken</string>
+    <string name="action_mod_unhide_thread">Topic sichtbar machen</string>
+    <string name="action_mod_pin_thread">Topic anheften</string>
+    <string name="action_mod_unpin_thread">Topic abheften</string>
+
     <!-- messages -->
     <string name="msg_login_success">Erfolgreich eingeloggt! Die App sollte neu gestartet werden.</string>
     <string name="msg_login_failure">Fehler beim Login!</string>
@@ -95,6 +102,8 @@ Es gibt einen pOT-Droid Thread. Den Link und die Änderungen findest du unter \'
     <string name="msg_storage_cleared">Gespeicherte posts gelöscht.</string>
     <string name="msg_storage_exported">Gespeicherte posts exportiert. Du findest die Posts in /sdcard/Android/data/com.mde.potdroid/files.</string>
     <string name="msg_storedpost_deleted">Post entfernt.</string>
+    <string name="msg_mod_action_done">Quickmod Action ausgeführt</string>
+    <string name="msg_mod_action_error">Quickmod Action fehlgeschlagen</string>
 
     <!-- menu items -->
     <string name="menu_settings">Settings</string>
@@ -151,6 +160,9 @@ Es gibt einen pOT-Droid Thread. Den Link und die Änderungen findest du unter \'
     <string name="post_dialog_browser">Im Browser öffnen</string>
     <string name="post_dialog_clipboard">Link kopieren</string>
     <string name="post_dialog_pm">PM schicken</string>
+    <string name="post_dialog_mod_hide">Post verstecken</string>
+    <string name="post_dialog_mod_hidetext">Inhalt verstecken</string>
+    <string name="post_dialog_mod_unhide">Post aufdecken</string>
     <string name="image_dialog_view">Im Media Viewer öffnen</string>
     <string name="image_dialog_share">Teilen</string>
     <string name="image_dialog_download">Herunterladen</string>

@@ -1,38 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:potdroid="http://schemas.android.com/apk/res-auto">
+    xmlns:potdroid="http://schemas.android.com/apk/res-auto">
 
     <item
-            android:id="@+id/new_reply"
-            android:title="@string/action_reply"
-            potdroid:showAsAction="ifRoom"
-            android:icon="@drawable/ic_create"/>
+        android:id="@+id/new_reply"
+        android:icon="@drawable/ic_create"
+        android:title="@string/action_reply"
+        potdroid:showAsAction="ifRoom" />
     <item
-            android:id="@+id/unveil"
-            android:title="@string/action_unveil"
-            potdroid:showAsAction="ifRoom"
-            android:icon="@drawable/ic_up"/>
+        android:id="@+id/unveil"
+        android:icon="@drawable/ic_up"
+        android:title="@string/action_unveil"
+        potdroid:showAsAction="ifRoom" />
     <item
-            android:id="@+id/tobottom"
-            android:title="@string/action_tobottom"
-            potdroid:showAsAction="ifRoom"
-            android:icon="@drawable/ic_down"/>
+        android:id="@+id/tobottom"
+        android:icon="@drawable/ic_down"
+        android:title="@string/action_tobottom"
+        potdroid:showAsAction="ifRoom" />
     <item
-            android:id="@+id/topage"
-            android:title="@string/action_topage"
-            potdroid:showAsAction="never"/>
+        android:id="@+id/topage"
+        android:title="@string/action_topage"
+        potdroid:showAsAction="never" />
     <group android:id="@+id/loggedout_topic">
         <item
-                android:id="@+id/last_own_post"
-                android:title="@string/action_last_own_post"
-                potdroid:showAsAction="never"/>
+            android:id="@+id/last_own_post"
+            android:title="@string/action_last_own_post"
+            potdroid:showAsAction="never" />
+    </group>
+    <group android:id="@+id/mod_topic">
+        <item
+            android:id="@+id/mod_close_thread"
+            android:title="@string/action_mod_close_thread"
+            potdroid:showAsAction="never" />
+        <item
+            android:id="@+id/mod_open_thread"
+            android:title="@string/action_mod_open_thread"
+            potdroid:showAsAction="never" />
+        <item
+            android:id="@+id/mod_hide_thread"
+            android:title="@string/action_mod_hide_thread"
+            potdroid:showAsAction="never" />
+        <item
+            android:id="@+id/mod_unhide_thread"
+            android:title="@string/action_mod_unhide_thread"
+            potdroid:showAsAction="never" />
+        <item
+            android:id="@+id/mod_pin_thread"
+            android:title="@string/action_mod_pin_thread"
+            potdroid:showAsAction="never" />
+        <item
+            android:id="@+id/mod_unpin_thread"
+            android:title="@string/action_mod_unpin_thread"
+            potdroid:showAsAction="never" />
     </group>
     <item
-            android:id="@+id/load_images"
-            android:title="@string/action_load_all_images"
-            potdroid:showAsAction="never"/>
+        android:id="@+id/load_images"
+        android:title="@string/action_load_all_images"
+        potdroid:showAsAction="never" />
     <item
-            android:id="@+id/preload_next"
-            android:title="@string/action_preload_next"
-            potdroid:showAsAction="never"/>
+        android:id="@+id/preload_next"
+        android:title="@string/action_preload_next"
+        potdroid:showAsAction="never" />
 </menu>

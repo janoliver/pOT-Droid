@@ -38,6 +38,9 @@ public class Post implements Serializable {
     private String mIconFile;
     public String mBookmarktoken;
     public String mEdittoken;
+    public String mQuickmodToken;
+    public Boolean mIsHidden;
+    public Boolean mIsTextHidden;
 
     public Date getLastEditDate() {
         return mLastEditDate;
@@ -170,5 +173,27 @@ public class Post implements Serializable {
         return mEdited;
     }
 
+    public void setQuickmodToken(String token) {
+        mQuickmodToken = token;
+    }
 
+    public String getQuickmodToken() {
+        return mQuickmodToken;
+    }
+
+    public boolean isHidden() {
+        return mIsHidden;
+    }
+
+    public void setIsHidden(Boolean isHidden) {
+        mIsHidden = isHidden;
+    }
+
+    public boolean isTextHidden() {
+        return mIsTextHidden;
+    }
+
+    public void setIsTextHidden(Boolean isHidden) {
+        mIsTextHidden = isHidden;
+    }
 }

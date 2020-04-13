@@ -8,6 +8,9 @@
         <item>@string/post_dialog_browser</item>
         <item>@string/post_dialog_clipboard</item>
         <item>@string/post_dialog_pm</item>
+        <item>@string/post_dialog_mod_hide</item>
+        <item>@string/post_dialog_mod_hidetext</item>
+        <item>@string/post_dialog_mod_unhide</item>
     </string-array>
     <string-array name="image_dialog">
         <item>@string/image_dialog_view</item>

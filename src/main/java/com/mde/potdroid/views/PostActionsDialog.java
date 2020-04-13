@@ -15,6 +15,7 @@ import com.mde.potdroid.R;
 import com.mde.potdroid.fragments.TopicFragment;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
+import com.mde.potdroid.models.Post;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,6 +78,8 @@ public class PostActionsDialog extends DialogFragment {
 
             holder.mText.setText(action);
 
+            Post p = mTarget.getTopic().getPostById(getArguments().getInt(ARG_POST_ID));
+
             boolean isEnabled = true;
             switch (position) {
                 case 0:
@@ -94,10 +97,25 @@ public class PostActionsDialog extends DialogFragment {
                 case 5:
                     isEnabled = Utils.isLoggedIn();
                     break;
+                case 6:
+                    isEnabled = Utils.isLoggedIn();
+                    break;
+                case 7:
+                    isEnabled = Utils.isLoggedIn() && mTarget.getTopic().canHidePost() && !p.isHidden();
+                    break;
+                case 8:
+                    isEnabled = Utils.isLoggedIn() && mTarget.getTopic().canHidePost() && !p.isTextHidden();
+                    break;
+                case 9:
+                    isEnabled = Utils.isLoggedIn() && mTarget.getTopic().canHidePost() && (p.isHidden() || p.isTextHidden());
+                    break;
             }
 
-            holder.mText.setEnabled(isEnabled);
-
+            //holder.mText.setEnabled(isEnabled);
+            if(!isEnabled) {
+                holder.itemView.setVisibility(View.GONE);
+                holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+            }
 
             if(isEnabled) {
                 holder.mText.setTextColor(Utils.getColorByAttr(getContext(), R.attr.md_content_color));
@@ -125,6 +143,15 @@ public class PostActionsDialog extends DialogFragment {
                                 break;
                             case 6:
                                 mTarget.pmToAuthor(getArguments().getInt(ARG_POST_ID));
+                                break;
+                            case 7:
+                                mTarget.quickmodPostAction("hidereply", getArguments().getInt(ARG_POST_ID));
+                                break;
+                            case 8:
+                                mTarget.quickmodPostAction("hidereplytext", getArguments().getInt(ARG_POST_ID));
+                                break;
+                            case 9:
+                                mTarget.quickmodPostAction("unhidereply", getArguments().getInt(ARG_POST_ID));
                                 break;
                         }
                         getDialog().dismiss();

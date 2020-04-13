@@ -118,7 +118,7 @@
 <body>
 <div id="paddings">
     {{#posts}}
-    <div class="post"
+    <div class="post{{#isHidden}} hidden{{/isHidden}}{{#isTextHidden}} texthidden{{/isTextHidden}}"
          data-id="{{id}}"
          data-user="{{author}}"
          data-user-id="{{authorId}}"
@@ -160,7 +160,7 @@
                     {{/isNumber}}
                 </div>
                 <div class="date">
-                    {{date}}
+                    {{date}}{{#isHidden}} (Post versteckt){{/isHidden}}{{#isTextHidden}} (Text versteckt){{/isTextHidden}}
                 </div>
             </div>
         </div>

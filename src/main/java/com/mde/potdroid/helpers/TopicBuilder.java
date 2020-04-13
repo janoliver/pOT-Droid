@@ -276,6 +276,14 @@ public class TopicBuilder {
             return mPost.getAuthor().getId();
         }
 
+        public boolean isHidden() {
+            return mPost.isHidden();
+        }
+
+        public boolean isTextHidden() {
+            return mPost.isTextHidden();
+        }
+
         public String getAvatar() {
             return mPost.getAuthor().getAvatarFile();
         }

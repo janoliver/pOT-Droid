@@ -47,12 +47,25 @@ public class TopicParser extends DefaultHandler {
     public static String IS_IMPORTANT_ATTRIBUTE = "value";
     public static String IS_GLOBAL_TAG = "is-global";
     public static String IS_GLOBAL_ATTRIBUTE = "value";
+    public static String IS_HIDDEN_TAG = "is-hidden";
+    public static String IS_HIDDEN_ATTRIBUTE = "value";
+    public static String CAN_CLOSE_TAG = "can-close";
+    public static String CAN_CLOSE_ATTRIBUTE = "value";
+    public static String CAN_HIDE_TAG = "can-hide";
+    public static String CAN_HIDE_ATTRIBUTE = "value";
+    public static String CAN_STICKY_TAG = "can-sticky";
+    public static String CAN_STICKY_ATTRIBUTE = "value";
+    public static String CAN_HIDE_POSTS_TAG = "can-hide-posts";
+    public static String CAN_HIDE_POSTS_ATTRIBUTE = "value";
     public static String TOKEN_NEWREPLY_TAG = "token-newreply";
     public static String TOKEN_NEWREPLY_ATTRIBUTE = "value";
+    public static String TOKEN_QUICKMOD_TAG = "token-quickmod";
+    public static String TOKEN_QUICKMOD_ATTRIBUTE = "value";
     public static String POST_TAG = "post";
     public static String MESSAGE_TAG = "message";
     public static String ICON_TAG = "icon";
     public static String ICON_ATTRIBUTE = "id";
+    public static String HIDDEN_ATTRIBUTE = "is-hidden";
     public static String MESSAGE_TITLE_TAG = "title";
     public static String MESSAGE_CONTENT_TAG = "content";
     public static String MESSAGE_EDITED_TAG = "edited";
@@ -66,6 +79,8 @@ public class TopicParser extends DefaultHandler {
     public static String TOKEN_SETBOOKMARK_ATTRIBUTE = "value";
     public static String TOKEN_EDITREPLY_TAG = "token-editreply";
     public static String TOKEN_EDITREPLY_ATTRIBUTE = "value";
+    public static String TOKEN_POST_QUICKMOD_TAG = "token-quickmod";
+    public static String TOKEN_POST_QUICKMOD_ATTRIBUTE = "value";
     public static String USER_TAG = "user";
     public static String AVATAR_TAG = "avatar";
     public static String AVATAR_ATTRIBUTE = "id";
@@ -146,6 +161,13 @@ public class TopicParser extends DefaultHandler {
             @Override
             public void start(Attributes attributes) {
                 mThread.setNewreplytoken(attributes.getValue(TOKEN_NEWREPLY_ATTRIBUTE));
+            }
+        });
+        thread.getChild(TOKEN_QUICKMOD_TAG).setStartElementListener(new StartElementListener() {
+
+            @Override
+            public void start(Attributes attributes) {
+                mThread.setQuickmodToken(attributes.getValue(TOKEN_QUICKMOD_ATTRIBUTE));
             }
         });
         thread.requireChild(IN_BOARD_TAG).setStartElementListener(new StartElementListener() {
@@ -230,6 +252,41 @@ public class TopicParser extends DefaultHandler {
                 mThread.setIsGlobal(attributes.getValue(IS_GLOBAL_ATTRIBUTE).equals("1"));
             }
         });
+        flags.requireChild(IS_HIDDEN_TAG).setStartElementListener(new StartElementListener() {
+
+            @Override
+            public void start(Attributes attributes) {
+                mThread.setIsHidden(attributes.getValue(IS_HIDDEN_ATTRIBUTE).equals("1"));
+            }
+        });
+        flags.requireChild(CAN_CLOSE_TAG).setStartElementListener(new StartElementListener() {
+
+            @Override
+            public void start(Attributes attributes) {
+                mThread.setCanClose(attributes.getValue(CAN_CLOSE_ATTRIBUTE).equals("1"));
+            }
+        });
+        flags.requireChild(CAN_HIDE_TAG).setStartElementListener(new StartElementListener() {
+
+            @Override
+            public void start(Attributes attributes) {
+                mThread.setCanHide(attributes.getValue(CAN_HIDE_ATTRIBUTE).equals("1"));
+            }
+        });
+        flags.requireChild(CAN_STICKY_TAG).setStartElementListener(new StartElementListener() {
+
+            @Override
+            public void start(Attributes attributes) {
+                mThread.setCanSticky(attributes.getValue(CAN_STICKY_ATTRIBUTE).equals("1"));
+            }
+        });
+        flags.requireChild(CAN_HIDE_POSTS_TAG).setStartElementListener(new StartElementListener() {
+
+            @Override
+            public void start(Attributes attributes) {
+                mThread.setCanHidePost(attributes.getValue(CAN_HIDE_POSTS_ATTRIBUTE).equals("1"));
+            }
+        });
 
         Element posts = thread.requireChild(POSTS_TAG);
         posts.setStartElementListener(new StartElementListener() {
@@ -254,6 +311,9 @@ public class TopicParser extends DefaultHandler {
                 mCurrentPost = new Post(Integer.parseInt(attributes.getValue(ID_ATTRIBUTE)));
                 mCurrentPost.setBoard(mThread.getBoard());
                 mCurrentPost.setTopic(mThread);
+                String h = attributes.getValue(HIDDEN_ATTRIBUTE);
+                mCurrentPost.setIsHidden(h != null && h.equals("hidden"));
+                mCurrentPost.setIsTextHidden(h != null && h.equals("texthidden"));
             }
         });
         post.requireChild(USER_TAG).setTextElementListener(new TextElementListener() {
@@ -291,6 +351,13 @@ public class TopicParser extends DefaultHandler {
             @Override
             public void start(Attributes attributes) {
                 mCurrentPost.setEdittoken(attributes.getValue(TOKEN_EDITREPLY_ATTRIBUTE));
+            }
+        });
+        post.getChild(TOKEN_POST_QUICKMOD_TAG).setStartElementListener(new StartElementListener() {
+
+            @Override
+            public void start(Attributes attributes) {
+                mCurrentPost.setQuickmodToken(attributes.getValue(TOKEN_POST_QUICKMOD_ATTRIBUTE));
             }
         });
         post.requireChild(AVATAR_TAG).setTextElementListener(new TextElementListener() {

@@ -24,10 +24,16 @@ public class Topic implements Serializable {
     private User mAuthor;
     private Boolean mIsImportant;
     private Boolean mIsClosed;
+    private Boolean mIsHidden = false;
     private Boolean mIsAnnouncement;
     private Boolean mIsGlobal;
     private Boolean mIsSticky;
+    private Boolean mCanClose;
+    private Boolean mCanHide;
+    private Boolean mCanSticky;
+    private Boolean mCanHidePost;
     private String mNewreplytoken;
+    private String mQuickmodToken;
     private Integer mLastFetchedPage;
     private Post mFirstPost;
     private Post mLastPost;
@@ -195,6 +201,14 @@ public class Topic implements Serializable {
         mIsClosed = isClosed;
     }
 
+    public boolean isHidden() {
+        return mIsHidden;
+    }
+
+    public void setIsHidden(Boolean isHidden) {
+        mIsHidden = isHidden;
+    }
+
     public Boolean isAnnouncement() {
         return mIsAnnouncement;
     }
@@ -283,4 +297,43 @@ public class Topic implements Serializable {
         return null;
     }
 
+    public Boolean canClose() {
+        return mCanClose;
+    }
+
+    public void setCanClose(Boolean canClose) {
+        mCanClose = canClose;
+    }
+
+    public Boolean canHide() {
+        return mCanHide;
+    }
+
+    public void setCanHide(Boolean canHide) {
+        mCanHide = canHide;
+    }
+
+    public Boolean canSticky() {
+        return mCanSticky;
+    }
+
+    public void setCanSticky(Boolean canSticky) {
+        mCanSticky = canSticky;
+    }
+
+    public Boolean canHidePost() {
+        return mCanHidePost;
+    }
+
+    public void setCanHidePost(Boolean canHidePost) {
+        mCanHidePost = canHidePost;
+    }
+
+    public String getQuickmodToken() {
+        return mQuickmodToken;
+    }
+
+    public void setQuickmodToken(String token) {
+        mQuickmodToken = token;
+    }
 }

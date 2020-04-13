@@ -303,6 +303,49 @@ public class TopicFragment extends PaginateFragment implements
 
         if (isLastPage())
             menu.findItem(R.id.preload_next).setVisible(false);
+
+        if(mTopic != null && (mTopic.canClose() || mTopic.canHide() || mTopic.canSticky())) {
+            menu.setGroupVisible(R.id.mod_topic, true);
+
+            if(mTopic.canSticky()) {
+                if(mTopic.isSticky()) {
+                    menu.findItem(R.id.mod_pin_thread).setVisible(false);
+                    menu.findItem(R.id.mod_unpin_thread).setVisible(true);
+                } else {
+                    menu.findItem(R.id.mod_pin_thread).setVisible(true);
+                    menu.findItem(R.id.mod_unpin_thread).setVisible(false);
+                }
+            } else {
+                menu.findItem(R.id.mod_pin_thread).setVisible(false);
+                menu.findItem(R.id.mod_unpin_thread).setVisible(false);
+            }
+            if(mTopic.canHide()) {
+                if(mTopic.isHidden()) {
+                    menu.findItem(R.id.mod_hide_thread).setVisible(false);
+                    menu.findItem(R.id.mod_unhide_thread).setVisible(true);
+                } else {
+                    menu.findItem(R.id.mod_hide_thread).setVisible(true);
+                    menu.findItem(R.id.mod_unhide_thread).setVisible(false);
+                }
+            } else {
+                menu.findItem(R.id.mod_hide_thread).setVisible(false);
+                menu.findItem(R.id.mod_unhide_thread).setVisible(false);
+            }
+            if(mTopic.canClose()) {
+                if(mTopic.isClosed()) {
+                    menu.findItem(R.id.mod_close_thread).setVisible(false);
+                    menu.findItem(R.id.mod_open_thread).setVisible(true);
+                } else {
+                    menu.findItem(R.id.mod_close_thread).setVisible(true);
+                    menu.findItem(R.id.mod_open_thread).setVisible(false);
+                }
+            } else {
+                menu.findItem(R.id.mod_close_thread).setVisible(false);
+                menu.findItem(R.id.mod_open_thread).setVisible(false);
+            }
+        } else {
+            menu.setGroupVisible(R.id.mod_topic, false);
+        }
     }
 
     @Override
@@ -333,12 +376,97 @@ public class TopicFragment extends PaginateFragment implements
             case R.id.load_images:
                 mJsInterface.loadAllImages();
                 return true;
-            case R.id.preload_next:
-                startPreloadingNextPage();
+            case R.id.mod_close_thread:
+                quickmodAction("close");
+                return true;
+            case R.id.mod_open_thread:
+                quickmodAction("open");
+                return true;
+            case R.id.mod_hide_thread:
+                quickmodAction("hide");
+                return true;
+            case R.id.mod_unhide_thread:
+                quickmodAction("unhide");
+                return true;
+            case R.id.mod_pin_thread:
+                quickmodAction("sticky");
+                return true;
+            case R.id.mod_unpin_thread:
+                quickmodAction("unsticky");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void quickmodAction(String action) {
+        final String url = Utils.getAbsoluteUrl(
+                String.format("quickmod.php?TID=%s&token=%s&action=%s", mTopic.getId(), mTopic.getQuickmodToken(), action));
+
+        showLoadingAnimation();
+
+        Network network = new Network(getActivity());
+        network.get(url, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                getBaseActivity().runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        showError(R.string.msg_mod_action_error);
+                        hideLoadingAnimation();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                getBaseActivity().runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        showSuccess(R.string.msg_mod_action_done);
+                        hideLoadingAnimation();
+                        restartLoader(TopicFragment.this);
+                    }
+                });
+            }
+        });
+    }
+
+    public void quickmodPostAction(String action, int pid) {
+        final String url = Utils.getAbsoluteUrl(
+                String.format("quickmod.php?BID=%s&TID=%s&PID=%s&token=%s&action=%s", mTopic.getBoard().getId(), mTopic.getId(), pid, mTopic.getPostById(pid).getQuickmodToken(), action));
+
+        showLoadingAnimation();
+
+        Network network = new Network(getActivity());
+        network.get(url, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                getBaseActivity().runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        showError(R.string.msg_mod_action_error);
+                        hideLoadingAnimation();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                getBaseActivity().runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        showSuccess(R.string.msg_mod_action_done);
+                        hideLoadingAnimation();
+                        restartLoader(TopicFragment.this);
+                    }
+                });
+            }
+        });
     }
 
     public boolean backPressed() {
@@ -423,7 +551,7 @@ public class TopicFragment extends PaginateFragment implements
         Spanned subtitleText = Utils.fromHtml(getString(R.string.subtitle_paginate,
                 mTopic.getPage(), mTopic.getNumberOfPages()));
 
-        //getBaseActivity().supportInvalidateOptionsMenu();
+        getBaseActivity().supportInvalidateOptionsMenu();
         getActionbar().setTitle(mTopic.getTitle());
         getActionbar().setSubtitle(subtitleText);
 

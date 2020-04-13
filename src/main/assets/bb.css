@@ -38,6 +38,11 @@ body {
     width:auto;
 }
 
+.post.hidden .body,
+.post.texthidden .body {
+    background-color:#003885;
+}
+
 .post .body .bender {
     background: url("images/placeholder_bender.png") left top / contain no-repeat;
     width:80px;

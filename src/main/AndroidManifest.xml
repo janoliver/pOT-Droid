@@ -1,49 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.mde.potdroid"
-          android:versionCode="81"
-          android:versionName="5.3.0"
-          android:installLocation="auto">
+    package="com.mde.potdroid"
+    android:installLocation="auto"
+    android:versionCode="82"
+    android:versionName="5.3.1">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-            android:hardwareAccelerated="true"
-            android:allowBackup="true"
-            android:icon="@drawable/ic_launcher"
-            android:label="@string/app_name"
-            android:theme="@style/PotDroidLight"
-            android:name=".PotDroidApplication">
+        android:name=".PotDroidApplication"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/PotDroidLight"
+        android:usesCleartextTraffic="true">
+
 
         <activity
-                android:name=".LauncherActivity"
-                android:label="@string/app_name">
+            android:name=".LauncherActivity"
+            android:label="@string/app_name">
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
         </activity>
 
-        <activity
-                android:name=".ForumActivity">
+        <activity android:name=".ForumActivity">
 
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="http"/>
-                <data android:scheme="https"/>
+                <data android:scheme="http" />
+                <data android:scheme="https" />
                 <data android:host="forum.mods.de" />
-                <data android:pathPattern="/bb/index\\.php.*"/>
+                <data android:pathPattern="/bb/index\\.php.*" />
             </intent-filter>
 
         </activity>
@@ -51,83 +52,77 @@
         <activity android:name=".BoardActivity">
 
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="http"/>
-                <data android:scheme="https"/>
+                <data android:scheme="http" />
+                <data android:scheme="https" />
                 <data android:host="forum.mods.de" />
-                <data android:pathPattern="/bb/board\\.php.*"/>
+                <data android:pathPattern="/bb/board\\.php.*" />
             </intent-filter>
 
         </activity>
 
-        <activity
-                android:name=".BookmarkActivity"/>
+        <activity android:name=".BookmarkActivity" />
 
-        <activity
-            android:name=".StoredPostsActivity"/>
+        <activity android:name=".StoredPostsActivity" />
 
-        <activity
-                android:name=".EditorActivity"/>
+        <activity android:name=".EditorActivity" />
 
-        <activity
-                android:name=".TopicActivity">
+        <activity android:name=".TopicActivity">
 
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="http"/>
-                <data android:scheme="https"/>
+                <data android:scheme="http" />
+                <data android:scheme="https" />
                 <data android:host="forum.mods.de" />
-                <data android:pathPattern="/bb/thread\\.php.*"/>
+                <data android:pathPattern="/bb/thread\\.php.*" />
             </intent-filter>
 
         </activity>
 
-        <activity
-                android:name=".MessageListActivity">
+        <activity android:name=".MessageListActivity">
 
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="http"/>
-                <data android:scheme="https"/>
+                <data android:scheme="http" />
+                <data android:scheme="https" />
                 <data android:host="forum.mods.de" />
-                <data android:pathPattern="/bb/pm/.*"/>
+                <data android:pathPattern="/bb/pm/.*" />
             </intent-filter>
 
         </activity>
 
-        <activity
-                android:name=".MessageActivity"/>
+        <activity android:name=".MessageActivity" />
 
-        <activity android:name=".SettingsActivity"/>
+        <activity android:name=".SettingsActivity" />
 
         <activity
-                android:name=".MediaActivity"
-                android:configChanges="orientation|screenSize"/>
+            android:name=".MediaActivity"
+            android:configChanges="orientation|screenSize" />
 
 
         <activity android:name=".AboutActivity">
             <intent-filter>
-                <action android:name=".AboutActivity"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name=".AboutActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <activity
-                android:name="com.nononsenseapps.filepicker.FilePickerActivity"
-                android:label="@string/app_name"
-                android:theme="@style/FilePickerTheme">
+            android:name="com.nononsenseapps.filepicker.FilePickerActivity"
+            android:label="@string/app_name"
+            android:theme="@style/FilePickerTheme">
             <intent-filter>
                 <action android:name="android.intent.action.GET_CONTENT" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -137,23 +132,23 @@
         <receiver android:name=".services.BootBroadcastReceiver">
 
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
 
         </receiver>
 
         <receiver
-                android:name=".services.MessagePollingAlarm"
-                android:process=":remote"/>
+            android:name=".services.MessagePollingAlarm"
+            android:process=":remote" />
 
         <service
-                android:name=".services.MessagePollingService"
-                android:exported="false"/>
+            android:name=".services.MessagePollingService"
+            android:exported="false" />
         <provider
-                android:name=".helpers.CacheContentProvider"
-                android:authorities="${applicationId}.files"
-                android:exported="true"
-                android:grantUriPermissions="true"/>
+            android:name=".helpers.CacheContentProvider"
+            android:authorities="${applicationId}.files"
+            android:exported="true"
+            android:grantUriPermissions="true" />
     </application>
 
 </manifest>

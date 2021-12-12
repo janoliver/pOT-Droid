@@ -45,6 +45,7 @@
                 <data android:scheme="https" />
                 <data android:host="forum.mods.de" />
                 <data android:pathPattern="/bb/index\\.php.*" />
+                <data android:pathPattern="/index\\.php.*" />
             </intent-filter>
 
         </activity>
@@ -61,6 +62,7 @@
                 <data android:scheme="https" />
                 <data android:host="forum.mods.de" />
                 <data android:pathPattern="/bb/board\\.php.*" />
+                <data android:pathPattern="/board\\.php.*" />
             </intent-filter>
 
         </activity>
@@ -83,6 +85,7 @@
                 <data android:scheme="https" />
                 <data android:host="forum.mods.de" />
                 <data android:pathPattern="/bb/thread\\.php.*" />
+                <data android:pathPattern="/thread\\.php.*" />
             </intent-filter>
 
         </activity>
@@ -99,6 +102,7 @@
                 <data android:scheme="https" />
                 <data android:host="forum.mods.de" />
                 <data android:pathPattern="/bb/pm/.*" />
+                <data android:pathPattern="/pm/.*" />
             </intent-filter>
 
         </activity>

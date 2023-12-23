@@ -364,7 +364,12 @@ public class TopicParser extends DefaultHandler {
 
             @Override
             public void start(Attributes attributes) {
-                mCurrentUser.setAvatarId(Integer.parseInt(attributes.getValue(AVATAR_ATTRIBUTE)));
+                try {
+                    mCurrentUser.setAvatarId(Integer.parseInt(attributes.getValue(AVATAR_ATTRIBUTE)));
+                } catch (NumberFormatException e) {
+                    // no avatarId in XML (user probably got deleted)
+                    mCurrentUser.setAvatarId(0);
+                }
             }
 
             @Override

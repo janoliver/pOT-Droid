@@ -4,7 +4,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath 'com.android.tools.build:gradle:8.1.2'
     }
 }
 
@@ -37,12 +37,16 @@ dependencies {
 
 
 android {
+    namespace 'com.mde.potdroid'
     useLibrary 'org.apache.http.legacy'
     compileSdkVersion 28
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 28
         vectorDrawables.useSupportLibrary = true
+    }
+    buildFeatures {
+        buildConfig true
     }
     buildTypes {
         release {

@@ -12,7 +12,7 @@ public class LogoutPreference extends DialogPreference {
     }
 
     public LogoutPreference(Context context, AttributeSet attrs) {
-        super(context, attrs, R.attr.dialogPreferenceStyle);
+        super(context, attrs, android.support.v7.preference.R.attr.dialogPreferenceStyle);
     }
 
     public LogoutPreference(Context context, AttributeSet attrs, int defStyleAttr) {

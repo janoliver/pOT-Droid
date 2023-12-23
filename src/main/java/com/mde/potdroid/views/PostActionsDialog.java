@@ -118,7 +118,7 @@ public class PostActionsDialog extends DialogFragment {
             }
 
             if(isEnabled) {
-                holder.mText.setTextColor(Utils.getColorByAttr(getContext(), R.attr.md_content_color));
+                holder.mText.setTextColor(Utils.getColorByAttr(getContext(), R.attr.bbTextColorPrimary));
                 holder.mRoot.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

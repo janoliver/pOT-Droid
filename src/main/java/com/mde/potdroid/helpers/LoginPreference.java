@@ -12,7 +12,7 @@ public class LoginPreference extends DialogPreference {
     }
 
     public LoginPreference(Context context, AttributeSet attrs) {
-        super(context, attrs, R.attr.dialogPreferenceStyle);
+        super(context, attrs, android.support.v7.preference.R.attr.dialogPreferenceStyle);
     }
 
     public LoginPreference(Context context, AttributeSet attrs, int defStyleAttr) {

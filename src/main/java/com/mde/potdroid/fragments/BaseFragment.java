@@ -130,8 +130,8 @@ public abstract class BaseFragment extends Fragment implements SwipyRefreshLayou
      */
     public int getActionbarHeight() {
         TypedValue typedValue = new TypedValue();
-        getBaseActivity().getTheme().resolveAttribute(R.attr.actionBarSize, typedValue, true);
-        int[] textSizeAttr = new int[]{R.attr.actionBarSize};
+        getBaseActivity().getTheme().resolveAttribute(android.support.design.R.attr.actionBarSize, typedValue, true);
+        int[] textSizeAttr = new int[]{android.support.design.R.attr.actionBarSize};
         int indexOfAttr = 0;
         TypedArray a = getBaseActivity().obtainStyledAttributes(typedValue.data, textSizeAttr);
         int abSize = a.getDimensionPixelSize(indexOfAttr, -1);

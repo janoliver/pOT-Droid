@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/bbcode_toolbar_holder">
 
-            <android.support.v7.widget.ActionMenuView
+            <androidx.appcompat.widget.ActionMenuView
                     android:id="@+id/bbcode_toolbar"
                     android:layout_marginTop="-5dp"
                     android:layout_marginBottom="5dp"

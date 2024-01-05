@@ -15,9 +15,9 @@ import com.mde.potdroid.helpers.PostStorageHandler;
 import com.mde.potdroid.helpers.PostStorageHandler.StoredPostInfo;
 import com.mde.potdroid.helpers.Utils;
 
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.design.widget.Snackbar;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -95,7 +95,7 @@ public class StoredPostsFragment extends BaseFragment {
                                     .make(getActivity().findViewById(android.R.id.content), R.string.msg_storage_exported, Snackbar.LENGTH_LONG);
                             View snackBarView = snackbar.getView();
                             snackBarView.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbSuccessColor));
-                            TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                            TextView tv = (TextView) snackBarView.findViewById(com.google.android.material.R.id.snackbar_text);
                             tv.setTextColor(Color.WHITE);
                             snackbar.show();
                         }
@@ -108,7 +108,7 @@ public class StoredPostsFragment extends BaseFragment {
                                     .make(getActivity().findViewById(android.R.id.content), R.string.msg_export_error, Snackbar.LENGTH_LONG);
                             View snackBarView = snackbar.getView();
                             snackBarView.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbErrorColor));
-                            TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                            TextView tv = (TextView) snackBarView.findViewById(com.google.android.material.R.id.snackbar_text);
                             tv.setTextColor(Color.WHITE);
                             snackbar.show();
                         }

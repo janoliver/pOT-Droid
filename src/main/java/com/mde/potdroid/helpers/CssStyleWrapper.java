@@ -2,7 +2,7 @@ package com.mde.potdroid.helpers;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 import com.mde.potdroid.R;
 
 import java.io.File;

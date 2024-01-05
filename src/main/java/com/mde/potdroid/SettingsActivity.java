@@ -1,10 +1,10 @@
 package com.mde.potdroid;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.PreferenceScreen;
-import android.support.v7.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceScreen;
+import androidx.appcompat.widget.Toolbar;
 import com.mde.potdroid.fragments.SettingsFragment;
 import com.mde.potdroid.helpers.CustomExceptionHandler;
 import com.mde.potdroid.helpers.SettingsWrapper;
@@ -50,7 +50,7 @@ public class SettingsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public boolean onPreferenceStartScreen(android.support.v7.preference.PreferenceFragmentCompat caller, PreferenceScreen preferenceScreen) {
+    public boolean onPreferenceStartScreen(androidx.preference.PreferenceFragmentCompat caller, PreferenceScreen preferenceScreen) {
         SettingsFragment fragment = new SettingsFragment();
 
         Bundle args = new Bundle();

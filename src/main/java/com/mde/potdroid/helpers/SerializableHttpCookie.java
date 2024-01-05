@@ -1,6 +1,6 @@
 package com.mde.potdroid.helpers;
 
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

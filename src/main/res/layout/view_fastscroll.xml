@@ -10,7 +10,7 @@
               android:layout_alignParentRight="true"
               android:visibility="invisible">
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/button_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             app:srcCompat="@drawable/ic_up"
             android:visibility="gone"/>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/button_down"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

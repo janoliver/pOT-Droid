@@ -6,8 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v7.preference.PreferenceDialogFragmentCompat;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.preference.PreferenceDialogFragmentCompat;
 import android.view.View;
 import android.widget.TextView;
 import com.mde.potdroid.R;
@@ -55,7 +55,7 @@ public class LogoutDialog extends PreferenceDialogFragmentCompat {
                         }
                     });
             View snackBarView = snackbar.getView();
-            TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+            TextView tv = (TextView) snackBarView.findViewById(com.google.android.material.R.id.snackbar_text);
             tv.setTextColor(Color.WHITE);
             snackBarView.setBackgroundColor(Utils.getColorByAttr(mContext, R.attr.bbErrorColor));
             snackbar.show();

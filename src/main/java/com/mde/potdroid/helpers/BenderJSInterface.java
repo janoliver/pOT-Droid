@@ -1,7 +1,7 @@
 package com.mde.potdroid.helpers;
 
 import android.app.Activity;
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;

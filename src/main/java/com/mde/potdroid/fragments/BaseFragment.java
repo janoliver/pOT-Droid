@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v7.app.ActionBar;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.appcompat.app.ActionBar;
 import android.util.TypedValue;
 import android.view.*;
 import android.widget.TextView;
@@ -130,8 +130,8 @@ public abstract class BaseFragment extends Fragment implements SwipyRefreshLayou
      */
     public int getActionbarHeight() {
         TypedValue typedValue = new TypedValue();
-        getBaseActivity().getTheme().resolveAttribute(android.support.design.R.attr.actionBarSize, typedValue, true);
-        int[] textSizeAttr = new int[]{android.support.design.R.attr.actionBarSize};
+        getBaseActivity().getTheme().resolveAttribute(com.google.android.material.R.attr.actionBarSize, typedValue, true);
+        int[] textSizeAttr = new int[]{com.google.android.material.R.attr.actionBarSize};
         int indexOfAttr = 0;
         TypedArray a = getBaseActivity().obtainStyledAttributes(typedValue.data, textSizeAttr);
         int abSize = a.getDimensionPixelSize(indexOfAttr, -1);
@@ -200,7 +200,7 @@ public abstract class BaseFragment extends Fragment implements SwipyRefreshLayou
                     .make(getBaseActivity().findViewById(R.id.app_root), message, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundColor(c);
-            TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+            TextView tv = (TextView) snackBarView.findViewById(com.google.android.material.R.id.snackbar_text);
             tv.setTextColor(Color.WHITE);
             snackbar.show();
         }
@@ -212,7 +212,7 @@ public abstract class BaseFragment extends Fragment implements SwipyRefreshLayou
                     .make(getBaseActivity().findViewById(R.id.app_root), message, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundColor(c);
-            TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+            TextView tv = (TextView) snackBarView.findViewById(com.google.android.material.R.id.snackbar_text);
             tv.setTextColor(Color.WHITE);
             snackbar.show();
         }

@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 import android.util.DisplayMetrics;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;

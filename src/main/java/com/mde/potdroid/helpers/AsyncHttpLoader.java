@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.support.v4.content.Loader;
+import androidx.loader.content.Loader;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.RequestBody;

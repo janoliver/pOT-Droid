@@ -16,7 +16,7 @@ package com.mde.potdroid.views;
  * limitations under the License.
  */
 
-import android.support.v4.view.ViewCompat;
+import androidx.core.view.ViewCompat;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;

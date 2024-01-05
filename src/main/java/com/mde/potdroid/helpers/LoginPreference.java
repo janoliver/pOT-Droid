@@ -1,7 +1,7 @@
 package com.mde.potdroid.helpers;
 
 import android.content.Context;
-import android.support.v7.preference.DialogPreference;
+import androidx.preference.DialogPreference;
 import android.util.AttributeSet;
 import com.mde.potdroid.R;
 
@@ -12,7 +12,7 @@ public class LoginPreference extends DialogPreference {
     }
 
     public LoginPreference(Context context, AttributeSet attrs) {
-        super(context, attrs, android.support.v7.preference.R.attr.dialogPreferenceStyle);
+        super(context, attrs, androidx.preference.R.attr.dialogPreferenceStyle);
     }
 
     public LoginPreference(Context context, AttributeSet attrs, int defStyleAttr) {

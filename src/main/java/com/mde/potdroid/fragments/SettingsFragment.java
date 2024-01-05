@@ -11,12 +11,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.preference.EditTextPreference;
-import android.support.v7.preference.ListPreference;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceManager;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.DialogFragment;
+import androidx.preference.EditTextPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
 import com.mde.potdroid.R;
@@ -207,7 +207,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
                                 .make(getActivity().findViewById(android.R.id.content), R.string.msg_export_success, Snackbar.LENGTH_LONG);
                         View snackBarView = snackbar.getView();
                         snackBarView.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbSuccessColor));
-                        TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                        TextView tv = (TextView) snackBarView.findViewById(com.google.android.material.R.id.snackbar_text);
                         tv.setTextColor(Color.WHITE);
                         snackbar.show();
                     }
@@ -221,7 +221,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
                                 .make(getActivity().findViewById(android.R.id.content), R.string.msg_export_error, Snackbar.LENGTH_LONG);
                         View snackBarView = snackbar.getView();
                         snackBarView.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbErrorColor));
-                        TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                        TextView tv = (TextView) snackBarView.findViewById(com.google.android.material.R.id.snackbar_text);
                         tv.setTextColor(Color.WHITE);
                         snackbar.show();
                     }
@@ -250,7 +250,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
                                 });
                         View snackBarView = snackbar.getView();
                         snackBarView.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbSuccessColor));
-                        TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                        TextView tv = (TextView) snackBarView.findViewById(com.google.android.material.R.id.snackbar_text);
                         tv.setTextColor(Color.WHITE);
                         snackbar.show();
                     }
@@ -263,7 +263,7 @@ public class SettingsFragment extends PreferenceFragmentCompatDividers implement
                         Snackbar snackbar = Snackbar
                                 .make(getActivity().findViewById(android.R.id.content), R.string.msg_import_error, Snackbar.LENGTH_LONG);
                         View snackBarView = snackbar.getView();
-                        TextView tv = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                        TextView tv = (TextView) snackBarView.findViewById(com.google.android.material.R.id.snackbar_text);
                         tv.setTextColor(Color.WHITE);
                         snackBarView.setBackgroundColor(Utils.getColorByAttr(getActivity(), R.attr.bbErrorColor));
                         snackbar.show();

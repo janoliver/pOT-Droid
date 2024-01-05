@@ -2,7 +2,7 @@ package com.mde.potdroid.helpers;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 import com.mde.potdroid.R;
 import com.mde.potdroid.models.Message;
 import com.samskivert.mustache.Mustache;

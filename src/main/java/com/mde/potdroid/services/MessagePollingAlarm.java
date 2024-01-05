@@ -8,9 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
-import android.text.Html;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.TaskStackBuilder;
+
 import com.mde.potdroid.MessageActivity;
 import com.mde.potdroid.MessageListActivity;
 import com.mde.potdroid.R;

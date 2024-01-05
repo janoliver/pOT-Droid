@@ -59,7 +59,7 @@ android {
             debuggable false
         }
         debug {
-            applicationIdSuffix '.dev'
+            //applicationIdSuffix '.dev'
             minifyEnabled false
             shrinkResources false
             debuggable true

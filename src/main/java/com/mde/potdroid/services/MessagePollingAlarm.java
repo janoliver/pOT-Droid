@@ -154,14 +154,14 @@ public class MessagePollingAlarm extends BroadcastReceiver {
 
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent(context, MessagePollingAlarm.class);
-        PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, 0);
+        PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_IMMUTABLE);
         am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
                 1000 * settings.pollMessagesInterval(), pi);
     }
 
     public void cancelAlarm(Context context) {
         Intent intent = new Intent(context, MessagePollingAlarm.class);
-        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
+        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(sender);
     }

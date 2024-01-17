@@ -218,8 +218,8 @@ public class SidebarBookmarksFragment extends BaseFragment
 
     @Override
     public void onResume() {
-        super.onResume();
         setNewBookmarks();
+        super.onResume();
     }
 
     private void setNewBookmarks() {

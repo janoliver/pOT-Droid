@@ -6,6 +6,8 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
 import androidx.annotation.Keep;
+
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -90,9 +92,10 @@ public class TopicJSInterface extends BenderJSInterface {
      */
     @JavascriptInterface
     public void loadImage(final String url, final String id) {
+        String decoded_url = new String(Base64.decode(url, Base64.DEFAULT));
         mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
             public void run() {
-                mTopicFragment.loadImage(url, id);
+                mTopicFragment.loadImage(decoded_url, id);
             }
         });
     }

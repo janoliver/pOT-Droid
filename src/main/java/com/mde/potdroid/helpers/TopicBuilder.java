@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import androidx.annotation.Keep;
 import android.webkit.URLUtil;
+import android.util.Base64;
 import com.mde.potdroid.R;
 import com.mde.potdroid.models.Post;
 import com.mde.potdroid.models.Topic;
@@ -554,6 +555,8 @@ public class TopicBuilder {
                     mParser.getCallback().onTag("img", content, args);
                     String extension = content.substring(content.length() - 3).toLowerCase();
                     String type_class = "img";
+                    String encoded_url = Base64.encodeToString(content.getBytes(), Base64.DEFAULT);
+
                     String icon = "&#xE410;";
                     if (extension.equals("gif")) {
                         type_class = "gif";
@@ -563,7 +566,7 @@ public class TopicBuilder {
                             "<i class=\"material-icons\">%3$s</i>" +
                             "<button class=\"inline mdl-button mdl-js-button\">Inline</button>" +
                             "<button class=\"viewer mdl-button mdl-js-button\">Viewer</button>" +
-                            "</div>", type_class, content, icon);
+                            "</div>", type_class, encoded_url, icon);
                 }
             }
         });

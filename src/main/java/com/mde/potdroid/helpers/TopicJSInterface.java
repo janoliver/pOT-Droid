@@ -92,7 +92,7 @@ public class TopicJSInterface extends BenderJSInterface {
      */
     @JavascriptInterface
     public void loadImage(final String url, final String id) {
-        String decoded_url = new String(Base64.decode(url, Base64.DEFAULT));
+        String decoded_url = new String(Base64.decode(url, Base64.NO_WRAP));
         mTopicFragment.getBaseActivity().runOnUiThread(new Runnable() {
             public void run() {
                 mTopicFragment.loadImage(decoded_url, id);

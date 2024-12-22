@@ -555,7 +555,7 @@ public class TopicBuilder {
                     mParser.getCallback().onTag("img", content, args);
                     String extension = content.substring(content.length() - 3).toLowerCase();
                     String type_class = "img";
-                    String encoded_url = Base64.encodeToString(content.getBytes(), Base64.DEFAULT);
+                    String encoded_url = Base64.encodeToString(content.getBytes(), Base64.NO_WRAP);
 
                     String icon = "&#xE410;";
                     if (extension.equals("gif")) {

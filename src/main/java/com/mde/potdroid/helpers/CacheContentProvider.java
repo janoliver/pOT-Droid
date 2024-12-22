@@ -8,6 +8,8 @@ import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.util.Base64;
+
 import com.mde.potdroid.BuildConfig;
 
 import java.io.FileNotFoundException;
@@ -103,15 +105,13 @@ public class CacheContentProvider extends ContentProvider {
     public static Uri getContentUriFromUrlOrUri(String rawUrl, String sub_directory) {
         if(rawUrl.startsWith(CONTENT_URI.toString()))
             return Uri.parse(rawUrl);
-        try {
-            URL url = new URL(rawUrl.replace("%20","+"));
-            if(!sub_directory.endsWith("/"))
-                sub_directory += "/";
-            return Uri.parse(CONTENT_URI + sub_directory + url.getHost() + url.getPath());
-        } catch (MalformedURLException e) {
-            Utils.printException(e);
-            return null;
-        }
+
+        String base64_url = Base64.encodeToString(rawUrl.getBytes(), Base64.NO_WRAP);
+        //URL url = new URL(rawUrl.replace("%20","+"));
+        if(!sub_directory.endsWith("/"))
+            sub_directory += "/";
+        //return Uri.parse(CONTENT_URI + sub_directory + url.getHost() + url.getPath());
+        return Uri.parse(CONTENT_URI + sub_directory + base64_url);
     }
 
     private static String[] copyOf(String[] original, int newLength) {

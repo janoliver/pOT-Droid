@@ -501,21 +501,27 @@ public class TopicBuilder {
                     url = url.substring(0, url.length() - 1);
                 }
 
-                if (m.find() && args.size() > 0) {
-                    String extension = m.group(1);
-                    String type_class = "img-link";
-                    String icon = "&#xE410;";
-                    if (extension.equals("gif")) {
-                        type_class = "gif-link";
-                        icon = "&#xE54D;";
+                if (m.find()) {
+
+                    if (args.size() == 0) {
+                        return content;
+                    } else  {
+                        String extension = m.group(1);
+                        String type_class = "img-link";
+                        String icon = "&#xE410;";
+                        if (extension.equals("gif")) {
+                            type_class = "gif-link";
+                            icon = "&#xE54D;";
+                        }
+                        return String.format("<div class=\"media %1$s\" data-src=\"%2$s\"" +
+                                "data-href=\"%3$s\">" +
+                                "<i class=\"material-icons\">%4$s</i>" +
+                                "<button class=\"link mdl-button mdl-js-button\">Link</button>" +
+                                "<button class=\"inline mdl-button mdl-js-button\">Inline</button>" +
+                                "<button class=\"viewer mdl-button mdl-js-button\">Viewer</button>" +
+                                "</div>", type_class, m.group(2), url, icon);
                     }
-                    return String.format("<div class=\"media %1$s\" data-src=\"%2$s\"" +
-                            "data-href=\"%3$s\">" +
-                            "<i class=\"material-icons\">%4$s</i>" +
-                            "<button class=\"link mdl-button mdl-js-button\">Link</button>" +
-                            "<button class=\"inline mdl-button mdl-js-button\">Inline</button>" +
-                            "<button class=\"viewer mdl-button mdl-js-button\">Viewer</button>" +
-                            "</div>", type_class, m.group(2), url, icon);
+
                 }
 
                 // add protocol if the url is malformed.

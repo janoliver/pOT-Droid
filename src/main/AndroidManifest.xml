@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mde.potdroid"
     android:installLocation="auto"
-    android:versionCode="86"
-    android:versionName="5.4.3">
+    android:versionCode="87"
+    android:versionName="5.4.4">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />

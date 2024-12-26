@@ -35,6 +35,9 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
     implementation 'com.nononsenseapps:filepicker:4.2.1'
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'androidx.emoji:emoji:1.1.0'
+    implementation 'androidx.emoji:emoji-bundled:1.1.0'
+
 }
 
 

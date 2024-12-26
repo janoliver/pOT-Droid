@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
+
+import androidx.emoji.widget.EmojiEditText;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 import androidx.appcompat.app.AppCompatActivity;
@@ -82,7 +84,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     protected EditText mEditTitle;
     protected EditText mEditSubtitle;
     protected EditText mEditTags;
-    protected EditText mEditText;
+    protected EmojiEditText mEditText;
     protected ImageButton mIconButton;
     protected ImageButton mBBButton;
     // the array of icons
@@ -113,7 +115,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         View v = inflater.inflate(R.layout.layout_editor, container, false);
 
         // assign some views
-        mEditText = (EditText) v.findViewById(R.id.edit_content);
+        mEditText = (EmojiEditText) v.findViewById(R.id.edit_content);
         mEditTitle = (EditText) v.findViewById(R.id.edit_title);
         mEditRcpt = (EditText) v.findViewById(R.id.edit_rcpt);
         mEditSubtitle = (EditText) v.findViewById(R.id.edit_subtitle);
@@ -186,33 +188,6 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         return v;
     }
 
-    private void colorizeToolBar() {
-
-        final PorterDuffColorFilter colorFilter
-                = new PorterDuffColorFilter(Utils.getColorByAttr(getActivity(), R.color.black), PorterDuff.Mode.MULTIPLY);
-
-        for(int j = 0; j < mBBToolbarView.getChildCount(); j++) {
-
-            //Step 2: Changing the color of any ActionMenuViews - icons that
-            //are not back button, nor text, nor overflow menu icon.
-            final View innerView = mBBToolbarView.getChildAt(j);
-
-            if(innerView instanceof ActionMenuItemView) {
-                if(((ActionMenuItemView)innerView).getCompoundDrawables()[0] != null) {
-                    //Important to set the color filter in seperate thread,
-                    //by adding it to the message queue
-                    //Won't work otherwise.
-                    innerView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            ((ActionMenuItemView) innerView).getCompoundDrawables()[0].setColorFilter(colorFilter);
-                        }
-                    });
-                }
-            }
-        }
-    }
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -241,11 +216,25 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             case R.id.send:
                 hideKeyboard();
 
+                // Emojis
+                String s = mEditText.getText().toString();
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0, l = s.length() ; i < l ; i++) {
+                    if (Character.isSurrogate(s.charAt(i))) {
+                        int res = Character.codePointAt(s, i);
+                        i++;
+                        sb.append("&#" + res + ";");
+                    } else {
+                        sb.append(s.charAt(i));
+                    }
+                }
+
+
                 Bundle args = new Bundle(getArguments());
                 args.putString(ARG_RCPT, mEditRcpt.getText().toString());
                 args.putString(ARG_SUBTITLE, mEditSubtitle.getText().toString());
                 args.putString(ARG_TAGS, mEditTags.getText().toString());
-                args.putString(ARG_TEXT, mEditText.getText().toString());
+                args.putString(ARG_TEXT, sb.toString());
                 args.putString(ARG_TITLE, mEditTitle.getText().toString());
                 args.putInt(ARG_ICON, mIconId);
 

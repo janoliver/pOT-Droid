@@ -263,7 +263,7 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
             }
         } else if (type.compareTo("video") == 0) {
             mVideoView.setVisibility(View.VISIBLE);
-            mVideoView.setVideoURI(uri);
+            mVideoView.setMedia(uri);
 
 
             /*goFullscreen();
@@ -286,7 +286,7 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
         super.onStop();
 
         mGifImageView.stopAnimation();
-        mVideoView.stopPlayback();
+        mVideoView.stop();
 
         if (mVideoView.isPlaying()) {
             mVideoViewPausedInOnStop = true;
@@ -396,7 +396,7 @@ public class MediaFragment extends BaseFragment implements OnPreparedListener {
         @Override
         public void onSystemUiVisibilityChange(int visibility) {
             if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                mVideoView.showControls();
+                //mVideoView.getVideoControls()
             }
         }
     }

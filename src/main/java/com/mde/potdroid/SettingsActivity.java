@@ -3,13 +3,13 @@ package com.mde.potdroid;
 import android.os.Bundle;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.appcompat.widget.Toolbar;
 import com.mde.potdroid.fragments.SettingsFragment;
 import com.mde.potdroid.helpers.CustomExceptionHandler;
 import com.mde.potdroid.helpers.SettingsWrapper;
 import com.mde.potdroid.helpers.Utils;
-import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 /**
  * Settings Activity. Since the support lib does not contain a PreferenceFragment,

@@ -28,13 +28,13 @@ import com.mde.potdroid.services.MessagePollingService;
 import com.mde.potdroid.views.LoginDialog;
 import com.mde.potdroid.views.LogoutDialog;
 import com.nononsenseapps.filepicker.FilePickerActivity;
-import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompatDividers;
+import com.takisoft.preferencex.PreferenceFragmentCompat;
 
 import java.io.*;
 import java.util.Map;
 
 
-public class SettingsFragment extends PreferenceFragmentCompatDividers implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
     private SettingsWrapper mSettings;
 
     private static final int NOTIFICATION_SOUND_REQUEST_CODE = 1;

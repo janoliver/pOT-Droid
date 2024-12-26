@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
         google()
     }
     dependencies {
@@ -11,8 +11,9 @@ buildscript {
 apply plugin: 'com.android.application'
 
 repositories {
-    jcenter()
+    mavenCentral()
     maven { url "https://jitpack.io" }
+    maven { url 'https://repo.spring.io/libs-milestone/' }
     google()
 }
 
@@ -22,17 +23,17 @@ dependencies {
     implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.recyclerview:recyclerview:1.3.2'
     implementation 'androidx.browser:browser:1.7.0'
-    implementation 'com.takisoft.fix:preference-v7:26.1.0.3'
+    implementation 'com.takisoft.preferencex:preferencex:1.1.0'
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.12.0'
     implementation 'com.samskivert:jmustache:1.13'
     implementation 'com.github.ksoichiro:android-observablescrollview:1.6.0'
     implementation 'com.github.afollestad.material-dialogs:core:0.9.4.3@aar'
-    implementation 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.5'
-    implementation 'com.devbrackets.android:exomedia:4.0.0'
+    implementation 'com.github.luizgrp:SectionedRecyclerViewAdapter:1.0.5'
+    implementation 'com.devbrackets.android:exomedia:5.2.0'
     implementation 'com.felipecsl:gifimageview:2.1.0'
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
-    implementation 'com.nononsenseapps:filepicker:4.1.0'
+    implementation 'com.nononsenseapps:filepicker:4.2.1'
     implementation 'com.android.support:multidex:1.0.3'
 }
 
@@ -40,10 +41,10 @@ dependencies {
 android {
     namespace 'com.mde.potdroid'
     useLibrary 'org.apache.http.legacy'
-    compileSdkVersion 34
+    compileSdkVersion 35
     defaultConfig {
         multiDexEnabled true
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 34
         vectorDrawables.useSupportLibrary = true
     }

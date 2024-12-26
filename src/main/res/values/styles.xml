@@ -194,7 +194,7 @@
     </style>
 
     <!-- Settings theme -->
-    <style name="Theme.pOTSettings" parent="@style/PreferenceFixTheme.Light.NoActionBar">
+    <style name="Theme.pOTSettings" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorAccent">@color/bbstyle_lightblue</item>
         <item name="colorPrimary">@color/bbstyle_lightblue</item>
         <item name="colorPrimaryDark">@color/bbstyle_darkblue</item>

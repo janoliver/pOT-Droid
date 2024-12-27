@@ -859,15 +859,9 @@ public class TopicFragment extends PaginateFragment implements
         String url = Utils.getAbsoluteUrl(
                 String.format("thread.php?PID=%d&TID=%d#reply_%d", p.getId(), mTopic.getId(), p.getId()));
 
-        Intent i = new Intent(Intent.ACTION_VIEW);
+        Intent i = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER);
         i.setData(Uri.parse(url));
-
-        Intent chooser = Intent.createChooser(i, getString(R.string.choose_browser));
-        if (i.resolveActivity(getBaseActivity().getPackageManager()) != null) {
-            startActivity(chooser);
-        } else {
-            showError(getString(R.string.no_browser_installed));
-        }
+        startActivity(i);
     }
 
     @SuppressLint("NewApi")

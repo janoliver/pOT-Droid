@@ -1,6 +1,9 @@
 package com.mde.potdroid.views;
 
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,6 +39,7 @@ public class LinkActionsDialog extends DialogFragment {
                 .title(R.string.link_dialog_title)
                 .content(getArguments().getString(ARG_IMAGE_URI))
                 .positiveText(R.string.link_dialog_goto)
+                .neutralText(R.string.post_dialog_clipboard)
                 .negativeText(R.string.link_dialog_close)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -43,6 +47,16 @@ public class LinkActionsDialog extends DialogFragment {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setData(Uri.parse(getArguments().getString(ARG_IMAGE_URI)));
                         startActivity(intent);
+                    }
+                })
+                .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        ClipboardManager clipboard =
+                                (android.content.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText("link", getArguments().getString(ARG_IMAGE_URI));
+                        clipboard.setPrimaryClip(clip);
+                        dialog.dismiss();
                     }
                 })
                 .build();

@@ -19,6 +19,8 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.widget.ImageButton;
 
+import androidx.core.text.HtmlCompat;
+
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -358,6 +360,24 @@ public class Utils {
         matcher.find();
         matcher.find();
         return Integer.valueOf(matcher.group());
+    }
+
+    public static String fromUnicodeEmojis(String s) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0, l = s.length() ; i < l ; i++) {
+            if (Character.isSurrogate(s.charAt(i))) {
+                int res = Character.codePointAt(s, i);
+                i++;
+                sb.append("&#" + res + ";");
+            } else {
+                sb.append(s.charAt(i));
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String toUnicodeEmojis(String s) {
+        return HtmlCompat.fromHtml(s, HtmlCompat.FROM_HTML_MODE_LEGACY).toString();
     }
 
 }

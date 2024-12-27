@@ -4,22 +4,24 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
-
-import androidx.emoji.widget.EmojiEditText;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.ActionMenuItemView;
-import androidx.appcompat.widget.ActionMenuView;
 import android.util.SparseArray;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+
 import com.mde.potdroid.R;
 import com.mde.potdroid.helpers.AsyncHttpLoader;
 import com.mde.potdroid.helpers.FormEncodingBuilder;
@@ -28,6 +30,7 @@ import com.mde.potdroid.helpers.Utils;
 import com.mde.potdroid.parsers.MessageParser;
 import com.mde.potdroid.views.IconSelectionDialog;
 import com.mde.potdroid.views.PromptDialog;
+
 import org.apache.http.Header;
 
 import java.io.IOException;
@@ -84,7 +87,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
     protected EditText mEditTitle;
     protected EditText mEditSubtitle;
     protected EditText mEditTags;
-    protected EmojiEditText mEditText;
+    protected EditText mEditText;
     protected ImageButton mIconButton;
     protected ImageButton mBBButton;
     // the array of icons
@@ -115,7 +118,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         View v = inflater.inflate(R.layout.layout_editor, container, false);
 
         // assign some views
-        mEditText = (EmojiEditText) v.findViewById(R.id.edit_content);
+        mEditText = (EditText) v.findViewById(R.id.edit_content);
         mEditTitle = (EditText) v.findViewById(R.id.edit_title);
         mEditRcpt = (EditText) v.findViewById(R.id.edit_rcpt);
         mEditSubtitle = (EditText) v.findViewById(R.id.edit_subtitle);
@@ -135,7 +138,7 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
 
         // fill the form
         if (getArguments().getString(ARG_TEXT) != null)
-            mEditText.setText(getArguments().getString(ARG_TEXT));
+            mEditText.setText(Utils.toUnicodeEmojis(getArguments().getString(ARG_TEXT)));
 
         if (getArguments().getString(ARG_TITLE) != null)
             mEditTitle.setText(getArguments().getString(ARG_TITLE));
@@ -216,25 +219,11 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
             case R.id.send:
                 hideKeyboard();
 
-                // Emojis
-                String s = mEditText.getText().toString();
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0, l = s.length() ; i < l ; i++) {
-                    if (Character.isSurrogate(s.charAt(i))) {
-                        int res = Character.codePointAt(s, i);
-                        i++;
-                        sb.append("&#" + res + ";");
-                    } else {
-                        sb.append(s.charAt(i));
-                    }
-                }
-
-
                 Bundle args = new Bundle(getArguments());
                 args.putString(ARG_RCPT, mEditRcpt.getText().toString());
                 args.putString(ARG_SUBTITLE, mEditSubtitle.getText().toString());
                 args.putString(ARG_TAGS, mEditTags.getText().toString());
-                args.putString(ARG_TEXT, sb.toString());
+                args.putString(ARG_TEXT, Utils.fromUnicodeEmojis(mEditText.getText().toString()));
                 args.putString(ARG_TITLE, mEditTitle.getText().toString());
                 args.putInt(ARG_ICON, mIconId);
 

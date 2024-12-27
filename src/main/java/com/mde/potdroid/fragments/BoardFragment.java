@@ -1,5 +1,7 @@
 package com.mde.potdroid.fragments;
 
+import static android.content.Intent.getIntent;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +12,8 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Parcelable;
 import android.text.Spanned;
 import android.view.*;
 import android.widget.FrameLayout;
@@ -55,6 +59,8 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
 
     private LinearLayoutManager mLayoutManager;
 
+    private int scroll = 0;
+
     /**
      * Returns an instance of the BoardFragment and sets required parameters as Arguments
      *
@@ -73,6 +79,18 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         f.setArguments(args);
 
         return f;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        scroll = mListView.getCurrentScrollY();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mListView.scrollVerticallyTo(scroll);
     }
 
     @Override
@@ -116,6 +134,7 @@ public class BoardFragment extends PaginateFragment implements LoaderManager.Loa
         if(mSettings.isBottomToolbar() && mSettings.isDisableFfwdBoard())
             disableFfwd();
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Pair;
 import android.util.SparseArray;
+import android.view.ContentInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +21,9 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ActionMenuView;
+import androidx.core.view.ContentInfoCompat;
+import androidx.core.view.OnReceiveContentListener;
+import androidx.core.view.ViewCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
@@ -45,6 +50,27 @@ import java.util.regex.Pattern;
  */
 public class EditorFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Bundle>,
         IconSelectionDialog.IconSelectedCallback {
+
+    public final String[] MIME_TYPES = new String[] {"image/*"};
+
+    public class GifReceiver implements OnReceiveContentListener {
+
+        @Override
+        public ContentInfoCompat onReceiveContent(View view, ContentInfoCompat contentInfo) {
+            Pair<ContentInfoCompat, ContentInfoCompat> split = contentInfo.partition(
+                    item -> item.getUri() != null);
+            ContentInfoCompat uriContent = split.first;
+            ContentInfoCompat remaining = split.second;
+            if (uriContent != null && uriContent.getLinkUri() != null) {
+                ((EditText) view).getText().insert(
+                        mEditText.getSelectionStart(),
+                        "[img]" + uriContent.getLinkUri().toString() + "[/img]"
+                );
+            }
+
+            return remaining;
+        }
+    }
 
 
     public static final String BOARD_URL_POST = "newreply.php";
@@ -125,6 +151,9 @@ public class EditorFragment extends BaseFragment implements LoaderManager.Loader
         mEditTags = (EditText) v.findViewById(R.id.edit_tags);
         mIconButton = (ImageButton) v.findViewById(R.id.button_icon);
         mBBButton = (ImageButton) v.findViewById(R.id.button_bb);
+
+        ViewCompat.setOnReceiveContentListener(mEditText, MIME_TYPES, new GifReceiver());
+
 
         mIconButton.setOnClickListener(new View.OnClickListener() {
             @Override

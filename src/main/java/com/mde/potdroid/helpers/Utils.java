@@ -377,7 +377,7 @@ public class Utils {
     }
 
     public static String toUnicodeEmojis(String s) {
-        return HtmlCompat.fromHtml(s, HtmlCompat.FROM_HTML_MODE_LEGACY).toString();
+        return HtmlCompat.fromHtml(s.replace("\n","<br />"), HtmlCompat.FROM_HTML_MODE_LEGACY).toString();
     }
 
 }

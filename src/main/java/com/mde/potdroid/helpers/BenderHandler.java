@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.mde.potdroid.models.User;
 
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -99,7 +100,11 @@ public class BenderHandler {
             return null;
 
         ImageHandler ih = ImageHandler.getBenderHandler(mContext.getApplicationContext());
-        return ih.getImagePathIfExists(url);
+        try {
+            return ih.getImagePathIfExists(url);
+        } catch (MalformedURLException e) {
+            return null;
+        }
     }
 
     public void updateLastSeenBenderInformation(List<User> user_list) {

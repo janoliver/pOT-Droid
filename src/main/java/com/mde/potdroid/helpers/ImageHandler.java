@@ -13,6 +13,7 @@ import okio.BufferedSource;
 import okio.Okio;
 
 import java.io.*;
+import java.net.MalformedURLException;
 
 /**
  * Handles the downloading and caching of images.
@@ -227,7 +228,13 @@ public class ImageHandler {
      * @param url the url of the image to be retrieved.
      */
     public void retrieveImage(final String url, final ImageHandlerCallback callback) {
-        final Uri localUri = CacheContentProvider.getContentUriFromUrlOrUri(url, mDir);
+        final Uri localUri;
+        try {
+            localUri = CacheContentProvider.getContentUriFromUrlOrUri(url, mDir);
+        } catch (MalformedURLException e) {
+            callback.onFailure(url);
+            return;
+        }
         final String cacheKey = Utils.md5(localUri.toString());
 
         if (containsKey(cacheKey)) {
@@ -289,7 +296,7 @@ public class ImageHandler {
         }
     }
 
-    public String getImagePathIfExists(final String url) {
+    public String getImagePathIfExists(final String url) throws MalformedURLException {
         final Uri localUri = CacheContentProvider.getContentUriFromUrlOrUri(url, mDir);
         final String cacheKey = Utils.md5(localUri.toString());
 

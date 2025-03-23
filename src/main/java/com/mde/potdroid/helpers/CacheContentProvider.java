@@ -10,6 +10,8 @@ import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Base64;
 
+import androidx.documentfile.provider.DocumentFile;
+
 import com.mde.potdroid.BuildConfig;
 
 import java.io.FileNotFoundException;
@@ -102,16 +104,20 @@ public class CacheContentProvider extends ContentProvider {
         throw new RuntimeException("Operation not supported");
     }
 
-    public static Uri getContentUriFromUrlOrUri(String rawUrl, String sub_directory) {
+    public static Uri getContentUriFromUrlOrUri(String rawUrl, String sub_directory) throws MalformedURLException {
         if(rawUrl.startsWith(CONTENT_URI.toString()))
             return Uri.parse(rawUrl);
 
-        String base64_url = Base64.encodeToString(rawUrl.getBytes(), Base64.NO_WRAP);
-        //URL url = new URL(rawUrl.replace("%20","+"));
+        URL url = new URL(rawUrl.replace("%20","+"));
+        String result = url.getPath();
+        int cut = result.lastIndexOf('/');
+        String fname = result.substring( cut + 1);
+        String base64_path = Base64.encodeToString(rawUrl.getBytes(), Base64.NO_WRAP);
+
         if(!sub_directory.endsWith("/"))
             sub_directory += "/";
         //return Uri.parse(CONTENT_URI + sub_directory + url.getHost() + url.getPath());
-        return Uri.parse(CONTENT_URI + sub_directory + base64_url);
+        return Uri.parse(CONTENT_URI + sub_directory + base64_path + "/" + fname);
     }
 
     private static String[] copyOf(String[] original, int newLength) {

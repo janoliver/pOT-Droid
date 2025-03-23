@@ -108,7 +108,8 @@ public class CacheContentProvider extends ContentProvider {
         if(rawUrl.startsWith(CONTENT_URI.toString()))
             return Uri.parse(rawUrl);
 
-        URL url = new URL(rawUrl.replace("%20","+"));
+        // Replace @ with . for bluesky pictures.
+        URL url = new URL(rawUrl.replace("%20","+").replace("@","."));
         String result = url.getPath();
         int cut = result.lastIndexOf('/');
         String fname = result.substring( cut + 1);

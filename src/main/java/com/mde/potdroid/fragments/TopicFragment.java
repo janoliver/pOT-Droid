@@ -228,7 +228,6 @@ public class TopicFragment extends PaginateFragment implements
         //mWebView.getSettings().setAppCacheEnabled(false);
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         mWebView.getSettings().setLoadWithOverviewMode(true);
-        mWebView.getSettings().setAllowFileAccess(true);
         mWebView.getSettings().setMediaPlaybackRequiresUserGesture(false);
 
         // broken on 2.3.3

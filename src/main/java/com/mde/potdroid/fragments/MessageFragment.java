@@ -252,7 +252,6 @@ public class MessageFragment extends BaseFragment
         mWebView.getSettings().setDomStorageEnabled(true);
         mWebView.getSettings().setDefaultFontSize(mSettings.getDefaultFontSize());
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        mWebView.getSettings().setAllowFileAccess(true);
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.loadData("", "text/html", "utf-8");
         mWebView.setBackgroundColor(0x00000000);

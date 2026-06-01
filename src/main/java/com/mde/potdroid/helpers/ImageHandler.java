@@ -1,8 +1,12 @@
 package com.mde.potdroid.helpers;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import com.mde.potdroid.helpers.cache.DiskLruCache;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -271,26 +275,49 @@ public class ImageHandler {
     public static void downloadImage(final Context cx, File dir, final Uri uri, final ImageDownloadCallback callback) {
         ImageHandler ih = ImageHandler.getPictureHandler(cx.getApplicationContext());
 
-        final File file = new File(dir, uri.getLastPathSegment());
-
         try {
             ih.retrieveImage(uri.toString(), new ImageHandler.ImageHandlerCallback() {
                 @Override
                 public void onSuccess(String url, final String path, boolean from_cache) {
                     InputStream is = null;
+                    OutputStream os = null;
                     try {
-                        FileOutputStream fo = new FileOutputStream(file);
                         is = cx.getContentResolver().openInputStream(Uri.parse(path));
 
-                        byte[] buffer = new byte[1024];
-                        int len1;
-                        while ((len1 = is.read(buffer)) > 0) {
-                            fo.write(buffer, 0, len1);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            // Modern way: MediaStore (Android 10+)
+                            ContentValues values = new ContentValues();
+                            values.put(MediaStore.MediaColumns.DISPLAY_NAME, uri.getLastPathSegment());
+                            values.put(MediaStore.MediaColumns.MIME_TYPE, "image/*");
+                            values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/pOT-Droid");
+
+                            Uri imageUri = cx.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                            if (imageUri != null) {
+                                os = cx.getContentResolver().openOutputStream(imageUri);
+                            }
+                        } else {
+                            // Legacy way: File API (Pre-Android 10)
+                            if (!dir.exists()) dir.mkdirs();
+                            File file = new File(dir, uri.getLastPathSegment());
+                            os = new FileOutputStream(file);
                         }
-                        fo.close();
-                        callback.onSuccess(uri, file);
+
+                        if (os != null && is != null) {
+                            byte[] buffer = new byte[1024];
+                            int len1;
+                            while ((len1 = is.read(buffer)) > 0) {
+                                os.write(buffer, 0, len1);
+                            }
+                            os.close();
+                            callback.onSuccess(uri, null);
+                        } else {
+                            callback.onFailure(uri, new IOException("Failed to save image"));
+                        }
                     } catch (IOException e) {
                         callback.onFailure(uri, e);
+                    } finally {
+                        try { if (is != null) is.close(); } catch (IOException ignored) {}
+                        try { if (os != null) os.close(); } catch (IOException ignored) {}
                     }
                 }
 

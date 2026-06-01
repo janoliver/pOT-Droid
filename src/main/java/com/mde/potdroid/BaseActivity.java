@@ -342,10 +342,17 @@ public class BaseActivity extends AppCompatActivity {
      * @param activity
      */
     public void verifyStoragePermissions(Activity activity, ExternalPermissionCallback callback) {
+        mPermissionCallback = callback;
+
+        // On Android 13+ (API 33), WRITE_EXTERNAL_STORAGE is deprecated and always denied.
+        // For saving media via MediaStore, we don't need to ask for it.
+        if (android.os.Build.VERSION.SDK_INT >= 33) {
+            mPermissionCallback.granted();
+            return;
+        }
+
         // Check if we have write permission
         int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        mPermissionCallback = callback;
 
         if (permission != PackageManager.PERMISSION_GRANTED) {
             // We don't have permission so prompt the user

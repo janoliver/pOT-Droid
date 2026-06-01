@@ -1,8 +1,12 @@
 package com.mde.potdroid.helpers;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
 import okhttp3.*;
 import okio.BufferedSink;
 import okio.Okio;
@@ -10,6 +14,7 @@ import okio.Okio;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
@@ -194,8 +199,6 @@ public class Network {
     }
 
     public static void downloadFile(final Context cx, final Uri uri, final File dir, final DownloadCallback callback) {
-        final File file = new File(dir, uri.getLastPathSegment());
-
         Network network = new Network(cx.getApplicationContext());
         Request request = new Request.Builder().url(uri.toString()).build();
         network.getHttpClient().newCall(request).enqueue(new Callback() {
@@ -206,30 +209,36 @@ public class Network {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                BufferedSink sink = null;
-                FileOutputStream fo = null;
+                OutputStream os = null;
                 try {
-                    fo = new FileOutputStream(file);
-                    sink = Okio.buffer(Okio.sink(fo));
-                    sink.writeAll(response.body().source());
-                    sink.close();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        ContentValues values = new ContentValues();
+                        values.put(MediaStore.MediaColumns.DISPLAY_NAME, uri.getLastPathSegment());
+                        values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/pOT-Droid");
 
-                    callback.onSuccess(uri, file);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        if (sink != null)
-                            sink.close();
-                        if (fo != null)
-                            fo.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        Uri fileUri = cx.getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+                        if (fileUri != null) {
+                            os = cx.getContentResolver().openOutputStream(fileUri);
+                        }
+                    } else {
+                        if (!dir.exists()) dir.mkdirs();
+                        os = new FileOutputStream(new File(dir, uri.getLastPathSegment()));
                     }
 
+                    if (os != null) {
+                        okio.BufferedSink sink = okio.Okio.buffer(okio.Okio.sink(os));
+                        sink.writeAll(response.body().source());
+                        sink.close();
+                        callback.onSuccess(uri, null);
+                    } else {
+                        callback.onFailure(uri, new IOException("Failed to create output stream"));
+                    }
+                } catch (IOException e) {
+                    callback.onFailure(uri, e);
+                } finally {
+                    if (os != null) try { os.close(); } catch (IOException ignored) {}
                     response.body().close();
                 }
-
             }
         });
     }
